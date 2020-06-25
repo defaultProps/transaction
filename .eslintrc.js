@@ -56,6 +56,7 @@ module.exports = {
     'eqeqeq': 0,
     'key-spacing': 0,
     'operator-linebreak': 1,
+    'no-mixed-spaces-and-tabs': 0,
     'no-caller': 0,
     'no-multi-spaces': 0,
     'space-unary-ops': 0,

@@ -21,11 +21,11 @@ Axios.interceptors.request.use(config => {
 Axios.interceptors.response.use(resp => {
   let obj = resp.data
 
-  if (obj && obj.status && obj.data) {
+  if (obj && obj.status === 200) {
     return obj.data
+  } else {
+    return Promise.reject(obj ? obj.errorinfo : '')
   }
-
-  return Promise.reject(obj ? obj.errorinfo : '')
 })
 
 export default Axios

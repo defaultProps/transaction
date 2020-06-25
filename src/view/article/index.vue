@@ -1,12 +1,8 @@
 <template>
-	<div id="article" class="container-box">
+	<div id="article">
 		<el-row :gutter="20">
-      <el-col :span="4" class='grid-content'>
-        <v-sidebar></v-sidebar>
-      </el-col>
-      <el-col :span="20" class='grid-content'>
-        <v-list></v-list>
-      </el-col>
+			<v-sidebar></v-sidebar>
+			<v-list class="article-main"></v-list>
     </el-row>
 	</div>
 </template>
@@ -27,3 +23,8 @@ export default {
 	}
 }
 </script>
+<style lang="scss" scoped>
+#article {
+	margin: auto;
+}
+</style>

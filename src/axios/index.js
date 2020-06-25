@@ -11,6 +11,11 @@ export default {
 		// 文章详情
 		detail: params => Axios({method: 'post', url: protocol + 'article/detail', data: params}),
 		// 新建/编辑 - 文章
-		edit: params => Axios({method: 'post', url: protocol + 'article/edit', data: params})
+		edit: params => Axios({method: 'post', url: protocol + 'article/edit', data: params}),
+		// 首页文章菜单栏
+		menu: params => Axios({method: 'post', url: protocol + 'article/menu', data: params})
+	},
+	header: {
+		menu: params => Axios({method: 'post', url: protocol + 'header/menu', data: params})
 	}
 }
