@@ -114,7 +114,6 @@ export default {
 	.el-menu--horizontal>.el-menu-item {
 		height: 40px;
 		line-height: 40px;
-		border: none !important;
 	}
 }
 </style>

@@ -1,6 +1,86 @@
 import Mock from "mockjs"
 
 export default {
+	sprints: {
+		sprintList: obj => {
+			function sprintListFn() {
+				let pointsTotal = 0;
+				let total = Math.ceil(Math.random() * 10) + 10
+				let issueList = [];
+				let i = 0
+
+				while (i < total) {
+					let points = Math.ceil(Math.random() * 10)
+					issueList.push({
+						name: Mock.mock('@cname'),
+						order: i,
+						link: `INHOPE-${Math.ceil(Math.random() * 9000) + 1000}`,
+						type: Math.random() > 0.5 ? 'needs' : 'bug',
+						title: Mock.mock('@csentence(20, 40)'),
+						fixed: Math.random() > 0.5,
+						points
+					})
+					pointsTotal += points
+					i++
+				}
+
+				return {
+					issueList,
+					pointsTotal,
+					total
+				}
+			}
+
+			let result = []
+
+			for (let i = 0; i < 25; i++) {
+				let v = sprintListFn()
+
+				result.push({
+					id: Mock.mock('@guid'),
+					title: `sprint${i}`,
+					createTime: Mock.mock('@datetime'),
+					endTime: Mock.mock('@datetime'),
+					status: i >= 23 ? 'doing' : 'done',
+					count: v.total,
+					issueList: v.issueList,
+					pointsTotal: v.pointsTotal
+				})
+			}
+			return {
+				status: 200,
+				data: {
+					sprintList: result.reverse()
+				}
+			}
+		},
+		backlogList: obj => {
+			let result = []
+			let i = 0;
+			let total = Math.ceil(Math.random() * 60) + 60
+
+			while (i < total) {
+				result.push({
+					name: Mock.mock('@cname'),
+					order: i,
+					link: `INHOPE-${Math.ceil(Math.random() * 9000) + 1000}`,
+					type: Math.random() > 0.5 ? 'needs' : 'bug',
+					level: Math.ceil(Math.random() * 5),
+					title: Mock.mock('@csentence(20, 40)'),
+					fixed: Math.random() > 0.5,
+					points: Math.ceil(Math.random() * 10)
+				})
+				++i
+			}
+			return {
+				status: 200,
+				data: {
+					total,
+					sprintList: result
+				}
+			}
+		}
+	},
 	article: {
 		menu: obj => {
 			return {

@@ -17,5 +17,9 @@ export default {
 	},
 	header: {
 		menu: params => Axios({method: 'post', url: protocol + 'header/menu', data: params})
+	},
+	sprints: {
+		backlogList: params => Axios({method: 'post', url: protocol + 'sprints/backlogList', data: params}),
+		sprintList: params => Axios({method: 'post', url: protocol + 'sprints/sprintList', data: params})
 	}
 }

@@ -35,8 +35,8 @@
         </el-row>
         <div class="meta">
           <ul class="action-list">
-            <li><i class="iconfont xu-zan"></i><span>{{12}}</span></li>
-            <li><i class="iconfont xu-pinglun1"></i><span>{{12}}条评论</span></li>
+            <li><i class="iconfont icon-Journal"></i><span>{{12}}</span></li>
+            <li><i class="iconfont icon-kuaixuanzhong"></i><span>{{12}}</span></li>
             <li class="last-left" :class="[item.type]"><span>{{item.type | filterType}}</span></li>
             <li><i class="iconfont xu-pinglun1"></i><span>关注</span></li>
             <li><i class="iconfont xu-pinglun1"></i><span>收藏</span></li>
