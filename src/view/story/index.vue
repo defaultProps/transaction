@@ -1,7 +1,7 @@
 <template>
 	<div id="story">
 		<el-row class="story-backlog">
-			<el-col :span="12" class="backlog-wrap" >
+			<el-col :span="10" class="backlog-wrap" >
 				<div class="backlog">
 					<div class="backlog-title">
 						<span class="title">Backlog</span>
@@ -9,14 +9,27 @@
 						<el-button type="primary" plain size="mini" class="btn-header">new Sprint</el-button>
 						<el-button type="primary" plain size="mini" class="btn-header">new Issue</el-button>
 					</div>
-					<v-draggleList :list="backlogList" :group="{ name: 'backlog', pull: true, put: false }"></v-draggleList>
+					<v-draggleList v-loading="backlogLoading" :list="backlogList" :group="{ name: 'backlog', pull: true, put: false }"></v-draggleList>
 				</div>
 			</el-col>
-			<el-col :span="1" class="between-space">1</el-col>
-			<el-col :span="11" class="springt-wrap">
-				<el-collapse accordion>
-					<div class="springt" v-for="el of sprints" :key="el.id">
-						<el-collapse-item>
+			<el-col :span="4" class="between-space">
+				<div class="middle-relation">
+					<div class="middle-main">
+						<div class="middle-header">
+
+						</div>
+						<el-input placeholder="请输入事务号" v-model="affairVal" prefix-icon="el-icon-search" size="mini" class="input-affiar"></el-input>
+						<el-button class="btn">溶解</el-button>
+						<el-button class="btn">相关</el-button>
+						<el-button class="btn">催化</el-button>
+						<el-button class="btn">分解</el-button>
+					</div>
+				</div>
+			</el-col>
+			<el-col :span="10" class="springt-wrap">
+				<el-collapse accordion v-model="activeCollapse">
+					<div class="springt" v-for="(el, index) of sprints" :key="el.id">
+						<el-collapse-item :name="index">
 							<template slot="title">
 								<div class="springt-title">
 									<div>
@@ -30,7 +43,7 @@
 								</div>
 							</template>
 							<ul class="sprint-ul">
-								<v-draggleList :list="el.issueList" :group="el.status == 'doing' ? 'backlog': 'disaledMove'"></v-draggleList>
+								<v-draggleList :list="el.issueList" :group="el.status == 'doing' ? 'backlog': 'disaledMove'" :loading="sprintLoading"></v-draggleList>
 							</ul>
 						</el-collapse-item>
 					</div>
@@ -44,10 +57,44 @@ import draggleList from './component/list'
 
 export default {
 	data() {
+		let sortGroup = [{
+			label: '按类型排序',
+			options: [{
+				value: 'needs',
+				label: '需求'
+			}, {
+				value: 'bug',
+				label: 'BUG'
+			}]
+		}, {
+			label: '按优先级排序',
+			options: [{
+				value: 'desc',
+				label: '倒序'
+			}, {
+				value: 'dsc',
+				label: '正序'
+			}]
+		}, {
+			label: '按点排序',
+			options: [{
+				value: 'desc-point',
+				label: '倒序'
+			}, {
+				value: 'dsc-point',
+				label: '正序'
+			}]
+		}]
 		return {
+			sortGroup,
+			selecType: null,
 			backlogList: [],
 			sprints: [],
-			backlogTotal: 0
+			backlogTotal: 0,
+			backlogLoading: false,
+			sprintLoading: false,
+			activeCollapse: 0,
+			affairVal: ''
 		}
 	},
 	components: {
@@ -64,9 +111,14 @@ export default {
 			})
 		},
 		getbacklogList() {
+			this.backlogLoading = true
 			this.$axios.sprints.backlogList({type: 'backlog'}).then(v => {
-				this.backlogList = v.sprintList
-				this.backlogTotal = v.total
+				setTimeout(() => {
+					this.backlogList = v.sprintList
+					this.backlogTotal = v.total
+					this.backlogLoading = false
+				}, 500);
+
 			})
 		},
 		removeAt(idx) {
@@ -81,7 +133,7 @@ export default {
 #story {
 	margin: auto;
 	position: fixed;
-	top: 50px;
+	top: 40px;
 	left: 0px;
 	right: 5px;
 	bottom: 10px;
@@ -110,6 +162,21 @@ export default {
 						font-size: 13px;
 						font-weight: 600;
 					}
+					.backlog-select {
+						width: 100px;
+						float: right;
+						padding: 0;
+						font-weight: 600;
+						font-size: 14px;
+						color: #409EFF !important;
+						background: transparent;
+						.el-input__inner {
+							color: #409EFF !important;
+							background: #ecf5ff;
+							border-color: #b3d8ff;
+							outline:none;
+						}
+					}
 					.btn-header {
 						padding: 2px 3px;
 						height: 25px;
@@ -129,17 +196,18 @@ export default {
 					&::-webkit-scrollbar-thumb {
 							border-radius: 10px;
 							box-shadow: inset 0 0 5px #f93;
-							background: #535353;
+							background: #f4f5f7;
 					}
 					&::-webkit-scrollbar-track {
-						box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+						box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.1);
 						border-radius: 10px;
-						background: #ededed;
+						background: #f4f5f7;
 					}
 					.item {
 						background: #fff;
 						overflow: hidden;
 						height: 32px;
+						user-select: none;
 						box-shadow: 0 0 1px 0 rgba(9,30,66,0.31), 0 2px 4px -1px rgba(9,30,66,0.25);
 						line-height: 32px;
 						font-size: 15px;
@@ -210,11 +278,38 @@ export default {
 		}
 		.between-space {
 			height: 100%;
-			padding: 0 5px 10px 0 !important;
-			padding: 0 4px;
 			border-left: 1px solid #f4f5f7;
 			border-right: 1px solid #f4f5f7;
 			box-sizing: border-box;
+			.middle-relation {
+				height: 100%;
+				padding: 0 5px;
+				box-sizing: border-box;
+				overflow: hidden;
+				text-align: left;
+				.middle-main {
+					background: #f6f6f6;
+					height: 100%;
+					padding: 5px;
+					text-align: left;
+					box-sizing: border-box;
+					.btn {
+						margin: 1px auto;
+						padding: 0px;
+						height: 35px;
+						width: 45px;
+						display: inline-block;
+						color: #0052cc;
+						&:hover {
+							text-decoration: underline;
+						}
+					}
+					.input-affiar {
+						font-size: 12px;
+						margin-bottom: 10px;
+					}
+				}
+			}
 		}
 		.springt-wrap {
 			height: 100%;
@@ -306,6 +401,7 @@ export default {
 				.sprint-ul {
 					max-height: 400px;
 					overflow-y: scroll;
+					background: #f6f6f6;
 				}
 			}
 		}
@@ -315,16 +411,16 @@ export default {
 			border: none !important;
 		}
 		&::-webkit-scrollbar {
-			width: 3px;
+			width: 2px;
 			height: 5px;
 		}
 		&::-webkit-scrollbar-thumb {
 				border-radius: 10px;
 				box-shadow: inset 0 0 5px #f93;
-				background: #535353;
+				background: #f4f5f7;
 		}
 		&::-webkit-scrollbar-track {
-			box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+			box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.1);
 			border-radius: 10px;
 			background: #ededed;
 		}

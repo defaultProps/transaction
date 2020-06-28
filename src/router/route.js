@@ -3,6 +3,7 @@ import {routeErrorCallback} from '@/libs/common'
 
 let article = r => require.ensure([], () => r(require('@/view/article/index')), routeErrorCallback, 'article')
 let story = r => require.ensure([], () => r(require('@/view/story/index')), routeErrorCallback, 'story')
+let dashboard = r => require.ensure([], () => r(require('@/view/dashboard/index')), routeErrorCallback, 'dashboard')
 
 let routes = [
 	{
@@ -23,7 +24,13 @@ let routes = [
 		path: '/story',
 		name: 'story',
 		component: story,
-		meta: {title: '我有故事，你有酒么', level: 0, auth: 0, sidebar: false}
+		meta: {title: '事务分发', level: 0, auth: 0, sidebar: false}
+	},
+	{
+		path: '/dashboard',
+		name: 'dashboard',
+		component: dashboard,
+		meta: {title: '仪表盘', level: 0, auth: 0, sidebar: false}
 	}
 ]
 

@@ -1,7 +1,7 @@
 <template>
   <div id="article-list">
     <div class="top-bar">
-      <el-button type="text" size="mini" icon="el-icon-edit" class="btn">edit</el-button>
+      <el-button type="warning" size="mini" icon="el-icon-edit" class="btn">新建文章</el-button>
       <div>
         <ul class="select-ul">
           <el-select v-model="timeHots"
@@ -149,6 +149,7 @@ export default {
       float: right;
       margin: 0 5px;
       color: #fff;
+      padding: 4px;
     }
     .select-ul {
       display: inline-block;

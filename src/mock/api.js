@@ -5,7 +5,7 @@ export default {
 		sprintList: obj => {
 			function sprintListFn() {
 				let pointsTotal = 0;
-				let total = Math.ceil(Math.random() * 10) + 10
+				let total = Math.ceil(Math.random() * 10) + 20
 				let issueList = [];
 				let i = 0
 
@@ -14,6 +14,7 @@ export default {
 					issueList.push({
 						name: Mock.mock('@cname'),
 						order: i,
+						level: Math.ceil(Math.random() * 5),
 						link: `INHOPE-${Math.ceil(Math.random() * 9000) + 1000}`,
 						type: Math.random() > 0.5 ? 'needs' : 'bug',
 						title: Mock.mock('@csentence(20, 40)'),
@@ -57,7 +58,7 @@ export default {
 		backlogList: obj => {
 			let result = []
 			let i = 0;
-			let total = Math.ceil(Math.random() * 60) + 60
+			let total = Math.ceil(Math.random() * 60) + 120
 
 			while (i < total) {
 				result.push({
@@ -68,7 +69,7 @@ export default {
 					level: Math.ceil(Math.random() * 5),
 					title: Mock.mock('@csentence(20, 40)'),
 					fixed: Math.random() > 0.5,
-					points: Math.ceil(Math.random() * 10)
+					points: Math.random() > 0.7 ? Math.ceil(Math.random() * 10) : null
 				})
 				++i
 			}
@@ -134,7 +135,7 @@ export default {
 			while (len > 0) {
 				result.push({
 					'img': Math.random() > 0.5 ? Mock.Random.image('100x100') : null,	// logo
-					'level': Math.ceil(Math.random() * 6),	// 文章阅读level
+					'level': Math.ceil(Math.random() * 5),	// 文章阅读level
 					'title': Mock.mock('@ctitle(10, 40)'),	// 文章标题
 					'author': Mock.mock('@cname'),	// 文章作者
 					'authorID': Mock.mock('@guid(10)'),	// 作者ID
@@ -162,14 +163,11 @@ export default {
 		getMenu: obj => {
 			let result = [
 				{name: '文章', link: 'article'},
-				{name: '故事', link: 'story'},
-				{name: '仪表盘', link: 'dashboard'},
-				{name: '项目', link: 'projects'},
-				{name: '社区', link: 'community'},
-				{name: '求知', link: 'seekKnowledge'},
+				{name: '事务', link: 'story'},
 				{name: '使然', link: 'thus'},
-				{name: '问题', link: 'question'},
-				{name: '市场', link: 'market'},
+				{name: '仪表盘', link: 'dashboard'},
+				{name: '绘画', link: 'drawing'},
+				{name: '求知', link: 'seekKnowledge'},
 				{name: '生活', link: 'life'}
 			]
 

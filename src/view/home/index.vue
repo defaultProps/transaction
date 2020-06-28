@@ -1,7 +1,7 @@
 <template>
 	<div id="cai-content" class="container-box">
 		<v-header></v-header>
-		<router-view></router-view>
+		<router-view class="router-main"></router-view>
 		<!-- <v-footer></v-footer> -->
 	</div>
 </template>
@@ -27,6 +27,13 @@ export default {
 	overflow: hidden;
 	-webkit-overflow-scrolling: touch;
 	-webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+	-moz-osx-font-smoothing: grayscale;
+	.route-main {
+		position: fixed;
+		top: 50px;
+		left: 0px;
+		right: 5px;
+		bottom: 10px;
+	}
 }
 </style>

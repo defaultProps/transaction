@@ -9,7 +9,7 @@
         <span class="type" :class="[p.type]">
           <i class="iconfont icon-icon-test1" :class="p.type === 'bug' ? 'icon-dashujukeshihuaico-' : 'icon-shujuzhongjian'"></i>
         </span>
-        <span class="level"><i class="iconfont" :class="p.level === 1 ? 'icon-renwu' : 'icon-fl-dian'"></i></span>
+        <span class="level"><i class="iconfont" :class="filterLevel(p.level)"></i></span>
         <span class="key-link">{{p.link}}</span>
         <span class="title">{{p.title}}</span>
         <el-button type="info" circle class="points">{{p.points}}</el-button>
@@ -24,6 +24,7 @@
         type: Array,
         default: function() { return [] }
       },
+      loading: [Boolean],
       group: [String, Object]
     },
     data() {
@@ -40,25 +41,31 @@
       this.draggbleList = JSON.parse(JSON.stringify(this.list))
     },
     methods: {
+      filterLevel(v) {
+        return ['icon-1_square', 'icon-2_square', 'icon-3_square', 'icon-4_square', 'icon-5_square', 'icon-6_square', 'icon-7_square'][v]
+      },
       log() {
         console.log(12)
       }
     }
   }
 </script>
-<style lang="scss" scoped>
+<style lang="scss">
 #draggble-list {
   height: calc(100% - 40px);
-  padding-right: 10px;
+  padding: 0 10px 10px;
+  box-sizing: border-box;
   overflow-y: scroll;
+  position: relative;
   .item {
     background: #fff;
     overflow: hidden;
     height: 32px;
     box-shadow: 0 0 1px 0 rgba(9,30,66,0.31), 0 2px 4px -1px rgba(9,30,66,0.25);
     line-height: 32px;
-    font-size: 15px;
+    font-size: 14px;
     margin-bottom: 2px;
+    user-select: none;
     padding: 0 4px;
     display: flex;
     box-sizing: border-box;
@@ -91,6 +98,7 @@
       text-overflow: ellipsis;
       white-space: nowrap;
       overflow: hidden;
+      font-size: 14px;
       flex: 1;
       white-space: nowrap;
       text-overflow: ellipsis;
@@ -104,14 +112,29 @@
     }
     .level {
       color: #E6A23C;
-      &.level-1 {
+      .icon-1_square {
+        color: #67C23A;
+      }
+      .icon-2_square {
+        color: #67C23A;
+      }
+      .icon-3_square {
+        color: #E6A23C;
+      }
+      .icon-4_square {
+        color: #E6A23C;
+      }
+      .icon-5_square {
+        color: #F56C6C;
+      }
+      .icon-6_square {
         color: #F56C6C;
       }
     }
     .key-link {
       color: #0052cc;
-      font-size: 15px;
-      font-weight: 500;
+      font-size: 14px;
+      font-weight: 600;
     }
     .points {
       padding: 0;
