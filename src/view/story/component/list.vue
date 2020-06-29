@@ -55,7 +55,6 @@
   height: calc(100% - 40px);
   padding: 0 10px 10px;
   box-sizing: border-box;
-  overflow-y: scroll;
   position: relative;
   .item {
     background: #fff;
