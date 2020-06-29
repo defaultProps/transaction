@@ -4,16 +4,23 @@
                  draggable=".item"
                  :group="group"
                  @change="log"
+                 tag="div"
+                 ghost-class="ghost"
+                 v-bind="dragOptions"
+                 @start="isDragging = true"
+                 @end="isDragging = false"
                  class="backlog-list">
-      <div v-for="p of draggbleList" :key="p.id" class="item">
-        <span class="type" :class="[p.type]">
-          <i class="iconfont icon-icon-test1" :class="p.type === 'bug' ? 'icon-dashujukeshihuaico-' : 'icon-shujuzhongjian'"></i>
-        </span>
-        <span class="level"><i class="iconfont" :class="filterLevel(p.level)"></i></span>
-        <span class="key-link">{{p.link}}</span>
-        <span class="title">{{p.title}}</span>
-        <el-button type="info" circle class="points">{{p.points}}</el-button>
-      </div>
+      <transition-group type="transition" name="flip-list">
+        <div v-for="p of draggbleList" :key="p.order" class="item">
+          <span class="type" :class="[p.type]">
+            <i class="iconfont icon-icon-test1" :class="p.type === 'bug' ? 'icon-dashujukeshihuaico-' : 'icon-shujuzhongjian'"></i>
+          </span>
+          <span class="level"><i class="iconfont" :class="filterLevel(p.level)"></i></span>
+          <span class="key-link">{{p.link}}</span>
+          <span class="title">{{p.title}}</span>
+          <el-button type="info" circle class="points">{{p.points}}</el-button>
+        </div>
+      </transition-group>
     </v-draggable>
   </div>
 </template>
@@ -30,6 +37,16 @@
     data() {
       return {
         draggbleList: []
+      }
+    },
+    computed: {
+      dragOptions() {
+        return {
+          animation: 0,
+          group: "description",
+          disabled: false,
+          ghostClass: "ghost"
+        }
       }
     },
     watch: {
@@ -57,6 +74,14 @@
   box-sizing: border-box;
   overflow-y: scroll;
   position: relative;
+  .flip-list-move {
+    // transition: transform 0.2s;
+  }
+  .ghost {
+    background: #EBEEF5 !important;
+    opacity: 0.5;
+    visibility: hidden;
+  }
   .item {
     background: #fff;
     overflow: hidden;

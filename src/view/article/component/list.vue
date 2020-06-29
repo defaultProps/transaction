@@ -126,7 +126,7 @@ export default {
 <style lang="scss">
 #article-list {
   position: fixed;
-  left: 170px;
+  left: 250px;
   top: 40px;
   right: 0;
   bottom: 0;

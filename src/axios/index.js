@@ -21,5 +21,8 @@ export default {
 	sprints: {
 		backlogList: params => Axios({method: 'post', url: protocol + 'sprints/backlogList', data: params}),
 		sprintList: params => Axios({method: 'post', url: protocol + 'sprints/sprintList', data: params})
+	},
+	thus: {
+		list: params => Axios({method: 'post', url: protocol + 'thus/list', data: params})
 	}
 }

@@ -26,7 +26,7 @@
 					</div>
 				</div>
 			</el-col>
-			<el-col :span="10" class="springt-wrap">
+			<el-col :span="10" class="springt-wrap scroll-style-theme1">
 				<el-collapse accordion v-model="activeCollapse">
 					<div class="springt" v-for="(el, index) of sprints" :key="el.id">
 						<el-collapse-item :name="index">
@@ -42,7 +42,7 @@
 									</div>
 								</div>
 							</template>
-							<ul class="sprint-ul">
+							<ul class="sprint-ul scroll-style-theme1">
 								<v-draggleList :list="el.issueList" :group="el.status == 'doing' ? 'backlog': 'disaledMove'" :loading="sprintLoading"></v-draggleList>
 							</ul>
 						</el-collapse-item>
@@ -406,24 +406,8 @@ export default {
 			}
 		}
 	}
-	.springt-wrap, .sprint-ul{
-		.el-collapse {
-			border: none !important;
-		}
-		&::-webkit-scrollbar {
-			width: 2px;
-			height: 5px;
-		}
-		&::-webkit-scrollbar-thumb {
-				border-radius: 10px;
-				box-shadow: inset 0 0 5px #f93;
-				background: #f4f5f7;
-		}
-		&::-webkit-scrollbar-track {
-			box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.1);
-			border-radius: 10px;
-			background: #ededed;
-		}
+	.sprint-ul .el-collapse{
+		border: none !important;
 	}
 }
 </style>
