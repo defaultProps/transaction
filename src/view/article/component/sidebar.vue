@@ -75,6 +75,10 @@ export default {
 	overflow-y: scroll;
 	// background-color: #f6f6f6;
 	border-right: solid 1px #e6e6e6;
+	&::-webkit-scrollbar {
+		width: 0;
+		height: 0;
+	}
 	.el-menu {
 		border: none;
 	}

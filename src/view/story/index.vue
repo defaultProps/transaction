@@ -406,8 +406,24 @@ export default {
 			}
 		}
 	}
-	.sprint-ul .el-collapse{
-		border: none !important;
+	.springt-wrap, .sprint-ul{
+		.el-collapse {
+			border: none !important;
+		}
+		&::-webkit-scrollbar {
+			width: 3px;
+			height: 5px;
+		}
+		&::-webkit-scrollbar-thumb {
+				border-radius: 10px;
+				box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.7);
+				background: #f4f5f7;
+		}
+		&::-webkit-scrollbar-track {
+			box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.1);
+			border-radius: 10px;
+			background: #ededed;
+		}
 	}
 }
 </style>
