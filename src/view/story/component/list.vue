@@ -11,7 +11,7 @@
                  @end="endDraggable"
                  class="backlog-list">
       <transition-group type="transition" name="flip-list">
-        <div v-for="p of draggbleList" :key="p.order" class="item">
+        <div v-for="(p, i) of draggbleList" :key="p.order" class="item" @click="handleDraggleList(p ,i)" :class="[p.selected ? 'light' : 'default']">
           <span class="type" :class="[p.type]">
             <i class="iconfont icon-icon-test1" :class="p.type === 'bug' ? 'icon-dashujukeshihuaico-' : 'icon-shujuzhongjian'"></i>
           </span>
@@ -64,6 +64,13 @@
       this.draggbleList = JSON.parse(JSON.stringify(this.list))
     },
     methods: {
+      handleDraggleList(v, i) {
+        this.$emit('handleDetail', v)
+        v.hightlight = true;
+        this.draggbleList.forEach((v, j) => {
+          this.$set(v, 'selected', i === j)
+        })
+      },
       startDraggable(v) {
         console.log(v)
       },
@@ -116,6 +123,9 @@
     border-bottom-left-radius: 4px;
     &:hover {
       background: #f6f6f6;
+    }
+    &.light {
+      background-color: rgba(0, 0, 0, 0.1);
     }
     &::before {
       content: '';

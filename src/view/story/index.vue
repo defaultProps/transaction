@@ -11,7 +11,7 @@
 						<ul class="nav-ul">
 							<div class="status">执行状态</div>
 							<div v-for="p of implementStatusList" :key="p.value" class="item">
-								<li :class="['info-status', p.value]">{{p.name}}</li>
+								<li :class="['info-status', p.value]"><i :class="['iconfont', p.icon]"></i>{{p.name}}</li>
 							</div>
 							<div class="type-list status">模块类型</div>
 							<div class="item-type-ul">
@@ -30,7 +30,7 @@
 					</div>
 				</div>
 			</el-col>
-			<el-col :span="20" class="backlog-wrap">
+			<el-col :span="sprintLen" class="backlog-wrap">
 				<template v-for="el of sprints">
 					<div class="backlog" v-if="el.status === 'doing'" :key="el.id">
 						<div class="backlog-title">
@@ -43,7 +43,7 @@
 							</div>
 							<span class="status count">{{el.pointsTotal}}</span>
 						</div>
-						<v-draggleList v-show="el.visible" v-loading="sprintLoading" :list="el.issueList" group="backlog"></v-draggleList>
+						<v-draggleList v-show="el.visible" v-loading="sprintLoading" :list="el.issueList" group="backlog" @handleDetail="handleDetail"></v-draggleList>
 					</div>
 				</template>
 				<div class="backlog">
@@ -60,6 +60,11 @@
 					<v-draggleList v-loading="backlogLoading" :list="backlogList" handle=".handle" :group="{ name: 'backlog', pull: true, put: false }"></v-draggleList>
 				</div>
 			</el-col>
+			<el-col class="sprint-detail" :span="20 - sprintLen" v-if="sprintLen !== 20">
+				<div class="detail-container">
+					12
+				</div>
+			</el-col>
 		</el-row>
 	</div>
 </template>
@@ -70,13 +75,13 @@ import draggable from 'vuedraggable'
 export default {
 	data() {
 		let implementStatusList = [
-			{name: '未开始', value: 'not-start'},
-			{name: '进行中...', value: 'doing'},
-			{name: '已完成', value: 'finish'}
+			{name: '未开始', value: 'not-start', icon: 'el-icon-platform-eleme'},
+			{name: '进行中...', value: 'doing', icon: 'el-icon-loading'},
+			{name: '已完成', value: 'finish', icon: 'el-icon-mouse'}
 		];
 		let backlogTypeList = [
 			{name: '大块文章', link: 'article'},
-			{name: '繁琐事务', link: 'story'},
+			{name: '事务分发', link: 'story'},
 			{name: '兴趣使然', link: 'thus'},
 			{name: '仪表盘', link: 'dashboard'},
 			{name: '求知欲望', link: 'seekKnowledge'},
@@ -120,6 +125,7 @@ export default {
 			selecType: null,
 			backlogList: [],
 			sprints: [],
+			sprintLen: 20,
 			backlogTypeList,
 			implementStatusList,
 			backlogTotal: 0,
@@ -138,6 +144,9 @@ export default {
 		this.getsprintList()
 	},
 	methods: {
+		handleDetail(v) {
+			this.sprintLen = 14
+		},
 		getsprintList() {
 			this.$axios.sprints.sprintList({type: 'sprint'}).then(v => {
 				this.sprints = v.sprintList.map(v => ({...v, visible: true}))
@@ -149,7 +158,7 @@ export default {
 				setTimeout(() => {
 					this.backlogList = v.sprintList.map(v => ({
 						...v,
-						visible: true
+						selected: false
 					}))
 					this.backlogTotal = v.total
 					this.backlogLoading = false
@@ -227,6 +236,7 @@ export default {
 						border-radius: 4px;
 						box-sizing: border-box;
 						height: 20px;
+						text-align: left;
 						font-weight: 600;
 						background-color: #909399;
 						border-color: #909399;
@@ -312,10 +322,9 @@ export default {
 						font-weight: 600;
 						border-top: 1px solid rgba(9,30,66,0.31);
 						.status {
-							text-align: center;
+							text-align: left;
 							padding: 5px 0;
-							background: #0747a6;
-							color: #fff;
+							background: rgba(9,30,66,0.31);
 						}
 						.item-type-ul {
 							height: 200px;
@@ -325,9 +334,16 @@ export default {
 							height: calc(100% - 415px);
 							overflow-y: scroll;
 							.item-sprint {
+								font-size: 12px;
 								.issus-count {
-									padding: 1px;
+									padding: 0;
 									background: #E6A23C;
+									border-radius: 4px;
+									text-align: center;
+									box-sizing: border-box;
+									color: #fff;
+									font-size: 12px;
+									margin: 0 3px 0 10px;
 								}
 							}
 						}
@@ -427,6 +443,13 @@ export default {
 						}
 					}
 				}
+			}
+		}
+		.sprint-detail {
+			height: 100%;
+			.detail-container {
+				height: 100%;
+				border-left: 1px solid red;
 			}
 		}
 	}

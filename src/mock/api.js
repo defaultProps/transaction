@@ -205,7 +205,7 @@ export default {
 		getMenu: obj => {
 			let result = [
 				{name: '大块文章', link: 'article'},
-				{name: '繁琐事务', link: 'story'},
+				{name: '事务分发', link: 'story'},
 				{name: '兴趣使然', link: 'thus'},
 				{name: '仪表盘', link: 'dashboard'},
 				{name: '求知欲望', link: 'seekKnowledge'},
