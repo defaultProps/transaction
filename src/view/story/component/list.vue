@@ -155,13 +155,13 @@
       color: #fff;
       padding: 1px 2px;
       &.not-start {
-        background-color: #0052cc;
+        background-color: #00875a;
       }
       &.doing {
         background-color: #ffab00;
       }
       &.finish {
-        background-color: #00875a;
+        background-color: rgba(0, 0, 0, 0.4);
       }
     }
     .type {
