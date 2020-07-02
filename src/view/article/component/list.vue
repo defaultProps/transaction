@@ -25,7 +25,10 @@
         <el-row :gutter="10">
           <el-col :span="item.img ? 22 : 24">
             <router-link tag="li" :to="{path:`/uxo/article/${item.articleID}`, params: {name: item.author}}">
-              <div class="title">{{item.title}}</div>
+              <div class="title">
+                <img :src="$image.story.translation" alt="">
+                {{item.title}}
+              </div>
               <div class="content">{{item.content | filterContent}}</div>
             </router-link>
           </el-col>
@@ -35,11 +38,10 @@
         </el-row>
         <div class="meta">
           <ul class="action-list">
-            <li><i class="iconfont icon-Journal"></i><span>{{12}}</span></li>
-            <li><i class="iconfont icon-kuaixuanzhong"></i><span>{{12}}</span></li>
-            <li class="last-left" :class="[item.type]"><span>{{item.type | filterType}}</span></li>
+            <li class="praise"><i class="iconfont icon-ziyuan"></i><span>{{12}}</span></li>
+            <li><i class="iconfont icon-pinglun2"></i><span>{{12}}</span></li>
             <li><i class="iconfont xu-pinglun1"></i><span>关注</span></li>
-            <li><i class="iconfont xu-pinglun1"></i><span>收藏</span></li>
+            <li><i class="iconfont icon-collect"></i><span>收藏</span></li>
           </ul>
         </div>
       </div>
@@ -126,7 +128,7 @@ export default {
 <style lang="scss">
 #article-list {
   position: fixed;
-  left: 250px;
+  left: 200px;
   top: 40px;
   right: 0;
   bottom: 0;
@@ -147,7 +149,7 @@ export default {
     border-bottom: 1px solid #f6f6f6;
     .btn {
       float: right;
-      margin: 0 5px;
+      margin: 0 5px 0 -5px;
       color: #fff;
       padding: 4px;
     }
@@ -169,8 +171,8 @@ export default {
   .main {
     box-sizing: border-box;
     .content-list {
-      border-bottom: 1px dotted #e3e4e5;
-      padding: 4px 20px 4px 10px;
+      border-bottom: 1px solid #e3e4e5;
+      padding: 5px 10px 0 0;
       min-height: 100px;
       position: relative;
       cursor: pointer;
@@ -181,13 +183,31 @@ export default {
         }
       }
       li {
+        padding-left: 10px;
         .title {
           font-size: 16px;
           font-weight: 600;
+          padding: 6px 0 3px;
+          display: flex;
+          align-items: center;
+          img {
+            width: 16px;
+            height: 16px;
+            margin-right: 5px;
+            display:inline-block;
+          }
         }
         .content {
           font-size: 13px;
-          margin: 6px 0;
+          margin: 4px 0 0;
+          height: 38px;
+          text-overflow: -o-ellipsis-lastline;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          display: -webkit-box;
+          -webkit-line-clamp: 2;
+          line-clamp: 2;
+          -webkit-box-orient: vertical;
         }
       }
       .article-img {
@@ -201,7 +221,6 @@ export default {
         background-size: cover;
       }
       .meta {
-        position: absolute;
         bottom: 0;
         left: 0;
         right: 150px;
@@ -222,7 +241,7 @@ export default {
           justify-content: flex-start;
           align-items: center;
           li {
-            padding-right: 13px;
+            padding-right: 14px;
           }
         }
       }

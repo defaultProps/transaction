@@ -7,8 +7,8 @@
                  tag="div"
                  ghost-class="ghost"
                  v-bind="dragOptions"
-                 @start="isDragging = true"
-                 @end="isDragging = false"
+                 @start="startDraggable"
+                 @end="endDraggable"
                  class="backlog-list">
       <transition-group type="transition" name="flip-list">
         <div v-for="p of draggbleList" :key="p.order" class="item">
@@ -18,6 +18,7 @@
           <span class="level"><i class="iconfont" :class="filterLevel(p.level)"></i></span>
           <span class="key-link">{{p.link}}</span>
           <span class="title">{{p.title}}</span>
+          <el-button type="text" size="mini" :class="[p.implementStatus, 'info-status']">{{p.implementStatus | filterImplementStatus}}</el-button>
           <el-button type="info" circle class="points">{{p.points}}</el-button>
         </div>
       </transition-group>
@@ -54,10 +55,21 @@
         this.draggbleList = JSON.parse(JSON.stringify(this.list))
       }
     },
+    filters: {
+      filterImplementStatus(v) {
+        return new Map([['doing', '正在开发'], ['not-start', '未开始'], ['finish', '已完成']]).get(v)
+      }
+    },
     created() {
       this.draggbleList = JSON.parse(JSON.stringify(this.list))
     },
     methods: {
+      startDraggable(v) {
+        console.log(v)
+      },
+      endDraggable(v) {
+        console.log(v)
+      },
       filterLevel(v) {
         return ['icon-1_square', 'icon-2_square', 'icon-3_square', 'icon-4_square', 'icon-5_square', 'icon-6_square', 'icon-7_square'][v]
       },
@@ -73,9 +85,10 @@
   padding: 0 10px 10px;
   box-sizing: border-box;
   position: relative;
-  .flip-list-move {
-    // transition: transform 0.2s;
-  }
+  background: #f4f5f7;
+  // .flip-list-move {
+    // transition: transform 0.3s;
+  // }
   .ghost {
     background: #EBEEF5 !important;
     opacity: 0.5;
@@ -126,6 +139,20 @@
       flex: 1;
       white-space: nowrap;
       text-overflow: ellipsis;
+    }
+    .info-status {
+      border-radius: 4px;
+      color: #fff;
+      padding: 1px 2px;
+      &.not-start {
+        background-color: #0052cc;
+      }
+      &.doing {
+        background-color: #ffab00;
+      }
+      &.finish {
+        background-color: #00875a;
+      }
     }
     .type {
       color: #0065ff;

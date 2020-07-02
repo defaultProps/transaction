@@ -53,7 +53,7 @@ export default {
 		sprintList: obj => {
 			function sprintListFn() {
 				let pointsTotal = 0;
-				let total = Math.ceil(Math.random() * 10) + 20
+				let total = Math.ceil(Math.random() * 10) + 10
 				let issueList = [];
 				let i = 0
 
@@ -67,7 +67,8 @@ export default {
 						type: Math.random() > 0.5 ? 'needs' : 'bug',
 						title: Mock.mock('@csentence(20, 40)'),
 						fixed: Math.random() > 0.5,
-						points
+						points,
+						implementStatus: ['doing', 'not-start', 'finish'][Math.floor(Math.random() * 3)]
 					})
 					pointsTotal += points
 					i++
@@ -88,8 +89,8 @@ export default {
 				result.push({
 					id: Mock.mock('@guid'),
 					title: `sprint${i}`,
-					createTime: Mock.mock('@datetime'),
-					endTime: Mock.mock('@datetime'),
+					createTime: Mock.mock('@date("yyyy/MM/dd")'),
+					endTime: Mock.mock('@date("yyyy/MM/dd")'),
 					status: i >= 23 ? 'doing' : 'done',
 					count: v.total,
 					issueList: v.issueList,
@@ -106,7 +107,7 @@ export default {
 		backlogList: obj => {
 			let result = []
 			let i = 0;
-			let total = Math.ceil(Math.random() * 60) + 120
+			let total = Math.ceil(Math.random() * 60) + 60
 
 			while (i < total) {
 				result.push({
@@ -117,6 +118,7 @@ export default {
 					level: Math.ceil(Math.random() * 5),
 					title: Mock.mock('@csentence(20, 40)'),
 					fixed: Math.random() > 0.5,
+					implementStatus: null,
 					points: Math.random() > 0.7 ? Math.ceil(Math.random() * 10) : null
 				})
 				++i
@@ -136,51 +138,33 @@ export default {
 				status: 200,
 				data: [
 					{
-						name: 'technology',
-						link: '',
+						name: '技术型',
+						link: 'technology',
 						children: [
-							{
-								name: 'JS/HTML/CSS',
-								link: '/javaScript'
-							},
-							{
-								name: '协议/网络/存储',
-								link: '/agreement'
-							},
-							{
-								name: '算法/leetCode',
-								link: '/leetCode'
-							},
-							{
-								name: '浏览器/内核',
-								link: '/browser'
-							},
-							{
-								name: '包管理器/webpack/glup',
-								link: '/webpack'
-							},
-							{
-								name: '微信、钉钉、支付宝小程序',
-								link: '/applet'
-							},
-							{
-								name: 'MVVM库',
-								link: '/frame'
-							}
+							{name: 'JS/HTML/CSS', link: 'javaScript'},
+							{name: '协议/网络/存储', link: 'agreement'},
+							{name: '算法/leetCode', link: 'leetCode'},
+							{name: '浏览器/内核', link: 'browser'},
+							{name: '包管理器/webpack', link: 'webpack'},
+							{name: '小程序', link: 'applet'}
 						]
 					},
 					{
-						name: '生活',
+						name: '工具类',
+						link: '/tool',
+						children: [
+							{name: '开发', link: '/dev'},
+							{name: '测试', link: '/test'},
+							{name: '其他', link: '/tool/others'}
+						]
+					},
+					{
+						name: '生活类',
 						link: '',
 						children: [
-							{
-								name: '故事',
-								link: '/stroy'
-							},
-							{
-								name: 'SCP',
-								link: '/scp'
-							}
+							{name: '故事', link: '/stroy'},
+							{name: 'SCP', link: '/scp'},
+							{name: '游戏', link: '/games'}
 						]
 					}
 				]
@@ -197,7 +181,7 @@ export default {
 					'title': Mock.mock('@ctitle(10, 40)'),	// 文章标题
 					'author': Mock.mock('@cname'),	// 文章作者
 					'authorID': Mock.mock('@guid(10)'),	// 作者ID
-					'content': Mock.mock('@cparagraph(5, 7)'),	// 简短内容
+					'content': Mock.mock('@cparagraph(7, 17)'),	// 简短内容
 					'articleID': Mock.mock('@id'),	// 文章唯一ID
 					'praise|1-100': 100, // 文章点赞数量
 					'publish': Mock.mock('@date()')	// 文章发布时间
@@ -220,18 +204,17 @@ export default {
 	header: {
 		getMenu: obj => {
 			let result = [
-				{name: '文章', link: 'article'},
-				{name: '事务', link: 'story'},
-				{name: '使然', link: 'thus'},
+				{name: '大块文章', link: 'article'},
+				{name: '繁琐事务', link: 'story'},
+				{name: '兴趣使然', link: 'thus'},
 				{name: '仪表盘', link: 'dashboard'},
-				{name: '绘画', link: 'drawing'},
-				{name: '求知', link: 'seekKnowledge'},
-				{name: '厨房', link: 'kitchen'},
-				{name: '旅游', link: 'tour'},
-				{name: '楼盘', link: 'loupan'},
+				{name: '求知欲望', link: 'seekKnowledge'},
+				{name: '美味厨房', link: 'kitchen'},
+				{name: '途观旅游', link: 'tour'},
+				{name: '市场楼盘', link: 'loupan'},
 				{name: '原始生存', link: 'existence'},
-				{name: '素描', link: 'Sketch'},
-				{name: '宇宙', link: 'universe'}
+				{name: '简单素描', link: 'Sketch'},
+				{name: '眺望宇宙', link: 'universe'}
 			]
 
 			return {

@@ -18,7 +18,7 @@ let routes = [
 		path: '/uxo',
 		name: 'uxo',
 		component: article,
-		meta: {title: '文章', level: 0, auth: 0, sidebar: false}
+		meta: {title: '大块文章', level: 0, auth: 0, sidebar: false}
 	},
 	{
 		path: '/story',

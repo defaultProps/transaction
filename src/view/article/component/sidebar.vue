@@ -1,27 +1,28 @@
 <template>
 	<div id="article-sidebar">
-		<el-menu default-active="2"
-					   class="el-menu-vertical-demo"
+		<el-menu default-active="activeIndex"
+					   class="el-menu-vertical"
 					 	 @open="handleOpen"
+						 size="mini"
 				   	 @close="handleClose"
 						 background-color="#fff"
 						 unique-opened
-						 active-text-color="#409EFF">
+						 active-text-color="#0747a6">
 				<template v-for="(list, i) of menu">
 					<template v-if="list.children">
 						<el-submenu :index="`${i}`" :key="list.name">
 							<template slot="title"><i class="el-icon-location"></i>{{list.name}}</template>
-							<el-menu-item v-for="(li, j) of list.children" :key="j" :index="`${i}_${j}`">{{li.name}}</el-menu-item>
+							<el-menu-item v-for="(li, j) of list.children" :key="j" :index="li.link"><i class="el-icon-location"></i>{{li.name}}</el-menu-item>
 						</el-submenu>
 					</template>
-					<el-menu-item v-else :index="`${i}`" :key="list.name">
+					<el-menu-item v-else :index="list.link" :key="list.name">
 						<template slot="title"><i class="el-icon-location"></i>{{list.name}}</template></el-menu-item>
 				</template>
     </el-menu>
 		<div class="navgation" v-loading="loadingNav">
 			<div class="list" v-for="el of thusList" :key="el.name" @click="handlelinkClick(el.link)">
 				<i class="iconfont icon-fenxiang"></i>
-				<span class="name">{{el.name}}</span>
+				{{el.name}}
 			</div>
 		</div>
 	</div>
@@ -32,7 +33,8 @@ export default {
 		return {
 			menu: [],
 			thusList: [],
-			loadingNav: false
+			loadingNav: false,
+			activeIndex: 'javaScript'
 		}
 	},
 	created() {
@@ -62,7 +64,7 @@ export default {
 	}
 }
 </script>
-<style lang="scss" scoped>
+<style lang="scss">
 #article-sidebar {
 	overflow: hidden;
 	position: fixed;
@@ -70,7 +72,7 @@ export default {
 	top: 40px;
 	left: 0;
 	bottom: 0;
-	width: 250px;
+	width: 200px;
 	min-height: 650px;
 	overflow-y: scroll;
 	// background-color: #f6f6f6;
@@ -79,8 +81,24 @@ export default {
 		width: 0;
 		height: 0;
 	}
-	.el-menu {
-		border: none;
+	.el-menu-vertical {
+		height: calc(100% - 200px);
+		overflow-y: scroll;
+		font-weight: 600;
+		border-right: 0;
+		border-bottom: 1px solid #f6f6f6;
+		.el-submenu__title {
+			height: 40px !important;
+			line-height: 40px !important;
+		}
+		.el-menu-item{
+			height: 40px;
+			line-height: 40px;
+			border-top: 1px solid #f6f6f6;
+			&.is-active {
+				border-right:3px solid #0747a6;
+			}
+		}
 	}
 	.navgation {
 		height: 200px;
@@ -93,40 +111,33 @@ export default {
 		border-top: 1px solid #e6e6e6;
 		bottom: 0;
 		.list {
-			display: flex;
-			justify-content: flex-start;
-			align-items: center;
 			background: #fff;
-			overflow: hidden;
 			width: 100%;
 			height: 32px;
 			line-height: 32px;
-			font-size: 14px;
+			font-size: 12px;
 			margin-bottom: 0;
 			user-select: none;
-			padding: 0 4px;
 			box-sizing: border-box;
 			align-items: center;
-			text-indent: 5px;
-			text-overflow: ellipsis;
-			word-break: break-all;
 			font-weight: 600;
 			position: relative;
 			border-top: 1px solid #f6f6f6;
 			white-space: nowrap;
-			border-top-left-radius: 4px;
-			border-bottom-left-radius: 4px;
+			overflow-x: hidden;
+			overflow-y: hidden;
+			text-overflow: ellipsis;
+			word-break: break-all;
+			text-indent: 5px;
 			&:hover {
 				background: #f6f6f6;
 				text-decoration: underline;
 				color: #0065ff;
+				cursor: pointer;
 			}
 			.iconfont {
 				color: #0065ff;
 				font-size: 12px;
-			}
-			.name {
-				text-indent: 5px;
 			}
 		}
 	}

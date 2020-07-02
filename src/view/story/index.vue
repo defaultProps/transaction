@@ -1,62 +1,92 @@
 <template>
 	<div id="story">
 		<el-row class="story-backlog">
-			<el-col :span="10" class="backlog-wrap" >
+			<el-col :span="4" class="between-space">
+				<div class="nav-relation">
+					<div class="nav-main">
+						<div class="nav-header"></div>
+						<el-input placeholder="请输入事务号" v-model="affairVal" size="mini" class="input-affiar">
+							<el-button slot="append" icon="el-icon-search"></el-button>
+						</el-input>
+						<ul class="nav-ul">
+							<div class="status">执行状态</div>
+							<div v-for="p of implementStatusList" :key="p.value" class="item">
+								<li :class="['info-status', p.value]">{{p.name}}</li>
+							</div>
+							<div class="type-list status">模块类型</div>
+							<div class="item-type-ul">
+								<div v-for="p of backlogTypeList" :key="p.value">
+									<li :class="['info-status', p.link]">{{p.name}}</li>
+								</div>
+							</div>
+							<div class="type-list status">已关闭Sprint</div>
+							<ul class="item-type-sprint">
+								<li v-for="el of sprints" :key="el.id" class="item-sprint">
+									<span class="title">{{el.title}}</span>
+									<span class="issus-count">{{el.count}} </span>问题
+								</li>
+							</ul>
+						</ul>
+					</div>
+				</div>
+			</el-col>
+			<el-col :span="20" class="backlog-wrap">
+				<template v-for="el of sprints">
+					<div class="backlog" v-if="el.status === 'doing'" :key="el.id">
+						<div class="backlog-title">
+							<div>
+								<el-button type="text" size="mini" class="trigger-sprint" @click="el.visible = !el.visible"><i :class="[el.visible ? 'el-icon-arrow-down' : 'el-icon-arrow-right']"></i></el-button>
+								<span class="title">{{el.title}}</span>
+								<span class="issus-count">{{el.count}} 问题</span>
+								<span class="status" :class="[el.status]">{{el.status === 'doing' ? 'open' : 'close'}}</span>
+								<span class="date">{{el. createTime}} <i class="iconfont icon-weibiaoti29"></i> {{el. endTime}}</span>
+							</div>
+							<span class="status count">{{el.pointsTotal}}</span>
+						</div>
+						<v-draggleList v-show="el.visible" v-loading="sprintLoading" :list="el.issueList" group="backlog"></v-draggleList>
+					</div>
+				</template>
 				<div class="backlog">
 					<div class="backlog-title">
-						<span class="title">Backlog</span>
-						<span class="issus-count">{{backlogTotal}} 问题</span>
-						<el-button type="primary" plain size="mini" class="btn-header">new Sprint</el-button>
-						<el-button type="primary" plain size="mini" class="btn-header">new Issue</el-button>
-					</div>
-					<v-draggleList v-loading="backlogLoading" :list="backlogList" :group="{ name: 'backlog', pull: true, put: false }"></v-draggleList>
-				</div>
-			</el-col>
-			<el-col :span="4" class="between-space">
-				<div class="middle-relation">
-					<div class="middle-main">
-						<div class="middle-header">
-
+						<div>
+							<span class="title">Backlog</span>
+							<span class="issus-count">{{backlogTotal}} 问题</span>
 						</div>
-						<el-input placeholder="请输入事务号" v-model="affairVal" prefix-icon="el-icon-search" size="mini" class="input-affiar"></el-input>
-						<el-button class="btn">溶解</el-button>
-						<el-button class="btn">相关</el-button>
-						<el-button class="btn">催化</el-button>
-						<el-button class="btn">分解</el-button>
+						<div>
+							<el-button type="warning" size="mini" class="btn">new Issue</el-button>
+							<el-button type="warning" size="mini" class="btn">new Sprint</el-button>
+						</div>
 					</div>
+					<v-draggleList v-loading="backlogLoading" :list="backlogList" handle=".handle" :group="{ name: 'backlog', pull: true, put: false }"></v-draggleList>
 				</div>
-			</el-col>
-			<el-col :span="10" class="springt-wrap scroll-style-theme1">
-				<el-collapse accordion v-model="activeCollapse">
-					<div class="springt" v-for="(el, index) of sprints" :key="el.id">
-						<el-collapse-item :name="index">
-							<template slot="title">
-								<div class="springt-title">
-									<div>
-										<span class="title">{{el.title}}</span>
-										<span class="issus-count">{{el.count}} 问题</span>
-										<span class="status" :class="[el.status]">{{el.status === 'doing' ? 'open' : 'close'}}</span>
-									</div>
-									<div>
-										<span class="status count">{{el.pointsTotal}}</span>
-									</div>
-								</div>
-							</template>
-							<ul class="sprint-ul scroll-style-theme1">
-								<v-draggleList :list="el.issueList" :group="el.status == 'doing' ? 'backlog': 'disaledMove'" :loading="sprintLoading"></v-draggleList>
-							</ul>
-						</el-collapse-item>
-					</div>
-				</el-collapse>
 			</el-col>
 		</el-row>
 	</div>
 </template>
 <script>
 import draggleList from './component/list'
+import draggable from 'vuedraggable'
 
 export default {
 	data() {
+		let implementStatusList = [
+			{name: '未开始', value: 'not-start'},
+			{name: '进行中...', value: 'doing'},
+			{name: '已完成', value: 'finish'}
+		];
+		let backlogTypeList = [
+			{name: '大块文章', link: 'article'},
+			{name: '繁琐事务', link: 'story'},
+			{name: '兴趣使然', link: 'thus'},
+			{name: '仪表盘', link: 'dashboard'},
+			{name: '求知欲望', link: 'seekKnowledge'},
+			{name: '美味厨房', link: 'kitchen'},
+			{name: '途观旅游', link: 'tour'},
+			{name: '市场楼盘', link: 'loupan'},
+			{name: '原始生存', link: 'existence'},
+			{name: '简单素描', link: 'Sketch'},
+			{name: '眺望宇宙', link: 'universe'}
+		]
 		let sortGroup = [{
 			label: '按类型排序',
 			options: [{
@@ -90,6 +120,8 @@ export default {
 			selecType: null,
 			backlogList: [],
 			sprints: [],
+			backlogTypeList,
+			implementStatusList,
 			backlogTotal: 0,
 			backlogLoading: false,
 			sprintLoading: false,
@@ -98,7 +130,8 @@ export default {
 		}
 	},
 	components: {
-		'v-draggleList': draggleList
+		'v-draggleList': draggleList,
+		'xx-draggable': draggable
 	},
 	created() {
 		this.getbacklogList()
@@ -107,18 +140,20 @@ export default {
 	methods: {
 		getsprintList() {
 			this.$axios.sprints.sprintList({type: 'sprint'}).then(v => {
-				this.sprints = v.sprintList
+				this.sprints = v.sprintList.map(v => ({...v, visible: true}))
 			})
 		},
 		getbacklogList() {
 			this.backlogLoading = true
 			this.$axios.sprints.backlogList({type: 'backlog'}).then(v => {
 				setTimeout(() => {
-					this.backlogList = v.sprintList
+					this.backlogList = v.sprintList.map(v => ({
+						...v,
+						visible: true
+					}))
 					this.backlogTotal = v.total
 					this.backlogLoading = false
 				}, 500);
-
 			})
 		},
 		removeAt(idx) {
@@ -136,31 +171,78 @@ export default {
 	top: 40px;
 	left: 0px;
 	right: 5px;
-	bottom: 10px;
+	bottom: 0px;
 	.story-backlog {
 		position: absolute;
 		left: 0;
 		right: 0;
-		bottom: 50px;
+		bottom: 0px;
 		top: 0;
 		.backlog-wrap {
 			height: 100%;
+			overflow-y: scroll;
 			.backlog {
 				background: #f4f5f7;
 				padding: 10px;
-				height: 100%;
+				margin-bottom: 30px;
+				&:last-child{
+					margin-bottom: 0;
+				}
 				.backlog-title {
 					height: 40px;
-					font-size: 14px;
+					line-height: 40px;
+					font-size: 16px;
+					line-height: 40px;
+					padding-right: 20px;
+					position: sticky;
+					top: 0;
+					z-index: 1000;
+					background: #f4f5f7;
+					display: flex;
+					justify-content: space-between;
+					align-items: center;
+					.trigger-sprint {
+						padding: 0px;
+						background-color: rgba(0, 0, 0, 0.5);
+						color: #fff;
+						margin-right: 3px;
+					}
 					.title {
 						font-weight: 600;
-						font-size: 14px;
+						font-size: 16px;
 						color: #172b4d;
 						padding: 0 10px 0 0;
 					}
 					.issus-count {
-						font-size: 13px;
+						font-size: 14px;
 						font-weight: 600;
+					}
+					.date {
+						font-size: 14px;
+					}
+					.status {
+						color: #fff;
+						padding: 1px 2px;
+						font-size: 12px;
+						border-radius: 4px;
+						box-sizing: border-box;
+						height: 20px;
+						font-weight: 600;
+						background-color: #909399;
+						border-color: #909399;
+						&.doing {
+							background-color: #00875a;
+							border-color: #00875a;
+						}
+						&.count {
+							background-color: #E6A23C;
+							border-color: #E6A23C;
+							line-height: 16px;
+							height: 16px;
+							font-size: 12px;
+							padding: 0 7px;
+							border-radius: 3px;
+						}
 					}
 					.backlog-select {
 						width: 100px;
@@ -177,252 +259,175 @@ export default {
 							outline:none;
 						}
 					}
-					.btn-header {
-						padding: 2px 3px;
+					.btn {
+						padding: 1px 3px;
 						height: 25px;
 						float: right;
 						font-size: 12px;
-						margin-left: 10px;
+						margin: 5px;
+						color: #fff;
 					}
 				}
-				.backlog-list {
-					height: calc(100% - 40px);
-					padding-right: 10px;
-					overflow-y: scroll;
-					&::-webkit-scrollbar {
-						width: 3px;
-						height: 3px;
-					}
-					&::-webkit-scrollbar-thumb {
-							border-radius: 10px;
-							box-shadow: inset 0 0 5px #f93;
-							background: #f4f5f7;
-					}
-					&::-webkit-scrollbar-track {
-						box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.1);
-						border-radius: 10px;
-						background: #f4f5f7;
-					}
-					.item {
-						background: #fff;
-						overflow: hidden;
-						height: 32px;
-						user-select: none;
-						box-shadow: 0 0 1px 0 rgba(9,30,66,0.31), 0 2px 4px -1px rgba(9,30,66,0.25);
-						line-height: 32px;
-						font-size: 15px;
-						margin-bottom: 2px;
-						padding: 0 4px;
-						display: flex;
-						box-sizing: border-box;
-						align-items: center;
-						text-indent: 5px;
-						cursor: move;
-						position: relative;
-						white-space: nowrap;
-						border-top-left-radius: 4px;
-						border-bottom-left-radius: 4px;
-						&:hover {
-							background: #f6f6f6;
-						}
-						&::before {
-							content: '';
-							position: absolute;
-							left: 0;
-							height: 100%;
-							position: absolute;
-							text-indent: -9999em;
-							top: 0;
-							width: 3px;
-							background-color: #f93;
-							border-top-left-radius: 3px;
-							border-bottom-left-radius: 3px;
-						}
-						.title {
-							overflow: hidden;
-							text-overflow: ellipsis;
-							white-space: nowrap;
-							overflow: hidden;
-							flex: 1;
-							white-space: nowrap;
-							text-overflow: ellipsis;
-						}
-						.type {
-							color: #0065ff;
-							display: inline-block;
-							&.bug {
-								color: #d81e06;
-							}
-						}
-						.level {
-							color: #E6A23C;
-							&.level-1 {
-								color: #F56C6C;
-							}
-						}
-						.key-link {
-							color: #0052cc;
-							font-size: 15px;
-							font-weight: 500;
-						}
-						.points {
-							padding: 0;
-							width: 25px;
-							height: 25px;
-							font-size: 12px;
-							transform: scale(0.75);
-						}
+			}
+			.sprint {
+				margin-bottom: 30px;
+				background: #f4f5f7;
+				padding: 10px;
+				box-sizing: border-box;
+				.sprintlist {
+					position: sticky;
+					top: 0;
+					z-index: 1000;
+				}
+				.sprint-ul {
+					box-sizing: border-box;
+					.count {
+						float: right;
 					}
 				}
 			}
 		}
 		.between-space {
 			height: 100%;
-			border-left: 1px solid #f4f5f7;
-			border-right: 1px solid #f4f5f7;
 			box-sizing: border-box;
-			.middle-relation {
+			.nav-relation {
 				height: 100%;
-				padding: 0 5px;
 				box-sizing: border-box;
 				overflow: hidden;
 				text-align: left;
-				.middle-main {
-					background: #f6f6f6;
+				border-right: 1px solid rgba(9,30,66,0.31);
+				.nav-main {
+					background: #fff;
 					height: 100%;
-					padding: 5px;
 					text-align: left;
 					box-sizing: border-box;
-					.btn {
-						margin: 1px auto;
-						padding: 0px;
-						height: 35px;
-						width: 45px;
-						display: inline-block;
-						color: #0052cc;
-						&:hover {
-							text-decoration: underline;
-						}
-					}
 					.input-affiar {
 						font-size: 12px;
-						margin-bottom: 10px;
+						padding: 5px;
+						box-sizing: border-box;
 					}
-				}
-			}
-		}
-		.springt-wrap {
-			height: 100%;
-			padding-right: 10px !important;
-			overflow-y: scroll;
-			max-height: 100%;
-			background: #f6f6f6;
-			.springt {
-				background: #f4f5f7;
-				padding-left: 4px;
-				box-shadow: 0 0 1px 0 rgba(9,30,66,0.31), 0 2px 4px -1px rgba(9,30,66,0.25);
-				margin-bottom: 10px;
-				box-sizing: border-box;
-				align-items: center;
-				text-indent: 5px;
-				cursor: move;
-				position: relative;
-				border-top: 1px solid #f6f6f6;
-				white-space: nowrap;
-				.el-collapse-item {
-					.el-collapse-item__header {
-						background: #f4f5f7 !important;
-						.springt-title {
-							height: 40px;
-							font-size: 14px;
-							width: 100%;
-							display: flex;
-							align-items: center;
-							justify-content: space-between;
-							.triggerSprint {
-								transform: rotate(-90deg) scale(0.8);
-								background-color: #909399;
-								border-color: #909399;
-								color: #fff;
-								padding: 0;
-								font-size: 12px;
-							}
-							.btn-points {
-								font-size: 12px;
-								font-weight: 600;
-								color: #fff;
-								border-radius: 3px;
-								background: #E6A23C;
-								width: 32px;
-								height: 20px;
-								display: inline-block;
-							}
-							.title {
-								font-weight: 600;
-								font-size: 14px;
-								color: #172b4d;
-								padding: 0 10px 0 0;
-							}
-							.issus-count {
-								font-size: 13px;
-								font-weight: 600;
-							}
-							.btn-header {
-								padding: 2px 3px;
-								height: 25px;
-								float: right;
-								font-size: 12px;
-							}
-							.status {
-								color: #fff;
-								padding: 1px 2px;
-								font-size: 12px;
-								border-radius: 4px;
-								box-sizing: border-box;
-								height: 20px;
-								font-weight: 600;
-								background-color: #909399;
-								border-color: #909399;
-								&.doing {
-									background-color: #00875a;
-									border-color: #00875a;
+					.nav-ul {
+						height: calc(100% - 40px);
+						cursor: default;
+						font-weight: 600;
+						border-top: 1px solid rgba(9,30,66,0.31);
+						.status {
+							text-align: center;
+							padding: 5px 0;
+							background: #0747a6;
+							color: #fff;
+						}
+						.item-type-ul {
+							height: 200px;
+							overflow-y: scroll;
+						}
+						.item-type-sprint {
+							height: calc(100% - 415px);
+							overflow-y: scroll;
+							.item-sprint {
+								.issus-count {
+									padding: 1px;
+									background: #E6A23C;
 								}
-								&.count {
-									background-color: #E6A23C;
-									border-color: #E6A23C;
+							}
+						}
+						li {
+							width: 100%;
+							position: relative;
+							list-style: none;
+							height: 40px;
+							line-height: 40px;
+							text-align: left;
+							font-size: 14px;
+							cursor: default;
+							text-indent: 10px;
+							border-bottom: 1px solid rgba(9,30,66,0.31);
+							&::before {
+								content: '';
+								position: absolute;
+								right: 0;
+								height: 100%;
+								position: absolute;
+								text-indent: -9999em;
+								top: 0;
+								width: 3px;
+								border-top-left-radius: 3px;
+								border-bottom-left-radius: 3px;
+							}
+							&.not-start {
+								&::before {
+									background-color: #f93;
+								}
+							}
+							&.doing {
+								&::before {
+									background-color: #00875a;
+								}
+							}
+							&.finish {
+								&::before {
+									background-color: #0065ff;
+								}
+							}
+							&.article {
+								&::before {
+									background-color: rgb(89,142,212);
+								}
+							}
+							&.story {
+								&::before {
+									background-color: #5243aa;
+								}
+							}
+							&.thus {
+								&::before {
+									background-color: #ffab00;
+								}
+							}
+							&.dashboard {
+								&::before {
+									background-color: #ffab00;
+								}
+							}
+							&.seekKnowledge {
+								&::before {
+									background-color: #ffab00;
+								}
+							}
+							&.kitchen {
+								&::before {
+									background-color: #ffab00;
+								}
+							}
+							&.tour {
+								&::before {
+									background-color: #ffab00;
+								}
+							}
+							&.loupan {
+								&::before {
+									background-color: #ffab00;
+								}
+							}
+							&.existence {
+								&::before {
+									background-color: #ffab00;
+								}
+							}
+							&.Sketch {
+								&::before {
+									background-color: #ffab00;
+								}
+							}
+							&.universe {
+								&::before {
+									background-color: #ffab00;
 								}
 							}
 						}
 					}
-					.el-collapse-item__content {
-						padding-bottom: 0;
-					}
-				}
-				.sprint-ul {
-					max-height: 400px;
-					overflow-y: scroll;
-					background: #f6f6f6;
 				}
 			}
-		}
-	}
-	.springt-wrap, .sprint-ul{
-		.el-collapse {
-			border: none !important;
-		}
-		&::-webkit-scrollbar {
-			width: 3px;
-			height: 5px;
-		}
-		&::-webkit-scrollbar-thumb {
-				border-radius: 10px;
-				box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.7);
-				background: #f4f5f7;
-		}
-		&::-webkit-scrollbar-track {
-			box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.1);
-			border-radius: 10px;
-			background: #ededed;
 		}
 	}
 }
