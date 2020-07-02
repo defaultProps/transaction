@@ -1,63 +1,53 @@
 <template>
   <div id="article-list">
     <div class="top-bar">
-      <ul class="select-ul" :class=[type]>
-        <el-select v-model="timeHots"
-                   filterable
-                   allow-create
-                   size="small"
-                   default-first-option
-                   class="select uxo-el-select"
-                   placeholder="请选择">
-          <el-option v-for="item in TIMEHOTS_OPTIONS"
-                     :key="item.value"
-                     :label="item.label"
-                     :value="item.value"></el-option>
-        </el-select>
-      </ul>
-      <ul class="select-ul pull-right">
-        <el-select v-model="currentAuth" filterable allow-create size="small" style="width: 86px" default-first-option
-                   class="uxo-el-select" placeholder="">
-          <el-option v-for="item in AUTH_OPTIONS" :key="item.value" :label="item.label" :value="item.value"></el-option>
-        </el-select>
-      </ul>
-    </div>
-    <div class="content-warpper">
+      <el-button type="warning" size="mini" icon="el-icon-edit" class="btn">新建文章</el-button>
       <div>
-        <div class="content-list" v-for="(item, index) in articles" :key="index">
-          <el-row :gutter="10">
-            <el-col :span="item.img ? 20 : 24">
-              <router-link tag="li" :to="{path:`/community/article/${item.articleID}`, params: {name: item.author}}">
-                <div class="title">
-                  <el-tooltip class="item" effect="dark" content="级别不足" placement="top-start" v-show="item.level <= $store.state.user.level">
-                    <i class="iconfont xu-pass"></i>
-                  </el-tooltip>
-                  {{item.title}}
-                </div>
-                <div class="content">{{item.content | filterContent}}</div>
-              </router-link>
-            </el-col>
-            <el-col :span="item.img ? 4 : 0">
-              <div class="article-img" :style="{'background-image': 'url('+item.img+')'}"></div>
-            </el-col>
-          </el-row>
-          <div class="others-info">
-            <ul class="action-list">
-              <li class="likeBtn"><i class="iconfont xu-zan"></i><span>{{12}}</span></li>
-              <li class="likeBtn"><i class="iconfont xu-pinglun1"></i><span>{{12}}条评论</span></li>
-              <li class="likeBtn"><router-link class="author" tag="span" :to="{path: `/community/user/${item.authorID}`, params: {id: item.authorID}}">{{item.author}}</router-link></li>
-              <!-- <li class="likeBtn"><span class="publish">{{item.publish | equitionTime}}</span></li> -->
-              <li class="likeBtn last-left" :class="[item.type]"><span>{{item.type | filterType}}</span></li>
-              <li class="likeBtn"><i class="iconfont xu-pinglun1"></i><span>关注</span></li>
-              <li class="likeBtn"><i class="iconfont xu-pinglun1"></i><span>收藏</span></li>
-              <li class="likeBtn"><i class="iconfont xu-more"></i><span></span></li>
-            </ul>
-          </div>
+        <ul class="select-ul">
+          <el-select v-model="timeHots"
+                    filterable
+                    allow-create
+                    size="mini"
+                    default-first-option
+                    class="select uxo-el-select"
+                    placeholder="请选择">
+            <el-option v-for="item in TIMEHOTS_OPTIONS"
+                      :key="item.value"
+                      :label="item.label"
+                      :value="item.value"></el-option>
+          </el-select>
+        </ul>
+        <el-input placeholder="请输入内容" suffix-icon="el-icon-search" v-model="inputVal" size="mini" class="inputval"></el-input>
+      </div>
+    </div>
+    <div class="main">
+      <div class="content-list" v-for="(item, index) in articles" :key="index">
+        <el-row :gutter="10">
+          <el-col :span="item.img ? 22 : 24">
+            <router-link tag="li" :to="{path:`/uxo/article/${item.articleID}`, params: {name: item.author}}">
+              <div class="title">
+                <img :src="$image.story.translation" alt="">
+                {{item.title}}
+              </div>
+              <div class="content">{{item.content | filterContent}}</div>
+            </router-link>
+          </el-col>
+          <el-col :span="item.img ? 2 : 0">
+            <div class="article-img" :style="{'background-image': 'url('+item.img+')'}"></div>
+          </el-col>
+        </el-row>
+        <div class="meta">
+          <ul class="action-list">
+            <li class="praise"><i class="iconfont icon-ziyuan"></i><span>{{12}}</span></li>
+            <li><i class="iconfont icon-pinglun2"></i><span>{{12}}</span></li>
+            <li><i class="iconfont xu-pinglun1"></i><span>关注</span></li>
+            <li><i class="iconfont icon-collect"></i><span>收藏</span></li>
+          </ul>
         </div>
-        <div class="loading-article">
-          <el-button v-if="isLoading" icon="el-icon-loading" size="mini">加载中......</el-button>
-          <el-button v-else @click="getArticleLists()" size="mini">点击加载更多</el-button>
-        </div>
+      </div>
+      <div class="loading-article">
+        <el-button v-if="isLoading" icon="el-icon-loading" size="mini">加载中......</el-button>
+        <el-button v-else @click="getArticleLists()" size="mini" type="text">点击加载更多</el-button>
       </div>
     </div>
   </div>
@@ -69,19 +59,14 @@ const TIMEHOTS_OPTIONS = [
   {value: "30", label: "最近30天内"},
   {value: "365", label: "最近一年内"}
 ]
-const AUTH_OPTIONS = [
-  {label: "权限内", value: "self"},
-  {label: "全部", value: "all"}
-]
 
 export default {
   data () {
     return {
       TIMEHOTS_OPTIONS,
-      AUTH_OPTIONS,
+      inputVal: '',
       timeHots: "3",
       sortBy: 'desc',
-      currentAuth: 'self', // 文章展示类型权限
       type: "hot", // 热门hot、最新new、热榜list
       isLoading: true,
       currentPage: 1, // 当前加载页数
@@ -92,14 +77,7 @@ export default {
     }
   },
   watch: {
-    timeHots: "getArticleLists",
-    $route: {
-      handler () {
-        this.getArticleLists("tag")
-      },
-      deep: true,
-      immediate: true
-    }
+    timeHots: "getArticleLists"
   },
   filters: {
     filterContent (val) {
@@ -122,10 +100,8 @@ export default {
       }
     }
   },
-  mounted() {
+  created() {
     this.getArticleLists()
-    // window.addEventListener("scroll", this.handleScroll, false)
-    // this.handleScroll()
   },
   methods: {
     getArticleLists(tag) {
@@ -140,32 +116,140 @@ export default {
 			}
 
       this.$axios.article.list(params).then(obj => {
-				let isNewTags = ["tag", "hot", "list", "new"]
+        this.articles = ["tag", "hot", "list", "new"].indexOf(tag) >= 0 ? obj.list : this.articles.concat(obj.list)
+        ++ this.currentPage
 
-				console.log(obj)
-
-        this.articles = isNewTags.indexOf(tag) >= 0 ? obj.list : this.articles.concat(obj.list)
-        ++this.currentPage
         this.isLoading = false
       })
-    },
-    handleScroll () {
-      let scrollTop = document.documentElement.scrollTop || document.body.scrollTop
-      let windowHeight = document.documentElement.clientHeight || document.body.clientHeight
-      let bodyScrollHeight = document.body.scrollHeight
-      let distance = 100
-
-      this.isShowTopBtn = scrollTop > 1000
-      if (scrollTop + windowHeight >= bodyScrollHeight - distance && !this.isLoading && this.currentPage % 2 !== 0) {
-        this.isLoading = true
-        this.getArticleLists()
-      }
     }
-  },
-  destroyed () {
-    window.removeEventListener("scroll", this.handleScroll, false)
   }
 }
 </script>
-<style lang="scss" scoped>
+<style lang="scss">
+#article-list {
+  position: fixed;
+  left: 200px;
+  top: 40px;
+  right: 0;
+  bottom: 0;
+  overflow-y: scroll;
+  .top-bar {
+    height: 34px;
+    line-height: 34px;
+    border: none;
+    padding: 0 15px;
+    font-size: 14px;
+    display: flex;
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    justify-content: space-between;
+    align-items: center;
+    background: linear-gradient(left, #409EFF, #fff 20%,#fff);
+    border-bottom: 1px solid #f6f6f6;
+    .btn {
+      float: right;
+      margin: 0 5px 0 -5px;
+      color: #fff;
+      padding: 4px;
+    }
+    .select-ul {
+      display: inline-block;
+      .el-input__inner {
+        border: none;
+        color: #409EFF;
+      }
+      .select {
+        width: 110px !important;
+      }
+    }
+    .inputval {
+      width: 120px;
+      float: right;
+    }
+  }
+  .main {
+    box-sizing: border-box;
+    .content-list {
+      border-bottom: 1px solid #e3e4e5;
+      padding: 5px 10px 0 0;
+      min-height: 100px;
+      position: relative;
+      cursor: pointer;
+      &:hover {
+        background: #f6f6f6;
+        .meta {
+          background: #f6f6f6;
+        }
+      }
+      li {
+        padding-left: 10px;
+        .title {
+          font-size: 16px;
+          font-weight: 600;
+          padding: 6px 0 3px;
+          display: flex;
+          align-items: center;
+          img {
+            width: 16px;
+            height: 16px;
+            margin-right: 5px;
+            display:inline-block;
+          }
+        }
+        .content {
+          font-size: 13px;
+          margin: 4px 0 0;
+          height: 38px;
+          text-overflow: -o-ellipsis-lastline;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          display: -webkit-box;
+          -webkit-line-clamp: 2;
+          line-clamp: 2;
+          -webkit-box-orient: vertical;
+        }
+      }
+      .article-img {
+        width: 80px;
+        height: 80px;
+        background-repeat: no-repeat;
+        background-position: bottom right;
+        background: #f0f0f0;
+        border-radius: 5px;
+        float: right;
+        background-size: cover;
+      }
+      .meta {
+        bottom: 0;
+        left: 0;
+        right: 150px;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        height: 25px;
+        font-size: 12px;
+        background: linear-gradient(left, #f6f6f6 20%, #fff 40%,#fff);
+        .action-list {
+          display: flex;
+          justify-content: flex-end;
+          line-height: 30px;
+          padding-left: 10px;
+          box-sizing: border-box;
+          color: #909090;
+          display: flex;
+          justify-content: flex-start;
+          align-items: center;
+          li {
+            padding-right: 14px;
+          }
+        }
+      }
+    }
+    .loading-article {
+      text-align: center;
+      padding: 10px 0;
+    }
+  }
+}
 </style>

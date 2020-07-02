@@ -7,6 +7,11 @@ protocol += process.env.NODE_ENV === 'development' ? 'dev.uxo.com.cn/' : 'prouct
 
 export default {
 	mockData () {
-		Mock.mock(protocol + 'article/list', 'post', req => api.article.list(Object.assign({}, {uid: localStorage.getItem('uid')}, JSON.parse(req.body))))
+		Mock.mock(protocol + 'article/list', 'post', req => api.article.list(JSON.parse(req.body)))
+		Mock.mock(protocol + 'article/menu', 'post', req => api.article.menu(JSON.parse(req.body)))
+		Mock.mock(protocol + 'header/menu', 'post', req => api.header.getMenu(JSON.parse(req.body)))
+		Mock.mock(protocol + 'sprints/backlogList', 'post', req => api.sprints.backlogList(JSON.parse(req.body)))
+		Mock.mock(protocol + 'sprints/sprintList', 'post', req => api.sprints.sprintList(JSON.parse(req.body)))
+		Mock.mock(protocol + 'thus/list', 'post', req => api.thus.list(JSON.parse(req.body)))
 	}
 }
