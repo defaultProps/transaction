@@ -170,29 +170,18 @@ export default {
 			}
 		},
 		list: obj => {
-			let result = []
-			let len = ARTICLE_DATA.length;
-			let p = ARTICLE_DATA.filter(v => obj.type ? true : obj.type === v.type)
-			console.log(p)
+			let list = ARTICLE_DATA.filter(v => obj.type ? true : obj.type === v.type)
 
-			while (len > 0) {
-				result.push({
-					'img': Math.random() > 0.5 ? Mock.Random.image('80x80') : null,	// logo
-					'title': Mock.mock('@ctitle(10, 40)'),	// 文章标题
-					'author': Mock.mock('@cname'),	// 文章作者
-					'authorID': Mock.mock('@guid(10)'),	// 作者ID
-					'content': Mock.mock('@cparagraph(7, 17)'),	// 简短内容
-					'articleID': Mock.mock('@id'),	// 文章唯一ID
-					'praise|1-100': 100, // 文章点赞数量
-					'publish': Mock.mock('@date()')	// 文章发布时间
-				})
-				-- len
-			}
+			list.forEach(v => {
+				let val = Math.ceil(Math.random() * 3)
+				v.progerss = val  === 1 ?  'un-start' : val === 2 ? 'doing' : 'finish'
+				v.selected = false
+			})
 
 			return {
 				status: 200,
 				data: {
-					list: result,
+					list,
 					total: 1000,
 					sortBy: obj.sortBy,
 					pageSize: obj.pageSize,

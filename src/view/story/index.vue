@@ -9,17 +9,17 @@
 							<el-button slot="append" icon="el-icon-search"></el-button>
 						</el-input>
 						<ul class="nav-ul">
-							<div class="header-title excute-status">执行状态<el-button size="mini" icon="el-icon-edit" class="btn-edit"></el-button></div>
+							<div class="header-title">执行状态<el-button size="mini" icon="el-icon-edit" class="btn-edit"></el-button></div>
 							<div v-for="p of progressStateList" :key="p.value" class="status-implement">
 								<div :class="['info-status', p.value]">{{p.name}}</div>
 							</div>
-							<div class="type-list header-title">模块类型</div>
+							<div class="type-list header-title">模块类型<el-button size="mini" icon="el-icon-edit" class="btn-edit"></el-button></div>
 							<div class="item-type-ul scroll-style-none">
 								<div v-for="p of backlogTypeList" :key="p.value">
 									<li :class="['info-status', p.link]">{{p.name}}</li>
 								</div>
 							</div>
-							<div class="type-list header-title">已关闭Sprint</div>
+							<div class="type-list header-title">已关闭Sprint<el-button size="mini" icon="el-icon-edit" class="btn-edit"></el-button></div>
 							<ul class="item-type-sprint scroll-style-none">
 								<li v-for="el of sprints" :key="el.id" class="item-sprint" id="item-sprint">
 									<span class="title">{{el.title}}</span>
@@ -293,14 +293,14 @@ $bg-big:  #f4f5f7;
 						font-weight: 600;
 						border-top: 1px solid rgba(0, 0, 0, 0.1);
 						.btn-edit {
-							padding: 2px;
+							padding: 3px;
+							background-color: #00000080;
+							color: #fff;
 						}
 						.header-title {
 							text-align: left;
 							padding: 3px 4px;
 							background-color: rgba(0, 0, 0, 0.1);
-						}
-						.excute-status {
 							display: flex;
 							font-size: 15px;
 							justify-content: space-between;

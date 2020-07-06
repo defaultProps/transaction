@@ -8,7 +8,7 @@ const urls = [
   {
     type: 'technology',
     name: '技术',
-    value: ['58349237', '87667349', '130812111', '64033141', '77782049', '84386456','151342495']
+    value: [58349237, 87667349, 130812111, 64033141, 77782049, 84386456,151342495, 140004463, 139286000, 130884857, ]
   },
   {
     type: 'life',
@@ -27,11 +27,12 @@ urls.forEach((p, i) => {
           res({
             type: p.type,
             name: p.name,
+            content: '',
+            url,
             title: $('.Post-Title').eq(0).text().trim(),
             author: $('.AuthorInfo-head').eq(0).text().trim(),
             awatar: $('.Avatar.Avatar--round.AuthorInfo-avatar').eq(0).attr('src'),
             homePageLink: `https:${$('.UserLink-link').eq(0).attr('href')}`,
-            randomIMG: $('.RichText.ztext.Post-RichText img').eq(0).attr('data-original')
           })
         })
       })

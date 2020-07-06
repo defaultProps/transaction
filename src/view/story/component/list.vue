@@ -191,7 +191,7 @@
     .key-link {
       color: #0052cc;
       font-size: 14px;
-      font-weight: 500;
+      font-weight: 600;
     }
     .points {
       padding: 0;

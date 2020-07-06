@@ -2,48 +2,22 @@
   <div id="article-list">
     <div class="top-bar">
       <el-button type="warning" size="mini" icon="el-icon-edit" class="btn">新建文章</el-button>
-      <div>
-        <ul class="select-ul">
-          <el-select v-model="timeHots"
-                    filterable
-                    allow-create
-                    size="mini"
-                    default-first-option
-                    class="select uxo-el-select"
-                    placeholder="请选择">
-            <el-option v-for="item in TIMEHOTS_OPTIONS"
-                      :key="item.value"
-                      :label="item.label"
-                      :value="item.value"></el-option>
-          </el-select>
-        </ul>
-        <el-input placeholder="请输入内容" suffix-icon="el-icon-search" v-model="inputVal" size="mini" class="inputval"></el-input>
-      </div>
+      <el-input placeholder="请输入内容" suffix-icon="el-icon-search" v-model="inputVal" size="mini" class="inputval"></el-input>
     </div>
     <div class="main">
       <div class="content-list" v-for="(item, index) in articles" :key="index">
         <el-row :gutter="10">
-          <el-col :span="item.img ? 22 : 24">
-            <router-link tag="li" :to="{path:`/uxo/article/${item.articleID}`, params: {name: item.author}}">
+          <el-col :span="!item.selected ? 22 : 24">
+            <li @clikc.stop="hc_detail(item)">
               <div class="title">
-                <img :src="$image.story.translation" alt="">
-                {{item.title}}
+                <img :src="item.awatar" alt="" @click.stop="hc_open(item.homePageLink)">
+                <a :href="item.url" target="_blank">{{item.title}}</a>
+                <el-button class="progress" type="text" size="mini" :class="[item.progerss]">{{item.progerss | filterprogerss}}</el-button>
               </div>
-              <div class="content">{{item.content | filterContent}}</div>
-            </router-link>
+            </li>
           </el-col>
-          <el-col :span="item.img ? 2 : 0">
-            <div class="article-img" :style="{'background-image': 'url('+item.img+')'}"></div>
-          </el-col>
+          <el-col :span="!item.selected ? 2 : 0"></el-col>
         </el-row>
-        <div class="meta">
-          <ul class="action-list">
-            <li class="praise"><i class="iconfont icon-ziyuan"></i><span>{{12}}</span></li>
-            <li><i class="iconfont icon-pinglun2"></i><span>{{12}}</span></li>
-            <li><i class="iconfont xu-pinglun1"></i><span>关注</span></li>
-            <li><i class="iconfont icon-collect"></i><span>收藏</span></li>
-          </ul>
-        </div>
       </div>
       <div class="loading-article">
         <el-button v-if="isLoading" icon="el-icon-loading" size="mini">加载中......</el-button>
@@ -53,17 +27,9 @@
   </div>
 </template>
 <script>
-const TIMEHOTS_OPTIONS = [
-  {value: "3", label: "最近3天内"},
-  {value: "7", label: "最近7天内"},
-  {value: "30", label: "最近30天内"},
-  {value: "365", label: "最近一年内"}
-]
-
 export default {
   data () {
     return {
-      TIMEHOTS_OPTIONS,
       inputVal: '',
       timeHots: "3",
       sortBy: 'desc',
@@ -80,8 +46,9 @@ export default {
     timeHots: "getArticleLists"
   },
   filters: {
-    filterContent (val) {
-      return val.slice(0, 270).replace(/<\/?.+?\/?>/g, "")
+    filterprogerss(v) {
+      let map = new Map([['un-start', '未开始'], ['doing', '进行中'], ['finish', '已完成']])
+      return map.get(v)
     },
     filterType(val) {
 			return val === 'original' ? "原创" :  val === 'reprint' ? '转载' : '翻译'
@@ -104,6 +71,15 @@ export default {
     this.getArticleLists()
   },
   methods: {
+    filterLevel(v) {
+      return ['icon-1_square', 'icon-2_square', 'icon-3_square', 'icon-4_square', 'icon-5_square', 'icon-6_square', 'icon-7_square'][v]
+    },
+    hc_detail(v) {
+      this.$set(v, 'selected', true)
+    },
+    hc_open(link) {
+      window.open(link)
+    },
     getArticleLists(tag) {
       this.isLoading = true
 
@@ -145,7 +121,7 @@ export default {
     z-index: 20;
     justify-content: space-between;
     align-items: center;
-    background: linear-gradient(left, #409EFF, #fff 20%,#fff);
+    background: linear-gradient(left, #409EFF, #409EFF 10%,#fff 60%);
     border-bottom: 1px solid #f6f6f6;
     .btn {
       float: right;
@@ -173,7 +149,7 @@ export default {
     .content-list {
       border-bottom: 1px solid #e3e4e5;
       padding: 5px 10px 0 0;
-      min-height: 100px;
+      min-height: 10px;
       position: relative;
       cursor: pointer;
       &:hover {
@@ -183,31 +159,46 @@ export default {
         }
       }
       li {
+        cursor: default;
         padding-left: 10px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 14px;
+        color: #172b4d;
         .title {
-          font-size: 16px;
           font-weight: 600;
-          padding: 6px 0 3px;
+          padding: 6px 3px;
           display: flex;
           align-items: center;
+          a {
+            color: #172b4d;
+            &:hover {
+              color: #0747a6;
+            }
+          }
           img {
-            width: 16px;
-            height: 16px;
+            width: 24px;
+            height: 24px;
             margin-right: 5px;
             display:inline-block;
+            background-color: rgba(0, 0, 0, 0.3);
+            border-radius: 50%;
           }
-        }
-        .content {
-          font-size: 13px;
-          margin: 4px 0 0;
-          height: 38px;
-          text-overflow: -o-ellipsis-lastline;
-          overflow: hidden;
-          text-overflow: ellipsis;
-          display: -webkit-box;
-          -webkit-line-clamp: 2;
-          line-clamp: 2;
-          -webkit-box-orient: vertical;
+          .progress {
+            padding: 1px 2px;
+            color: #fff;
+            margin-left: 10px;
+            &.un-start {
+              background-color: #00875a;
+            }
+            &.doing {
+              background-color: #ffab00;
+            }
+            &.finish {
+              background-color: #0006;
+            }
+          }
         }
       }
       .article-img {
