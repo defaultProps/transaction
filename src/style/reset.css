@@ -225,6 +225,23 @@ input[type=search]::-ms-clear {
   background: #ededed;
 }
 
+.scroll-style-none::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}
+
 .pull-right {
   float: right;
+}
+
+/* 链接 */
+a {
+  color: #0052cc;
+  cursor: pointer;
+}
+a:hover {
+  text-decoration: underline;
+}
+a.done {
+  text-decoration: line-through;
 }

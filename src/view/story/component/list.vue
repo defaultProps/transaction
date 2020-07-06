@@ -3,7 +3,6 @@
     <v-draggable v-model="draggbleList"
                  draggable=".item"
                  :group="group"
-                 @change="log"
                  tag="div"
                  ghost-class="ghost"
                  v-bind="dragOptions"
@@ -18,7 +17,7 @@
           <span class="level"><i class="iconfont" :class="filterLevel(p.level)"></i></span>
           <span class="key-link">{{p.link}}</span>
           <span class="title">{{p.title}}</span>
-          <el-button type="text" size="mini" :class="[p.implementStatus, 'info-status']">{{p.implementStatus | filterImplementStatus}}</el-button>
+          <el-button type="text" size="mini" :class="[p.progressState, 'info-status']">{{p.progressState | filterprogressState}}</el-button>
           <el-button type="info" circle class="points">{{p.points}}</el-button>
         </div>
       </transition-group>
@@ -56,7 +55,7 @@
       }
     },
     filters: {
-      filterImplementStatus(v) {
+      filterprogressState(v) {
         return new Map([['doing', '正在开发'], ['not-start', '未开始'], ['finish', '已完成']]).get(v)
       }
     },
@@ -72,16 +71,13 @@
         })
       },
       startDraggable(v) {
-        console.log(v)
+        // console.log(v)
       },
       endDraggable(v) {
-        console.log(v)
+        // console.log(v)
       },
       filterLevel(v) {
         return ['icon-1_square', 'icon-2_square', 'icon-3_square', 'icon-4_square', 'icon-5_square', 'icon-6_square', 'icon-7_square'][v]
-      },
-      log() {
-        console.log(12)
       }
     }
   }
@@ -105,7 +101,7 @@
     background: #fff;
     overflow: hidden;
     height: 32px;
-    box-shadow: 0 0 1px 0 rgba(9,30,66,0.31), 0 2px 4px -1px rgba(9,30,66,0.25);
+    box-shadow: 0 0 11px 0 rgba(9,30,66,0.31), 0 2px 4px -1px rgba(9,30,66,0.25);
     line-height: 32px;
     font-size: 14px;
     margin-bottom: 2px;
@@ -195,7 +191,7 @@
     .key-link {
       color: #0052cc;
       font-size: 14px;
-      font-weight: 600;
+      font-weight: 400;
     }
     .points {
       padding: 0;

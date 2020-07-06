@@ -10,6 +10,7 @@ import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import '@/style/reset.css'
 import draggable from 'vuedraggable'
+import edit from '@/components/edit'
 
 Vue.config.productionTip = false
 Vue.prototype.$axios = axios
@@ -17,6 +18,7 @@ Vue.prototype.$dayjs = dayjs
 Vue.prototype.$image = image
 
 Vue.component('v-draggable', draggable)
+Vue.component('v-edit', edit)
 Vue.use(ElementUI)
 
 Mock.mockData()

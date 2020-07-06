@@ -10,20 +10,23 @@
 						</el-input>
 						<ul class="nav-ul">
 							<div class="status">执行状态</div>
-							<div v-for="p of implementStatusList" :key="p.value" class="item">
-								<li :class="['info-status', p.value]"><i :class="['iconfont', p.icon]"></i>{{p.name}}</li>
+							<div v-for="p of progressStateList" :key="p.value" class="status-implement">
+								<div :class="['info-status', p.value]"><i :class="['iconfont', p.icon]"></i>{{p.name}}</div>
 							</div>
 							<div class="type-list status">模块类型</div>
-							<div class="item-type-ul">
+							<div class="item-type-ul scroll-style-none">
 								<div v-for="p of backlogTypeList" :key="p.value">
 									<li :class="['info-status', p.link]">{{p.name}}</li>
 								</div>
 							</div>
 							<div class="type-list status">已关闭Sprint</div>
-							<ul class="item-type-sprint">
-								<li v-for="el of sprints" :key="el.id" class="item-sprint">
+							<ul class="item-type-sprint scroll-style-none">
+								<li v-for="el of sprints" :key="el.id" class="item-sprint" id="item-sprint">
 									<span class="title">{{el.title}}</span>
-									<span class="issus-count">{{el.count}} </span>问题
+									<div>
+										<span class="issus-count">{{el.count}} </span>
+										问题
+									</div>
 								</li>
 							</ul>
 						</ul>
@@ -54,27 +57,33 @@
 						</div>
 						<div>
 							<el-button type="warning" size="mini" class="btn">new Issue</el-button>
-							<el-button type="warning" size="mini" class="btn">new Sprint</el-button>
+							<el-button type="warning" size="mini" class="btn" @click="dialogTableVisible = true">new Sprint</el-button>
 						</div>
 					</div>
 					<v-draggleList v-loading="backlogLoading" :list="backlogList" handle=".handle" :group="{ name: 'backlog', pull: true, put: false }"></v-draggleList>
 				</div>
 			</el-col>
 			<el-col class="sprint-detail" :span="20 - sprintLen" v-if="sprintLen !== 20">
-				<div class="detail-container">
-					12
-				</div>
+				<v-sprint-detail class="detail-container" :sprintdetailData="sprintdetailData"></v-sprint-detail>
 			</el-col>
+			<el-dialog title="issue" :visible.sync="dialogTableVisible">
+				<el-table :data="sprintData">
+					<el-table-column property="date" label="日期" width="150"></el-table-column>
+					<el-table-column property="name" label="姓名" width="200"></el-table-column>
+					<el-table-column property="address" label="地址"></el-table-column>
+				</el-table>
+			</el-dialog>
 		</el-row>
 	</div>
 </template>
 <script>
 import draggleList from './component/list'
 import draggable from 'vuedraggable'
+import sprintDetail from './component/detail'
 
 export default {
 	data() {
-		let implementStatusList = [
+		let progressStateList = [
 			{name: '未开始', value: 'not-start', icon: 'el-icon-platform-eleme'},
 			{name: '进行中...', value: 'doing', icon: 'el-icon-loading'},
 			{name: '已完成', value: 'finish', icon: 'el-icon-mouse'}
@@ -121,23 +130,26 @@ export default {
 			}]
 		}]
 		return {
+			sprintData: [],
 			sortGroup,
 			selecType: null,
 			backlogList: [],
 			sprints: [],
 			sprintLen: 20,
 			backlogTypeList,
-			implementStatusList,
+			progressStateList,
 			backlogTotal: 0,
 			backlogLoading: false,
 			sprintLoading: false,
 			activeCollapse: 0,
-			affairVal: ''
+			affairVal: '',
+			sprintdetailData: null
 		}
 	},
 	components: {
 		'v-draggleList': draggleList,
-		'xx-draggable': draggable
+		'xx-draggable': draggable,
+		'v-sprint-detail': sprintDetail
 	},
 	created() {
 		this.getbacklogList()
@@ -145,7 +157,8 @@ export default {
 	},
 	methods: {
 		handleDetail(v) {
-			this.sprintLen = 14
+			this.sprintLen = 14;
+			this.sprintdetailData = v;
 		},
 		getsprintList() {
 			this.$axios.sprints.sprintList({type: 'sprint'}).then(v => {
@@ -320,11 +333,18 @@ export default {
 						height: calc(100% - 40px);
 						cursor: default;
 						font-weight: 600;
-						border-top: 1px solid rgba(9,30,66,0.31);
+						border-top: 1px solid rgba(0, 0, 0, 0.1);
 						.status {
 							text-align: left;
 							padding: 5px 0;
-							background: rgba(9,30,66,0.31);
+							background-color: rgba(0, 0, 0, 0.1);
+						}
+						.status-implement {
+							height: 35px;
+							line-height: 35px;
+							text-indent: 4px;
+							font-weight: 400;
+							font-size: 14px;
 						}
 						.item-type-ul {
 							height: 200px;
@@ -335,15 +355,20 @@ export default {
 							overflow-y: scroll;
 							.item-sprint {
 								font-size: 12px;
+								display: flex;
+								justify-content: space-between;
+								align-items: center;
+								padding: 0 4px;
 								.issus-count {
-									padding: 0;
+									padding: 0 2px;
+									text-align: center;
 									background: #E6A23C;
 									border-radius: 4px;
 									text-align: center;
 									box-sizing: border-box;
 									color: #fff;
 									font-size: 12px;
-									margin: 0 3px 0 10px;
+									margin-right: 3px;
 								}
 							}
 						}
@@ -357,7 +382,8 @@ export default {
 							font-size: 14px;
 							cursor: default;
 							text-indent: 10px;
-							border-bottom: 1px solid rgba(9,30,66,0.31);
+							font-weight: 400;
+							border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 							&::before {
 								content: '';
 								position: absolute;
@@ -402,42 +428,42 @@ export default {
 							}
 							&.dashboard {
 								&::before {
-									background-color: #ffab00;
+									background-color: #383e56;
 								}
 							}
 							&.seekKnowledge {
 								&::before {
-									background-color: #ffab00;
+									background-color: #f69e7b;
 								}
 							}
 							&.kitchen {
 								&::before {
-									background-color: #ffab00;
+									background-color: #d4b5b0;
 								}
 							}
 							&.tour {
 								&::before {
-									background-color: #ffab00;
+									background-color: #99d8d0;
 								}
 							}
 							&.loupan {
 								&::before {
-									background-color: #ffab00;
+									background-color: #fc9d9d;
 								}
 							}
 							&.existence {
 								&::before {
-									background-color: #ffab00;
+									background-color: #436f8a;
 								}
 							}
 							&.Sketch {
 								&::before {
-									background-color: #ffab00;
+									background-color: #184d47;
 								}
 							}
 							&.universe {
 								&::before {
-									background-color: #ffab00;
+									background-color: #fa7d09;
 								}
 							}
 						}
@@ -449,7 +475,6 @@ export default {
 			height: 100%;
 			.detail-container {
 				height: 100%;
-				border-left: 1px solid red;
 			}
 		}
 	}
