@@ -47,7 +47,7 @@ export default {
 			}
 			this.$axios.header.menu(params).then(v => {
 				this.menu = v
-				this.activeIndex = this.$route.path.replace('/', '')
+				console.log(this.activeIndex)
 			})
 		}
 	}

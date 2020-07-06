@@ -9,17 +9,17 @@
 							<el-button slot="append" icon="el-icon-search"></el-button>
 						</el-input>
 						<ul class="nav-ul">
-							<div class="status">执行状态</div>
+							<div class="header-title excute-status">执行状态<el-button size="mini" icon="el-icon-edit" class="btn-edit"></el-button></div>
 							<div v-for="p of progressStateList" :key="p.value" class="status-implement">
-								<div :class="['info-status', p.value]"><i :class="['iconfont', p.icon]"></i>{{p.name}}</div>
+								<div :class="['info-status', p.value]">{{p.name}}</div>
 							</div>
-							<div class="type-list status">模块类型</div>
+							<div class="type-list header-title">模块类型</div>
 							<div class="item-type-ul scroll-style-none">
 								<div v-for="p of backlogTypeList" :key="p.value">
 									<li :class="['info-status', p.link]">{{p.name}}</li>
 								</div>
 							</div>
-							<div class="type-list status">已关闭Sprint</div>
+							<div class="type-list header-title">已关闭Sprint</div>
 							<ul class="item-type-sprint scroll-style-none">
 								<li v-for="el of sprints" :key="el.id" class="item-sprint" id="item-sprint">
 									<span class="title">{{el.title}}</span>
@@ -80,56 +80,11 @@
 import draggleList from './component/list'
 import draggable from 'vuedraggable'
 import sprintDetail from './component/detail'
-
+import {backlogTypeList, progressStateList, sortGroup} from './constant'
 export default {
 	data() {
-		let progressStateList = [
-			{name: '未开始', value: 'not-start', icon: 'el-icon-platform-eleme'},
-			{name: '进行中...', value: 'doing', icon: 'el-icon-loading'},
-			{name: '已完成', value: 'finish', icon: 'el-icon-mouse'}
-		];
-		let backlogTypeList = [
-			{name: '大块文章', link: 'article'},
-			{name: '事务分发', link: 'story'},
-			{name: '兴趣使然', link: 'thus'},
-			{name: '仪表盘', link: 'dashboard'},
-			{name: '求知欲望', link: 'seekKnowledge'},
-			{name: '美味厨房', link: 'kitchen'},
-			{name: '途观旅游', link: 'tour'},
-			{name: '市场楼盘', link: 'loupan'},
-			{name: '原始生存', link: 'existence'},
-			{name: '简单素描', link: 'Sketch'},
-			{name: '眺望宇宙', link: 'universe'}
-		]
-		let sortGroup = [{
-			label: '按类型排序',
-			options: [{
-				value: 'needs',
-				label: '需求'
-			}, {
-				value: 'bug',
-				label: 'BUG'
-			}]
-		}, {
-			label: '按优先级排序',
-			options: [{
-				value: 'desc',
-				label: '倒序'
-			}, {
-				value: 'dsc',
-				label: '正序'
-			}]
-		}, {
-			label: '按点排序',
-			options: [{
-				value: 'desc-point',
-				label: '倒序'
-			}, {
-				value: 'dsc-point',
-				label: '正序'
-			}]
-		}]
 		return {
+			dialogTableVisible: false,
 			sprintData: [],
 			sortGroup,
 			selecType: null,
@@ -187,6 +142,9 @@ export default {
 }
 </script>
 <style lang="scss">
+$color-highColor: #172b4d;;
+$bg-big:  #f4f5f7;
+
 #story {
 	margin: auto;
 	position: fixed;
@@ -334,10 +292,20 @@ export default {
 						cursor: default;
 						font-weight: 600;
 						border-top: 1px solid rgba(0, 0, 0, 0.1);
-						.status {
+						.btn-edit {
+							padding: 2px;
+						}
+						.header-title {
 							text-align: left;
-							padding: 5px 0;
+							padding: 3px 4px;
 							background-color: rgba(0, 0, 0, 0.1);
+						}
+						.excute-status {
+							display: flex;
+							font-size: 15px;
+							justify-content: space-between;
+							box-sizing: border-box;
+							align-items: center;
 						}
 						.status-implement {
 							height: 35px;
@@ -395,6 +363,17 @@ export default {
 								width: 3px;
 								border-top-left-radius: 3px;
 								border-bottom-left-radius: 3px;
+							}
+							@for $i from 0 through 15 {
+								li:nth-child(#{$i}) {
+									$width: 15 + random(15) + px;
+									left: 15 + random(70) + px;
+									top: 50%;
+									transform: translate(-50%, -50%);
+									width: $width;
+									height: $width;
+									animation: moveToTop #{random(6) + 3}s ease-in-out -#{random(5000)/1000}s infinite;
+								}
 							}
 							&.not-start {
 								&::before {

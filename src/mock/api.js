@@ -1,4 +1,5 @@
 import Mock from "mockjs"
+import ARTICLE_DATA from '../../node/data/article.json'
 
 const HEADER_NAV = [
 	{name: '大块文章', link: 'article'},
@@ -97,8 +98,9 @@ export default {
 			}
 
 			let result = []
+			let len = 23;
 
-			for (let i = 0; i < 25; i++) {
+			for (let i = 0; i < len; i++) {
 				let v = sprintListFn()
 
 				result.push({
@@ -106,7 +108,7 @@ export default {
 					title: `sprint${i}`,
 					createTime: Mock.mock('@date("yyyy/MM/dd")'),
 					endTime: Mock.mock('@date("yyyy/MM/dd")'),
-					status: i >= 23 ? 'doing' : 'done',
+					status: i >= len - 2 ? 'doing' : 'done',
 					count: v.total,
 					issueList: v.issueList,
 					pointsTotal: v.pointsTotal
@@ -155,45 +157,27 @@ export default {
 				data: [
 					{
 						name: '技术型',
-						link: 'technology',
-						children: [
-							{name: 'JS/HTML/CSS', link: 'javaScript'},
-							{name: '协议/网络/存储', link: 'agreement'},
-							{name: '算法/leetCode', link: 'leetCode'},
-							{name: '浏览器/内核', link: 'browser'},
-							{name: '包管理器/webpack', link: 'webpack'},
-							{name: '小程序', link: 'applet'}
-						]
-					},
+						link: 'technology'},
 					{
 						name: '工具类',
-						link: '/tool',
-						children: [
-							{name: '开发', link: '/dev'},
-							{name: '测试', link: '/test'},
-							{name: '其他', link: '/tool/others'}
-						]
+						link: '/tool'
 					},
 					{
 						name: '生活类',
-						link: '',
-						children: [
-							{name: '故事', link: '/stroy'},
-							{name: 'SCP', link: '/scp'},
-							{name: '游戏', link: '/games'}
-						]
+						link: ''
 					}
 				]
 			}
 		},
 		list: obj => {
 			let result = []
-			let len = obj.pageSize
+			let len = ARTICLE_DATA.length;
+			let p = ARTICLE_DATA.filter(v => obj.type ? true : obj.type === v.type)
+			console.log(p)
 
 			while (len > 0) {
 				result.push({
-					'img': Math.random() > 0.5 ? Mock.Random.image('100x100') : null,	// logo
-					'level': Math.ceil(Math.random() * 5),	// 文章阅读level
+					'img': Math.random() > 0.5 ? Mock.Random.image('80x80') : null,	// logo
 					'title': Mock.mock('@ctitle(10, 40)'),	// 文章标题
 					'author': Mock.mock('@cname'),	// 文章作者
 					'authorID': Mock.mock('@guid(10)'),	// 作者ID
@@ -221,7 +205,7 @@ export default {
 		getMenu: obj => {
 			return {
 				status: 200,
-				data: HEADER_NAV
+				data: HEADER_NAV.slice(0, 2)
 			}
 		}
 	}
