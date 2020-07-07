@@ -78,7 +78,6 @@
 </template>
 <script>
 import draggleList from './component/list'
-import draggable from 'vuedraggable'
 import sprintDetail from './component/detail'
 import {backlogTypeList, progressStateList, sortGroup} from './constant'
 export default {
@@ -103,7 +102,6 @@ export default {
 	},
 	components: {
 		'v-draggleList': draggleList,
-		'xx-draggable': draggable,
 		'v-sprint-detail': sprintDetail
 	},
 	created() {

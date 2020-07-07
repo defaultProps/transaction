@@ -1,17 +1,20 @@
 <template>
 	<div id="article-sidebar">
-		<el-menu default-active="activeIndex"
-					   class="el-menu-vertical"
-					 	 @open="handleOpen"
-						 size="mini"
-				   	 @close="handleClose"
-						 background-color="#fff"
-						 unique-opened
-						 active-text-color="#0747a6">
+		<el-menu
+			default-active="activeIndex"
+			class="el-menu-vertical"
+			@open="handleOpen"
+			size="mini"
+			router
+			@close="handleClose"
+			background-color="#fff"
+			unique-opened
+			active-text-color="#0747a6"
+			>
 				<template v-for="(list, i) of menu">
 					<template v-if="list.children">
 						<el-submenu :index="`${i}`" :key="list.name">
-							<template slot="title"><i class="el-icon-location"></i>{{list.name}}</template>
+							<template slot="title"><i class="iconfont" :class="[list.icon]"></i>{{list.name}}</template>
 							<el-menu-item v-for="(li, j) of list.children" :key="j" :index="li.link"><i class="el-icon-location"></i>{{li.name}}</el-menu-item>
 						</el-submenu>
 					</template>
@@ -20,7 +23,11 @@
 				</template>
     </el-menu>
 		<div class="navgation" v-loading="loadingNav">
-			<div class="list" v-for="el of thusList" :key="el.name" @click="handlelinkClick(el.link)">
+			<div
+				class="list"
+				v-for="el of thusList"
+				:key="el.name"
+				@click="handlelinkClick(el.link)">
 				<i class="iconfont icon-fenxiang"></i>
 				{{el.name}}
 			</div>
@@ -95,13 +102,10 @@ export default {
 			height: 40px;
 			line-height: 40px;
 			border-top: 1px solid #f6f6f6;
-			&.is-active {
-				border-right:3px solid #0747a6;
-			}
 		}
 	}
 	.navgation {
-		height: 200px;
+		height: 300px;
 		width: 100%;
 		overflow-x: hidden;
 		overflow-y: scroll;

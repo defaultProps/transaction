@@ -156,37 +156,26 @@ export default {
 				status: 200,
 				data: [
 					{
-						name: '技术型',
-						link: 'technology'},
+						name: '技术类',
+						link: '/article?type=technology',
+						icon: 'icon-renwu'
+					},
 					{
 						name: '工具类',
-						link: '/tool'
+						link: '/article?type=tool',
+						icon: 'icon-elementor'
 					},
 					{
 						name: '生活类',
-						link: ''
+						link: '/article?type=life'
 					}
 				]
 			}
 		},
-		list: obj => {
-			let list = ARTICLE_DATA.filter(v => obj.type ? true : obj.type === v.type)
-
-			list.forEach(v => {
-				let val = Math.ceil(Math.random() * 3)
-				v.progerss = val  === 1 ?  'un-start' : val === 2 ? 'doing' : 'finish'
-				v.selected = false
-			})
-
+		list: () => {
 			return {
 				status: 200,
-				data: {
-					list,
-					total: 1000,
-					sortBy: obj.sortBy,
-					pageSize: obj.pageSize,
-					currentPage: obj.currentPage
-				}
+				data: ARTICLE_DATA.map((v, i) => ({...v, order: i, type: Math.random() > 0.5 ? 'read' : 'write', level: Math.ceil(Math.random() * 5)}))
 			}
 		}
 	},
