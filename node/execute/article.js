@@ -4,7 +4,7 @@ const fs = require('fs')
 const path = require('path')
 const baseurl = 'https://zhuanlan.zhihu.com/p/'
 const promiseList = [];
-const zhihu = [58349237, 87667349, 130812111, 64033141, 77782049, 84386456,151342495, 140004463, 139286000, 130884857]
+const zhihu = [58349237, 87667349, 130812111, 64033141, 77782049, 84386456,151342495, 140004463, 139286000, 130884857, 53599723]
 const github = []
 const urls = [
   {

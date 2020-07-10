@@ -5,17 +5,29 @@
 				<div class="nav-relation">
 					<div class="nav-main">
 						<div class="nav-header"></div>
-						<el-input placeholder="请输入事务号" v-model="affairVal" size="mini" class="input-affiar">
+						<el-input placeholder="事务号查询INHOPE-" v-model="affairVal" size="mini" class="input-affiar">
 							<el-button slot="append" icon="el-icon-search"></el-button>
 						</el-input>
 						<ul class="nav-ul">
 							<div class="header-title">执行状态<el-button size="mini" icon="el-icon-edit" class="btn-edit"></el-button></div>
-							<div v-for="p of progressStateList" :key="p.value" class="status-implement">
-								<div :class="['info-status', p.value]">{{p.name}}</div>
-							</div>
+							<ul v-for="p of progressStateList"
+									:key="p.link"
+									@dragleave="dragleave(p)"
+									@dragover="dragover($event, p)"
+									@drop='drop(p)'
+									:class="{'dropStatus': p.dropStatus}"
+									class="status-implement">
+								<li :class="['info-status', p.link]">{{p.name}}</li>
+							</ul>
 							<div class="type-list header-title">模块类型<el-button size="mini" icon="el-icon-edit" class="btn-edit"></el-button></div>
 							<div class="item-type-ul scroll-style-none">
-								<div v-for="p of backlogTypeList" :key="p.value">
+								<div v-for="p of modulesList"
+										 :key="p.link"
+										 @dragleave="dragleave(p)"
+									   @dragover="dragover($event, p)"
+										 class="status-implement"
+										 :class="{'dropStatus': p.dropStatus}"
+										 @drop='drop(p)'>
 									<li :class="['info-status', p.link]">{{p.name}}</li>
 								</div>
 							</div>
@@ -46,7 +58,13 @@
 							</div>
 							<span class="status count">{{el.pointsTotal}}</span>
 						</div>
-						<v-draggleList v-show="el.visible" v-loading="sprintLoading" :list="el.issueList" group="backlog" @handleDetail="handleDetail"></v-draggleList>
+						<v-draggleList v-show="el.visible"
+													 v-loading="sprintLoading"
+													 :list="el.issueList"
+													 group="backlog"
+													 :dropDraggleObj="dropDraggleObj"
+													 @endDraggable="endDraggable"
+													 @handleDetail="handleDetail"></v-draggleList>
 					</div>
 				</template>
 				<div class="backlog">
@@ -64,7 +82,7 @@
 				</div>
 			</el-col>
 			<el-col class="sprint-detail" :span="20 - sprintLen" v-if="sprintLen !== 20">
-				<v-sprint-detail class="detail-container" :sprintdetailData="sprintdetailData"></v-sprint-detail>
+				<v-sprint-detail class="detail-container" :sprintdetailData="sprintdetailData" @closeDetail="closeDetail"></v-sprint-detail>
 			</el-col>
 			<el-dialog title="issue" :visible.sync="dialogTableVisible">
 				<el-table :data="sprintData">
@@ -77,11 +95,19 @@
 	</div>
 </template>
 <script>
-import draggleList from './component/list'
-import sprintDetail from './component/detail'
-import {backlogTypeList, progressStateList, sortGroup} from './constant'
+import draggleList from './component/storyList'
+import sprintDetail from './component/storyDetail'
+import {modulesList, progressStateList, sortGroup} from './storyConstant'
 export default {
 	data() {
+		progressStateList.forEach(item => {
+			item.dropStatus = false
+			item.type = 'implement'
+		})
+		modulesList.forEach(item => {
+			item.type = 'module'
+		})
+
 		return {
 			dialogTableVisible: false,
 			sprintData: [],
@@ -90,13 +116,14 @@ export default {
 			backlogList: [],
 			sprints: [],
 			sprintLen: 20,
-			backlogTypeList,
+			modulesList,
 			progressStateList,
 			backlogTotal: 0,
 			backlogLoading: false,
 			sprintLoading: false,
 			activeCollapse: 0,
 			affairVal: '',
+			dropDraggleObj: null, // sprint列表拖动到左侧导航栏时的数据
 			sprintdetailData: null
 		}
 	},
@@ -109,9 +136,44 @@ export default {
 		this.getsprintList()
 	},
 	methods: {
+		// 请求数据
+		endDraggable(obj) {
+			if (this.dropDraggleObj) {
+				// this.$axios.sprint.
+				setTimeout(() => {
+					this.dropDraggleObj = null;
+				}, 4000);
+			}
+		},
+		dragleave(obj) {
+			this.$set(obj, 'dropStatus', false)
+		},
+		dragover(e, obj) {
+			e.preventDefault()
+			this.$set(obj, 'dropStatus', true)
+		},
+		drop(obj) {
+			this.$set(obj, 'dropStatus', false)
+			console.log(obj)
+			this.dropDraggleObj = obj
+		},
+		closeDetail() {
+			this.sprintLen = 20;
+		},
 		handleDetail(v) {
 			this.sprintLen = 14;
 			this.sprintdetailData = v;
+			this.highlightSelectedList(v.link)
+		},
+		// css & 拖动列表高亮
+		highlightSelectedList(key) {
+			let currentDOM = document.querySelector(`.item[data-key="${key}"]`);
+			let allDraggableList = document.querySelectorAll(`.item[data-key`);
+
+			allDraggableList.forEach(el => {
+				el.classList.remove('light')
+			})
+			currentDOM.classList.add('light')
 		},
 		getsprintList() {
 			this.$axios.sprints.sprintList({type: 'sprint'}).then(v => {
@@ -161,7 +223,7 @@ $bg-big:  #f4f5f7;
 			overflow-y: scroll;
 			.backlog {
 				background: #f4f5f7;
-				padding: 10px;
+				padding: 0 10px;
 				margin-bottom: 30px;
 				&:last-child{
 					margin-bottom: 0;
@@ -284,6 +346,19 @@ $bg-big:  #f4f5f7;
 						font-size: 12px;
 						padding: 5px;
 						box-sizing: border-box;
+						.el-input__inner:focus {
+							border-color: #ffab00;
+						}
+						.el-input-group__append {
+							background: #ffab00;
+							padding: 0 8px;
+							color: #fff;
+							.btn-search {
+								color: #fff;
+								height: 24px;
+								font-size: 12px;
+							}
+						}
 					}
 					.nav-ul {
 						height: calc(100% - 40px);
@@ -306,11 +381,16 @@ $bg-big:  #f4f5f7;
 							align-items: center;
 						}
 						.status-implement {
-							height: 35px;
-							line-height: 35px;
+							height: 40px;
+							line-height: 40px;
 							text-indent: 4px;
 							font-weight: 400;
 							font-size: 14px;
+							border: 2px solid transparent;
+							border-right: none;
+							&.dropStatus {
+								border: 2px dotted #00875a;
+							}
 						}
 						.item-type-ul {
 							height: 200px;
@@ -362,28 +442,20 @@ $bg-big:  #f4f5f7;
 								border-top-left-radius: 3px;
 								border-bottom-left-radius: 3px;
 							}
-							@for $i from 0 through 15 {
-								li:nth-child(#{$i}) {
-									$width: 15 + random(15) + px;
-									left: 15 + random(70) + px;
-									top: 50%;
-									transform: translate(-50%, -50%);
-									width: $width;
-									height: $width;
-									animation: moveToTop #{random(6) + 3}s ease-in-out -#{random(5000)/1000}s infinite;
-								}
-							}
 							&.not-start {
+								border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 								&::before {
 									background-color: #f93;
 								}
 							}
 							&.doing {
+								border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 								&::before {
 									background-color: #00875a;
 								}
 							}
 							&.finish {
+								border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 								&::before {
 									background-color: #0065ff;
 								}

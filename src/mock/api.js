@@ -2,18 +2,18 @@ import Mock from "mockjs"
 import ARTICLE_DATA from '../../node/data/article.json'
 
 const HEADER_NAV = [
-	{name: '大块文章', link: 'article'},
-	{name: '事务分发', link: 'story'},
-	{name: '兴趣使然', link: 'thus'},
-	{name: '仪表盘', link: 'dashboard'},
-	{name: '求知欲望', link: 'seekKnowledge'},
-	{name: '美味厨房', link: 'kitchen'},
-	{name: '途观旅游', link: 'tour'},
-	{name: '市场楼盘', link: 'loupan'},
-	{name: '原始生存', link: 'existence'},
-	{name: '简单素描', link: 'Sketch'},
-	{name: '眺望宇宙', link: 'universe'}
-]
+	{name: '大块文章', link: 'article', color: '#598ed4', icon: ''},
+	{name: '事务分发', link: 'story', color: '#5243aa', icon: ''},
+	{name: '兴趣使然', link: 'thus', color: '#ffab00', icon: ''},
+	{name: '仪表盘', link: 'dashboard', color: '#d81e06', icon: ''},
+	{name: '原始生存', link: 'existence', color: '#436f8a', icon: ''},
+	{name: '简单素描', link: 'Sketch', color: '#fa7d09', icon: ''}
+].map((v, i) => {
+	return {
+		...v,
+		id: `module-${i}`
+	}
+})
 
 export default {
 	thus: {
@@ -68,23 +68,25 @@ export default {
 		sprintList: obj => {
 			function sprintListFn() {
 				let pointsTotal = 0;
-				let total = Math.ceil(Math.random() * 5) + 5
+				let total = Math.ceil(Math.random() * 5) + 5;
 				let issueList = [];
-				let i = 0
+				let i = 0;
 
 				while (i < total) {
 					let points = Math.ceil(Math.random() * 10)
+					let link = `INHOPE-${Math.ceil(Math.random() * 9000) + 1000}`
 					issueList.push({
 						name: Mock.mock('@cname'),
-						order: i,
+						order: link,
 						level: Math.ceil(Math.random() * 5),
-						link: `INHOPE-${Math.ceil(Math.random() * 9000) + 1000}`,
+						link,
 						type: Math.random() > 0.5 ? 'needs' : 'bug',
 						title: Mock.mock('@csentence(20, 40)'),
 						fixed: Math.random() > 0.5,
 						points,
 						tag: HEADER_NAV[Math.floor(Math.random() * HEADER_NAV.length)],
-						progressState: ['doing', 'not-start', 'finish'][Math.floor(Math.random() * 3)]
+						progressState: ['doing', 'not-start', 'finish'][Math.floor(Math.random() * 3)],
+						moduleState: HEADER_NAV[Math.floor(HEADER_NAV.length * Math.random())]
 					})
 					pointsTotal += points
 					i++
@@ -127,10 +129,11 @@ export default {
 			let total = Math.ceil(Math.random() * 10) + 20
 
 			while (i < total) {
+				let link = `INHOPE-${Math.ceil(Math.random() * 9000) + 1000}`
 				result.push({
 					name: Mock.mock('@cname'),
-					order: i,
-					link: `INHOPE-${Math.ceil(Math.random() * 9000) + 1000}`,
+					order: link,
+					link,
 					type: Math.random() > 0.5 ? 'needs' : 'bug',
 					level: Math.ceil(Math.random() * 5),
 					title: Mock.mock('@csentence(20, 40)'),

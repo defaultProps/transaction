@@ -1,6 +1,6 @@
 <template>
 	<div id="header">
-		<div class="logo"></div>
+		<!-- <img class="logo" :src="$image.logo"> -->
 		<el-menu :default-active="activeIndex"
 					 	 class="el-menu-demo"
 					 	 mode="horizontal"
@@ -47,7 +47,6 @@ export default {
 			}
 			this.$axios.header.menu(params).then(v => {
 				this.menu = v
-				console.log(this.activeIndex)
 			})
 		}
 	}
@@ -69,11 +68,10 @@ export default {
 	justify-content: flex-start;
 	align-items: center;
 	.logo {
-		width: 30px;
-		height: 30px;
-		background-image: url('https://tse4-mm.cn.bing.net/th/id/OIP.qMSPrwdNKGJhoreA1PnbLAHaHa?w=193&h=193&c=7&o=5&dpr=2&pid=1.7');
+		width: 25px;
+		height: 25px;
+		margin-right: 10px;
 		background-size: cover;
-		border-radius: 50%;
 		background-repeat:  no-repeat;
 	}
 	ul {

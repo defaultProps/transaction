@@ -8,8 +8,8 @@
 </template>
 
 <script>
-import sidebar from './component/sidebar'
-import list from './component/list'
+import sidebar from './component/articleSidebar'
+import list from './component/articleList'
 
 export default {
 	data() {

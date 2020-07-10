@@ -1,4 +1,4 @@
-const loaction = '../../static/image'
+const loaction = '/static/image/'
 
 export default {
   logo: loaction + 'logo.png',

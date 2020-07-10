@@ -1,7 +1,7 @@
 <template>
   <div id="uxo-edit" @click="hc_edit">
-    <div v-if="editMode" v-show="editMode">
-      <el-input v-model="val" class="input" size="mini"></el-input>
+    <div v-if="editMode">
+      <el-input v-model="val" class="input" size="mini" ref="inputNode"></el-input>
       <div class="save-options">
         <el-button size="mini" @click.prevent.stop="hc_submit()"><i class="icon" :class="[loading ? 'el-icon-loading' : 'el-icon-check']"></i></el-button>
         <el-button size="mini" @click.prevent.stop="hc_cencel()" icon="el-icon-close"></el-button>
@@ -24,10 +24,24 @@ export default {
       loading: false
     }
   },
+  watch: {
+    'editMode'(newVal) {
+      if (newVal) {
+        this.$nextTick(() => {
+          this.$refs.inputNode.focus()
+          this.$refs.inputNode.select()
+        })
+      }
+    },
+    'uid'() {
+      this.editMode = false;
+    }
+  },
   created() {
     this.val = this.content
   },
   props: {
+    uid: [String],
     content: {
       type: String,
       default: '',
@@ -46,7 +60,7 @@ export default {
       setTimeout(() => {
         this.loading = false;
         this.editMode = false;
-      }, 1000);
+      }, 400);
     },
     hc_edit() {
       this.editMode = true;
@@ -80,7 +94,7 @@ export default {
       }
     }
     .content {
-      padding: 2px 10px 2px 2px;
+      padding: 2px 0 2px 2px;
     }
     .edit-wrap {
       background: rgba(0, 0, 0, 0.2);
@@ -105,6 +119,7 @@ export default {
       line-height: 25px;
       border-radius: 0;
       color: #172b4d;
+      font-size: 14px;
       border: 1px solid rgba(0, 0, 0, 0.2);
     }
   }
