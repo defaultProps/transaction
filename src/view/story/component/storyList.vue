@@ -21,7 +21,7 @@
           <span class="level"><i class="iconfont" :class="filterLevel(p.level)"></i></span>
           <span class="key-link">{{p.link}}</span>
           <span class="title">{{p.title}}</span>
-          <el-button type="text" size="mini" :class="[p.moduleState && p.moduleState.link, 'modules-type']" :style="{backgroundColor: p.moduleState.color}" v-if="p.moduleState">{{p.moduleState.name}}</el-button>
+          <el-button type="text" size="mini" :class="[p.moduleState && p.moduleState.link, 'modules-type']"  v-if="p.moduleState">{{p.moduleState.name}}</el-button>
           <el-button type="text" size="mini" :class="[p.progressState, 'info-status']">{{p.progressState | filterprogressState}}</el-button>
           <el-button type="info" circle class="points">{{p.points}}</el-button>
         </div>
@@ -108,10 +108,7 @@
   box-sizing: border-box;
   position: relative;
   background: #f4f5f7;
-  padding-bottom: 40px;
-  // .flip-list-move {
-    // transition: transform 0.3s;
-  // }
+  padding-bottom: 20px;
   .ghost {
     background: #EBEEF5 !important;
     opacity: 0.5;
@@ -121,10 +118,9 @@
     background: #fff;
     overflow: hidden;
     height: 32px;
-    box-shadow: 0 0 11px 0 rgba(9,30,66,0.31), 0 2px 4px -1px rgba(9,30,66,0.25);
     line-height: 32px;
     font-size: 14px;
-    margin-bottom: 2px;
+    margin-bottom: 4px;
     user-select: none;
     padding: 0 4px;
     display: flex;
@@ -133,15 +129,16 @@
     text-indent: 5px;
     cursor: move;
     position: relative;
-    border-top: 1px solid #f6f6f6;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-left: 0;
     white-space: nowrap;
     border-top-left-radius: 4px;
     border-bottom-left-radius: 4px;
     &:hover {
       background: #f6f6f6;
-    }
+    }v
     &.light {
-      background-color: rgba(0, 0, 0, 0.1);
+      background: rgba(0, 0, 0, 0.3);
     }
     &::before {
       content: '';
@@ -170,9 +167,7 @@
       border-radius: 4px;
       color: #fff;
       padding: 1px 2px;
-      &.article {
-        background-color: #00875a;
-      }
+      background: rgba(0,0,0,0.4);
     }
     .info-status {
       border-radius: 4px;

@@ -9,7 +9,7 @@
 							<el-button slot="append" icon="el-icon-search"></el-button>
 						</el-input>
 						<ul class="nav-ul">
-							<div class="header-title">执行状态<el-button size="mini" icon="el-icon-edit" class="btn-edit"></el-button></div>
+							<div class="header-title">执行状态<el-button size="mini" icon="el-icon-edit" class="btn-edit" type="warning"></el-button></div>
 							<ul v-for="p of progressStateList"
 									:key="p.link"
 									@dragleave="dragleave(p)"
@@ -19,7 +19,7 @@
 									class="status-implement">
 								<li :class="['info-status', p.link]">{{p.name}}</li>
 							</ul>
-							<div class="type-list header-title">模块类型<el-button size="mini" icon="el-icon-edit" class="btn-edit"></el-button></div>
+							<div class="type-list header-title">模块类型<el-button size="mini" icon="el-icon-edit" class="btn-edit" type="warning"></el-button></div>
 							<div class="item-type-ul scroll-style-none">
 								<div v-for="p of modulesList"
 										 :key="p.link"
@@ -31,7 +31,7 @@
 									<li :class="['info-status', p.link]">{{p.name}}</li>
 								</div>
 							</div>
-							<div class="type-list header-title">已关闭Sprint<el-button size="mini" icon="el-icon-edit" class="btn-edit"></el-button></div>
+							<div class="type-list header-title">已关闭Sprint<el-button size="mini" icon="el-icon-edit" class="btn-edit" type="warning"></el-button></div>
 							<ul class="item-type-sprint scroll-style-none">
 								<li v-for="el of sprints" :key="el.id" class="item-sprint" id="item-sprint">
 									<span class="title">{{el.title}}</span>
@@ -154,7 +154,6 @@ export default {
 		},
 		drop(obj) {
 			this.$set(obj, 'dropStatus', false)
-			console.log(obj)
 			this.dropDraggleObj = obj
 		},
 		closeDetail() {
@@ -173,6 +172,7 @@ export default {
 			allDraggableList.forEach(el => {
 				el.classList.remove('light')
 			})
+			console.log(currentDOM.classList)
 			currentDOM.classList.add('light')
 		},
 		getsprintList() {
@@ -223,7 +223,6 @@ $bg-big:  #f4f5f7;
 			overflow-y: scroll;
 			.backlog {
 				background: #f4f5f7;
-				padding: 0 10px;
 				margin-bottom: 30px;
 				&:last-child{
 					margin-bottom: 0;
@@ -346,18 +345,10 @@ $bg-big:  #f4f5f7;
 						font-size: 12px;
 						padding: 5px;
 						box-sizing: border-box;
-						.el-input__inner:focus {
-							border-color: #ffab00;
-						}
-						.el-input-group__append {
-							background: #ffab00;
-							padding: 0 8px;
+						.btn-search {
 							color: #fff;
-							.btn-search {
-								color: #fff;
-								height: 24px;
-								font-size: 12px;
-							}
+							height: 24px;
+							font-size: 12px;
 						}
 					}
 					.nav-ul {
@@ -367,7 +358,6 @@ $bg-big:  #f4f5f7;
 						border-top: 1px solid rgba(0, 0, 0, 0.1);
 						.btn-edit {
 							padding: 3px;
-							background-color: #00000080;
 							color: #fff;
 						}
 						.header-title {

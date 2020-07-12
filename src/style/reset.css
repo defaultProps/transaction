@@ -192,16 +192,24 @@ input[type=search]::-ms-clear {
 
 /*reset elementui color*/
 .el-select-dropdown__item.selected {
-  color: #ffd04b !important;
+  color: #ffab00 !important;
 }
 .el-button--primary {
   color: #FFF;
-  background-color: #ffd04b;
-  border-color: #ffd04b;
+  background-color: #ffab00;
+  border-color: #ffab00;
 }
 .el-button--primary:hover {
   background-color: #ffd04b;
   border-color: #ffd04b;
+}
+.el-input__inner:focus {
+  border-color: #ffab00;
+}
+.el-input-group__append {
+  background: #ffab00;
+  padding: 0 8px;
+  color: #fff;
 }
 
 /*el-drawer**/

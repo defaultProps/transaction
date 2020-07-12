@@ -43,7 +43,7 @@ export default {
   props: {
     uid: [String],
     content: {
-      type: String,
+      type: [String, Number],
       default: '',
       required: false
     },

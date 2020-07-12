@@ -10,7 +10,9 @@
     <v-edit class="title" :content="details.title" :uid="details.link"></v-edit>
     <div class="points">
       <span class="point-name">预估:</span>
-      <v-edit class="title" :content="details.points" :uid="details.link"></v-edit>
+      <div >
+        <v-edit class="title" :content="details.points" :uid="details.link"></v-edit>
+      </div>
     </div>
   </div>
 </template>
