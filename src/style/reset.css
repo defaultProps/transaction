@@ -219,12 +219,12 @@ input[type=search]::-ms-clear {
 }
 
 .scroll-style-theme1::-webkit-scrollbar {
-  width: 2px;
-  height: 5px;
+  width: 4px;
+  height: 3px;
 }
 .scroll-style-theme1::-webkit-scrollbar-thumb {
     border-radius: 10px;
-    box-shadow: inset 0 0 5px #f93;
+    box-shadow: inset 0 0 5px rgba(0,0,0,0.8);
     background: #f4f5f7;
 }
 .scroll-style-theme1::-webkit-scrollbar-track {

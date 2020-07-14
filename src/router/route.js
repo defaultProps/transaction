@@ -1,5 +1,7 @@
 
-import {routeErrorCallback} from '@/libs/common'
+function routeErrorCallback() {
+
+}
 
 let article = r => require.ensure([], () => r(require('@/view/article/index')), routeErrorCallback, 'article')
 let story = r => require.ensure([], () => r(require('@/view/story/index')), routeErrorCallback, 'story')

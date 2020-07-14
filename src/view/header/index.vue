@@ -1,6 +1,6 @@
 <template>
 	<div id="header">
-		<!-- <img class="logo" :src="$image.logo"> -->
+		<img class="logo" :src="$image.logo">
 		<el-menu :default-active="activeIndex"
 					 	 class="el-menu-demo"
 					 	 mode="horizontal"
@@ -68,8 +68,8 @@ export default {
 	justify-content: flex-start;
 	align-items: center;
 	.logo {
-		width: 25px;
-		height: 25px;
+		width: 20px;
+		height: 20px;
 		margin-right: 10px;
 		background-size: cover;
 		background-repeat:  no-repeat;

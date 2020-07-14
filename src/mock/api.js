@@ -4,16 +4,33 @@ import ARTICLE_DATA from '../../node/data/article.json'
 const HEADER_NAV = [
 	{name: '大块文章', link: 'article', color: '#598ed4', icon: ''},
 	{name: '事务分发', link: 'story', color: '#5243aa', icon: ''},
-	{name: '兴趣使然', link: 'thus', color: '#ffab00', icon: ''},
-	{name: '仪表盘', link: 'dashboard', color: '#d81e06', icon: ''},
-	{name: '原始生存', link: 'existence', color: '#436f8a', icon: ''},
-	{name: '简单素描', link: 'Sketch', color: '#fa7d09', icon: ''}
+	{name: '生活乐趣', link: 'thus', color: '#ffab00', icon: ''},
+	{name: '旅游指南', link: 'dashboard', color: '#598ed4', icon: ''},
+	{name: '农贸市场', link: 'existence', color: '#5243aa', icon: ''},
+	{name: '健身运动', link: 'Sketch', color: '#ffab00', icon: ''},
+	{name: '厨房日记', link: 'check', color: '#598ed4', icon: ''},
+	{name: '宇宙探索', link: 'universe', color: '#5243aa', icon: ''},
+	{name: '游戏人生', link: 'games', color: '#598ed4', icon: ''}
 ].map((v, i) => {
 	return {
 		...v,
 		id: `module-${i}`
 	}
 })
+
+let titles = [
+	'#健身运动 | 起草一项关于锻炼身体的基本训练技巧方案',
+	'#生活乐趣 | 爬虫收集知乎恐怖故事',
+	'#农贸市场 | 初始一项收集蔬菜项目',
+	'#生活乐趣 | 起草一项未来家庭房屋设计图稿(autoCAD)',
+	'#生活乐趣 | 购买素描所需工具及选购在线学习方案(哔哩哔哩搜索)',
+	'#生活乐趣 | 初始一项收集水果项目',
+	'#生活乐趣 | 初始一项有趣物理化学实验',
+	'#生活乐趣 | 初始一项收集生物项目',
+	'#生活乐趣 | 初始一项心理学、哲学项目',
+	'#todo项目 | 删除文章模块，并修改为面板模块',
+	'#todo项目 | 新增汇编模块，文章模块中收集导航栏移动到汇编模块'
+]
 
 export default {
 	thus: {
@@ -81,9 +98,12 @@ export default {
 						level: Math.ceil(Math.random() * 5),
 						link,
 						type: Math.random() > 0.5 ? 'needs' : 'bug',
-						title: Mock.mock('@csentence(20, 40)'),
+						title: titles[Math.floor(titles.length * Math.random())],
 						fixed: Math.random() > 0.5,
 						points,
+						desc: Mock.mock('@csentence(100, 200)'),
+						createTime: Mock.mock('@datetime("yyyy年MM月dd日 HH:mm:ss")'),
+						updateTime: Mock.mock('@datetime("yyyy年MM月dd日 HH:mm:ss")'),
 						tag: HEADER_NAV[Math.floor(Math.random() * HEADER_NAV.length)],
 						progressState: ['doing', 'not-start', 'finish'][Math.floor(Math.random() * 3)],
 						moduleState: HEADER_NAV[Math.floor(HEADER_NAV.length * Math.random())]

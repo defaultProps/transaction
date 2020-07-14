@@ -1,20 +1,21 @@
 <template>
   <div id="draggable-list" class="draggable-list">
-    <v-draggable v-model="draggbleList"
-                 draggable=".item"
-                 :group="group"
-                 tag="div"
-                 ghost-class="ghost"
-                 v-bind="dragOptions"
-                 @start="startDraggable"
-                 @end="endDraggable"
-                 @add="addDraggable"
-                 class="backlog-list">
+    <template v-show="draggbleList.length">
+      <v-draggable v-model="draggbleList"
+                  draggable=".item"
+                  :group="group"
+                  tag="div"
+                  ghost-class="ghost"
+                  v-bind="dragOptions"
+                  @start="startDraggable"
+                  @end="endDraggable"
+                  @add="addDraggable"
+                  class="backlog-list">
         <div v-for="(p, i) of draggbleList"
-             :key="p.order"
-             :data-key="p.link"
-             class="item"
-             @click="handleDraggleList(p, i)">
+              :key="p.order"
+              :data-key="p.link"
+              class="item"
+              @click="handleDraggleList(p, i)">
           <span class="type" :class="[p.type]">
             <i class="iconfont icon-icon-test1" :class="p.type === 'bug' ? 'icon-dashujukeshihuaico-' : 'icon-shujuzhongjian'"></i>
           </span>
@@ -22,13 +23,19 @@
           <span class="key-link">{{p.link}}</span>
           <span class="title">{{p.title}}</span>
           <el-button type="text" size="mini" :class="[p.moduleState && p.moduleState.link, 'modules-type']"  v-if="p.moduleState">{{p.moduleState.name}}</el-button>
-          <el-button type="text" size="mini" :class="[p.progressState, 'info-status']">{{p.progressState | filterprogressState}}</el-button>
+          <el-button type="text" size="mini" v-if="p.progressState" :class="[p.progressState, 'info-status']">{{p.progressState | filterprogressState}}</el-button>
           <el-button type="info" circle class="points">{{p.points}}</el-button>
         </div>
-    </v-draggable>
+      </v-draggable>
+    </template>
+    <div class="no-draggleList" v-if="draggbleList.length === 0">
+      <div class="no-info">暂无事务</div>
+    </div>
   </div>
 </template>
+
 <script>
+  import * as KeyCode from 'keycode-js';
   export default {
     props: {
       list: {
@@ -64,9 +71,7 @@
           if (v && this.oldIndex >= 0) {
             if (v.type === 'implement') {
               this.$set(this.draggbleList[this.oldIndex], 'progressState', v.link);
-              console.log(v)
             } else if (v.type === 'module') {
-              console.log(v)
               this.$set(this.draggbleList[this.oldIndex], 'moduleState', v);
             }
           }
@@ -82,6 +87,22 @@
     created() {
       this.draggbleList = JSON.parse(JSON.stringify(this.list))
     },
+    mounted() {
+      window.addEventListener('keyup', function(e) {
+        console.log(12)
+        // You may do one of these checks.
+
+        // Check the code value.
+        if (e.code === KeyCode.CODE_RETURN) {
+          console.log('It was the Return key.')
+        }
+
+        // OR, check the keyCode value.
+        if (e.keyCode === KeyCode.KEY_RETURN) {
+          console.log('It was the Return key.')
+        }
+      })
+    },
     methods: {
       handleDraggleList(v, i) {
         this.$emit('handleDetail', v)
@@ -93,10 +114,10 @@
         this.$emit('endDraggable', v);
       },
       addDraggable(v) {
-        console.log(3)
+
       },
       filterLevel(v) {
-        return ['icon-1_square', 'icon-2_square', 'icon-3_square', 'icon-4_square', 'icon-5_square', 'icon-6_square', 'icon-7_square'][v]
+        return ['icon-1_square', 'icon-2_square', 'icon-3_square', 'icon-4_square', 'icon-5_square', 'icon-6_square', 'icon-7_square'][v - 1]
       }
     }
   }
@@ -104,14 +125,29 @@
 <style lang="scss">
 #draggable-list {
   height: calc(100% - 40px);
-  padding: 0 10px 10px;
+  min-height: 100px;
   box-sizing: border-box;
-  position: relative;
   background: #f4f5f7;
-  padding-bottom: 20px;
+  padding: 10px 10px;
+  position: relative;
+  border-radius: 4px;
+  .no-draggleList {
+    height: 100px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    .no-info {
+      text-align: center;
+      height: 100%;
+      line-height: 100px;
+      user-select: none;
+    }
+  }
+  .backlog-list {
+    min-height: 100px;
+  }
   .ghost {
-    background: #EBEEF5 !important;
-    opacity: 0.5;
     visibility: hidden;
   }
   .item {
@@ -129,16 +165,16 @@
     text-indent: 5px;
     cursor: move;
     position: relative;
-    border: 1px solid rgba(0, 0, 0, 0.1);
+    // border: 1px solid rgba(0, 0, 0, 0.1);
     border-left: 0;
     white-space: nowrap;
     border-top-left-radius: 4px;
     border-bottom-left-radius: 4px;
-    &:hover {
-      background: #f6f6f6;
-    }v
+    &.ghost:hover {
+      background-color: #deebff;
+    }
     &.light {
-      background: rgba(0, 0, 0, 0.3);
+      background: rgba(0, 0, 0, 0.1);
     }
     &::before {
       content: '';
@@ -166,13 +202,13 @@
     .modules-type {
       border-radius: 4px;
       color: #fff;
-      padding: 1px 2px;
+      padding: 2px 3px;
       background: rgba(0,0,0,0.4);
     }
     .info-status {
       border-radius: 4px;
       color: #fff;
-      padding: 1px 2px;
+      padding: 2px 3px;
       &.not-start {
         background-color: #00875a;
       }
@@ -197,6 +233,7 @@
     }
     .level {
       color: #E6A23C;
+      font-size: 17px;
       .icon-1_square {
         color: #67C23A;
       }

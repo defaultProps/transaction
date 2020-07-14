@@ -1,16 +1,18 @@
 <template>
   <div id="uxo-edit" @click="hc_edit">
-    <div v-if="editMode">
-      <el-input v-model="val" class="input" size="mini" ref="inputNode"></el-input>
+    <div v-if="editMode" class="edit-mode">
+      <el-form @submit.native="hc_submit()">
+        <el-input v-model="val" @blur="blur" class="input" :rows="15" ref="inputNode" :type="textType"></el-input>
+      </el-form>
       <div class="save-options">
-        <el-button size="mini" @click.prevent.stop="hc_submit()"><i class="icon" :class="[loading ? 'el-icon-loading' : 'el-icon-check']"></i></el-button>
+        <el-button size="mini" @click.prevent.stop="hc_submit()" :class="[loading ? 'saved' : '']"><i class="icon" :class="[loading ? 'el-icon-loading' : 'el-icon-check']"></i></el-button>
         <el-button size="mini" @click.prevent.stop="hc_cencel()" icon="el-icon-close"></el-button>
       </div>
     </div>
     <div v-else class="info">
       <span class="content">{{content}}</span>
       <span class="edit-wrap">
-        <i class="el-icon-edit"></i>
+        <i class="icon-writefill iconfont"></i>
       </span>
     </div>
   </div>
@@ -21,7 +23,8 @@ export default {
     return {
       editMode: false,
       val: '',
-      loading: false
+      loading: false,
+      cencelBtnCick: false
     }
   },
   watch: {
@@ -30,6 +33,7 @@ export default {
         this.$nextTick(() => {
           this.$refs.inputNode.focus()
           this.$refs.inputNode.select()
+
         })
       }
     },
@@ -42,6 +46,11 @@ export default {
   },
   props: {
     uid: [String],
+    textType: {
+      type: String,
+      default: 'text',
+      required: false
+    },
     content: {
       type: [String, Number],
       default: '',
@@ -54,18 +63,34 @@ export default {
     }
   },
   methods: {
+    blur() {
+      setTimeout(async () => {
+        if (this.cencelBtnCick) {
+          return
+        }
+
+        this.loading = true;
+        await this.cb()
+        setTimeout(() => {
+          this.loading = false;
+          this.editMode = false;
+        }, 300);
+      }, 100)
+    },
     async hc_submit() {
+      this.cencelBtnCick = false;
       this.loading = true;
       await this.cb()
       setTimeout(() => {
         this.loading = false;
         this.editMode = false;
-      }, 400);
+      }, 300);
     },
     hc_edit() {
       this.editMode = true;
     },
     hc_cencel() {
+      this.cencelBtnCick = true;
       this.editMode = false;
     }
   }
@@ -87,10 +112,13 @@ export default {
     align-items: top;
     border: 1px solid transparent;
     &:hover {
-      background: #fff;
+      background: transparent;
       border: 1px solid rgba(0, 0, 0, 0.2);
+      border-radius: 3px;
+      overflow: hidden;
       .edit-wrap {
         visibility: visible;
+        color: #3f4441;
       }
     }
     .content {
@@ -110,17 +138,17 @@ export default {
   }
   .input {
     padding: 0 0 0 1px;
-    height: 25px;
-    line-height: 25px;
     .el-input__inner {
       padding: 0 0 0 3px;
       border: 0;
       height: 25px;
       line-height: 25px;
-      border-radius: 0;
       color: #172b4d;
       font-size: 14px;
+      background: transparent;
       border: 1px solid rgba(0, 0, 0, 0.2);
+      border-radius: 3px;
+      border-bottom-right-radius: 0;
     }
   }
   .save-options {
@@ -132,7 +160,7 @@ export default {
     border-top: 0;
     height: 25px;
     width: 50px;
-    background: #fff;
+    background: transparent;
     display: flex;
     align-items: center;
     justify-content: space-around;
@@ -141,6 +169,10 @@ export default {
       margin: 0;
       font-size: 13px;
       background: rgba(0, 0, 0, 0.2);
+    }
+    .saved {
+      background: #E6A23C;
+      color: #fff;
     }
   }
 }

@@ -75,7 +75,6 @@ export default {
 #article-sidebar {
 	overflow: hidden;
 	position: fixed;
-	z-index: 100;
 	top: 40px;
 	left: 0;
 	bottom: 0;
@@ -105,7 +104,7 @@ export default {
 		}
 	}
 	.navgation {
-		height: 300px;
+		height: 500px;
 		width: 100%;
 		overflow-x: hidden;
 		overflow-y: scroll;

@@ -1,7 +1,7 @@
 <template>
 	<div id="story">
 		<el-row class="story-backlog">
-			<el-col :span="4" class="between-space">
+			<el-col :span="3" class="between-space">
 				<div class="nav-relation">
 					<div class="nav-main">
 						<div class="nav-header"></div>
@@ -14,7 +14,7 @@
 									:key="p.link"
 									@dragleave="dragleave(p)"
 									@dragover="dragover($event, p)"
-									@drop='drop(p)'
+									@drop="drop(p)"
 									:class="{'dropStatus': p.dropStatus}"
 									class="status-implement">
 								<li :class="['info-status', p.link]">{{p.name}}</li>
@@ -45,7 +45,7 @@
 					</div>
 				</div>
 			</el-col>
-			<el-col :span="sprintLen" class="backlog-wrap">
+			<el-col :span="sprintLen" class="backlog-wrap scroll-style-theme1">
 				<template v-for="el of sprints">
 					<div class="backlog" v-if="el.status === 'doing'" :key="el.id">
 						<div class="backlog-title">
@@ -74,23 +74,16 @@
 							<span class="issus-count">{{backlogTotal}} 问题</span>
 						</div>
 						<div>
-							<el-button type="warning" size="mini" class="btn">new Issue</el-button>
+							<el-button type="warning" size="mini" class="btn" @click="hc_addIssue()">new Issue</el-button>
 							<el-button type="warning" size="mini" class="btn" @click="dialogTableVisible = true">new Sprint</el-button>
 						</div>
 					</div>
 					<v-draggleList v-loading="backlogLoading" :list="backlogList" handle=".handle" :group="{ name: 'backlog', pull: true, put: false }"></v-draggleList>
 				</div>
 			</el-col>
-			<el-col class="sprint-detail" :span="20 - sprintLen" v-if="sprintLen !== 20">
+			<el-col class="sprint-detail" :span="21 - sprintLen" v-if="sprintLen !== 21">
 				<v-sprint-detail class="detail-container" :sprintdetailData="sprintdetailData" @closeDetail="closeDetail"></v-sprint-detail>
 			</el-col>
-			<el-dialog title="issue" :visible.sync="dialogTableVisible">
-				<el-table :data="sprintData">
-					<el-table-column property="date" label="日期" width="150"></el-table-column>
-					<el-table-column property="name" label="姓名" width="200"></el-table-column>
-					<el-table-column property="address" label="地址"></el-table-column>
-				</el-table>
-			</el-dialog>
 		</el-row>
 	</div>
 </template>
@@ -115,7 +108,7 @@ export default {
 			selecType: null,
 			backlogList: [],
 			sprints: [],
-			sprintLen: 20,
+			sprintLen: 21,
 			modulesList,
 			progressStateList,
 			backlogTotal: 0,
@@ -136,6 +129,17 @@ export default {
 		this.getsprintList()
 	},
 	methods: {
+		hc_addIssue() {
+			this.$alert('这是一段内容', '标题名称', {
+        confirmButtonText: '确定',
+				callback: action => {
+					this.$message({
+						type: 'info',
+						message: `action: ${action}`
+					});
+				}
+			})
+		},
 		// 请求数据
 		endDraggable(obj) {
 			if (this.dropDraggleObj) {
@@ -157,7 +161,7 @@ export default {
 			this.dropDraggleObj = obj
 		},
 		closeDetail() {
-			this.sprintLen = 20;
+			this.sprintLen = 21;
 		},
 		handleDetail(v) {
 			this.sprintLen = 14;
@@ -172,7 +176,6 @@ export default {
 			allDraggableList.forEach(el => {
 				el.classList.remove('light')
 			})
-			console.log(currentDOM.classList)
 			currentDOM.classList.add('light')
 		},
 		getsprintList() {
@@ -221,9 +224,10 @@ $bg-big:  #f4f5f7;
 		.backlog-wrap {
 			height: 100%;
 			overflow-y: scroll;
+			box-sizing: border-box;
 			.backlog {
-				background: #f4f5f7;
-				margin-bottom: 30px;
+				margin: 0 0 20px;
+				padding: 0 10px;
 				&:last-child{
 					margin-bottom: 0;
 				}
@@ -232,10 +236,10 @@ $bg-big:  #f4f5f7;
 					line-height: 40px;
 					font-size: 16px;
 					line-height: 40px;
-					padding-right: 20px;
+					padding: 0 10px;
 					position: sticky;
 					top: 0;
-					z-index: 1000;
+					z-index: 19;
 					background: #f4f5f7;
 					display: flex;
 					justify-content: space-between;
@@ -317,7 +321,7 @@ $bg-big:  #f4f5f7;
 				.sprintlist {
 					position: sticky;
 					top: 0;
-					z-index: 1000;
+					z-index: 20;
 				}
 				.sprint-ul {
 					box-sizing: border-box;
@@ -512,9 +516,9 @@ $bg-big:  #f4f5f7;
 		}
 		.sprint-detail {
 			height: 100%;
-			.detail-container {
-				height: 100%;
-			}
+			height: 100%;
+			padding-left: 10px;
+			box-sizing: border-box;
 		}
 	}
 }
