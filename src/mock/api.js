@@ -1,4 +1,36 @@
 import Mock from "mockjs"
+import ARTICLE_DATA from '../../node/data/article.json'
+
+const HEADER_NAV = [
+	{name: '事务分发', link: 'story', color: '#5243aa', icon: ''},
+	{name: '仪表盘', link: 'dashboard', color: '#ffab00', icon: ''},
+	{name: '大块文章', link: 'article', color: '#598ed4', icon: ''},
+	{name: '旅游指南', link: 'dashboard', color: '#598ed4', icon: ''},
+	{name: '农贸市场', link: 'existence', color: '#5243aa', icon: ''},
+	{name: '健身运动', link: 'Sketch', color: '#ffab00', icon: ''},
+	{name: '厨房日记', link: 'check', color: '#598ed4', icon: ''},
+	{name: '宇宙探索', link: 'universe', color: '#5243aa', icon: ''},
+	{name: '游戏人生', link: 'games', color: '#598ed4', icon: ''}
+].map((v, i) => {
+	return {
+		...v,
+		id: `module-${i}`
+	}
+})
+
+let titles = [
+	'#健身运动 | 起草一项关于锻炼身体的基本训练技巧方案',
+	'#生活乐趣 | 爬虫收集知乎恐怖故事',
+	'#农贸市场 | 初始一项收集蔬菜项目',
+	'#生活乐趣 | 起草一项未来家庭房屋设计图稿(autoCAD)',
+	'#生活乐趣 | 购买素描所需工具及选购在线学习方案(哔哩哔哩搜索)',
+	'#生活乐趣 | 初始一项收集水果项目',
+	'#生活乐趣 | 初始一项有趣物理化学实验',
+	'#生活乐趣 | 初始一项收集生物项目',
+	'#生活乐趣 | 初始一项心理学、哲学项目',
+	'#todo项目 | 删除文章模块，并修改为面板模块',
+	'#todo项目 | 新增汇编模块，文章模块中收集导航栏移动到汇编模块'
+]
 
 export default {
 	thus: {
@@ -53,22 +85,28 @@ export default {
 		sprintList: obj => {
 			function sprintListFn() {
 				let pointsTotal = 0;
-				let total = Math.ceil(Math.random() * 10) + 10
+				let total = Math.ceil(Math.random() * 5) + 5;
 				let issueList = [];
-				let i = 0
+				let i = 0;
 
 				while (i < total) {
 					let points = Math.ceil(Math.random() * 10)
+					let link = `INHOPE-${Math.ceil(Math.random() * 9000) + 1000}`
 					issueList.push({
 						name: Mock.mock('@cname'),
-						order: i,
+						order: link,
 						level: Math.ceil(Math.random() * 5),
-						link: `INHOPE-${Math.ceil(Math.random() * 9000) + 1000}`,
+						link,
 						type: Math.random() > 0.5 ? 'needs' : 'bug',
-						title: Mock.mock('@csentence(20, 40)'),
+						title: titles[Math.floor(titles.length * Math.random())],
 						fixed: Math.random() > 0.5,
 						points,
-						implementStatus: ['doing', 'not-start', 'finish'][Math.floor(Math.random() * 3)]
+						desc: Mock.mock('@csentence(100, 200)'),
+						createTime: Mock.mock('@datetime("yyyy年MM月dd日 HH:mm:ss")'),
+						updateTime: Mock.mock('@datetime("yyyy年MM月dd日 HH:mm:ss")'),
+						tag: HEADER_NAV[Math.floor(Math.random() * HEADER_NAV.length)],
+						progressState: ['doing', 'not-start', 'finish'][Math.floor(Math.random() * 3)],
+						moduleState: HEADER_NAV[Math.floor(HEADER_NAV.length * Math.random())]
 					})
 					pointsTotal += points
 					i++
@@ -82,8 +120,9 @@ export default {
 			}
 
 			let result = []
+			let len = 23;
 
-			for (let i = 0; i < 25; i++) {
+			for (let i = 0; i < len; i++) {
 				let v = sprintListFn()
 
 				result.push({
@@ -91,7 +130,7 @@ export default {
 					title: `sprint${i}`,
 					createTime: Mock.mock('@date("yyyy/MM/dd")'),
 					endTime: Mock.mock('@date("yyyy/MM/dd")'),
-					status: i >= 23 ? 'doing' : 'done',
+					status: i >= len - 2 ? 'doing' : 'done',
 					count: v.total,
 					issueList: v.issueList,
 					pointsTotal: v.pointsTotal
@@ -107,18 +146,20 @@ export default {
 		backlogList: obj => {
 			let result = []
 			let i = 0;
-			let total = Math.ceil(Math.random() * 60) + 60
+			let total = Math.ceil(Math.random() * 10) + 20
 
 			while (i < total) {
+				let link = `INHOPE-${Math.ceil(Math.random() * 9000) + 1000}`
 				result.push({
 					name: Mock.mock('@cname'),
-					order: i,
-					link: `INHOPE-${Math.ceil(Math.random() * 9000) + 1000}`,
+					order: link,
+					link,
 					type: Math.random() > 0.5 ? 'needs' : 'bug',
 					level: Math.ceil(Math.random() * 5),
 					title: Mock.mock('@csentence(20, 40)'),
 					fixed: Math.random() > 0.5,
-					implementStatus: null,
+					progressState: null,
+					tag: HEADER_NAV[Math.floor(Math.random() * HEADER_NAV.length)],
 					points: Math.random() > 0.7 ? Math.ceil(Math.random() * 10) : null
 				})
 				++i
@@ -138,88 +179,34 @@ export default {
 				status: 200,
 				data: [
 					{
-						name: '技术型',
-						link: 'technology',
-						children: [
-							{name: 'JS/HTML/CSS', link: 'javaScript'},
-							{name: '协议/网络/存储', link: 'agreement'},
-							{name: '算法/leetCode', link: 'leetCode'},
-							{name: '浏览器/内核', link: 'browser'},
-							{name: '包管理器/webpack', link: 'webpack'},
-							{name: '小程序', link: 'applet'}
-						]
+						name: '技术类',
+						link: '/article?type=technology',
+						icon: 'icon-renwu'
 					},
 					{
 						name: '工具类',
-						link: '/tool',
-						children: [
-							{name: '开发', link: '/dev'},
-							{name: '测试', link: '/test'},
-							{name: '其他', link: '/tool/others'}
-						]
+						link: '/article?type=tool',
+						icon: 'icon-elementor'
 					},
 					{
 						name: '生活类',
-						link: '',
-						children: [
-							{name: '故事', link: '/stroy'},
-							{name: 'SCP', link: '/scp'},
-							{name: '游戏', link: '/games'}
-						]
+						link: '/article?type=life'
 					}
 				]
 			}
 		},
-		list: obj => {
-			let result = []
-			let len = obj.pageSize
-
-			while (len > 0) {
-				result.push({
-					'img': Math.random() > 0.5 ? Mock.Random.image('100x100') : null,	// logo
-					'level': Math.ceil(Math.random() * 5),	// 文章阅读level
-					'title': Mock.mock('@ctitle(10, 40)'),	// 文章标题
-					'author': Mock.mock('@cname'),	// 文章作者
-					'authorID': Mock.mock('@guid(10)'),	// 作者ID
-					'content': Mock.mock('@cparagraph(7, 17)'),	// 简短内容
-					'articleID': Mock.mock('@id'),	// 文章唯一ID
-					'praise|1-100': 100, // 文章点赞数量
-					'publish': Mock.mock('@date()')	// 文章发布时间
-				})
-				-- len
-			}
-
+		list: () => {
 			return {
 				status: 200,
-				data: {
-					list: result,
-					total: 1000,
-					sortBy: obj.sortBy,
-					pageSize: obj.pageSize,
-					currentPage: obj.currentPage
-				}
+				data: ARTICLE_DATA.map((v, i) => ({...v, order: i, type: Math.random() > 0.5 ? 'read' : 'write', level: Math.ceil(Math.random() * 5)}))
 			}
 		}
 	},
 	header: {
 		getMenu: obj => {
-			let result = [
-				{name: '大块文章', link: 'article'},
-				{name: '事务分发', link: 'story'},
-				{name: '兴趣使然', link: 'thus'},
-				{name: '仪表盘', link: 'dashboard'},
-				{name: '求知欲望', link: 'seekKnowledge'},
-				{name: '美味厨房', link: 'kitchen'},
-				{name: '途观旅游', link: 'tour'},
-				{name: '市场楼盘', link: 'loupan'},
-				{name: '原始生存', link: 'existence'},
-				{name: '简单素描', link: 'Sketch'},
-				{name: '眺望宇宙', link: 'universe'}
-			]
-
 			return {
 				status: 200,
-				data: result
+				data: HEADER_NAV.slice(0, 2)
 			}
 		}
 	}
