@@ -89,7 +89,7 @@
     },
     mounted() {
       window.addEventListener('keyup', function(e) {
-        console.log(12)
+        console.log(KeyCode.CODE_RETURN, e.code)
         // You may do one of these checks.
 
         // Check the code value.
@@ -156,7 +156,7 @@
     height: 32px;
     line-height: 32px;
     font-size: 14px;
-    margin-bottom: 4px;
+    margin-bottom: 0px;
     user-select: none;
     padding: 0 4px;
     display: flex;
@@ -165,7 +165,8 @@
     text-indent: 5px;
     cursor: move;
     position: relative;
-    // border: 1px solid rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0 1px 0 rgba(9,30,66,0.31), 0 2px 4px -1px rgba(9,30,66,0.25);
     border-left: 0;
     white-space: nowrap;
     border-top-left-radius: 4px;
@@ -174,7 +175,8 @@
       background-color: #deebff;
     }
     &.light {
-      background: rgba(0, 0, 0, 0.1);
+      // background: rgba(0, 0, 0, 0.1);
+      filter: contrast(0.7);
     }
     &::before {
       content: '';

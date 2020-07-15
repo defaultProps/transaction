@@ -2,9 +2,9 @@ import Mock from "mockjs"
 import ARTICLE_DATA from '../../node/data/article.json'
 
 const HEADER_NAV = [
-	{name: '大块文章', link: 'article', color: '#598ed4', icon: ''},
 	{name: '事务分发', link: 'story', color: '#5243aa', icon: ''},
-	{name: '生活乐趣', link: 'thus', color: '#ffab00', icon: ''},
+	{name: '仪表盘', link: 'dashboard', color: '#ffab00', icon: ''},
+	{name: '大块文章', link: 'article', color: '#598ed4', icon: ''},
 	{name: '旅游指南', link: 'dashboard', color: '#598ed4', icon: ''},
 	{name: '农贸市场', link: 'existence', color: '#5243aa', icon: ''},
 	{name: '健身运动', link: 'Sketch', color: '#ffab00', icon: ''},

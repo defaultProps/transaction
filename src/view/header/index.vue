@@ -1,6 +1,12 @@
 <template>
 	<div id="header">
-		<img class="logo" :src="$image.logo">
+		<div class="header-logo">
+			<img class="logo" :src="$image.logo">
+			<span class="title">任务管理器</span>
+			<ul class="bubbles">
+				<li v-for="v of Array(20)" :key="v"></li>
+			</ul>
+		</div>
 		<el-menu :default-active="activeIndex"
 					 	 class="el-menu-demo"
 					 	 mode="horizontal"
@@ -30,7 +36,7 @@ export default {
 	data() {
 		return {
 			menu: [],
-			activeIndex: 'article',
+			activeIndex: 'story',
 			inputVal: ''
 		}
 	},
@@ -63,16 +69,77 @@ export default {
 	z-index: 100;
 	color: #fff;
 	display: flex;
-	padding: 0 10px;
+	padding: 0 10px 0 0;
 	box-sizing: border-box;
 	justify-content: flex-start;
 	align-items: center;
-	.logo {
-		width: 20px;
-		height: 20px;
-		margin-right: 10px;
-		background-size: cover;
-		background-repeat:  no-repeat;
+	.header-logo {
+		display: flex;
+		position: relative;
+		justify-content: flex-start;
+		align-items: center;
+		height: 100%;
+		padding: 0 5px;
+		overflow: hidden;
+		filter: contrast(15) hue-rotate(0);
+		animation: hueRotate 10s infinite linear;
+		filter: contrast(15) hue-rotate(360deg);
+		.title {
+			font-size: 14px;
+			user-select: none;
+		}
+		.logo {
+			width: 20px;
+			height: 20px;
+			margin-right: 10px;
+			background-size: cover;
+			background-repeat:  no-repeat;
+		}
+		.bubbles {
+			position: absolute;
+			bottom: -3px;
+			width: 90px;
+			height: 5px;
+			left: 60px;
+			user-select: none;
+			transform: translate(-50%, 0);
+			background-color: #fff;
+			filter: blur(5px);
+			cursor: none;
+			li {
+				position: absolute;
+				user-select: none;
+				border-radius: 50%;
+				background: #fff;
+				top: 15px;
+				cursor: none;
+			}
+			@for $i from 0 through 25 {
+				li:nth-child(#{$i}) {
+					$width: 5 + random(15) + px;
+					left: 5 + random(50) + px;
+					top: 15px;
+					transform: translate(-50%, -50%);
+					width: $width;
+					height: $width;
+					animation: moveToTop #{random(6) + 3}s ease-in-out -#{random(5000)/1000}s infinite;
+				}
+			}
+		}
+		@keyframes hueRotate {
+			100% {
+				filter: contrast(15) hue-rotate(360deg);
+			}
+		}
+		@keyframes moveToTop {
+			90% {
+				opacity: 1;
+			}
+			100% {
+				opacity: .1;
+				transform: translate(-50%, -180px);
+			}
+		}
 	}
 	ul {
 		display: flex;
@@ -113,6 +180,7 @@ export default {
 	.el-menu--horizontal>.el-menu-item {
 		height: 40px;
 		line-height: 40px;
+		border-bottom: none !important;
 	}
 }
 </style>

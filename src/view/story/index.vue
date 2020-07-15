@@ -74,7 +74,7 @@
 							<span class="issus-count">{{backlogTotal}} 问题</span>
 						</div>
 						<div>
-							<el-button type="warning" size="mini" class="btn" @click="hc_addIssue()">new Issue</el-button>
+							<el-button type="warning" size="mini" class="btn" @click="hc_addissue()">new Issue</el-button>
 							<el-button type="warning" size="mini" class="btn" @click="dialogTableVisible = true">new Sprint</el-button>
 						</div>
 					</div>
@@ -129,7 +129,7 @@ export default {
 		this.getsprintList()
 	},
 	methods: {
-		hc_addIssue() {
+		hc_addissue() {
 			this.$alert('这是一段内容', '标题名称', {
         confirmButtonText: '确定',
 				callback: action => {
