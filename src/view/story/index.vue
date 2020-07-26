@@ -78,7 +78,10 @@
 							<el-button type="warning" size="mini" class="btn" @click="dialogTableVisible = true">new Sprint</el-button>
 						</div>
 					</div>
-					<v-draggleList v-loading="backlogLoading" :list="backlogList" handle=".handle" :group="{ name: 'backlog', pull: true, put: false }"></v-draggleList>
+					<v-draggleList v-loading="backlogLoading"
+												 :list="backlogList"
+												 handle=".handle"
+												 :group="{ name: 'backlog', pull: true, put: true }"></v-draggleList>
 				</div>
 			</el-col>
 			<el-col class="sprint-detail" :span="21 - sprintLen" v-if="sprintLen !== 21">

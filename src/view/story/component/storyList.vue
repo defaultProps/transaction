@@ -165,7 +165,6 @@
     text-indent: 5px;
     cursor: move;
     position: relative;
-    border: 1px solid rgba(0, 0, 0, 0.1);
     box-shadow: 0 0 1px 0 rgba(9,30,66,0.31), 0 2px 4px -1px rgba(9,30,66,0.25);
     border-left: 0;
     white-space: nowrap;

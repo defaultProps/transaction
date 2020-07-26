@@ -13,10 +13,6 @@ let routes = [
 		redirect: '/uxo'
 	},
 	{
-		path: '/article',
-		redirect: '/uxo'
-	},
-	{
 		path: '/uxo',
 		name: 'uxo',
 		component: story,

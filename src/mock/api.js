@@ -1,5 +1,5 @@
 import Mock from "mockjs"
-import ARTICLE_DATA from '../../node/data/article.json'
+import ARTICLE_DATA from '../../server/data/article.json'
 
 const HEADER_NAV = [
 	{name: '事务分发', link: 'story', color: '#5243aa', icon: ''},
@@ -85,7 +85,7 @@ export default {
 		sprintList: obj => {
 			function sprintListFn() {
 				let pointsTotal = 0;
-				let total = Math.ceil(Math.random() * 5) + 5;
+				let total = Math.ceil(Math.random() * 5) + 2;
 				let issueList = [];
 				let i = 0;
 
@@ -127,10 +127,10 @@ export default {
 
 				result.push({
 					id: Mock.mock('@guid'),
-					title: `sprint${i}`,
+					title: Mock.mock('@cword(4, 9)'),
 					createTime: Mock.mock('@date("yyyy/MM/dd")'),
 					endTime: Mock.mock('@date("yyyy/MM/dd")'),
-					status: i >= len - 2 ? 'doing' : 'done',
+					status: i >= len - 1 ? 'doing' : 'done',
 					count: v.total,
 					issueList: v.issueList,
 					pointsTotal: v.pointsTotal
@@ -146,7 +146,7 @@ export default {
 		backlogList: obj => {
 			let result = []
 			let i = 0;
-			let total = Math.ceil(Math.random() * 10) + 20
+			let total = Math.ceil(Math.random() * 10) + 10;
 
 			while (i < total) {
 				let link = `INHOPE-${Math.ceil(Math.random() * 9000) + 1000}`
