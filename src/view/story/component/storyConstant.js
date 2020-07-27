@@ -16,6 +16,53 @@ export let modulesList = [
 	{name: '宇宙探索', link: 'universe', color: '#5243aa', icon: ''},
 	{name: '游戏人生', link: 'games', color: '#598ed4', icon: ''}
 ]
+export let levelArr = [
+  {
+    label: '不紧急',
+    options: [
+      {
+        value: 'ignore',
+        label: '1'
+      },
+      {
+        value: 'delay',
+        label: '2'
+      }
+    ]
+  },
+  {
+    label: '一般',
+    options: [
+      {
+        value: 'glance',
+        label: '3'
+      },
+      {
+        value: 'lookup',
+        label: '4'
+      }
+    ]
+  },
+  {
+    label: '紧急',
+    options: [
+      {
+        value: 'gaze',
+        label: '5'
+      },
+      {
+        value: 'urgent',
+        label: '6'
+      }
+    ]
+  }
+]
+export let issusTypeArr = [
+  {icon: 'icon-shujuzhongjian', color: '#0065ff', label: '工作', value: 'job'},
+  {icon: 'icon-zhongjian', color: '#E6A23C', label: '生活', value: 'life'}
+]
+export let pointsArr = [0, 0.5, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+
 export let sortGroup = [
   {
     label: "按类型排序",

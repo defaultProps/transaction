@@ -18,7 +18,7 @@
 		</el-menu>
 		<div class="nav-right">
 			<el-input v-model="inputVal" size="mini" class="input" suffix-icon="el-icon-search"></el-input>
-			<el-button type="text" icon="el-icon-warning" size="medium"></el-button>
+			<el-button type="text" icon="el-icon-info" size="medium" @click="$router.push('/navigation')"></el-button>
 			<el-popover placement="bottom-start"
 									width="300"
 									trigger="click"

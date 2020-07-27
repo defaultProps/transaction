@@ -17,11 +17,11 @@
               class="item"
               @click="handleDraggleList(p, i)">
           <span class="type" :class="[p.type]">
-            <i class="iconfont icon-icon-test1" :class="p.type === 'bug' ? 'icon-dashujukeshihuaico-' : 'icon-shujuzhongjian'"></i>
+            <i class="iconfont icon-icon-test1" :class="p.type === 'bug' ? 'icon-xitongweihucopy' : 'icon-shujuzhongjian'"></i>
           </span>
           <span class="level"><i class="iconfont" :class="filterLevel(p.level)"></i></span>
           <span class="key-link">{{p.link}}</span>
-          <span class="title">{{p.title}}</span>
+          <span class="title" :title="p.title">{{p.title}}</span>
           <el-button type="text" size="mini" :class="[p.moduleState && p.moduleState.link, 'modules-type']"  v-if="p.moduleState">{{p.moduleState.name}}</el-button>
           <el-button type="text" size="mini" v-if="p.progressState" :class="[p.progressState, 'info-status']">{{p.progressState | filterprogressState}}</el-button>
           <el-button type="info" circle class="points">{{p.points}}</el-button>
@@ -38,6 +38,7 @@
   import * as KeyCode from 'keycode-js';
   export default {
     props: {
+      highlightSelectedList: Function,
       list: {
         type: Array,
         default: function() { return [] }
@@ -108,7 +109,10 @@
         this.$emit('handleDetail', v)
       },
       startDraggable(evt) {
+        let startDraggableItem = this.draggbleList[evt.oldIndex];
+
         this.oldIndex = evt.oldIndex
+        this.highlightSelectedList(startDraggableItem.link)
       },
       endDraggable(v) {
         this.$emit('endDraggable', v);

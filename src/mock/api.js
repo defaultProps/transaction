@@ -19,10 +19,10 @@ const HEADER_NAV = [
 })
 
 let titles = [
-	'#健身运动 | 起草一项关于锻炼身体的基本训练技巧方案',
-	'#生活乐趣 | 爬虫收集知乎恐怖故事',
-	'#农贸市场 | 初始一项收集蔬菜项目',
-	'#生活乐趣 | 起草一项未来家庭房屋设计图稿(autoCAD)',
+	'#健身运动 | 针对个人体型和身体素质进行合理的筛选健身运动、指导视频以及设计一套基础健身计划方案',
+	'#生活乐趣 | 爬虫知乎文章中有趣故事、SCP官网等有趣网站数据',
+	'#农贸市场 | 初始一项蔬菜网站，针对各大农贸市场网站设计一款有趣蔬菜网站',
+	'#生活乐趣 | 设计家庭房屋设计图稿(autoCAD)',
 	'#生活乐趣 | 购买素描所需工具及选购在线学习方案(哔哩哔哩搜索)',
 	'#生活乐趣 | 初始一项收集水果项目',
 	'#生活乐趣 | 初始一项有趣物理化学实验',
@@ -85,7 +85,8 @@ export default {
 		sprintList: obj => {
 			function sprintListFn() {
 				let pointsTotal = 0;
-				let total = Math.ceil(Math.random() * 5) + 2;
+				// let total = Math.ceil(Math.random() * 5) + 10;
+				let total = titles.length;
 				let issueList = [];
 				let i = 0;
 
@@ -98,7 +99,7 @@ export default {
 						level: Math.ceil(Math.random() * 5),
 						link,
 						type: Math.random() > 0.5 ? 'needs' : 'bug',
-						title: titles[Math.floor(titles.length * Math.random())],
+						title: titles[i],
 						fixed: Math.random() > 0.5,
 						points,
 						desc: Mock.mock('@csentence(100, 200)'),
@@ -146,7 +147,7 @@ export default {
 		backlogList: obj => {
 			let result = []
 			let i = 0;
-			let total = Math.ceil(Math.random() * 10) + 10;
+			let total = Math.ceil(Math.random() * 10) + 40;
 
 			while (i < total) {
 				let link = `INHOPE-${Math.ceil(Math.random() * 9000) + 1000}`

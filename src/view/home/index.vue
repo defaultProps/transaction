@@ -18,14 +18,3 @@ export default {
 	}
 }
 </script>
-<style lang="scss" scoped>
-.container-box {
-	.route-main {
-		position: fixed;
-		top: 50px;
-		left: 0px;
-		right: 5px;
-		bottom: 10px;
-	}
-}
-</style>
