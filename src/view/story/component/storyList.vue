@@ -1,5 +1,8 @@
 <template>
-  <div id="draggable-list" class="draggable-list">
+  <div id="draggable-list">
+    <div class="sort-contain" v-show="draggbleList.length">
+      <v-sort-sprint></v-sort-sprint>
+    </div>
     <template v-show="draggbleList.length">
       <v-draggable v-model="draggbleList"
                   draggable=".item"
@@ -17,11 +20,11 @@
               class="item"
               @click="handleDraggleList(p, i)">
           <span class="type" :class="[p.type]">
-            <i class="iconfont icon-icon-test1" :class="p.type === 'bug' ? 'icon-dashujukeshihuaico-' : 'icon-shujuzhongjian'"></i>
+            <i class="iconfont" :class="filterTypeIcon(p.type)" :style="{color: filterTypeColor(p.type)}"></i>
           </span>
-          <span class="level"><i class="iconfont" :class="filterLevel(p.level)"></i></span>
+          <span class="level"><i class="iconfont" :class="stylelevelClass(p.level)" :style="{'color': filterLevelColor(p.level)}"></i></span>
           <span class="key-link">{{p.link}}</span>
-          <span class="title">{{p.title}}</span>
+          <span class="title" :title="p.title">{{p.title}}</span>
           <el-button type="text" size="mini" :class="[p.moduleState && p.moduleState.link, 'modules-type']"  v-if="p.moduleState">{{p.moduleState.name}}</el-button>
           <el-button type="text" size="mini" v-if="p.progressState" :class="[p.progressState, 'info-status']">{{p.progressState | filterprogressState}}</el-button>
           <el-button type="info" circle class="points">{{p.points}}</el-button>
@@ -36,8 +39,11 @@
 
 <script>
   import * as KeyCode from 'keycode-js';
+  import { issusTypeArr, levelArr } from './storyConstant'
+  import sortSprint from './sortSprint'
   export default {
     props: {
+      highlightSelectedList: Function,
       list: {
         type: Array,
         default: function() { return [] }
@@ -48,6 +54,8 @@
     },
     data() {
       return {
+        levelArr,
+        issusTypeArr,
         draggbleList: [],
         oldIndex: -1
       }
@@ -61,6 +69,9 @@
           ghostClass: "ghost"
         }
       }
+    },
+    components: {
+      'v-sort-sprint': sortSprint
     },
     watch: {
       list(v) {
@@ -116,8 +127,26 @@
       addDraggable(v) {
 
       },
-      filterLevel(v) {
-        return ['icon-1_square', 'icon-2_square', 'icon-3_square', 'icon-4_square', 'icon-5_square', 'icon-6_square', 'icon-7_square'][v - 1]
+      filterLevelColor(v) {
+
+      },
+      stylelevelClass(v) {
+        let result;
+
+        this.levelArr.forEach(item => {
+          item.options.forEach(p => {
+            if (p.label == v) {
+              result = p.icon;
+            }
+          })
+        })
+        return result;
+      },
+      filterTypeIcon(v) {
+        return this.issusTypeArr.find(p => p.value === v).icon
+      },
+      filterTypeColor(v) {
+        return this.issusTypeArr.find(p => p.value === v).color
       }
     }
   }
@@ -131,6 +160,10 @@
   padding: 10px 10px;
   position: relative;
   border-radius: 4px;
+  .sort-contain {
+    height: 30px;
+    background-color: #EBEEF5;
+  }
   .no-draggleList {
     height: 100px;
     position: absolute;
@@ -165,7 +198,6 @@
     text-indent: 5px;
     cursor: move;
     position: relative;
-    border: 1px solid rgba(0, 0, 0, 0.1);
     box-shadow: 0 0 1px 0 rgba(9,30,66,0.31), 0 2px 4px -1px rgba(9,30,66,0.25);
     border-left: 0;
     white-space: nowrap;

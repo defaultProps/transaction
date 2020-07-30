@@ -3,7 +3,7 @@
     <div class="header">
       <div class="link">
         <router-link tag="a" v-show="details.tag" :to="details.tag.link" class="tag">{{details.tag.name}}</router-link> /
-        <router-link tag="a" :to="`/story/${details.link}`" :class="[details.status]">{{details.link}}</router-link>
+        <router-link tag="a" :to="`/story/${details.link}`" class="tag">{{details.link}}</router-link>
         </div>
       <el-button type="text" icon="el-icon-close" class="btn-del" @click="hc_closeDetail()"></el-button>
     </div>
@@ -16,7 +16,7 @@
         </el-tooltip>
       </div>
       <el-select v-model="details.level" placeholder="请选择" size="mini" class="select-level">
-        <el-option-group v-for="group in options" :key="group.label" :label="group.label">
+        <el-option-group v-for="group in levelArr" :key="group.label" :label="group.label">
           <el-option v-for="item in group.options" :key="item.value" :label="item.label" :value="item.value">
             <span style="float: left">{{ item.label }}</span>
             <span style="float: right; color: #8492a6; font-size: 13px">{{ item.value }}</span>
@@ -32,7 +32,7 @@
         </el-tooltip>
       </div>
       <el-select v-model="details.points" placeholder="请选择" size="mini" class="select-point">
-        <el-option v-for="v in optionsPoints" :key="v" :label="v" :value="v"></el-option>
+        <el-option v-for="v in pointsArr" :key="v" :label="v" :value="v"></el-option>
       </el-select>
     </div>
     <div class="form-item">
@@ -43,7 +43,6 @@
       <div class="form-label">最近更新</div>
       <div class="form-value">{{details.updateTime}}</div>
     </div>
-    <div class="line"></div>
     <div class="form-item desc">
       <div class="form-label">
         描述
@@ -53,103 +52,73 @@
       </div>
       <v-edit class="form-value" :content="details.desc" :uid="details.link" textType="textarea"></v-edit>
     </div>
+    <div class="form-item remark">
+      <div class="form-label">
+        备注
+        <el-tooltip content="此issue的备注信息" placement="top">
+          <i class="el-icon-info"></i>
+        </el-tooltip>
+      </div>
+      <v-edit class="form-value" :content="details.desc" :uid="details.link" textType="textarea"></v-edit>
+    </div>
   </div>
 </template>
 <script>
-  export default {
-    data() {
-      return {
-        options: [
-          {
-            label: '不紧急',
-            options: [
-              {
-                value: 'ignore',
-                label: '1'
-              },
-              {
-                value: 'delay',
-                label: '2'
-              }
-            ]
-          },
-          {
-            label: '一般',
-            options: [
-              {
-                value: 'glance',
-                label: '3'
-              },
-              {
-                value: 'lookup',
-                label: '4'
-              }
-            ]
-          },
-          {
-            label: '紧急',
-            options: [
-              {
-                value: 'gaze',
-                label: '5'
-              },
-              {
-                value: 'urgent',
-                label: '6'
-              }
-            ]
-          }
-        ],
-        optionsPoints: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-        details: {
-          name: '',
-          link: '',
-					type: '',
-					level: '',
-					title: '',
-					fixed: '',
-					progressState: '',
-					tag: {name: '', link: ''},
-					points: ''
-        }
-      }
-    },
-    watch: {
-      'sprintdetailData': function(v) {
-        if (v) {
-          this.details = JSON.parse(JSON.stringify(v))
-        }
-      }
-    },
-    props: {
-      sprintdetailData: [Object]
-    },
-    filters: {
-      filterLevel(v) {
-        console.log(v)
-        if (v <= 2) {
-          return 'unhurry'
-        } else if (v <= 4) {
-          return 'general'
-        } else {
-          return 'urgent'
-        }
-      }
-    },
-    created() {
-      if (this.sprintdetailData) {
-        this.details = {
-          ...this.details,
-          ...JSON.parse(JSON.stringify(this.sprintdetailData))
-        }
-      }
-    },
-    methods: {
-      hc_closeDetail() {
-        this.$emit('closeDetail')
+import { levelArr, pointsArr } from './storyConstant.js'
+
+export default {
+  data() {
+    return {
+      levelArr,
+      pointsArr,
+      details: {
+        name: '',
+        link: '',
+        type: '',
+        level: '',
+        title: '',
+        fixed: '',
+        progressState: '',
+        tag: {name: '', link: ''},
+        points: ''
       }
     }
+  },
+  watch: {
+    'sprintdetailData': function(v) {
+      if (v) {
+        this.details = JSON.parse(JSON.stringify(v))
+      }
+    }
+  },
+  props: {
+    sprintdetailData: [Object]
+  },
+  filters: {
+    filterLevel(v) {
+      if (v <= 2) {
+        return 'unhurry'
+      } else if (v <= 4) {
+        return 'general'
+      } else {
+        return 'urgent'
+      }
+    }
+  },
+  created() {
+    if (this.sprintdetailData) {
+      this.details = {
+        ...this.details,
+        ...JSON.parse(JSON.stringify(this.sprintdetailData))
+      }
+    }
+  },
+  methods: {
+    hc_closeDetail() {
+      this.$emit('closeDetail')
+    }
   }
+}
 </script>
 <style lang="scss">
   .el-select-dropdown__item {
@@ -165,13 +134,20 @@
 #sprint-detail {
   font-size: 14px;
   color: #172b4d;
-  padding: 0 0 10px 10px;
+  padding: 0 10px 10px;
   height: 100%;
   box-sizing: border-box;
+  overflow-y: scroll;
   .header {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding-right: 10px;
+    .link {
+      .tag {
+        text-indent: 4px;
+      }
+    }
   }
   .title {
     margin: 3px 0;
@@ -180,11 +156,11 @@
     display: flex;
     justify-content: flex-start;
     align-items: center;
-    height: 35px;
+    min-height: 35px;
     &.item-top {
       margin-top: 15px;
     }
-    &.desc {
+    &.desc, &.remark {
       margin: 10px 0;
       display: block;
       .form-label {
@@ -207,11 +183,6 @@
     .select-point {
       width: 64px;
     }
-  }
-  .line {
-    border-top: 1px solid rgba(0,0,0,0.2);
-    width: 100%;
-    margin-top: 10px;
   }
 }
 </style>

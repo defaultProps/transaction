@@ -18,7 +18,8 @@
 		</el-menu>
 		<div class="nav-right">
 			<el-input v-model="inputVal" size="mini" class="input" suffix-icon="el-icon-search"></el-input>
-			<el-button type="text" icon="el-icon-warning" size="medium"></el-button>
+			<el-button type="text" @click="dialogVisible = true" class="storage" icon="icon-lun iconfont" title="存储方式"></el-button>
+			<el-button type="text" icon="el-icon-info" size="medium" @click="$router.push('/navigation')"></el-button>
 			<el-popover placement="bottom-start"
 									width="300"
 									trigger="click"
@@ -29,19 +30,25 @@
 				</div>
 			</el-popover>
 		</div>
+		<v-initDataDialog v-bind:dialogVisible.sync="dialogVisible"></v-initDataDialog>
 	</div>
 </template>
 <script>
+import initDataDialog from '@/components/common/initDataDialog'
 export default {
 	data() {
 		return {
 			menu: [],
+			dialogVisible: true,
 			activeIndex: 'story',
 			inputVal: ''
 		}
 	},
 	created() {
 		this.getMenu()
+	},
+	components: {
+		'v-initDataDialog': initDataDialog
 	},
 	methods: {
 		handleSelect(v) {
@@ -61,10 +68,6 @@ export default {
 <style lang="scss" scoped>
 #header {
 	height: 40px;
-	position: fixed;
-	top: 0;
-	left: 0;
-	right: 0;
 	background: #0747a6;
 	z-index: 100;
 	color: #fff;
@@ -153,10 +156,13 @@ export default {
 	.nav-right {
 		position: absolute;
 		right: 10px;
-		width: 200px;
+		width: 270px;
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
+		.storage {
+			color: #fff;
+		}
 		.input {
 			width: 145px;
 		}
