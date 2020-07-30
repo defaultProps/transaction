@@ -1,11 +1,14 @@
 <template>
   <div id="sprint-detail">
+    <div id="dragglePoint">
+      <i class="iconfont icon-tuodong"></i>
+    </div>
     <div class="header">
       <div class="link">
         <router-link tag="a" v-show="details.tag" :to="details.tag.link" class="tag">{{details.tag.name}}</router-link> /
         <router-link tag="a" :to="`/story/${details.link}`" class="tag">{{details.link}}</router-link>
         </div>
-      <el-button type="text" icon="el-icon-close" class="btn-del" @click="hc_closeDetail()"></el-button>
+      <el-button type="text" icon="el-icon-close" class="btn-del" @click="handleClickCloseDetail()"></el-button>
     </div>
     <v-edit class="title" :content="details.title" :uid="details.link"></v-edit>
     <div class="form-item item-top">
@@ -113,8 +116,46 @@ export default {
       }
     }
   },
+  mounted() {
+    this.addDraggleEvent();
+  },
   methods: {
-    hc_closeDetail() {
+    addDraggleEvent() {
+      let backlogDetailWrapper = document.getElementById('backlogDetailWrapper');
+      let sprintDetailWrapper = document.getElementById('sprintDetailWrapper');
+      let dragglePoint = document.getElementById('dragglePoint')
+
+      dragglePoint.onmousedown = function(e) {
+        let currentPointClientX = e.clientX;
+        let windowWidth = window.innerWidth;
+        let backlogDetailWidth = backlogDetailWrapper.offsetWidth;
+        let sprintDetailWidth = sprintDetailWrapper.offsetWidth;
+
+        // 鼠标拖动事件
+        console.log(1)
+        document.onmousemove = function (e) {
+          console.log(2)
+          let dvalue =  e.clientX - currentPointClientX;
+          let backlogPercent = ((backlogDetailWidth + dvalue) / windowWidth * 100)
+          let sprintDetailPercent = ((sprintDetailWidth - dvalue) / windowWidth * 100)
+
+          if (backlogPercent > 46 && sprintDetailPercent > 22) {
+            backlogDetailWrapper.style.width = backlogPercent + '%'
+            sprintDetailWrapper.style.width =  sprintDetailPercent + '%'
+          }
+        }
+        document.onmouseup = function (evt) {
+          document.onmousemove = null;
+          document.onmouseup = null;
+          // 释放拖动线程
+          dragglePoint.releaseCapture && dragglePoint.releaseCapture();
+        }
+        // 释放线程的指定窗口里设置鼠标捕获
+        dragglePoint.setCapture && dragglePoint.setCapture();
+      }
+    },
+    handleClickCloseDetail() {
+      document.getElementById('backlogDetailWrapper').style.width = '87.5%'
       this.$emit('closeDetail')
     }
   }
@@ -132,12 +173,32 @@ export default {
     }
   }
 #sprint-detail {
+  user-select: none;
   font-size: 14px;
   color: #172b4d;
-  padding: 0 10px 10px;
   height: 100%;
+  padding: 0 5px 0 15px;
   box-sizing: border-box;
   overflow-y: scroll;
+  position: relative;
+  #dragglePoint {
+    position: absolute;
+    box-sizing: border-box;
+    line-height: 40px;
+    top: 50%;
+    left: 0;
+    bottom: 0;
+    width: 10px;
+    height: 40px;
+    cursor: move;
+    background: rgba(0, 0, 0, 0.1);
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+    i {
+      position: relative;
+      left: -3px;
+    }
+  }
   .header {
     display: flex;
     justify-content: space-between;

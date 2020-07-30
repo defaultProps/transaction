@@ -45,7 +45,7 @@
 					</div>
 				</div>
 			</el-col>
-			<el-col :span="sprintLen" class="backlog-wrap scroll-style-theme1">
+			<el-col :span="sprintLen" class="scroll-style-theme1" id="backlogDetailWrapper">
 				<template v-for="el of sprints">
 					<div class="backlog" v-if="el.status === 'doing'" :key="el.id">
 						<div class="backlog-title">
@@ -87,7 +87,7 @@
 												 :group="{ name: 'backlog', pull: true, put: true }"></v-draggleList>
 				</div>
 			</el-col>
-			<el-col class="sprint-detail" :span="21 - sprintLen" v-if="sprintLen !== 21">
+			<el-col id="sprintDetailWrapper" :span="detailLen">
 				<v-sprint-detail class="detail-container" :sprintdetailData="sprintdetailData" @closeDetail="closeDetail"></v-sprint-detail>
 			</el-col>
 		</el-row>
@@ -128,6 +128,11 @@ export default {
 			sprintdetailData: null
 		}
 	},
+	computed: {
+		detailLen: function() {
+			return 21 - this.sprintLen;
+		}
+	},
 	components: {
 		'v-draggleList': draggleList,
 		'v-sprint-detail': sprintDetail,
@@ -136,7 +141,6 @@ export default {
 	created() {
 		this.getbacklogList()
 		this.getsprintList()
-		console.log(this.$localforage)
 	},
 	methods: {
 		handleClose() {
@@ -178,7 +182,7 @@ export default {
 			this.highlightSelectedList()
 		},
 		handleDetail(v) {
-			this.sprintLen = 14;
+			this.sprintLen = 15;
 			this.sprintdetailData = v;
 			this.highlightSelectedList(v.link)
 		},
@@ -234,7 +238,7 @@ $bg-big:  #f4f5f7;
 		top: 40px;
 		filter: blur(3px);
 		box-sizing: border-box;
-		.backlog-wrap {
+		#backlogDetailWrapper {
 			height: 100%;
 			overflow-y: scroll;
 			box-sizing: border-box;
@@ -495,10 +499,9 @@ $bg-big:  #f4f5f7;
 				}
 			}
 		}
-		.sprint-detail {
+		#sprintDetailWrapper {
 			height: 100%;
 			height: 100%;
-			padding-left: 10px;
 			box-sizing: border-box;
 		}
 	}
