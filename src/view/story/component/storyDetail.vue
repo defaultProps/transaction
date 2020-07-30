@@ -96,7 +96,6 @@ export default {
   },
   filters: {
     filterLevel(v) {
-      console.log(v)
       if (v <= 2) {
         return 'unhurry'
       } else if (v <= 4) {
@@ -135,7 +134,7 @@ export default {
 #sprint-detail {
   font-size: 14px;
   color: #172b4d;
-  padding: 0 0 10px 10px;
+  padding: 0 10px 10px;
   height: 100%;
   box-sizing: border-box;
   overflow-y: scroll;

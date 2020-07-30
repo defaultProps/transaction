@@ -1,6 +1,6 @@
 <template>
-	<div id="story">
-		<el-row class="story-backlog">
+	<div id="moduleStory">
+		<el-row class="story-backlog" id="storyBacklog">
 			<el-col :span="3" class="between-space">
 				<div class="nav-relation">
 					<div class="nav-main">
@@ -50,7 +50,7 @@
 					<div class="backlog" v-if="el.status === 'doing'" :key="el.id">
 						<div class="backlog-title">
 							<div>
-								<el-button type="text" size="mini" class="trigger-sprint" @click="el.visible = !el.visible"><i :class="[el.visible ? 'el-icon-arrow-down' : 'el-icon-arrow-right']"></i></el-button>
+								<div size="mini" :class="[el.visible ? 'el-icon-arrow-down' : 'el-icon-arrow-right']" class="trigger-sprint" @click="el.visible = !el.visible"></div>
 								<span class="title">{{el.title}}</span>
 								<span class="issus-count">{{el.count}} 问题</span>
 								<span class="status" :class="[el.status]">{{el.status === 'doing' ? 'open' : 'close'}}</span>
@@ -75,8 +75,9 @@
 							<span class="issus-count">{{backlogTotal}} 问题</span>
 						</div>
 						<div>
-							<el-button type="warning" size="mini" class="btn" @click="hc_addissue()">new Sprint</el-button>
-							<el-button type="warning" size="mini" class="btn" @click="dialogTableVisible = true">new Issue</el-button>
+							<el-button type="primary" size="mini" icon="el-icon-setting" class="btn config-btn">配置域上传<i class="el-icon-caret-bottom el-icon--right"></i></el-button>
+							<el-button type="primary" size="mini" class="btn" @click="hc_addissue()">new Sprint</el-button>
+							<el-button type="primary" size="mini" class="btn" @click="dialogTableVisible = true">new Issue</el-button>
 						</div>
 					</div>
 					<v-draggleList v-loading="backlogLoading"
@@ -135,6 +136,7 @@ export default {
 	created() {
 		this.getbacklogList()
 		this.getsprintList()
+		console.log(this.$localforage)
 	},
 	methods: {
 		handleClose() {
@@ -223,14 +225,14 @@ export default {
 $color-highColor: #172b4d;;
 $bg-big:  #f4f5f7;
 
-#story {
+#moduleStory {
 	.story-backlog {
 		position: absolute;
 		left: 0;
 		right: 0;
 		bottom: 0px;
-		top: 0;
-		padding-top: 40px;
+		top: 40px;
+		filter: blur(3px);
 		box-sizing: border-box;
 		.backlog-wrap {
 			height: 100%;
@@ -256,6 +258,13 @@ $bg-big:  #f4f5f7;
 					align-items: center;
 					.trigger-sprint {
 						padding: 0px;
+						border-radius: 4px;
+						height: 14px;
+						width: 14px;
+						font-size: 14px;
+						cursor: pointer;
+						position: relative;
+						display: inline-block;
 						background-color: rgba(0, 0, 0, 0.5);
 						color: #fff;
 						margin-right: 3px;
@@ -326,7 +335,6 @@ $bg-big:  #f4f5f7;
 						float: right;
 						font-size: 12px;
 						margin: 5px;
-						color: #fff;
 					}
 				}
 			}
@@ -410,7 +418,7 @@ $bg-big:  #f4f5f7;
 							overflow-y: scroll;
 						}
 						.item-type-sprint {
-							height: calc(100% - 415px);
+							height: calc(100% - 400px);
 							overflow-y: scroll;
 							.item-sprint {
 								font-size: 12px;

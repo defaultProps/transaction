@@ -1,18 +1,19 @@
 <template>
   <div id="dialogNewIssus" v-if="dialogTableVisible">
-    <el-dialog
-      title="new Issue"
-      :visible.sync="dialogTableVisible"
-      size="mini"
-      :before-close="handleClose"
-      :show-close="false"
-      width="40%">
-      <el-form ref="form" :model="issueForm" label-width="80px" size="mini" :rules="rules" class="form">
+    <el-dialog :visible.sync="dialogTableVisible"
+               size="mini"
+               :before-close="handleClose"
+               :show-close="false"
+               width="40%">
+      <div class="dialog-header">
+        <div class="title">创建问题</div>
+      </div>
+      <el-form ref="form" :model="issueForm" label-width="80px" :rules="rules" class="form" size="small">
         <el-form-item label="问题类型" prop="name" class="form-item">
           <el-tooltip content="工作不全是生活，生活也不全是工作。" placement="top">
             <i class="el-icon-info"></i>
           </el-tooltip>
-          <el-select v-model="issueForm.type" placeholder="请选择" size="mini" class="select-item">
+          <el-select v-model="issueForm.type" placeholder="请选择" size="small" class="select-item">
             <el-option v-for="v in issusTypeArr" :key="v.name" :label="v.label" :value="v.value">
               <i class="iconfont" :class="[v.icon]" :style="{'color': v.color}"></i>
               {{v.label}}
@@ -21,15 +22,15 @@
           <div class="icon-prex"><i class="iconfont" :class="[issueForm.typeIcon]" :style="{'color': issueForm.typeColor}"></i></div>
         </el-form-item>
         <el-form-item label="概要" prop="name">
-          <el-input v-model="issueForm.name" placeholder="请输入概要"></el-input>
+          <el-input v-model="issueForm.name" placeholder="请输入概要" size="small"></el-input>
         </el-form-item>
         <el-form-item label="模块类型" prop="moduleType">
-          <el-select v-model="issueForm.moduleType" placeholder="请选择" size="mini" class="select-item">
+          <el-select v-model="issueForm.moduleType" placeholder="请选择" size="small" class="select-item">
             <el-option v-for="v in modulesList" :key="v.name" :label="v.name" :value="v.name"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="紧急度" prop="level">
-          <el-select v-model="issueForm.level" placeholder="请选择" size="mini" class="select-item">
+          <el-select v-model="issueForm.level" placeholder="请选择" size="small" class="select-item">
             <el-option-group v-for="group in levelArr" :key="group.label" :label="group.label">
               <el-option v-for="item in group.options" :key="item.value" :label="item.label" :value="item.value">
                 <span style="float: left">{{ item.label }}</span>
@@ -39,7 +40,7 @@
           </el-select>
         </el-form-item>
         <el-form-item label="预估" prop="point">
-          <el-select v-model="issueForm.point" placeholder="请选择" size="mini" class="select-item">
+          <el-select v-model="issueForm.point" placeholder="请选择" size="small" class="select-item">
             <el-option v-for="v in pointsArr" :key="v" :label="v" :value="v"></el-option>
           </el-select>
         </el-form-item>
@@ -51,8 +52,8 @@
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="handleClose()" size="mini">取 消</el-button>
-        <el-button type="primary" @click="dialogVisible = false" size="mini">确 定</el-button>
+        <el-button @click="handleClose()" size="small">取 消</el-button>
+        <el-button type="primary" @click="dialogVisible = false" size="small">确 定</el-button>
       </span>
     </el-dialog>
   </div>
@@ -108,7 +109,7 @@ export default {
           this.issueForm.typeColor = v.color;
         }
       })
-    },
+    }
   },
   methods: {
     handleClose() {
@@ -120,7 +121,9 @@ export default {
 <style lang="scss">
 #dialogNewIssus {
   .form {
+    padding-top: 10px;
     .form-item {
+
       .select-item {
         width: 100px;
         .el-input__inner {
@@ -135,10 +138,20 @@ export default {
       }
     }
   }
+  .dialog-header {
+    padding: 10px;
+    display: flex;
+    border-bottom: 2px solid #ebecf0;
+    justify-content: space-between;
+    align-items: center;
+    .title {
+      font-size: 18px;
+    }
+  }
 
   .el-dialog__wrapper {
     .el-dialog__header {
-      padding: 10px;
+      display: none;
     }
     .el-dialog__body {
       padding: 0 10px;

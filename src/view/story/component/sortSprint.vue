@@ -1,0 +1,117 @@
+<template>
+  <div id="sortSprint">
+    <el-button v-popover:type size="mini" type="text" icon="el-icon-info" class="type"></el-button>
+    <el-button v-popover:level size="mini" type="text" icon="el-icon-info" class="level"></el-button>
+    <el-button v-popover:link size="mini" type="text" class="link">链接</el-button>
+    <el-button v-popover:title size="mini" type="text" class="title">标题</el-button>
+    <el-button v-popover:modules size="mini" type="text" class="modules">模块</el-button>
+    <el-button v-popover:status size="mini" type="text" icon="el-icon-refresh-right el-icon--right" class="status">状态</el-button>
+    <el-button v-popover:point size="mini" type="text" class="point">耗时</el-button>
+    <el-popover ref="type"
+                placement="bottom"
+                width="160"
+                v-model="visibleType">
+      <div id="sortSprintMain">
+        <div class="work">
+          <el-button type="text">工作:</el-button>
+          <el-button size="mini" type="text" class="currentIcon"><i :class="[issusTypeArr[0].icon, 'iconfont']" :style="{'color': issusTypeArr[0].color}"></i></el-button>
+          <el-button icon="el-icon-refresh" size="mini" type="info" class="btn"></el-button>
+        </div>
+        <div class="life">
+          <el-button type="text">生活:</el-button>
+          <el-button size="mini" type="text" class="currentIcon"><i :class="[issusTypeArr[1].icon, 'iconfont']" :style="{'color': issusTypeArr[1].color}"></i></el-button>
+          <el-button icon="el-icon-refresh" size="mini" type="info" class="btn"></el-button>
+        </div>
+      </div>
+      <div class="footer">
+        <el-button size="mini" type="text" @click="visibleType = false" class="btn">取消</el-button>
+        <el-button type="primary" size="mini" @click="visibleType = false" class="btn">确定</el-button>
+      </div>
+    </el-popover>
+    <el-popover ref="level"
+                placement="bottom"
+                width="160"
+                v-model="visibleLevel">
+      <div id="sortSprintMain">
+        <div class="work" v-for="(item, index) in levelArr" :key="index">
+          <el-button type="text">{{item.label}}:</el-button>
+          <el-button size="mini" type="text" class="currentIcon">
+            <i v-for="(p, i) in item.options" :key="i" :class="[p.icon, 'iconfont']" :style="{'color': p.color}"></i></el-button>
+          <el-button icon="el-icon-refresh" size="mini" type="info" class="btn"></el-button>
+        </div>
+      </div>
+      <div class="footer">
+        <el-button size="mini" type="text" @click="visibleLevel = false" class="btn">取消</el-button>
+        <el-button type="primary" size="mini" @click="visibleLevel = false" class="btn">确定</el-button>
+      </div>
+    </el-popover>
+  </div>
+</template>
+<script>
+import { issusTypeArr, levelArr } from './storyConstant'
+export default {
+  data() {
+    return {
+      issusTypeArr,
+      levelArr,
+      visibleType: false,
+      visibleLevel: false
+    }
+  }
+}
+</script>
+<style lang="scss">
+#sortSprint {
+  display: flex;
+  .type, .level {
+    width: 25px;
+  }
+  .level {
+    margin-left: 0;
+  }
+  .link {
+    max-width: 100px;
+    min-width: 90px;
+  }
+  .title {
+    flex: 1;
+    text-align: left;
+  }
+  .modules, .status {
+    width: 56px;
+  }
+  .point {
+    width: 35px;
+    margin-left: 0;
+  }
+
+}
+#sortSprintMain {
+  .work, .life {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+  }
+  .currentIcon {
+    flex: 1;
+    text-align: left;
+  }
+  .btn {
+    padding: 3px;
+    height: 20px;
+    float: right;
+    font-size: 12px;
+    margin: 5px;
+  }
+}
+.footer {
+  text-align: right;
+  margin: 5px 0 0;
+  .btn {
+    padding: 0 3px;
+    height: 20px;
+    font-size: 12px;
+    margin: 5px;
+  }
+}
+</style>

@@ -2,7 +2,7 @@
   <div id="uxo-edit" @click="hc_edit">
     <div v-if="editMode" class="edit-mode">
       <el-form @submit.native="hc_submit()">
-        <el-input v-model="val" @blur="blur" class="input" :rows="15" ref="inputNode" :type="textType"></el-input>
+        <el-input v-model="val" @blur="blur" class="input" :rows="10" ref="inputNode" :type="textType"></el-input>
       </el-form>
       <div class="save-options">
         <el-button size="mini" @click.prevent.stop="hc_submit()" :class="[loading ? 'saved' : '']"><i class="icon" :class="[loading ? 'el-icon-loading' : 'el-icon-check']"></i></el-button>
@@ -149,6 +149,12 @@ export default {
       border: 1px solid rgba(0, 0, 0, 0.2);
       border-radius: 3px;
       border-bottom-right-radius: 0;
+    }
+    .el-textarea__inner {
+      color: #172b4d;
+      &:focus {
+        border: 1px solid rgba(0, 0, 0, 0.2);
+      }
     }
   }
   .save-options {

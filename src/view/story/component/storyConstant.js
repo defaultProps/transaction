@@ -22,11 +22,15 @@ export let levelArr = [
     options: [
       {
         value: 'ignore',
-        label: '1'
+        label: '1',
+        color: '#67C23A',
+        icon: 'icon-1_square'
       },
       {
         value: 'delay',
-        label: '2'
+        label: '2',
+        color: '#67C23A',
+        icon: 'icon-2_square'
       }
     ]
   },
@@ -35,11 +39,15 @@ export let levelArr = [
     options: [
       {
         value: 'glance',
-        label: '3'
+        label: '3',
+        color: '#E6A23C',
+        icon: 'icon-3_square'
       },
       {
         value: 'lookup',
-        label: '4'
+        label: '4',
+        color: '#E6A23C',
+        icon: 'icon-4_square'
       }
     ]
   },
@@ -48,18 +56,22 @@ export let levelArr = [
     options: [
       {
         value: 'gaze',
-        label: '5'
+        color: '#F56C6C',
+        label: '5',
+        icon: 'icon-5_square'
       },
       {
         value: 'urgent',
-        label: '6'
+        label: '6',
+        color: '#F56C6C',
+        icon: 'icon-6_square'
       }
     ]
   }
 ]
 export let issusTypeArr = [
   {icon: 'icon-shujuzhongjian', color: '#0065ff', label: '工作', value: 'job'},
-  {icon: 'icon-zhongjian', color: '#E6A23C', label: '生活', value: 'life'}
+  {icon: 'icon-shenghuo', color: '#E6A23C', label: '生活', value: 'life'}
 ]
 export let pointsArr = [0, 0.5, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 

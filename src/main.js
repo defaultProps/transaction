@@ -12,15 +12,15 @@ import '@/style/reset.css'
 import draggable from 'vuedraggable'
 import edit from '@/components/common/edit'
 import common from '@/libs'
-
-// 数据库连接
-import '../indexedDB/index'
+import localforage from 'localforage'
 
 Vue.config.productionTip = false
 Vue.prototype.$axios = axios
 Vue.prototype.$dayjs = dayjs
 Vue.prototype.$image = image
 Vue.prototype.$common = common
+Vue.prototype.$localforage = localforage;
+console.log(localforage)
 
 Vue.component('v-draggable', draggable)
 Vue.component('v-edit', edit)

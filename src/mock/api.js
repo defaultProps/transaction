@@ -1,5 +1,4 @@
 import Mock from "mockjs"
-import ARTICLE_DATA from '../../server/data/article.json'
 
 const HEADER_NAV = [
 	{name: '事务分发', link: 'story', color: '#5243aa', icon: ''},
@@ -28,8 +27,8 @@ let titles = [
 	'#生活乐趣 | 初始一项有趣物理化学实验',
 	'#生活乐趣 | 初始一项收集生物项目',
 	'#生活乐趣 | 初始一项心理学、哲学项目',
-	'#todo项目 | 删除文章模块，并修改为面板模块',
-	'#todo项目 | 新增汇编模块，文章模块中收集导航栏移动到汇编模块'
+	'#项目 | 任务管理器 | 删除文章模块，并修改为面板模块',
+	'#项目 | 任务管理器 | 新增汇编模块，文章模块中收集导航栏移动到汇编模块'
 ]
 
 export default {
@@ -92,13 +91,13 @@ export default {
 
 				while (i < total) {
 					let points = Math.ceil(Math.random() * 10)
-					let link = `INHOPE-${Math.ceil(Math.random() * 9000) + 1000}`
+					let link = `INHOPE-${Math.ceil(Math.random() * 9000)}`
 					issueList.push({
 						name: Mock.mock('@cname'),
 						order: link,
 						level: Math.ceil(Math.random() * 5),
 						link,
-						type: Math.random() > 0.5 ? 'needs' : 'bug',
+						type: Math.random() > 0.5 ? 'job' : 'life',
 						title: titles[i],
 						fixed: Math.random() > 0.5,
 						points,
@@ -150,12 +149,12 @@ export default {
 			let total = Math.ceil(Math.random() * 10) + 40;
 
 			while (i < total) {
-				let link = `INHOPE-${Math.ceil(Math.random() * 9000) + 1000}`
+				let link = `INHOPE-${Math.ceil(Math.random() * 9000)}`
 				result.push({
 					name: Mock.mock('@cname'),
 					order: link,
 					link,
-					type: Math.random() > 0.5 ? 'needs' : 'bug',
+					type: Math.random() > 0.5 ? 'job' : 'life',
 					level: Math.ceil(Math.random() * 5),
 					title: Mock.mock('@csentence(20, 40)'),
 					fixed: Math.random() > 0.5,
@@ -171,35 +170,6 @@ export default {
 					total,
 					sprintList: result
 				}
-			}
-		}
-	},
-	article: {
-		menu: obj => {
-			return {
-				status: 200,
-				data: [
-					{
-						name: '技术类',
-						link: '/article?type=technology',
-						icon: 'icon-renwu'
-					},
-					{
-						name: '工具类',
-						link: '/article?type=tool',
-						icon: 'icon-elementor'
-					},
-					{
-						name: '生活类',
-						link: '/article?type=life'
-					}
-				]
-			}
-		},
-		list: () => {
-			return {
-				status: 200,
-				data: ARTICLE_DATA.map((v, i) => ({...v, order: i, type: Math.random() > 0.5 ? 'read' : 'write', level: Math.ceil(Math.random() * 5)}))
 			}
 		}
 	},
