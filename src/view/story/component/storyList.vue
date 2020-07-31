@@ -1,7 +1,7 @@
 <template>
   <div id="draggable-list">
     <div class="sort-contain" v-show="draggbleList.length">
-      <v-sort-sprint></v-sort-sprint>
+      <v-sortSprint></v-sortSprint>
     </div>
     <template v-show="draggbleList.length">
       <v-draggable v-model="draggbleList"
@@ -38,7 +38,7 @@
 </template>
 
 <script>
-  import * as KeyCode from 'keycode-js';
+  // import * as KeyCode from 'keycode-js';
   import { issusTypeArr, levelArr } from './storyConstant'
   import sortSprint from './sortSprint'
   export default {
@@ -71,7 +71,7 @@
       }
     },
     components: {
-      'v-sort-sprint': sortSprint
+      'v-sortSprint': sortSprint
     },
     watch: {
       list(v) {
@@ -99,20 +99,20 @@
       this.draggbleList = JSON.parse(JSON.stringify(this.list))
     },
     mounted() {
-      window.addEventListener('keyup', function(e) {
-        console.log(KeyCode.CODE_RETURN, e.code)
-        // You may do one of these checks.
+      // window.addEventListener('keyup', function(e) {
+      //   console.log(KeyCode.CODE_RETURN, e.code)
+      //   // You may do one of these checks.
 
-        // Check the code value.
-        if (e.code === KeyCode.CODE_RETURN) {
-          console.log('It was the Return key.')
-        }
+      //   // Check the code value.
+      //   if (e.code === KeyCode.CODE_RETURN) {
+      //     console.log('It was the Return key.')
+      //   }
 
-        // OR, check the keyCode value.
-        if (e.keyCode === KeyCode.KEY_RETURN) {
-          console.log('It was the Return key.')
-        }
-      })
+      //   // OR, check the keyCode value.
+      //   if (e.keyCode === KeyCode.KEY_RETURN) {
+      //     console.log('It was the Return key.')
+      //   }
+      // })
     },
     methods: {
       handleDraggleList(v, i) {
@@ -207,8 +207,7 @@
       background-color: #deebff;
     }
     &.light {
-      // background: rgba(0, 0, 0, 0.1);
-      filter: contrast(0.7);
+      filter: contrast(0.8);
     }
     &::before {
       content: '';

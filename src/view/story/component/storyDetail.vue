@@ -125,6 +125,12 @@ export default {
       let sprintDetailWrapper = document.getElementById('sprintDetailWrapper');
       let dragglePoint = document.getElementById('dragglePoint')
 
+      dragglePoint.onmouseleave = function () {
+        dragglePoint.onmousemove = null;
+        document.onmouseup = null;
+        dragglePoint.onmousemove = null;
+        dragglePoint.onmouseup = null;
+      }
       dragglePoint.onmousedown = function(e) {
         let currentPointClientX = e.clientX;
         let windowWidth = window.innerWidth;
@@ -133,7 +139,7 @@ export default {
 
         // 鼠标拖动事件
         console.log(1)
-        document.onmousemove = function (e) {
+        document.onmousemove = function mouseMove (e) {
           console.log(2)
           let dvalue =  e.clientX - currentPointClientX;
           let backlogPercent = ((backlogDetailWidth + dvalue) / windowWidth * 100)
@@ -144,9 +150,15 @@ export default {
             sprintDetailWrapper.style.width =  sprintDetailPercent + '%'
           }
         }
+        dragglePoint.onmouseup = function() {
+          document.onmousemove = null;
+          document.onmouseup = null;
+          dragglePoint.onmouseup = null;
+        };
         document.onmouseup = function (evt) {
           document.onmousemove = null;
           document.onmouseup = null;
+          console.log('close')
           // 释放拖动线程
           dragglePoint.releaseCapture && dragglePoint.releaseCapture();
         }

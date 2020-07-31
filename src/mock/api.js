@@ -146,7 +146,7 @@ export default {
 		backlogList: obj => {
 			let result = []
 			let i = 0;
-			let total = Math.ceil(Math.random() * 10) + 40;
+			let total = Math.ceil(Math.random() * 10);
 
 			while (i < total) {
 				let link = `INHOPE-${Math.ceil(Math.random() * 9000)}`
