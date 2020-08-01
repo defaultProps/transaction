@@ -11,10 +11,10 @@
                  :show-close="false">
         <div class="current-storage">当前存储: {{currentStorageFn()}}</div>
         <div class="content-sql">
-          <el-button size="mini" plain type="primary" @click="handleClickSaveData('mock')" :disabled="hasDisabledClickOtherBtn">Mock数据</el-button>
-          <el-button size="mini" plain type="primary" @click="handleClickSaveData('indexedDB')" v-loading="indexDBLoading" :disabled="hasDisabledClickOtherBtn">indexedDB存储</el-button>
-          <el-button size="mini" plain type="primary" @click="handleClickSaveData('websql')" v-loading="websqlLoading" :disabled="hasDisabledClickOtherBtn">WebSQL存储</el-button>
-          <el-button size="mini" plain type="primary" @click="handleClickSaveData('cloudServer')" v-loading="cloudServerLoading" :disabled="hasDisabledClickOtherBtn">云服务器存储</el-button>
+          <el-button size="mini" :plain="currentStorage != 'mock'" type="primary" @click="handleClickSaveData('mock')" :disabled="hasDisabledClickOtherBtn">Mock数据</el-button>
+          <el-button size="mini" :plain="currentStorage != 'indexedDB'" type="primary" @click="handleClickSaveData('indexedDB')" v-loading="indexDBLoading" :disabled="hasDisabledClickOtherBtn">indexedDB存储</el-button>
+          <el-button size="mini" :plain="currentStorage != 'websql'" type="primary" @click="handleClickSaveData('websql')" v-loading="websqlLoading" :disabled="hasDisabledClickOtherBtn">WebSQL存储</el-button>
+          <el-button size="mini" :plain="currentStorage != 'cloudServer'" type="primary" @click="handleClickSaveData('cloudServer')" v-loading="cloudServerLoading" :disabled="hasDisabledClickOtherBtn">云服务器存储</el-button>
         </div>
         <div class="explain">
           <div class="ex-mock">* Mock数据主要是用于该网站主要功能的展示性，不支持存储信息，所有用户操作均在刷新后重置。<strong>（演示专用）</strong></div>
@@ -78,6 +78,7 @@ export default {
       })
       return result;
     },
+    // 设置背景高斯模糊度
     styleFilterContent(blur = true) {
       let dom = document.getElementById('storyBacklog')
 
@@ -90,8 +91,8 @@ export default {
       this.$emit('update:dialogVisible', false)
     },
     handleClickSaveData(saveType) {
-      this.$store.commit('saveType', saveType);
-      console.log(this.$store.state.conf.saveType);
+      this.$store.dispatch('saveType', saveType);
+      // console.log(this.$store.state.conf.saveType);
 
       this.activeStep = 'start-animation'
       this.styleFilterContent()

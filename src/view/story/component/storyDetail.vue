@@ -1,13 +1,11 @@
 <template>
   <div id="sprint-detail">
-    <div id="dragglePoint">
-      <i class="iconfont icon-tuodong"></i>
-    </div>
+    <div id="dragglePoint"><i class="iconfont icon-tuodong"></i></div>
     <div class="header">
       <div class="link">
         <router-link tag="a" v-show="details.tag" :to="details.tag.link" class="tag">{{details.tag.name}}</router-link> /
         <router-link tag="a" :to="`/story/${details.link}`" class="tag">{{details.link}}</router-link>
-        </div>
+      </div>
       <el-button type="text" icon="el-icon-close" class="btn-del" @click="handleClickCloseDetail()"></el-button>
     </div>
     <v-edit class="title" :content="details.title" :uid="details.link"></v-edit>
@@ -88,7 +86,7 @@ export default {
     }
   },
   watch: {
-    'sprintdetailData': function(v) {
+    sprintdetailData: function(v) {
       if (v) {
         this.details = JSON.parse(JSON.stringify(v))
       }
@@ -96,17 +94,6 @@ export default {
   },
   props: {
     sprintdetailData: [Object]
-  },
-  filters: {
-    filterLevel(v) {
-      if (v <= 2) {
-        return 'unhurry'
-      } else if (v <= 4) {
-        return 'general'
-      } else {
-        return 'urgent'
-      }
-    }
   },
   created() {
     if (this.sprintdetailData) {
@@ -123,24 +110,23 @@ export default {
     addDraggleEvent() {
       let backlogDetailWrapper = document.getElementById('backlogDetailWrapper');
       let sprintDetailWrapper = document.getElementById('sprintDetailWrapper');
-      let dragglePoint = document.getElementById('dragglePoint')
+      let dragglePoint = document.getElementById('dragglePoint');
 
-      dragglePoint.onmouseleave = function () {
-        dragglePoint.onmousemove = null;
+      document.onmouseup = function (evt) {
+        document.onmousemove = null;
         document.onmouseup = null;
-        dragglePoint.onmousemove = null;
-        dragglePoint.onmouseup = null;
       }
-      dragglePoint.onmousedown = function(e) {
-        let currentPointClientX = e.clientX;
+
+      dragglePoint.onmousedown = function(el) {
+        let currentPointClientX = el.clientX;
         let windowWidth = window.innerWidth;
         let backlogDetailWidth = backlogDetailWrapper.offsetWidth;
         let sprintDetailWidth = sprintDetailWrapper.offsetWidth;
 
-        // 鼠标拖动事件
-        console.log(1)
         document.onmousemove = function mouseMove (e) {
-          console.log(2)
+          el.target.setCapture && el.target.setCapture();
+          window.captureEvents && window.captureEvents(Event.MOUSEMOVE | Event.MOUSEUP);
+
           let dvalue =  e.clientX - currentPointClientX;
           let backlogPercent = ((backlogDetailWidth + dvalue) / windowWidth * 100)
           let sprintDetailPercent = ((sprintDetailWidth - dvalue) / windowWidth * 100)
@@ -150,20 +136,13 @@ export default {
             sprintDetailWrapper.style.width =  sprintDetailPercent + '%'
           }
         }
-        dragglePoint.onmouseup = function() {
+
+        document.onmouseup = function() {
           document.onmousemove = null;
-          document.onmouseup = null;
-          dragglePoint.onmouseup = null;
-        };
-        document.onmouseup = function (evt) {
-          document.onmousemove = null;
-          document.onmouseup = null;
-          console.log('close')
-          // 释放拖动线程
-          dragglePoint.releaseCapture && dragglePoint.releaseCapture();
+          // 释放线程的指定窗口里设置鼠标捕获
+          dragglePoint.releaseCapture &&  dragglePoint.releaseCapture();
+          window.releaseEvents && window.releaseEvents(Event.MOUSEMOVE | Event.MOUSEUP);
         }
-        // 释放线程的指定窗口里设置鼠标捕获
-        dragglePoint.setCapture && dragglePoint.setCapture();
       }
     },
     handleClickCloseDetail() {

@@ -19,7 +19,7 @@
           模块类型
           <el-button size="mini" icon="el-icon-edit" class="module-edit" type="text"></el-button>
         </div>
-        <ul class="scroll-style-none">
+        <ul class="scroll-style-none module-ul">
           <li v-for="p of modulesList"
               :key="p.link"
               @dragleave="dragleave(p)"
@@ -124,15 +124,18 @@ export default {
         padding: 3px 7px 3px 20px;
         background: #EBEEF5;
         font-size: 14px;
-        // .module-edit {
-        //   padding: 3px;
-        //   font-size: 14px;
-        //   color: rgba(0,0,0, 1);
-        // }
       }
       ul {
         max-height: 270px;
         overflow-y: scroll;
+        &.module-ul {
+          li {
+            &::before {
+              content: '';
+              background: #0006;
+            }
+          }
+        }
         li {
           background: #fff;
           height: 35px;

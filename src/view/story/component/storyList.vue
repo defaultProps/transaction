@@ -6,19 +6,19 @@
     <template v-show="draggbleList.length">
       <v-draggable v-model="draggbleList"
                   draggable=".item"
-                  :group="group"
+                  class="backlog-list"
                   tag="div"
                   ghost-class="ghost"
                   v-bind="dragOptions"
+                  :group="group"
                   @start="startDraggable"
                   @end="endDraggable"
-                  @add="addDraggable"
-                  class="backlog-list">
+                  @add="addDraggable">
         <div v-for="(p, i) of draggbleList"
-              :key="p.order"
-              :data-key="p.link"
-              class="item"
-              @click="handleDraggleList(p, i)">
+             :key="p.order"
+             :data-key="p.link"
+             class="item"
+             @click="handleDraggleList(p, i)">
           <span class="type" :class="[p.type]">
             <i class="iconfont" :class="filterTypeIcon(p.type)" :style="{color: filterTypeColor(p.type)}"></i>
           </span>

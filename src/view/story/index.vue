@@ -48,8 +48,8 @@
 			</el-col>
 			<el-col id="sprintDetailWrapper" :span="detailLen">
 				<v-sprintDetail class="detail-container"
-											   :sprintdetailData="sprintdetailData"
-												 @closeDetail="closeDetail"></v-sprintDetail>
+											  :sprintdetailData="sprintdetailData"
+												@closeDetail="closeDetail"></v-sprintDetail>
 			</el-col>
 		</el-row>
 		<v-dialogNewIssus :dialogTableVisible="dialogTableVisible" @handleClose="handleClose"></v-dialogNewIssus>

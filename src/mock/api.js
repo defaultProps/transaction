@@ -146,7 +146,7 @@ export default {
 		backlogList: obj => {
 			let result = []
 			let i = 0;
-			let total = Math.ceil(Math.random() * 10);
+			let total = Math.ceil(Math.random() * 10) + 50;
 
 			while (i < total) {
 				let link = `INHOPE-${Math.ceil(Math.random() * 9000)}`
@@ -177,7 +177,7 @@ export default {
 		getMenu: obj => {
 			return {
 				status: 200,
-				data: HEADER_NAV.slice(0, 2)
+				data: HEADER_NAV.slice(0, 1)
 			}
 		}
 	}
