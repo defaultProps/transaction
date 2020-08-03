@@ -20,7 +20,7 @@
           <div class="ex-mock">* Mock数据主要是用于该网站主要功能的展示性，不支持存储信息，所有用户操作均在刷新后重置。<strong>（演示专用）</strong></div>
           <div class="ex-indexeddb">* indexedDB是目前主流的一种客户端存储技术，兼容性强、响应速度较快。<strong>（强烈推荐）</strong></div>
           <div class="ex-Websql">* Web SQL存储兼容性差，目前只支持chrome和Edge浏览器。<strong>（开发练习，不建议使用）</strong></div>
-          <div class="cloudserver">* 云服务器存储，常规操作， 但是需要money搭建远程服务器。 <strong>（需个人配置）</strong></div>
+          <div class="cloudserver">* 云服务器存储，暂不支持。 <strong>（需个人配置）</strong></div>
         </div>
         <div class="implementSteps">
 
@@ -92,8 +92,6 @@ export default {
     },
     handleClickSaveData(saveType) {
       this.$store.dispatch('saveType', saveType);
-      // console.log(this.$store.state.conf.saveType);
-
       this.activeStep = 'start-animation'
       this.styleFilterContent()
       this.mockLoading = true;
@@ -140,7 +138,7 @@ export default {
   }
   .explain{
     margin-top: 12px;
-    font-size: 12px;
+    font-size: 14px;
     line-height: 20px;
     strong {
       font-size: 600;

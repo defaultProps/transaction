@@ -1,7 +1,7 @@
 <template>
   <div id="draggable-list">
     <div class="sort-contain" v-show="draggbleList.length">
-      <v-sortSprint></v-sortSprint>
+      <v-sortSprint @sortable="sortable"></v-sortSprint>
     </div>
     <template v-show="draggbleList.length">
       <v-draggable v-model="draggbleList"
@@ -11,6 +11,8 @@
                   ghost-class="ghost"
                   v-bind="dragOptions"
                   :group="group"
+                  :sort="true"
+                  @sort="onsort"
                   @start="startDraggable"
                   @end="endDraggable"
                   @add="addDraggable">
@@ -25,9 +27,9 @@
           <span class="level"><i class="iconfont" :class="stylelevelClass(p.level)" :style="{'color': filterLevelColor(p.level)}"></i></span>
           <span class="key-link">{{p.link}}</span>
           <span class="title" :title="p.title">{{p.title}}</span>
-          <el-button type="text" size="mini" :class="[p.moduleState && p.moduleState.link, 'modules-type']"  v-if="p.moduleState">{{p.moduleState.name}}</el-button>
+          <el-button type="text" size="mini" :class="[p.moduleState && p.moduleState.value, 'modules-type']"  v-if="p.moduleState">{{p.moduleState.name}}</el-button>
           <el-button type="text" size="mini" v-if="p.progressState" :class="[p.progressState, 'info-status']">{{p.progressState | filterprogressState}}</el-button>
-          <el-button type="info" circle class="points">{{p.points}}</el-button>
+          <el-button type="info" circle class="points">{{p.point}}</el-button>
         </div>
       </v-draggable>
     </template>
@@ -36,7 +38,6 @@
     </div>
   </div>
 </template>
-
 <script>
   // import * as KeyCode from 'keycode-js';
   import { issusTypeArr, levelArr } from './storyConstant'
@@ -115,6 +116,22 @@
       // })
     },
     methods: {
+      sortable(type = 'executiveMode') {
+        if (type == 'executiveMode') {
+          this.draggbleList.sort((pre, next) => {
+            let preIndex = ['not-start', 'doing', 'finish'].indexOf(pre.progressState)
+            let nextIndex = ['not-start', 'doing', 'finish'].indexOf(next.progressState)
+
+            return preIndex - nextIndex;
+          })
+        }
+        if (type == 'point') {
+          this.draggbleList.sort((pre, next) => pre.point - next.point)
+        }
+      },
+      onsort() {
+        console.log(1)
+      },
       handleDraggleList(v, i) {
         this.$emit('handleDetail', v)
       },

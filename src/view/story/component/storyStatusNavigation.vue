@@ -140,7 +140,7 @@ export default {
           background: #fff;
           height: 35px;
           line-height: 35px;
-          font-size: 12px;
+          font-size: 14px;
           margin-bottom: 0;
           user-select: text;
           box-sizing: border-box;
@@ -204,7 +204,7 @@ export default {
           max-height: none;
           overflow-y: scroll;
           li {
-            font-weight: 600;
+            font-size: 12px;
             cursor: pointer;
             &:hover {
               background: #f6f6f6;

@@ -3,7 +3,7 @@
     <div id="dragglePoint"><i class="iconfont icon-tuodong"></i></div>
     <div class="header">
       <div class="link">
-        <router-link tag="a" v-show="details.tag" :to="details.tag.link" class="tag">{{details.tag.name}}</router-link> /
+        <router-link tag="a" v-show="details.tag" :to="details.link" class="tag">{{details.tag.name}}</router-link> /
         <router-link tag="a" :to="`/story/${details.link}`" class="tag">{{details.link}}</router-link>
       </div>
       <el-button type="text" icon="el-icon-close" class="btn-del" @click="handleClickCloseDetail()"></el-button>
@@ -32,7 +32,7 @@
           <i class="el-icon-info"></i>
         </el-tooltip>
       </div>
-      <el-select v-model="details.points" placeholder="请选择" size="mini" class="select-point">
+      <el-select v-model="details.point" placeholder="请选择" size="mini" class="select-point">
         <el-option v-for="v in pointsArr" :key="v" :label="v" :value="v"></el-option>
       </el-select>
     </div>
@@ -60,7 +60,7 @@
           <i class="el-icon-info"></i>
         </el-tooltip>
       </div>
-      <v-edit class="form-value" :content="details.desc" :uid="details.link" textType="textarea"></v-edit>
+      <v-edit class="form-value" :content="details.remark" :uid="details.link" textType="textarea"></v-edit>
     </div>
   </div>
 </template>
@@ -95,16 +95,9 @@ export default {
   props: {
     sprintdetailData: [Object]
   },
-  created() {
-    if (this.sprintdetailData) {
-      this.details = {
-        ...this.details,
-        ...JSON.parse(JSON.stringify(this.sprintdetailData))
-      }
-    }
-  },
   mounted() {
-    this.addDraggleEvent();
+    // 非常消耗资源，卡顿
+    // this.addDraggleEvent();
   },
   methods: {
     addDraggleEvent() {

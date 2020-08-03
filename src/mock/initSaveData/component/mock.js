@@ -1,56 +1,99 @@
 import Mock from "mockjs"
+import { modulesList } from '@/view/story/component/storyConstant.js'
 
-const HEADER_NAV = ['事务分发', '仪表盘', '大块文章', '旅游指南', '农贸市场', '健身运动', '厨房日记', '宇宙探索', '游戏人生'].map(v => ({label: v, value: Mock.mock('@guid')}));
+export default function (keys, params) {
+  switch (keys) {
+    case 'sprintList':
+      return getactiveSprintList(params);
+    case 'backlogList':
+      return getBacklogSprint(params);
+    case 'getMenu':
+      return getMenu(params);
+    default:
+      return ''
+  }
 
-export default function () {
-  function closeSprint() {
+  function getMenu(params) {
+
+  }
+
+  function backlogSprintList(index) {
+    return {
+      link: `INHOPE-${Math.ceil(Math.random() * 8000) + 1000}`, // 链接
+      point: Math.random() > 0.5 ? Math.ceil(Math.random() * 10) : '', // 预估
+      level: Math.ceil(Math.random() * 5), // 紧急度
+      type: Math.random() > 0.5 ? 'job' : 'life', // issus类型 生活、工作
+      title: Mock.mock('@csentence(20, 60)'), // 标题
+      desc: Mock.mock('@csentence(100, 200)'), // 描述
+      remark: Mock.mock('@csentence(100, 200)'),
+      createTime: Mock.mock('@datetime("yyyy年MM月dd日 HH:mm:ss")'),
+      updateTime: Mock.mock('@datetime("yyyy年MM月dd日 HH:mm:ss")'),
+      tag: modulesList[Math.floor(Math.random() * modulesList.length)], // 模块
+      moduleState: modulesList[Math.floor(modulesList.length * Math.random())] // 模块
+    }
+  }
+  function sprintList(index) {
+    return {
+      name: Mock.mock('@cname'),
+      level: Math.ceil(Math.random() * 5),
+      link: `INHOPE-${Math.ceil(Math.random() * 9000)}`,
+      type: Math.random() > 0.5 ? 'job' : 'life',
+      title: Mock.mock('@csentence(20, 60)'),
+      fixed: Math.random() > 0.5,
+      point: Math.ceil(Math.random() * 10),
+      desc: Mock.mock('@csentence(100, 200)'),
+      remark: Mock.mock('@csentence(100, 200)'),
+      createTime: Mock.mock('@datetime("yyyy年MM月dd日 HH:mm:ss")'),
+      updateTime: Mock.mock('@datetime("yyyy年MM月dd日 HH:mm:ss")'),
+      tag: modulesList[Math.floor(Math.random() * modulesList.length)], // 模块
+      progressState: ['doing', 'not-start', 'finish'][Math.floor(Math.random() * 3)], // 执行状态
+      moduleState: modulesList[Math.floor(modulesList.length * Math.random())] // 模块
+    }
+  }
+
+  // 当前活跃sprint列表
+  function getactiveSprintList(params) {
     let issueList = [];
-    let total = 23;
-    let pointsTotal = Math.ceil(Math.random() * 20) + 20;
+    let i = 0;
 
-    for (let i = 0; i < total; i++) {
-      issueList.push({
+    while (i < 10) {
+      issueList.push(sprintList(i))
+      i++
+    }
+
+    return {
+      status: 200,
+      data: {
         id: Mock.mock('@guid'),
         title: Mock.mock('@cword(4, 9)'),
-        count: pointsTotal
-      })
-    }
-    return {
-      total,
-      issueList
+        createTime: Mock.mock('@date("yyyy/MM/dd")'),
+        endTime: Mock.mock('@date("yyyy/MM/dd")'),
+        status: 'active',
+        issueList
+      }
     }
   }
-
-  function backlogSprint() {
-    let pointsTotal = 0;
-    let total = 40;
+  // backlog中sprint列表
+  function getBacklogSprint(params) {
     let issueList = [];
+    let i = 0;
+    let total = 40;
 
-    for (let i = 0; i < total; i++) {
-      let point = Math.ceil(Math.random() * 30)
-      issueList.push({
-        link: `INHOPE-${Math.ceil(Math.random() * 8000) + 1000}`, // 链接
-        point, // 预估
-        level: Math.ceil(Math.random() * 5), // 紧急度
-        type: Math.random() > 0.5 ? 'job' : 'life', // issus类型 生活、工作
-        title: Mock.mock('@csentence(20, 40)'), // 标题
-        desc: Mock.mock('@csentence(100, 200)'), // 描述
-        createTime: Mock.mock('@datetime("yyyy年MM月dd日 HH:mm:ss")'),
-        updateTime: Mock.mock('@datetime("yyyy年MM月dd日 HH:mm:ss")'),
-        tag: HEADER_NAV[Math.floor(Math.random() * HEADER_NAV.length)], // 模块
-        progressState: ['doing', 'not-start', 'finish'][Math.floor(Math.random() * 3)] // 执行状态
-      })
-      pointsTotal += point;
+    while (i < total) {
+      issueList.push(backlogSprintList(i))
+      i++
     }
 
     return {
-      total,
-      issueList,
-      pointsTotal
+      status: 200,
+      data: {
+        id: Mock.mock('@guid'),
+        title: Mock.mock('@cword(4, 9)'),
+        createTime: Mock.mock('@date("yyyy/MM/dd")'),
+        endTime: Mock.mock('@date("yyyy/MM/dd")'),
+        status: 'active',
+        issueList
+      }
     }
   }
-
-  // 加载数据
-  closeSprint();
-  backlogSprint();
 }

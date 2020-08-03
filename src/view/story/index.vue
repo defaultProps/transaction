@@ -5,28 +5,26 @@
 				<v-storyStatusNavigation @dropDownStatus="dropDownStatus"></v-storyStatusNavigation>
 			</el-col>
 			<el-col :span="sprintLen" class="scroll-style-theme1" id="backlogDetailWrapper">
-				<template v-for="el of sprints">
-					<div class="backlog" v-if="el.status === 'doing'" :key="el.id">
-						<div class="backlog-title">
-							<div>
-								<div size="mini" :class="[el.visible ? 'el-icon-arrow-down' : 'el-icon-arrow-right']" class="trigger-sprint" @click="el.visible = !el.visible"></div>
-								<span class="title">{{el.title}}</span>
-								<span class="issus-count">{{el.count}} 问题</span>
-								<span class="status" :class="[el.status]">{{el.status === 'doing' ? 'open' : 'close'}}</span>
-								<span class="date">{{el. createTime}} <i class="iconfont icon-weibiaoti29"></i> {{el. endTime}}</span>
-							</div>
-							<span class="status count">{{el.pointsTotal}}</span>
+				<div class="backlog">
+					<div class="backlog-title">
+						<div>
+							<div size="mini" :class="[activeSprint.visible ? 'el-icon-arrow-down' : 'el-icon-arrow-right']" class="trigger-sprint" @click="activeSprint.visible = !activeSprint.visible"></div>
+							<span class="title">{{activeSprint.title}}</span>
+							<span class="issus-count">{{activeSprint.total}} 问题</span>
+							<span class="status" :class="[activeSprint.status]">{{activeSprint.status === 'doing' ? 'open' : 'close'}}</span>
+							<span class="date">{{activeSprint. createTime}} <i class="iconfont icon-weibiaoti29"></i> {{activeSprint.endTime}}</span>
 						</div>
-						<v-draggleList v-show="el.visible"
-													 v-loading="sprintLoading"
-													 :list="el.issueList"
-													 :highlightSelectedList="highlightSelectedList"
-													 :dropDraggleObj="dropDraggleObj"
-													 group="backlog"
-													 @endDraggable="endDraggable"
-													 @handleDetail="handleDetail"></v-draggleList>
+						<span class="status count">{{activeSprint.points}}</span>
 					</div>
-				</template>
+					<v-draggleList v-show="activeSprint.visible"
+													v-loading="sprintLoading"
+													:list="activeSprint.issueList"
+													:highlightSelectedList="highlightSelectedList"
+													:dropDraggleObj="dropDraggleObj"
+													group="backlog"
+													@endDraggable="endDraggable"
+													@handleDetail="handleDetail"></v-draggleList>
+				</div>
 				<div class="backlog">
 					<div class="backlog-title">
 						<div>
@@ -41,7 +39,7 @@
 					</div>
 					<v-draggleList v-loading="backlogLoading"
 										     handle=".handle"
-												 :list="backlogList"
+												 :list="backlogSprint.issueList"
 												 :highlightSelectedList="highlightSelectedList"
 												 :group="{ name: 'backlog', pull: true, put: true }"></v-draggleList>
 				</div>
@@ -67,8 +65,10 @@ export default {
 			dialogTableVisible: false,
 			sprintData: [],
 			selecType: null,
-			backlogList: [],
-			sprints: [],
+			backlogSprint: [],
+			activeSprint: {
+				issueList: []
+			},
 			sprintLen: 21,
 			backlogTotal: 0,
 			backlogLoading: false,
@@ -155,21 +155,23 @@ export default {
 			}
 		},
 		getsprintList() {
-			this.$axios.sprints.sprintList({type: 'sprint'}).then(v => {
-				this.sprints = v.sprintList.map(v => ({...v, visible: true}))
+			this.$axios.sprints.sprintList({type: 'sprint'}).then(activeSprint => {
+				let points = 0;
+
+				activeSprint.issueList.forEach(v => {
+					points += v.point
+				})
+				this.activeSprint = {...activeSprint, visible: true, points, total: activeSprint.issueList.length}
 			})
 		},
 		getbacklogList() {
 			this.backlogLoading = true
-			this.$axios.sprints.backlogList({type: 'backlog'}).then(v => {
+			this.$axios.sprints.backlogList({type: 'backlog'}).then(backlogSprint => {
 				setTimeout(() => {
-					this.backlogList = v.sprintList.map(v => ({
-						...v,
-						selected: false
-					}))
-					this.backlogTotal = v.total
 					this.backlogLoading = false
-				}, 500);
+					this.backlogTotal = backlogSprint.issueList.length;
+					this.backlogSprint = backlogSprint
+				}, 500)
 			})
 		}
 	}
@@ -186,7 +188,7 @@ $bg-big:  #f4f5f7;
 		right: 0;
 		bottom: 0px;
 		top: 40px;
-		filter: blur(3px);
+		// filter: blur(3px);
 		box-sizing: border-box;
 		#backlogDetailWrapper {
 			height: 100%;
