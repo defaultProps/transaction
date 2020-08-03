@@ -1,6 +1,6 @@
 import Axios from 'axios'
 
-Axios.defaults.timeout = 60 * 1000 // 接口设置超时一分钟
+Axios.defaults.timeout = 60 * 1000;
 Axios.defaults.withCredentials = true
 
 Axios.interceptors.request.use(config => {

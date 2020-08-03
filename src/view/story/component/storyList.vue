@@ -1,33 +1,35 @@
 <template>
   <div id="draggable-list">
     <div class="sort-contain" v-show="draggbleList.length">
-      <v-sort-sprint></v-sort-sprint>
+      <v-sortSprint @sortable="sortable"></v-sortSprint>
     </div>
     <template v-show="draggbleList.length">
       <v-draggable v-model="draggbleList"
                   draggable=".item"
-                  :group="group"
+                  class="backlog-list"
                   tag="div"
                   ghost-class="ghost"
                   v-bind="dragOptions"
+                  :group="group"
+                  :sort="true"
+                  @sort="onsort"
                   @start="startDraggable"
                   @end="endDraggable"
-                  @add="addDraggable"
-                  class="backlog-list">
+                  @add="addDraggable">
         <div v-for="(p, i) of draggbleList"
-              :key="p.order"
-              :data-key="p.link"
-              class="item"
-              @click="handleDraggleList(p, i)">
+             :key="p.order"
+             :data-key="p.link"
+             class="item"
+             @click="handleDraggleList(p, i)">
           <span class="type" :class="[p.type]">
             <i class="iconfont" :class="filterTypeIcon(p.type)" :style="{color: filterTypeColor(p.type)}"></i>
           </span>
           <span class="level"><i class="iconfont" :class="stylelevelClass(p.level)" :style="{'color': filterLevelColor(p.level)}"></i></span>
           <span class="key-link">{{p.link}}</span>
           <span class="title" :title="p.title">{{p.title}}</span>
-          <el-button type="text" size="mini" :class="[p.moduleState && p.moduleState.link, 'modules-type']"  v-if="p.moduleState">{{p.moduleState.name}}</el-button>
+          <el-button type="text" size="mini" :class="[p.moduleState && p.moduleState.value, 'modules-type']"  v-if="p.moduleState">{{p.moduleState.name}}</el-button>
           <el-button type="text" size="mini" v-if="p.progressState" :class="[p.progressState, 'info-status']">{{p.progressState | filterprogressState}}</el-button>
-          <el-button type="info" circle class="points">{{p.points}}</el-button>
+          <el-button type="info" circle class="points">{{p.point}}</el-button>
         </div>
       </v-draggable>
     </template>
@@ -36,9 +38,8 @@
     </div>
   </div>
 </template>
-
 <script>
-  import * as KeyCode from 'keycode-js';
+  // import * as KeyCode from 'keycode-js';
   import { issusTypeArr, levelArr } from './storyConstant'
   import sortSprint from './sortSprint'
   export default {
@@ -71,7 +72,7 @@
       }
     },
     components: {
-      'v-sort-sprint': sortSprint
+      'v-sortSprint': sortSprint
     },
     watch: {
       list(v) {
@@ -99,22 +100,38 @@
       this.draggbleList = JSON.parse(JSON.stringify(this.list))
     },
     mounted() {
-      window.addEventListener('keyup', function(e) {
-        console.log(KeyCode.CODE_RETURN, e.code)
-        // You may do one of these checks.
+      // window.addEventListener('keyup', function(e) {
+      //   console.log(KeyCode.CODE_RETURN, e.code)
+      //   // You may do one of these checks.
 
-        // Check the code value.
-        if (e.code === KeyCode.CODE_RETURN) {
-          console.log('It was the Return key.')
-        }
+      //   // Check the code value.
+      //   if (e.code === KeyCode.CODE_RETURN) {
+      //     console.log('It was the Return key.')
+      //   }
 
-        // OR, check the keyCode value.
-        if (e.keyCode === KeyCode.KEY_RETURN) {
-          console.log('It was the Return key.')
-        }
-      })
+      //   // OR, check the keyCode value.
+      //   if (e.keyCode === KeyCode.KEY_RETURN) {
+      //     console.log('It was the Return key.')
+      //   }
+      // })
     },
     methods: {
+      sortable(type = 'executiveMode') {
+        if (type == 'executiveMode') {
+          this.draggbleList.sort((pre, next) => {
+            let preIndex = ['not-start', 'doing', 'finish'].indexOf(pre.progressState)
+            let nextIndex = ['not-start', 'doing', 'finish'].indexOf(next.progressState)
+
+            return preIndex - nextIndex;
+          })
+        }
+        if (type == 'point') {
+          this.draggbleList.sort((pre, next) => pre.point - next.point)
+        }
+      },
+      onsort() {
+        console.log(1)
+      },
       handleDraggleList(v, i) {
         this.$emit('handleDetail', v)
       },
@@ -207,8 +224,7 @@
       background-color: #deebff;
     }
     &.light {
-      // background: rgba(0, 0, 0, 0.1);
-      filter: contrast(0.7);
+      filter: contrast(0.8);
     }
     &::before {
       content: '';

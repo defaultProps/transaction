@@ -16,6 +16,7 @@ export let modulesList = [
 	{name: '宇宙探索', link: 'universe', color: '#5243aa', icon: ''},
 	{name: '游戏人生', link: 'games', color: '#598ed4', icon: ''}
 ]
+
 export let levelArr = [
   {
     label: '不紧急',
@@ -70,8 +71,20 @@ export let levelArr = [
   }
 ]
 export let issusTypeArr = [
-  {icon: 'icon-shujuzhongjian', color: '#0065ff', label: '工作', value: 'job'},
-  {icon: 'icon-shenghuo', color: '#E6A23C', label: '生活', value: 'life'}
+  {
+    icon: 'icon-shujuzhongjian',
+    color: '#0065ff',
+    label: '工作',
+    value: 'job',
+    moreIcon: ['icon-gongzuo', 'icon-code', 'icon-all-fill', 'icon-all', 'icon-auto', 'icon-raw', 'icon-discounts-fill', 'icon-tuishui']
+  },
+  {
+    icon: 'icon-shenghuo',
+    color: '#E6A23C',
+    label: '生活',
+    value: 'life',
+    moreIcon: ['icon-process', 'icon-waihuishuju', 'icon-read2', 'icon-pic-fill', 'icon-landtransportation']
+  }
 ]
 export let pointsArr = [0, 0.5, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 

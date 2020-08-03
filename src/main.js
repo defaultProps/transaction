@@ -12,25 +12,24 @@ import '@/style/reset.css'
 import draggable from 'vuedraggable'
 import edit from '@/components/common/edit'
 import common from '@/libs'
-import localforage from 'localforage'
+import COOKIES from 'js-cookie'
 
 Vue.config.productionTip = false
 Vue.prototype.$axios = axios
 Vue.prototype.$dayjs = dayjs
 Vue.prototype.$image = image
 Vue.prototype.$common = common
-Vue.prototype.$localforage = localforage;
-console.log(localforage)
 
 Vue.component('v-draggable', draggable)
 Vue.component('v-edit', edit)
 Vue.use(ElementUI)
 
 Mock.mockData()
+COOKIES.set('saveType', 'mock', { expires: 7, path: '' });
 
 /* eslint-disable no-new */
 new Vue({
-  el: '#cai',
+  el: '#todo',
   router,
   store,
   components: { home },

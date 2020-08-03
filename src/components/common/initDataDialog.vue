@@ -11,16 +11,16 @@
                  :show-close="false">
         <div class="current-storage">当前存储: {{currentStorageFn()}}</div>
         <div class="content-sql">
-          <el-button size="mini" @click="hc_selectDataBase('mock')" :disabled="hasDisabledClickOtherBtn">Mock数据</el-button>
-          <el-button size="mini" @click="hc_selectDataBase('indexedDB')" v-loading="indexDBLoading" :disabled="hasDisabledClickOtherBtn">indexedDB存储</el-button>
-          <el-button size="mini" @click="hc_selectDataBase('websql')" v-loading="websqlLoading" :disabled="hasDisabledClickOtherBtn">WebSQL存储</el-button>
-          <el-button size="mini" @click="hc_selectDataBase('cloudServer')" v-loading="cloudServerLoading" :disabled="hasDisabledClickOtherBtn">云服务器存储</el-button>
+          <el-button size="mini" :plain="currentStorage != 'mock'" type="primary" @click="handleClickSaveData('mock')" :disabled="hasDisabledClickOtherBtn">Mock数据</el-button>
+          <el-button size="mini" :plain="currentStorage != 'indexedDB'" type="primary" @click="handleClickSaveData('indexedDB')" v-loading="indexDBLoading" :disabled="hasDisabledClickOtherBtn">indexedDB存储</el-button>
+          <el-button size="mini" :plain="currentStorage != 'websql'" type="primary" @click="handleClickSaveData('websql')" v-loading="websqlLoading" :disabled="hasDisabledClickOtherBtn">WebSQL存储</el-button>
+          <el-button size="mini" :plain="currentStorage != 'cloudServer'" type="primary" @click="handleClickSaveData('cloudServer')" v-loading="cloudServerLoading" :disabled="hasDisabledClickOtherBtn">云服务器存储</el-button>
         </div>
         <div class="explain">
           <div class="ex-mock">* Mock数据主要是用于该网站主要功能的展示性，不支持存储信息，所有用户操作均在刷新后重置。<strong>（演示专用）</strong></div>
           <div class="ex-indexeddb">* indexedDB是目前主流的一种客户端存储技术，兼容性强、响应速度较快。<strong>（强烈推荐）</strong></div>
           <div class="ex-Websql">* Web SQL存储兼容性差，目前只支持chrome和Edge浏览器。<strong>（开发练习，不建议使用）</strong></div>
-          <div class="cloudserver">* 云服务器存储，常规操作， 但是需要money搭建远程服务器。 <strong>（需个人配置）</strong></div>
+          <div class="cloudserver">* 云服务器存储，暂不支持。 <strong>（需个人配置）</strong></div>
         </div>
         <div class="implementSteps">
 
@@ -39,6 +39,7 @@ const STORAGEMEYHODS = [
   {value: 'websql', label: 'Web SQL存储'},
   {value: 'cloudserver', label: '云服务器存储'}
 ];
+
 export default {
   data() {
     return {
@@ -77,6 +78,7 @@ export default {
       })
       return result;
     },
+    // 设置背景高斯模糊度
     styleFilterContent(blur = true) {
       let dom = document.getElementById('storyBacklog')
 
@@ -88,7 +90,8 @@ export default {
       this.styleFilterContent(false)
       this.$emit('update:dialogVisible', false)
     },
-    hc_selectDataBase(saveType) {
+    handleClickSaveData(saveType) {
+      this.$store.dispatch('saveType', saveType);
       this.activeStep = 'start-animation'
       this.styleFilterContent()
       this.mockLoading = true;
@@ -118,8 +121,8 @@ export default {
     font-size: 12px;
     text-align: center;
     margin: 0 0 10px;
-    padding-bottom: 10px;
-    box-shadow: 0 3px 3px -3px rgba(0, 0, 0, 0.2);
+    padding-bottom: 4px;
+    box-shadow: 0 5px 5px -3px #b3d8ff;
   }
   .content-sql {
     margin-top: 15px;
@@ -135,7 +138,7 @@ export default {
   }
   .explain{
     margin-top: 12px;
-    font-size: 12px;
+    font-size: 14px;
     line-height: 20px;
     strong {
       font-size: 600;

@@ -39,7 +39,7 @@ export default {
 	data() {
 		return {
 			menu: [],
-			dialogVisible: true,
+			dialogVisible: false,
 			activeIndex: 'story',
 			inputVal: ''
 		}

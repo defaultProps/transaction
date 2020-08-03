@@ -5,8 +5,8 @@
     <el-button v-popover:link size="mini" type="text" class="link">链接</el-button>
     <el-button v-popover:title size="mini" type="text" class="title">标题</el-button>
     <el-button v-popover:modules size="mini" type="text" class="modules">模块</el-button>
-    <el-button v-popover:status size="mini" type="text" icon="el-icon-refresh-right el-icon--right" class="status">状态</el-button>
-    <el-button v-popover:point size="mini" type="text" class="point">耗时</el-button>
+    <el-button v-popover:status size="mini" type="text" icon="el-icon-refresh-right el-icon--right" class="status" @click="$emit('sortable', 'executiveMode')">状态</el-button>
+    <el-button v-popover:point size="mini" type="text" class="point" icon="el-icon-refresh-right el-icon--right" @click="$emit('sortable', 'point')">点</el-button>
     <el-popover ref="type"
                 placement="bottom"
                 width="160"
@@ -14,13 +14,13 @@
       <div id="sortSprintMain">
         <div class="work">
           <el-button type="text">工作:</el-button>
-          <el-button size="mini" type="text" class="currentIcon"><i :class="[issusTypeArr[0].icon, 'iconfont']" :style="{'color': issusTypeArr[0].color}"></i></el-button>
-          <el-button icon="el-icon-refresh" size="mini" type="info" class="btn"></el-button>
+          <el-button size="mini" type="text" class="currentIcon"><i :class="[currentworkIcon, 'iconfont']" :style="{'color': issusTypeArr[0].color}"></i></el-button>
+          <el-button icon="el-icon-refresh" size="mini" type="info" class="btn" @click="selectIcon('work')"></el-button>
         </div>
         <div class="life">
           <el-button type="text">生活:</el-button>
-          <el-button size="mini" type="text" class="currentIcon"><i :class="[issusTypeArr[1].icon, 'iconfont']" :style="{'color': issusTypeArr[1].color}"></i></el-button>
-          <el-button icon="el-icon-refresh" size="mini" type="info" class="btn"></el-button>
+          <el-button size="mini" type="text" class="currentIcon"><i :class="[currentLifeIcon, 'iconfont']" :style="{'color': issusTypeArr[1].color}"></i></el-button>
+          <el-button icon="el-icon-refresh" size="mini" type="info" class="btn" @click="selectIcon('life')"></el-button>
         </div>
       </div>
       <div class="footer">
@@ -54,8 +54,37 @@ export default {
     return {
       issusTypeArr,
       levelArr,
+      currentworkIcon: '',
+      currentLifeIcon: '',
       visibleType: false,
-      visibleLevel: false
+      visibleLevel: false,
+      flagWorkIconIndex: 0,
+      flaglifeIconIndex: 0
+    }
+  },
+  created() {
+    this.currentworkIcon = issusTypeArr[0].icon;
+    this.currentLifeIcon = issusTypeArr[1].icon;
+  },
+  methods: {
+    selectIcon(issueType) {
+      if (issueType == 'work') {
+        if (this.flagWorkIconIndex >= issusTypeArr[0].moreIcon.length) {
+          this.flagWorkIconIndex = 0;
+        }
+
+        this.currentworkIcon = issusTypeArr[0].moreIcon[this.flagWorkIconIndex]
+        this.flagWorkIconIndex ++;
+      }
+
+      if (issueType == 'life') {
+        if (this.flaglifeIconIndex >= issusTypeArr[1].moreIcon.length) {
+          this.flaglifeIconIndex = 0;
+        }
+
+        this.currentLifeIcon = issusTypeArr[1].moreIcon[this.flaglifeIconIndex]
+        this.flaglifeIconIndex ++;
+      }
     }
   }
 }
@@ -81,7 +110,7 @@ export default {
     width: 56px;
   }
   .point {
-    width: 35px;
+    width: 40px;
     margin-left: 0;
   }
 

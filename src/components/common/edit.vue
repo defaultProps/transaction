@@ -1,12 +1,12 @@
 <template>
   <div id="uxo-edit" @click="hc_edit">
     <div v-if="editMode" class="edit-mode">
-      <el-form @submit.native="hc_submit()">
+      <el-form @submit.native="handleClickSubmit()">
         <el-input v-model="val" @blur="blur" class="input" :rows="10" ref="inputNode" :type="textType"></el-input>
       </el-form>
       <div class="save-options">
-        <el-button size="mini" @click.prevent.stop="hc_submit()" :class="[loading ? 'saved' : '']"><i class="icon" :class="[loading ? 'el-icon-loading' : 'el-icon-check']"></i></el-button>
-        <el-button size="mini" @click.prevent.stop="hc_cencel()" icon="el-icon-close"></el-button>
+        <el-button size="mini" @click.prevent.stop="handleClickSubmit()" :class="[loading ? 'saved' : '']"><i class="icon" :class="[loading ? 'el-icon-loading' : 'el-icon-check']"></i></el-button>
+        <el-button size="mini" @click.prevent.stop="handleClickCencel()" icon="el-icon-close"></el-button>
       </div>
     </div>
     <div v-else class="info">
@@ -33,13 +33,15 @@ export default {
         this.$nextTick(() => {
           this.$refs.inputNode.focus()
           this.$refs.inputNode.select()
-
         })
       }
     },
     'uid'() {
       this.editMode = false;
-    }
+    },
+    'content'(v) {
+      this.val = v;
+    },
   },
   created() {
     this.val = this.content
@@ -77,7 +79,7 @@ export default {
         }, 300);
       }, 100)
     },
-    async hc_submit() {
+    async handleClickSubmit() {
       this.cencelBtnCick = false;
       this.loading = true;
       await this.cb()
@@ -89,7 +91,7 @@ export default {
     hc_edit() {
       this.editMode = true;
     },
-    hc_cencel() {
+    handleClickCencel() {
       this.cencelBtnCick = true;
       this.editMode = false;
     }

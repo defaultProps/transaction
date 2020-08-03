@@ -1,12 +1,21 @@
+import COOKIES from 'js-cookie'
+
 export default {
   state: {
-		isMockMode: true, // 是否开启Mock模式
-		theme: 'default', // 主题
-    consequentFastClickSecond: 1000 // 防连点时间限制ms
+    saveType: '' // 存储类型
+  },
+  getters: {
+    saveType: state => state.saveType
   },
   mutations: {
-    isMockMode: (state, data) => {
-      state.isMockMode = data
+    saveType: (state, data) => {
+      state.saveType = data;
 		}
+  },
+  actions: {
+    saveType ({ commit, state }, saveType) {
+      commit('saveType', saveType);
+      COOKIES.set('saveType', saveType, { expires: 7, path: '' });
+    }
   }
 }
