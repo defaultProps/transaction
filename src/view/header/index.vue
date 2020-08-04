@@ -11,7 +11,7 @@
 					 	 class="el-menu-demo"
 					 	 mode="horizontal"
 					 	 @select="handleSelect"
-					   background-color="#0747a6"
+					   background-color="#205081"
 						 text-color="#f0f0f0"
 						 active-text-color="#ffd04b">
 			<el-menu-item v-for="l in menu" :key="l.title" :index="l.link">{{l.name}}</el-menu-item>
@@ -68,7 +68,7 @@ export default {
 <style lang="scss" scoped>
 #header {
 	height: 40px;
-	background: #0747a6;
+	background: #205081;
 	z-index: 100;
 	color: #fff;
 	display: flex;

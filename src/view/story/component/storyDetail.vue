@@ -6,7 +6,7 @@
         <router-link tag="a" v-show="details.tag" :to="details.link" class="tag">{{details.tag.name}}</router-link> /
         <router-link tag="a" :to="`/story/${details.link}`" class="tag">{{details.link}}</router-link>
       </div>
-      <el-button type="text" icon="el-icon-close" class="btn-del" @click="handleClickCloseDetail()"></el-button>
+      <el-button type="text" icon="el-icon-close" class="btn-del" @click="handleClickCloseDetailModule()"></el-button>
     </div>
     <v-edit class="title" :content="details.title" :uid="details.link"></v-edit>
     <div class="form-item item-top">
@@ -97,7 +97,7 @@ export default {
   },
   mounted() {
     // 非常消耗资源，卡顿
-    // this.addDraggleEvent();
+    this.addDraggleEvent();
   },
   methods: {
     addDraggleEvent() {
@@ -138,8 +138,7 @@ export default {
         }
       }
     },
-    handleClickCloseDetail() {
-      document.getElementById('backlogDetailWrapper').style.width = '87.5%'
+    handleClickCloseDetailModule() {
       this.$emit('closeDetail')
     }
   }

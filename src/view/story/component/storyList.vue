@@ -11,8 +11,8 @@
                   ghost-class="ghost"
                   v-bind="dragOptions"
                   :group="group"
+                  animation="120"
                   :sort="true"
-                  @sort="onsort"
                   @start="startDraggable"
                   @end="endDraggable"
                   @add="addDraggable">
@@ -49,6 +49,7 @@
         type: Array,
         default: function() { return [] }
       },
+      sprintType: [String],
       dropDraggleObj: [Object],
       loading: [Boolean],
       group: [String, Object]
@@ -128,9 +129,6 @@
         if (type == 'point') {
           this.draggbleList.sort((pre, next) => pre.point - next.point)
         }
-      },
-      onsort() {
-        console.log(1)
       },
       handleDraggleList(v, i) {
         this.$emit('handleDetail', v)

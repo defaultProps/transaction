@@ -25,6 +25,12 @@ let routes = [
 		meta: {title: '事务分发', level: 0, auth: 0, sidebar: false}
 	},
 	{
+		path: '/story:link',
+		name: 'story',
+		component: story,
+		meta: {title: '事务分发', level: 0, auth: 0, sidebar: false}
+	},
+	{
 		path: '/article',
 		name: 'article',
 		component: article,

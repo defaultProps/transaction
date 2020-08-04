@@ -122,8 +122,14 @@ export default {
         align-items: center;
         box-sizing: border-box;
         padding: 3px 7px 3px 20px;
-        background: #EBEEF5;
+        background: #409EFF;
+        font-weight: 600;
+        color: #fff;
+        background: #3282b8;
         font-size: 14px;
+        i {
+          color: #fff;
+        }
       }
       ul {
         max-height: 270px;
@@ -132,7 +138,7 @@ export default {
           li {
             &::before {
               content: '';
-              background: #0006;
+              background: #00875a;
             }
           }
         }
@@ -198,7 +204,6 @@ export default {
           position: sticky;
           z-index: 200;
           top: 0;
-          background: #EBEEF5;
         }
         ul {
           max-height: none;

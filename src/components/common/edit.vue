@@ -41,7 +41,7 @@ export default {
     },
     'content'(v) {
       this.val = v;
-    },
+    }
   },
   created() {
     this.val = this.content

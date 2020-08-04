@@ -21,7 +21,7 @@ export default function (keys, params) {
     return {
       link: `INHOPE-${Math.ceil(Math.random() * 8000) + 1000}`, // 链接
       point: Math.random() > 0.5 ? Math.ceil(Math.random() * 10) : '', // 预估
-      level: Math.ceil(Math.random() * 5), // 紧急度
+      level: Math.ceil(Math.random() * 6), // 紧急度
       type: Math.random() > 0.5 ? 'job' : 'life', // issus类型 生活、工作
       title: Mock.mock('@csentence(20, 60)'), // 标题
       desc: Mock.mock('@csentence(100, 200)'), // 描述

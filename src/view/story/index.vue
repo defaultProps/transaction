@@ -11,7 +11,7 @@
 							<div size="mini" :class="[activeSprint.visible ? 'el-icon-arrow-down' : 'el-icon-arrow-right']" class="trigger-sprint" @click="activeSprint.visible = !activeSprint.visible"></div>
 							<span class="title">{{activeSprint.title}}</span>
 							<span class="issus-count">{{activeSprint.total}} 问题</span>
-							<span class="status" :class="[activeSprint.status]">{{activeSprint.status === 'doing' ? 'open' : 'close'}}</span>
+							<span class="status">open</span>
 							<span class="date">{{activeSprint. createTime}} <i class="iconfont icon-weibiaoti29"></i> {{activeSprint.endTime}}</span>
 						</div>
 						<span class="status count">{{activeSprint.points}}</span>
@@ -22,6 +22,7 @@
 													:highlightSelectedList="highlightSelectedList"
 													:dropDraggleObj="dropDraggleObj"
 													group="backlog"
+													:sprintType="'active'"
 													@endDraggable="endDraggable"
 													@handleDetail="handleDetail"></v-draggleList>
 				</div>
@@ -39,11 +40,13 @@
 					</div>
 					<v-draggleList v-loading="backlogLoading"
 										     handle=".handle"
+												 :sprintType="'backlog'"
 												 :list="backlogSprint.issueList"
 												 :highlightSelectedList="highlightSelectedList"
 												 :group="{ name: 'backlog', pull: true, put: true }"></v-draggleList>
 				</div>
 			</el-col>
+			<!-- 分离detail分离至top parent -->
 			<el-col id="sprintDetailWrapper" :span="detailLen">
 				<v-sprintDetail class="detail-container"
 											  :sprintdetailData="sprintdetailData"
@@ -134,24 +137,30 @@ export default {
 		},
 		closeDetail() {
 			this.sprintLen = 21;
+			document.getElementById('backlogDetailWrapper').style.width = this.sprintLen / 24 * 100 + '%'
+			document.getElementById('sprintDetailWrapper').style.width = '0%'
 			this.highlightSelectedList()
 		},
 		handleDetail(v) {
-			this.sprintLen = 15;
+			if (this.sprintLen === 21) {
+				this.sprintLen = 15;
+				document.getElementById('backlogDetailWrapper').style.width = this.sprintLen / 24 * 100 + '%'
+				document.getElementById('sprintDetailWrapper').style.width = this.detailLen / 24 * 100 + '%'
+			}
+
 			this.sprintdetailData = v;
 			this.highlightSelectedList(v.link)
 		},
 		// css & 拖动列表高亮
 		highlightSelectedList(key) {
-			let currentDOM = document.querySelector(`.item[data-key="${key}"]`);
 			let allDraggableList = document.querySelectorAll(`.item[data-key`);
 
 			allDraggableList.forEach(el => {
 				el.classList.remove('light')
 			})
 
-			if (key) {
-				currentDOM.classList.add('light')
+			if (document.querySelector(`.item[data-key="${key}"]`)) {
+				document.querySelector(`.item[data-key="${key}"]`).classList.add('light')
 			}
 		},
 		getsprintList() {
@@ -167,11 +176,9 @@ export default {
 		getbacklogList() {
 			this.backlogLoading = true
 			this.$axios.sprints.backlogList({type: 'backlog'}).then(backlogSprint => {
-				setTimeout(() => {
-					this.backlogLoading = false
-					this.backlogTotal = backlogSprint.issueList.length;
-					this.backlogSprint = backlogSprint
-				}, 500)
+				this.backlogLoading = false
+				this.backlogTotal = backlogSprint.issueList.length;
+				this.backlogSprint = backlogSprint
 			})
 		}
 	}
@@ -254,8 +261,8 @@ $bg-big:  #f4f5f7;
 						height: 20px;
 						text-align: left;
 						font-weight: 600;
-						background-color: #909399;
-						border-color: #909399;
+						background-color: #00875a;
+						border-color: #00875a;
 						&.doing {
 							background-color: #00875a;
 							border-color: #00875a;

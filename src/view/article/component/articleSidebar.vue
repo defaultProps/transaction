@@ -9,7 +9,7 @@
 			@close="handleClose"
 			background-color="#fff"
 			unique-opened
-			active-text-color="#0747a6"
+			active-text-color="#205081"
 			>
 				<template v-for="(list, i) of menu">
 					<template v-if="list.children">
