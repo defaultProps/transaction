@@ -1,6 +1,6 @@
 <template>
   <div id="draggable-list">
-    <div class="sort-contain" v-show="draggbleList.length">
+    <div class="sort-contain" v-show="draggbleList.length && sprintType =='active'">
       <v-sortSprint @sortable="sortable"></v-sortSprint>
     </div>
     <template v-show="draggbleList.length">
@@ -11,8 +11,7 @@
                   ghost-class="ghost"
                   v-bind="dragOptions"
                   :group="group"
-                  animation="120"
-                  :sort="true"
+                  animation="200"
                   @start="startDraggable"
                   @end="endDraggable"
                   @add="addDraggable">
@@ -44,7 +43,6 @@
   import sortSprint from './sortSprint'
   export default {
     props: {
-      highlightSelectedList: Function,
       list: {
         type: Array,
         default: function() { return [] }
@@ -81,6 +79,7 @@
       },
       dropDraggleObj: {
         handler(v) {
+          console.log(v, this.oldIndex, this.draggbleList)
           if (v && this.oldIndex >= 0) {
             if (v.type === 'implement') {
               this.$set(this.draggbleList[this.oldIndex], 'progressState', v.link);

@@ -59,7 +59,9 @@ export default {
 				{name: 'ly2011博客', link: 'https://github.com/ly2011/blog/issues'},
 				{name: 'yygmind博客', link: 'https://github.com/yygmind/blog/issues'},
 				{name: '算法网', link: 'http://ddrv.cn/'},
-				{name: 'react学习', link: 'https://github.com/reactnativecn/react-native-guide'}
+				{name: 'react学习', link: 'https://github.com/reactnativecn/react-native-guide'},
+				{name: '人人FED', link: 'https://www.rrfed.com/'},
+				{name: '码农头条', link: 'http://hao.caibaojian.com.cn/'}
 			]
 
 			return {

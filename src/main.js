@@ -13,6 +13,7 @@ import draggable from 'vuedraggable'
 import edit from '@/components/common/edit'
 import common from '@/libs'
 import COOKIES from 'js-cookie'
+import VueTinymce from "@packy-tang/vue-tinymce"
 
 Vue.config.productionTip = false
 Vue.prototype.$axios = axios
@@ -22,6 +23,7 @@ Vue.prototype.$common = common
 
 Vue.component('v-draggable', draggable)
 Vue.component('v-edit', edit)
+Vue.use(VueTinymce)
 Vue.use(ElementUI)
 
 Mock.mockData()

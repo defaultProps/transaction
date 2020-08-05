@@ -2,6 +2,7 @@ import Mock from "mockjs"
 import { modulesList } from '@/view/story/component/storyConstant.js'
 
 export default function (keys, params) {
+  // axios请求接口归档
   switch (keys) {
     case 'sprintList':
       return getactiveSprintList(params);
@@ -23,7 +24,7 @@ export default function (keys, params) {
       point: Math.random() > 0.5 ? Math.ceil(Math.random() * 10) : '', // 预估
       level: Math.ceil(Math.random() * 6), // 紧急度
       type: Math.random() > 0.5 ? 'job' : 'life', // issus类型 生活、工作
-      title: Mock.mock('@csentence(20, 60)'), // 标题
+      title: Mock.mock('@csentence(15, 40)'), // 标题
       desc: Mock.mock('@csentence(100, 200)'), // 描述
       remark: Mock.mock('@csentence(100, 200)'),
       createTime: Mock.mock('@datetime("yyyy年MM月dd日 HH:mm:ss")'),
@@ -38,7 +39,7 @@ export default function (keys, params) {
       level: Math.ceil(Math.random() * 5),
       link: `INHOPE-${Math.ceil(Math.random() * 9000)}`,
       type: Math.random() > 0.5 ? 'job' : 'life',
-      title: Mock.mock('@csentence(20, 60)'),
+      title: Mock.mock('@csentence(15, 40)'),
       fixed: Math.random() > 0.5,
       point: Math.ceil(Math.random() * 10),
       desc: Mock.mock('@csentence(100, 200)'),

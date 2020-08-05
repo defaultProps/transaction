@@ -5,8 +5,8 @@
     <el-button v-popover:link size="mini" type="text" class="link">链接</el-button>
     <el-button v-popover:title size="mini" type="text" class="title">标题</el-button>
     <el-button v-popover:modules size="mini" type="text" class="modules">模块</el-button>
-    <el-button v-popover:status size="mini" type="text" icon="el-icon-refresh-right el-icon--right" class="status" @click="$emit('sortable', 'executiveMode')">状态</el-button>
-    <el-button v-popover:point size="mini" type="text" class="point" icon="el-icon-refresh-right el-icon--right" @click="$emit('sortable', 'point')">点</el-button>
+    <el-button v-popover:status size="mini" type="text" icon="el-icon-sort-down el-icon--right" class="status" @click="$emit('sortable', 'executiveMode')">状态</el-button>
+    <el-button v-popover:point size="mini" type="text" class="point" icon="el-icon-sort-down el-icon--right" @click="$emit('sortable', 'point')">点</el-button>
     <el-popover ref="type"
                 placement="bottom"
                 width="160"

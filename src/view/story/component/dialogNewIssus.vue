@@ -2,6 +2,7 @@
   <div id="dialogNewIssus" v-if="dialogTableVisible">
     <el-dialog :visible.sync="dialogTableVisible"
                size="mini"
+               :close-on-click-modal="false"
                :before-close="handleClose"
                :show-close="false"
                width="40%">

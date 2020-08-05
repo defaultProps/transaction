@@ -90,6 +90,7 @@ export default {
 		.title {
 			font-size: 14px;
 			user-select: none;
+			font-style: italic;
 		}
 		.logo {
 			width: 20px;

@@ -14,12 +14,22 @@
 							<span class="status">open</span>
 							<span class="date">{{activeSprint. createTime}} <i class="iconfont icon-weibiaoti29"></i> {{activeSprint.endTime}}</span>
 						</div>
-						<span class="status count">{{activeSprint.points}}</span>
+						<div>
+							<el-popover
+								placement="right"
+								width="400"
+								trigger="click">
+								<el-table :data="gridData">
+									<el-table-column width="150" property="date" label="日期"></el-table-column>
+									<el-table-column width="100" property="name" label="姓名"></el-table-column>
+									<el-table-column width="300" property="address" label="地址"></el-table-column>
+								</el-table>
+								<el-button slot="reference" size="mini">筛选事务</el-button>
+							</el-popover>
+							<span class="status count">{{activeSprint.points}}</span>
+						</div>
 					</div>
-					<v-draggleList v-show="activeSprint.visible"
-													v-loading="sprintLoading"
-													:list="activeSprint.issueList"
-													:highlightSelectedList="highlightSelectedList"
+					<v-draggleList :list="activeSprint.issueList"
 													:dropDraggleObj="dropDraggleObj"
 													group="backlog"
 													:sprintType="'active'"
@@ -33,16 +43,16 @@
 							<span class="issus-count">{{backlogTotal}} 问题</span>
 						</div>
 						<div>
-							<el-button type="primary" size="mini" icon="el-icon-setting" class="btn config-btn">配置域上传<i class="el-icon-caret-bottom el-icon--right"></i></el-button>
-							<el-button type="primary" size="mini" class="btn" @click="hc_addissue()">new Sprint</el-button>
-							<el-button type="primary" size="mini" class="btn" @click="dialogTableVisible = true">new Issue</el-button>
+							<el-button size="mini" @click="dialogTableVisible = true">新建issue</el-button>
+							<el-button size="mini" @click="hc_addissue()">新建事务</el-button>
 						</div>
 					</div>
-					<v-draggleList v-loading="backlogLoading"
-										     handle=".handle"
+					<v-draggleList handle=".handle"
 												 :sprintType="'backlog'"
+												 @handleDetail="handleDetail"
+												 :dropDraggleObj="dropDraggleObj"
+												 @endDraggable="endDraggable"
 												 :list="backlogSprint.issueList"
-												 :highlightSelectedList="highlightSelectedList"
 												 :group="{ name: 'backlog', pull: true, put: true }"></v-draggleList>
 				</div>
 			</el-col>
@@ -77,6 +87,7 @@ export default {
 			backlogLoading: false,
 			sprintLoading: false,
 			activeCollapse: 0,
+			activeLightLink: '', // 当前高亮选中link
 			affairVal: '',
 			dropDraggleObj: null, // sprint列表拖动到左侧导航栏时的数据
 			sprintdetailData: null
@@ -85,6 +96,11 @@ export default {
 	computed: {
 		detailLen: function() {
 			return 21 - this.sprintLen;
+		}
+	},
+	provide() {
+		return {
+
 		}
 	},
 	components: {
@@ -117,8 +133,8 @@ export default {
 		},
 		// 请求数据
 		endDraggable(obj) {
+			this.highlightSelectedList();
 			if (this.dropDraggleObj) {
-				// this.$axios.sprint.
 				setTimeout(() => {
 					this.dropDraggleObj = null;
 				}, 4000);
@@ -131,10 +147,6 @@ export default {
 			e.preventDefault()
 			this.$set(obj, 'dropStatus', true)
 		},
-		drop(obj) {
-			this.$set(obj, 'dropStatus', false)
-			this.dropDraggleObj = obj
-		},
 		closeDetail() {
 			this.sprintLen = 21;
 			document.getElementById('backlogDetailWrapper').style.width = this.sprintLen / 24 * 100 + '%'
@@ -142,6 +154,7 @@ export default {
 			this.highlightSelectedList()
 		},
 		handleDetail(v) {
+			this.activeLightLink = v.link;
 			if (this.sprintLen === 21) {
 				this.sprintLen = 15;
 				document.getElementById('backlogDetailWrapper').style.width = this.sprintLen / 24 * 100 + '%'
@@ -149,7 +162,7 @@ export default {
 			}
 
 			this.sprintdetailData = v;
-			this.highlightSelectedList(v.link)
+			this.highlightSelectedList()
 		},
 		// css & 拖动列表高亮
 		highlightSelectedList(key) {
@@ -159,8 +172,8 @@ export default {
 				el.classList.remove('light')
 			})
 
-			if (document.querySelector(`.item[data-key="${key}"]`)) {
-				document.querySelector(`.item[data-key="${key}"]`).classList.add('light')
+			if (this.activeLightLink) {
+				document.querySelector(`.item[data-key="${this.activeLightLink}"]`).classList.add('light')
 			}
 		},
 		getsprintList() {
@@ -291,13 +304,6 @@ $bg-big:  #f4f5f7;
 							border-color: #b3d8ff;
 							outline:none;
 						}
-					}
-					.btn {
-						padding: 1px 3px;
-						height: 25px;
-						float: right;
-						font-size: 12px;
-						margin: 5px;
 					}
 				}
 			}

@@ -3,7 +3,7 @@
     <div class="nav-main">
       <div class="module">
         <div class="module-title">执行状态</div>
-        <ul>
+        <ul class="scroll-style-none">
           <li v-for="p of progressStateList"
               :key="p.link"
               @dragleave="dragleave(p)"
@@ -14,7 +14,7 @@
           </li>
         </ul>
       </div>
-      <div class="module">
+      <div class="module module-type">
         <div class="module-title">
           模块类型
           <el-button size="mini" icon="el-icon-edit" class="module-edit" type="text"></el-button>
@@ -30,12 +30,12 @@
           </li>
         </ul>
       </div>
-      <div class="module navgation scroll-style-none">
+      <!-- <div class="module navgation scroll-style-none">
         <div class="module-title">
           附加链接
           <el-button size="mini" icon="el-icon-edit" class="module-edit" type="text"></el-button>
         </div>
-        <ul>
+        <ul class="scroll-style-none">
           <li v-for="p of thusList"
               :key="p.name"
               :title="p.name"
@@ -44,7 +44,7 @@
               {{p.name}}
           </li>
         </ul>
-      </div>
+      </div> -->
     </div>
   </div>
 </template>
@@ -114,6 +114,9 @@ export default {
     box-sizing: border-box;
     position: relative;
     .module {
+      &.module-type {
+        height: calc(100% - 140px);
+      }
       .module-title {
         height: 34px;
         box-sizing: border-box;
@@ -132,9 +135,10 @@ export default {
         }
       }
       ul {
-        max-height: 270px;
+        height: 100%;
         overflow-y: scroll;
         &.module-ul {
+           height: calc(100% - 33px);
           li {
             &::before {
               content: '';
@@ -159,6 +163,9 @@ export default {
           text-overflow: ellipsis;
           word-break: break-all;
           cursor: default;
+          &:last-child {
+            border-bottom: 1px solid #f6f6f6;
+          }
           &.dropStatus {
             background: #EBEEF5;
           }
@@ -175,19 +182,16 @@ export default {
             border-bottom-left-radius: 3px;
           }
           &.not-start {
-            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
             &::before {
               background-color: #00875a;
             }
           }
           &.doing {
-            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
             &::before {
               background-color: #f93;
             }
           }
           &.finish {
-            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
             &::before {
               background-color: #0006;
             }

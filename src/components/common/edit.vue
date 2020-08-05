@@ -2,7 +2,14 @@
   <div id="uxo-edit" @click="hc_edit">
     <div v-if="editMode" class="edit-mode">
       <el-form @submit.native="handleClickSubmit()">
-        <el-input v-model="val" @blur="blur" class="input" :rows="10" ref="inputNode" :type="textType"></el-input>
+        <el-input v-show="textType === 'text'" v-model="val" @blur="blur" class="input" :rows="10" ref="inputNode"></el-input>
+        <div v-show="textType === 'textarea'">
+          <vue-tinymce
+            v-model="val"
+            :setup="setup"
+            @blur="blur"
+            :setting="setting" />
+        </div>
       </el-form>
       <div class="save-options">
         <el-button size="mini" @click.prevent.stop="handleClickSubmit()" :class="[loading ? 'saved' : '']"><i class="icon" :class="[loading ? 'el-icon-loading' : 'el-icon-check']"></i></el-button>
@@ -24,12 +31,23 @@ export default {
       editMode: false,
       val: '',
       loading: false,
-      cencelBtnCick: false
+      cencelBtnCick: false,
+      descContentHTML: "<p>html content</p>",
+      setting: {
+        menubar: false,
+        toolbar: "undo redo | fullscreen | formatselect alignleft aligncenter alignright alignjustify | link unlink | numlist bullist | image media table | fontselect fontsizeselect forecolor backcolor | bold italic underline strikethrough | indent outdent | superscript subscript | removeformat |",
+        toolbar_drawer: "sliding",
+        quickbars_selection_toolbar: "removeformat | bold italic underline strikethrough | fontsizeselect forecolor backcolor",
+        plugins: "link image media table lists fullscreen quickbars",
+        language: 'zh_CN',
+        language_url: 'https://lab.uxfeel.com/node_modules/tinymce/langs/zh_CN.js',
+        height: 450
+      }
     }
   },
   watch: {
     'editMode'(newVal) {
-      if (newVal) {
+      if (newVal && this.textType === 'text') {
         this.$nextTick(() => {
           this.$refs.inputNode.focus()
           this.$refs.inputNode.select()
@@ -65,6 +83,12 @@ export default {
     }
   },
   methods: {
+    setup(editor) {
+      console.log(editor)
+    },
+    editorChange(v) {
+      console.log(v)
+    },
     blur() {
       setTimeout(async () => {
         if (this.cencelBtnCick) {
