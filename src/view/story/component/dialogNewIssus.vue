@@ -1,21 +1,40 @@
 <template>
   <div id="dialogNewIssus" v-if="dialogTableVisible">
-    <el-dialog :visible.sync="dialogTableVisible"
-               size="mini"
-               :close-on-click-modal="false"
-               :before-close="handleClose"
-               :show-close="false"
-               width="40%">
+    <el-dialog
+      :visible.sync="dialogTableVisible"
+      size="mini"
+      :close-on-click-modal="false"
+      :before-close="handleClose"
+      :show-close="false"
+      width="40%"
+    >
       <div class="dialog-header">
         <div class="title">创建问题</div>
       </div>
-      <el-form ref="form" :model="issueForm" label-width="80px" :rules="rules" class="form" size="small">
+      <el-form
+        ref="form"
+        :model="issueForm"
+        label-width="80px"
+        :rules="rules"
+        class="form"
+        size="small"
+      >
         <el-form-item label="问题类型" prop="name" class="form-item">
           <el-tooltip content="工作不全是生活，生活也不全是工作。" placement="top">
             <i class="el-icon-info"></i>
           </el-tooltip>
-          <el-select v-model="issueForm.type" placeholder="请选择" size="small" class="select-item">
-            <el-option v-for="v in issusTypeArr" :key="v.name" :label="v.label" :value="v.value">
+          <el-select
+            v-model="issueForm.type"
+            placeholder="请选择"
+            size="small"
+            class="select-item"
+          >
+            <el-option
+              v-for="v in issusTypeArr"
+              :key="v.name"
+              :label="v.label"
+              :value="v.value"
+            >
               <i class="iconfont" :class="[v.icon]" :style="{'color': v.color}"></i>
               {{v.label}}
             </el-option>
@@ -31,9 +50,23 @@
           </el-select>
         </el-form-item>
         <el-form-item label="紧急度" prop="level">
-          <el-select v-model="issueForm.level" placeholder="请选择" size="small" class="select-item">
-            <el-option-group v-for="group in levelArr" :key="group.label" :label="group.label">
-              <el-option v-for="item in group.options" :key="item.value" :label="item.label" :value="item.value">
+          <el-select
+            v-model="issueForm.level"
+            placeholder="请选择"
+            size="small"
+            class="select-item"
+          >
+            <el-option-group
+              v-for="group in levelArr"
+              :key="group.label"
+              :label="group.label"
+            >
+              <el-option
+                v-for="item in group.options"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              >
                 <span style="float: left">{{ item.label }}</span>
                 <span style="float: right; color: #8492a6; font-size: 13px">{{ item.value }}</span>
               </el-option>
@@ -41,15 +74,17 @@
           </el-select>
         </el-form-item>
         <el-form-item label="预估" prop="point">
-          <el-select v-model="issueForm.point" placeholder="请选择" size="small" class="select-item">
+          <el-select
+            v-model="issueForm.point"
+            placeholder="请选择"
+            size="small"
+            class="select-item"
+          >
             <el-option v-for="v in pointsArr" :key="v" :label="v" :value="v"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="描述" prop="desc">
-          <el-input type="textarea"
-                    :rows="5"
-                    placeholder="此Issue的详细描述"
-                    v-model="issueForm.desc"></el-input>
+          <el-input type="textarea" :rows="5" placeholder="此Issue的详细描述" v-model="issueForm.desc"></el-input>
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">

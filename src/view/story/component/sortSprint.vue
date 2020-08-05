@@ -7,10 +7,12 @@
     <el-button v-popover:modules size="mini" type="text" class="modules">模块</el-button>
     <el-button v-popover:status size="mini" type="text" icon="el-icon-sort-down el-icon--right" class="status" @click="$emit('sortable', 'executiveMode')">状态</el-button>
     <el-button v-popover:point size="mini" type="text" class="point" icon="el-icon-sort-down el-icon--right" @click="$emit('sortable', 'point')">点</el-button>
-    <el-popover ref="type"
-                placement="bottom"
-                width="160"
-                v-model="visibleType">
+    <el-popover
+      ref="type"
+      placement="bottom"
+      width="160"
+      v-model="visibleType"
+    >
       <div id="sortSprintMain">
         <div class="work">
           <el-button type="text">工作:</el-button>
@@ -28,15 +30,18 @@
         <el-button type="primary" size="mini" @click="visibleType = false" class="btn">确定</el-button>
       </div>
     </el-popover>
-    <el-popover ref="level"
-                placement="bottom"
-                width="160"
-                v-model="visibleLevel">
+    <el-popover
+      ref="level"
+      placement="bottom"
+      width="160"
+      v-model="visibleLevel"
+      >
       <div id="sortSprintMain">
         <div class="work" v-for="(item, index) in levelArr" :key="index">
           <el-button type="text">{{item.label}}:</el-button>
           <el-button size="mini" type="text" class="currentIcon">
-            <i v-for="(p, i) in item.options" :key="i" :class="[p.icon, 'iconfont']" :style="{'color': p.color}"></i></el-button>
+            <i v-for="(p, i) in item.options" :key="i" :class="[p.icon, 'iconfont']" :style="{'color': p.color}"></i>
+          </el-button>
           <el-button icon="el-icon-refresh" size="mini" type="info" class="btn"></el-button>
         </div>
       </div>

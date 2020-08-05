@@ -4,12 +4,14 @@
       <div class="module">
         <div class="module-title">执行状态</div>
         <ul class="scroll-style-none">
-          <li v-for="p of progressStateList"
-              :key="p.link"
-              @dragleave="dragleave(p)"
-              @dragover="dragover($event, p)"
-              @drop="drop(p)"
-              :class="[p.dropStatus ? 'dropStatus': '', p.link]">
+          <li
+            v-for="p of progressStateList"
+            :key="p.link"
+            @dragleave="dragleave(p)"
+            @dragover="dragover($event, p)"
+            @drop="drop(p)"
+            :class="[p.dropStatus ? 'dropStatus': '', p.link]"
+          >
             <span :class="[p.link]">{{p.name}}</span>
           </li>
         </ul>
@@ -20,12 +22,14 @@
           <el-button size="mini" icon="el-icon-edit" class="module-edit" type="text"></el-button>
         </div>
         <ul class="scroll-style-none module-ul">
-          <li v-for="p of modulesList"
-              :key="p.link"
-              @dragleave="dragleave(p)"
-              @dragover="dragover($event, p)"
-              @drop="drop(p)"
-              :class="{'dropStatus': p.dropStatus}">
+          <li
+            v-for="p of modulesList"
+            :key="p.link"
+            @dragleave="dragleave(p)"
+            @dragover="dragover($event, p)"
+            @drop="drop(p)"
+            :class="{'dropStatus': p.dropStatus}"
+          >
             <span :class="[p.link]">{{p.name}}</span>
           </li>
         </ul>

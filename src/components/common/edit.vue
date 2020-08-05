@@ -84,10 +84,10 @@ export default {
   },
   methods: {
     setup(editor) {
-      console.log(editor)
+
     },
     editorChange(v) {
-      console.log(v)
+
     },
     blur() {
       setTimeout(async () => {
