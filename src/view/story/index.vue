@@ -8,25 +8,22 @@
 				<div class="backlog">
 					<div class="backlog-title">
 						<div>
-							<div size="mini" :class="[activeSprint.visible ? 'el-icon-arrow-down' : 'el-icon-arrow-right']" class="trigger-sprint" @click="activeSprint.visible = !activeSprint.visible"></div>
-							<span class="title">{{activeSprint.title}}</span>
+							<el-button size="mini" @click="visibleSprint = !visibleSprint" class="header-expander">
+								<svg xmlns="http://www.w3.org/2000/svg" width="14" height="10">
+									<g fill="none" fill-rule="evenodd">
+										<path d="M3.29175 4.793c-.389.392-.389 1.027 0 1.419l2.939 2.965c.218.215.5.322.779.322s.556-.107.769-.322l2.93-2.955c.388-.392.388-1.027 0-1.419-.389-.392-1.018-.392-1.406 0l-2.298 2.317-2.307-2.327c-.194-.195-.449-.293-.703-.293-.255 0-.51.098-.703.293z" fill="#344563"></path>
+									</g>
+								</svg>
+							</el-button>
+							<span class="title">当前活跃Sprint</span>
 							<span class="issus-count">{{activeSprint.total}} 问题</span>
-							<span class="status">open</span>
 							<span class="date">{{activeSprint. createTime}} <i class="iconfont icon-weibiaoti29"></i> {{activeSprint.endTime}}</span>
-						</div>
-						<div>
-							<el-popover
-								placement="right"
-								width="400"
-								trigger="click">
-								<el-button slot="reference" size="mini">筛选事务</el-button>
-							</el-popover>
-							<span class="status count">{{activeSprint.points}}</span>
 						</div>
 					</div>
 					<v-draggleList :list="activeSprint.issueList"
 													:dropDraggleObj="dropDraggleObj"
 													group="backlog"
+													v-show="visibleSprint"
 													:sprintType="'active'"
 													@endDraggable="endDraggable"
 													@handleDetail="handleDetail"></v-draggleList>
@@ -70,6 +67,7 @@ import dialogNewIssus from './component/dialogNewIssus'
 export default {
 	data() {
 		return {
+			visibleSprint: true,
 			dialogTableVisible: false,
 			sprintData: [],
 			selecType: null,
@@ -173,12 +171,7 @@ export default {
 		},
 		getsprintList() {
 			this.$axios.sprints.sprintList({type: 'sprint'}).then(activeSprint => {
-				let points = 0;
-
-				activeSprint.issueList.forEach(v => {
-					points += v.point
-				})
-				this.activeSprint = {...activeSprint, visible: true, points, total: activeSprint.issueList.length}
+				this.activeSprint = {...activeSprint, total: activeSprint.issueList.length}
 			})
 		},
 		getbacklogList() {
@@ -215,10 +208,8 @@ $bg-big:  #f4f5f7;
 					margin-bottom: 0;
 				}
 				.backlog-title {
-					height: 40px;
-					line-height: 40px;
+					height: 45px;
 					font-size: 16px;
-					line-height: 40px;
 					padding: 0 10px;
 					position: sticky;
 					top: 0;
@@ -227,16 +218,12 @@ $bg-big:  #f4f5f7;
 					display: flex;
 					justify-content: space-between;
 					align-items: center;
-					.trigger-sprint {
-						padding: 0px;
-						border-radius: 4px;
-						height: 14px;
-						width: 14px;
-						font-size: 14px;
+					.header-expander {
+						padding: 2px 3px;
 						cursor: pointer;
 						position: relative;
 						display: inline-block;
-						background-color: rgba(0, 0, 0, 0.5);
+						background-color: #091e4214;
 						color: #fff;
 						margin-right: 3px;
 					}
@@ -282,6 +269,7 @@ $bg-big:  #f4f5f7;
 							height: 16px;
 							font-size: 12px;
 							padding: 0 7px;
+							margin-left: 10px;
 							border-radius: 3px;
 						}
 					}

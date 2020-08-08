@@ -14,17 +14,21 @@ import edit from '@/components/common/edit'
 import common from '@/libs'
 import COOKIES from 'js-cookie'
 import VueTinymce from "@packy-tang/vue-tinymce"
+import echarts from 'echarts'
+import VueContextMenu from 'vue-contextmenu'
 
 Vue.config.productionTip = false
 Vue.prototype.$axios = axios
 Vue.prototype.$dayjs = dayjs
 Vue.prototype.$image = image
 Vue.prototype.$common = common
+Vue.prototype.$echarts = echarts
 
 Vue.component('v-draggable', draggable)
 Vue.component('v-edit', edit)
 Vue.use(VueTinymce)
 Vue.use(ElementUI)
+Vue.use(VueContextMenu)
 
 Mock.mockData()
 COOKIES.set('saveType', 'mock', { expires: 7, path: '' });

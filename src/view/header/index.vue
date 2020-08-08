@@ -7,34 +7,34 @@
 				<li v-for="v of Array(20)" :key="v"></li>
 			</ul>
 		</div>
-		<el-menu :default-active="activeIndex"
-					 	 class="el-menu-demo"
-					 	 mode="horizontal"
-					 	 @select="handleSelect"
-					   background-color="#205081"
-						 text-color="#f0f0f0"
-						 active-text-color="#ffd04b">
+		<el-menu
+			:default-active="activeIndex"
+			class="el-menu-demo"
+			mode="horizontal"
+			@select="handleSelect"
+			background-color="#205081"
+			text-color="#fff"
+			active-text-color="#fff"
+		>
 			<el-menu-item v-for="l in menu" :key="l.title" :index="l.link">{{l.name}}</el-menu-item>
 		</el-menu>
 		<div class="nav-right">
-			<el-input v-model="inputVal" size="mini" class="input" suffix-icon="el-icon-search"></el-input>
-			<el-button type="text" @click="dialogVisible = true" class="storage" icon="icon-lun iconfont" title="存储方式"></el-button>
-			<el-button type="text" icon="el-icon-info" size="medium" @click="$router.push('/navigation')"></el-button>
-			<el-popover placement="bottom-start"
+			<!-- <el-input v-model="inputVal" size="mini" class="input" suffix-icon="el-icon-search"></el-input> -->
+			<el-button title="配置域" type="text" size="mini" icon="el-icon-lock" @click="$router.push('/manage')" class="">配置域</el-button>
+			<div class="avatar"></div>
+			<!-- <el-popover placement="bottom-start"
 									width="300"
 									trigger="click"
 									visible-arrow="false">
 				<span slot="reference" class="avatar"></span>
 				<div class="user-meta">
-					123
+					<el-button></el-button>
 				</div>
-			</el-popover>
+			</el-popover> -->
 		</div>
-		<v-initDataDialog v-bind:dialogVisible.sync="dialogVisible"></v-initDataDialog>
 	</div>
 </template>
 <script>
-import initDataDialog from '@/components/common/initDataDialog'
 export default {
 	data() {
 		return {
@@ -46,9 +46,6 @@ export default {
 	},
 	created() {
 		this.getMenu()
-	},
-	components: {
-		'v-initDataDialog': initDataDialog
 	},
 	methods: {
 		handleSelect(v) {
@@ -65,6 +62,11 @@ export default {
 	}
 }
 </script>
+<style>
+body, html {
+	/* font-family: HanziPen SC,翩翩體-簡 粗體,HanziPen SC Bold,翩翩体-简 粗体; */
+}
+</style>
 <style lang="scss" scoped>
 #header {
 	height: 40px;
@@ -157,24 +159,26 @@ export default {
 	.nav-right {
 		position: absolute;
 		right: 10px;
-		width: 270px;
 		display: flex;
-		justify-content: space-between;
+		justify-content: flex-end;
 		align-items: center;
-		.storage {
+		.avatar {
+			width: 40px;
+			height: 30px;
+			background-size: cover;
+			border-radius: 4px;
+			background-image: url('https://dss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=1061311188,2230294750&fm=26&gp=0.jpg');
+		}
+		button {
+			margin: 0 10px;
+			background: transparent;
 			color: #fff;
+			border: none;
+			font-weight: 400;
+			font-size: 14px;
 		}
 		.input {
 			width: 145px;
-		}
-		.avatar {
-			border: 1px solid #fff;
-			display: inline-block;
-			border-radius: 50%;
-			width: 30px;
-			height: 30px;
-			cursor: pointer;
-			user-select: none;
 		}
 		.user-meta {
 			width: 400px;

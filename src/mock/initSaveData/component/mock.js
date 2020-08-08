@@ -1,4 +1,5 @@
 import Mock from "mockjs"
+import indexdb from './indexdb/index'
 import { modulesList } from '@/view/story/component/storyConstant.js'
 
 export default function (keys, params) {
@@ -10,8 +11,14 @@ export default function (keys, params) {
       return getBacklogSprint(params);
     case 'getMenu':
       return getMenu(params);
+    case 'storeSprint':
+      return storeSprint(params)
     default:
       return ''
+  }
+
+  function storeSprint() {
+    indexdb();
   }
 
   function getMenu(params) {
@@ -21,7 +28,6 @@ export default function (keys, params) {
   function backlogSprintList(index) {
     return {
       link: `INHOPE-${Math.ceil(Math.random() * 8000) + 1000}`, // 链接
-      point: Math.random() > 0.5 ? Math.ceil(Math.random() * 10) : '', // 预估
       level: Math.ceil(Math.random() * 6), // 紧急度
       type: Math.random() > 0.5 ? 'job' : 'life', // issus类型 生活、工作
       title: Mock.mock('@csentence(15, 40)'), // 标题
@@ -41,7 +47,6 @@ export default function (keys, params) {
       type: Math.random() > 0.5 ? 'job' : 'life',
       title: Mock.mock('@csentence(15, 40)'),
       fixed: Math.random() > 0.5,
-      point: Math.ceil(Math.random() * 10),
       desc: Mock.mock('@csentence(100, 200)'),
       remark: Mock.mock('@csentence(100, 200)'),
       createTime: Mock.mock('@datetime("yyyy年MM月dd日 HH:mm:ss")'),

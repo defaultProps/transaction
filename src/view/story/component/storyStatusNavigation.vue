@@ -119,7 +119,8 @@ export default {
     position: relative;
     .module {
       &.module-type {
-        height: calc(100% - 140px);
+        // height: calc(100% - 350px);
+        flex: 1;
       }
       .module-title {
         height: 34px;
@@ -146,7 +147,7 @@ export default {
           li {
             &::before {
               content: '';
-              background: #00875a;
+              background: #0006;
             }
           }
         }
@@ -181,7 +182,7 @@ export default {
             text-indent: -9999em;
             top: 0;
             width: 3px;
-            background: #00875a;
+            background: #0006;
             border-top-left-radius: 3px;
             border-bottom-left-radius: 3px;
           }

@@ -15,30 +15,31 @@
         animation="200"
         @start="startDraggable"
         @end="endDraggable"
-        @add="addDraggable"
-      >
+        @add="addDraggable">
         <div
           v-for="(p, i) of draggbleList"
           :key="p.order"
           :data-key="p.link"
           class="item"
-          @click="handleDraggleList(p, i)"
-        >
+          @contextmenu="showMenu"
+          @click="handleDraggleList(p, i)">
           <span class="type" :class="[p.type]">
             <i class="iconfont" :class="filterTypeIcon(p.type)" :style="{color: filterTypeColor(p.type)}"></i>
           </span>
           <span class="level"><i class="iconfont" :class="stylelevelClass(p.level)" :style="{'color': filterLevelColor(p.level)}"></i></span>
-          <span class="key-link">{{p.link}}</span>
           <span class="title" :title="p.title">{{p.title}}</span>
           <el-button type="text" size="mini" :class="[p.moduleState && p.moduleState.value, 'modules-type']"  v-if="p.moduleState">{{p.moduleState.name}}</el-button>
           <el-button type="text" size="mini" v-if="p.progressState" :class="[p.progressState, 'info-status']">{{p.progressState | filterprogressState}}</el-button>
-          <el-button type="info" circle class="points">{{p.point}}</el-button>
         </div>
       </v-draggable>
     </template>
     <div class="no-draggleList" v-if="draggbleList.length === 0">
       <div class="no-info">暂无事务</div>
     </div>
+    <vue-context-menu
+            :contextMenuData="contextMenuData"
+            @savedata="savedata"
+            @newdata="newdata"></vue-context-menu>
   </div>
 </template>
 <script>
@@ -58,10 +59,29 @@
     },
     data() {
       return {
+        contextMenuData: {
+          menuName: 'draggle',
+          axis: {
+            x: null,
+            y: null
+          },
+          menulists: [
+            {
+              fnHandler: 'moveToSprint',
+              btnName: '移动到Sprint'
+            },
+            {
+              fnHandler: 'deleteIssue',
+              btnName: '删除此Issue'
+            }
+          ]
+        },
+        visibleContextMenu: false, // 右键点击框
         levelArr,
         issusTypeArr,
         draggbleList: [],
-        oldIndex: -1
+        oldIndex: -1,
+        contextMenuTargets: []
       }
     },
     computed: {
@@ -78,14 +98,20 @@
       'v-sortSprint': sortSprint
     },
     watch: {
-      list(v) {
-        this.draggbleList = JSON.parse(JSON.stringify(this.list))
-      },
+      list: 'initData',
       dropDraggleObj: {
         handler(v) {
           if (v && this.oldIndex >= 0) {
             if (v.type === 'implement') {
-              this.$set(this.draggbleList[this.oldIndex], 'progressState', v.link);
+              if (this.group === 'backlog') {
+                this.$set(this.draggbleList[this.oldIndex], 'progressState', v.link);
+              } else {
+                this.$notify({
+                  title: '提示',
+                  message: 'Backlog中Issue不能设置执行状态',
+                  type: 'warning'
+                });
+              }
             } else if (v.type === 'module') {
               this.$set(this.draggbleList[this.oldIndex], 'moduleState', v);
             }
@@ -100,25 +126,31 @@
       }
     },
     created() {
-      this.draggbleList = JSON.parse(JSON.stringify(this.list))
-    },
-    mounted() {
-      // window.addEventListener('keyup', function(e) {
-      //   console.log(KeyCode.CODE_RETURN, e.code)
-      //   // You may do one of these checks.
-
-      //   // Check the code value.
-      //   if (e.code === KeyCode.CODE_RETURN) {
-      //     console.log('It was the Return key.')
-      //   }
-
-      //   // OR, check the keyCode value.
-      //   if (e.keyCode === KeyCode.KEY_RETURN) {
-      //     console.log('It was the Return key.')
-      //   }
-      // })
+      this.initData(this.list)
     },
     methods: {
+      showMenu () {
+        event.preventDefault()
+        var x = event.clientX
+        var y = event.clientY
+        // Get the current location
+        this.contextMenuData.axis = {
+          x, y
+        }
+      },
+      savedata () {
+        alert(1)
+      },
+      newdata () {
+        console.log('newdata!')
+      },
+      initData(list) {
+        this.contextMenuTargets = []
+        this.draggbleList = JSON.parse(JSON.stringify(list))
+        this.draggbleList.forEach(p => {
+          this.contextMenuTargets.push(document.querySelector([`.item[data-key='${p.link}']`]))
+        })
+      },
       sortable(type = 'executiveMode') {
         if (type == 'executiveMode') {
           this.draggbleList.sort((pre, next) => {
@@ -127,9 +159,6 @@
 
             return preIndex - nextIndex;
           })
-        }
-        if (type == 'point') {
-          this.draggbleList.sort((pre, next) => pre.point - next.point)
         }
       },
       handleDraggleList(v, i) {
@@ -208,7 +237,7 @@
     font-size: 14px;
     margin-bottom: 0px;
     user-select: none;
-    padding: 0 4px;
+    padding: 0 6px 0 4px;
     display: flex;
     box-sizing: border-box;
     align-items: center;
@@ -223,8 +252,12 @@
     &.ghost:hover {
       background-color: #deebff;
     }
+    &:hover {
+      filter: contrast(0.9)
+    }
     &.light {
-      filter: contrast(0.8);
+      filter: contrast(0.9);
+      background: #deebff;
     }
     &::before {
       content: '';
@@ -305,15 +338,36 @@
     }
     .key-link {
       color: #0052cc;
-      font-size: 14px;
+      font-size: 12px;
       font-weight: 600;
     }
-    .points {
-      padding: 0;
-      width: 25px;
-      height: 25px;
-      font-size: 12px;
-      transform: scale(0.75);
+  }
+}
+// context
+.vue-contextmenuName-draggle {
+  width: 240px;
+  font-size: 14px;
+  .context-menu-list {
+    height: 32px;
+    line-height: 32px;
+    margin: 0;
+    &:hover {
+      background: #f4f5f7;
+    }
+    div {
+      line-height: 32px;
+      height: 32px;
+      &:hover {
+        background: #f4f5f7;
+      }
+      .btn-wrapper-simple {
+        line-height: 32px;
+        .nav-name-right {
+          margin-left: 0;
+          line-height: 32px;
+          height: 32px;
+        }
+      }
     }
   }
 }

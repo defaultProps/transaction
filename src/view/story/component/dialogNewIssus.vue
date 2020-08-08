@@ -73,16 +73,6 @@
             </el-option-group>
           </el-select>
         </el-form-item>
-        <el-form-item label="预估" prop="point">
-          <el-select
-            v-model="issueForm.point"
-            placeholder="请选择"
-            size="small"
-            class="select-item"
-          >
-            <el-option v-for="v in pointsArr" :key="v" :label="v" :value="v"></el-option>
-          </el-select>
-        </el-form-item>
         <el-form-item label="描述" prop="desc">
           <el-input type="textarea" :rows="5" placeholder="此Issue的详细描述" v-model="issueForm.desc"></el-input>
         </el-form-item>
@@ -114,9 +104,6 @@ export default {
         moduleType: [
           { required: true, message: '请选择模块类型', trigger: 'change' }
         ],
-        point: [
-          { required: false, message: '请预估点数', trigger: 'change' }
-        ],
         desc: [
           { required: true, message: '请填写描述信息', trigger: 'submit' }
         ]
@@ -132,8 +119,7 @@ export default {
         title: '',
         fixed: '',
         progressState: '',
-        tag: {name: '', link: ''},
-        point: ''
+        tag: {name: '', link: ''}
       }
     }
   },

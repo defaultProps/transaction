@@ -2,10 +2,10 @@
   <div id="uxo-edit" @click="hc_edit">
     <div v-if="editMode" class="edit-mode">
       <el-form @submit.native="handleClickSubmit()">
-        <el-input v-show="textType === 'text'" v-model="val" @blur="blur" class="input" :rows="10" ref="inputNode"></el-input>
+        <el-input v-show="textType === 'text'" v-model="value" @blur="blur" class="input" :rows="10" ref="inputNode"></el-input>
         <div v-show="textType === 'textarea'">
           <vue-tinymce
-            v-model="val"
+            v-model="value"
             :setup="setup"
             @blur="blur"
             :setting="setting" />
@@ -29,7 +29,7 @@ export default {
   data() {
     return {
       editMode: false,
-      val: '',
+      value: '',
       loading: false,
       cencelBtnCick: false,
       descContentHTML: "<p>html content</p>",
@@ -58,11 +58,11 @@ export default {
       this.editMode = false;
     },
     'content'(v) {
-      this.val = v;
+      this.value = v;
     }
   },
   created() {
-    this.val = this.content
+    this.value = this.content
   },
   props: {
     uid: [String],

@@ -19,21 +19,9 @@
       <el-select v-model="details.level" placeholder="请选择" size="mini" class="select-level">
         <el-option-group v-for="group in levelArr" :key="group.label" :label="group.label">
           <el-option v-for="item in group.options" :key="item.value" :label="item.label" :value="item.value">
-            <span style="float: left">{{ item.label }}</span>
-            <span style="float: right; color: #8492a6; font-size: 13px">{{ item.value }}</span>
+            <span :class="[item.icon, 'iconfont']" :style="{'color': item.color + ' !important'}"></span>
           </el-option>
         </el-option-group>
-      </el-select>
-    </div>
-    <div class="form-item">
-      <div class="form-label">
-        预估
-        <el-tooltip content="此issue的耗时时间，取预估值，数值越大，耗时越长" placement="top">
-          <i class="el-icon-info"></i>
-        </el-tooltip>
-      </div>
-      <el-select v-model="details.point" placeholder="请选择" size="mini" class="select-point">
-        <el-option v-for="v in pointsArr" :key="v" :label="v" :value="v"></el-option>
       </el-select>
     </div>
     <div class="form-item">
@@ -223,9 +211,6 @@ export default {
     }
     .form-value {
       width: 100%;
-    }
-    .select-point {
-      width: 64px;
     }
   }
 }

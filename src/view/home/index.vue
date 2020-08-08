@@ -5,8 +5,8 @@
 	</div>
 </template>
 <script>
-import header from '@/view/header/index'
-import footer from '@/view/footer/index'
+import header from '@/view/header'
+import footer from '@/view/footer'
 
 export default {
 	components: {

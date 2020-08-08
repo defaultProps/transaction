@@ -6,7 +6,6 @@
     <el-button v-popover:title size="mini" type="text" class="title">标题</el-button>
     <el-button v-popover:modules size="mini" type="text" class="modules">模块</el-button>
     <el-button v-popover:status size="mini" type="text" icon="el-icon-sort-down el-icon--right" class="status" @click="$emit('sortable', 'executiveMode')">状态</el-button>
-    <el-button v-popover:point size="mini" type="text" class="point" icon="el-icon-sort-down el-icon--right" @click="$emit('sortable', 'point')">点</el-button>
     <el-popover
       ref="type"
       placement="bottom"
@@ -42,12 +41,7 @@
           <el-button size="mini" type="text" class="currentIcon">
             <i v-for="(p, i) in item.options" :key="i" :class="[p.icon, 'iconfont']" :style="{'color': p.color}"></i>
           </el-button>
-          <el-button icon="el-icon-refresh" size="mini" type="info" class="btn"></el-button>
         </div>
-      </div>
-      <div class="footer">
-        <el-button size="mini" type="text" @click="visibleLevel = false" class="btn">取消</el-button>
-        <el-button type="primary" size="mini" @click="visibleLevel = false" class="btn">确定</el-button>
       </div>
     </el-popover>
   </div>
@@ -114,11 +108,6 @@ export default {
   .modules, .status {
     width: 56px;
   }
-  .point {
-    width: 40px;
-    margin-left: 0;
-  }
-
 }
 #sortSprintMain {
   .work, .life {

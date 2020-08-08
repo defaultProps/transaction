@@ -20,7 +20,8 @@ export default {
 	},
 	sprints: {
 		backlogList: params => Axios({method: 'post', url: protocol + 'sprints/backlogList', data: params}),
-		sprintList: params => Axios({method: 'post', url: protocol + 'sprints/sprintList', data: params})
+		sprintList: params => Axios({method: 'post', url: protocol + 'sprints/sprintList', data: params}),
+		storeSprint: params => Axios({method: 'post', url: protocol + 'sprints/storeSprint', data: params})
 	},
 	thus: {
 		list: params => Axios({method: 'post', url: protocol + 'thus/list', data: params})

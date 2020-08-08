@@ -7,10 +7,18 @@ let article = r => require.ensure([], () => r(require('@/view/article/index')), 
 let story = r => require.ensure([], () => r(require('@/view/story/index')), routeErrorCallback, 'story')
 let thus = r => require.ensure([], () => r(require('@/view/thus/index')), routeErrorCallback, 'thus')
 let dashboard = r => require.ensure([], () => r(require('@/view/thus/index')), routeErrorCallback, 'thus')
+let manage = r => require.ensure([], () => r(require('@/view/manage/index')), routeErrorCallback, 'manage')
+let initStore = r => require.ensure([], () => r(require('@/view/initStore/index')), routeErrorCallback, 'initStore')
 let routes = [
 	{
 		path: '/',
-		redirect: '/uxo'
+		redirect: '/initStore'
+	},
+	{
+		path: '/initStore',
+		name: 'initStore',
+		component: initStore,
+		meta: {title: '初始配置', level: 0, auth: 0, sidebar: false}
 	},
 	{
 		path: '/uxo',
@@ -47,6 +55,12 @@ let routes = [
 		name: 'dashboard',
 		component: dashboard,
 		meta: {title: '仪表盘', level: 0, auth: 0, sidebar: false}
+	},
+	{
+		path: '/manage',
+		name: 'manage',
+		component: manage,
+		meta: {title: '用户管理', level: 0, auth: 0, sidebar: false}
 	}
 ]
 
