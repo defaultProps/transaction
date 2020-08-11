@@ -14,7 +14,7 @@
 			@select="handleSelect"
 			background-color="#205081"
 			text-color="#fff"
-			active-text-color="#fff"
+			active-text-color="#ffab00"
 		>
 			<el-menu-item v-for="l in menu" :key="l.title" :index="l.link">{{l.name}}</el-menu-item>
 		</el-menu>

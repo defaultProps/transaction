@@ -119,8 +119,8 @@ export default {
     position: relative;
     .module {
       &.module-type {
-        // height: calc(100% - 350px);
         flex: 1;
+        overflow-y: scroll;
       }
       .module-title {
         height: 34px;
@@ -140,7 +140,6 @@ export default {
         }
       }
       ul {
-        height: 100%;
         overflow-y: scroll;
         &.module-ul {
            height: calc(100% - 33px);
@@ -173,6 +172,9 @@ export default {
           }
           &.dropStatus {
             background: #EBEEF5;
+            &::before {
+              background: #ffab00;
+            }
           }
           &::before {
             content: '';
@@ -193,7 +195,7 @@ export default {
           }
           &.doing {
             &::before {
-              background-color: #f93;
+              background-color: #ffab00;
             }
           }
           &.finish {

@@ -1,12 +1,14 @@
 <template>
-  <div id="sprint-detail">
+  <div id="sprint-detail" class="scroll-style-none">
     <div id="dragglePoint"><i class="iconfont icon-tuodong"></i></div>
     <div class="header">
-      <div class="link">
+      <!-- <div class="link">
         <router-link tag="a" v-show="details.tag" :to="details.link" class="tag">{{details.tag.name}}</router-link> /
         <router-link tag="a" :to="`/story/${details.link}`" class="tag">{{details.link}}</router-link>
-      </div>
-      <el-button type="text" icon="el-icon-close" class="btn-del" @click="handleClickCloseDetailModule()"></el-button>
+      </div> -->
+      <button size="mini" class="btn-del" type="text" @click="handleClickCloseDetailModule()">
+        <i class="iconfont icon-chenghao"></i>
+      </button>
     </div>
     <v-edit class="title" :content="details.title" :uid="details.link"></v-edit>
     <div class="form-item item-top">
@@ -49,6 +51,14 @@
         </el-tooltip>
       </div>
       <v-edit class="form-value" :content="details.remark" :uid="details.link" textType="textarea"></v-edit>
+    </div>
+    <div class="form-item remark">
+      <div class="form-label">
+        相关链接
+        <el-tooltip content="此issue的备注信息" placement="top">
+          <i class="el-icon-info"></i>
+        </el-tooltip>
+      </div>
     </div>
   </div>
 </template>
@@ -172,13 +182,16 @@ export default {
   }
   .header {
     display: flex;
-    justify-content: space-between;
+    justify-content:flex-start;
     align-items: center;
-    padding-right: 10px;
+    padding: 10px 10px 0;
     .link {
       .tag {
         text-indent: 4px;
       }
+    }
+    .btn-del {
+      border: none;
     }
   }
   .title {

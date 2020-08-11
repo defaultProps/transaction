@@ -12,8 +12,8 @@ export default {
 		Mock.mock(protocol + 'header/menu', 'post', req => api.header.getMenu(JSON.parse(req.body)))
 		Mock.mock(protocol + 'thus/list', 'post', req => api.thus.list(JSON.parse(req.body)))
 
-		Mock.mock(protocol + 'sprints/backlogList', 'post', req => api.sprints.backlogList(JSON.parse(req.body)))
-		Mock.mock(protocol + 'sprints/sprintList', 'post', req => api.sprints.sprintList(JSON.parse(req.body)))
+		Mock.mock(protocol + 'sprints/backlogSprintList', 'post', req => api.sprints.backlogSprintList(JSON.parse(req.body)))
+		Mock.mock(protocol + 'sprints/activeSprintList', 'post', req => api.sprints.activeSprintList(JSON.parse(req.body)))
 		Mock.mock(protocol + 'sprints/storeSprint', 'post', req => api.sprints.storeSprint(JSON.parse(req.body)))
 	}
 }

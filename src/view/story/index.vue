@@ -8,13 +8,9 @@
 				<div class="backlog">
 					<div class="backlog-title">
 						<div>
-							<el-button size="mini" @click="visibleSprint = !visibleSprint" class="header-expander">
-								<svg xmlns="http://www.w3.org/2000/svg" width="14" height="10">
-									<g fill="none" fill-rule="evenodd">
-										<path d="M3.29175 4.793c-.389.392-.389 1.027 0 1.419l2.939 2.965c.218.215.5.322.779.322s.556-.107.769-.322l2.93-2.955c.388-.392.388-1.027 0-1.419-.389-.392-1.018-.392-1.406 0l-2.298 2.317-2.307-2.327c-.194-.195-.449-.293-.703-.293-.255 0-.51.098-.703.293z" fill="#344563"></path>
-									</g>
-								</svg>
-							</el-button>
+							<span size="mini" :class="{'visibleSprint': visibleSprint}" @click="visibleSprint = !visibleSprint" class="header-expander">
+								<svg xmlns="http://www.w3.org/2000/svg" width="14" height="10"><g fill="none" fill-rule="evenodd"><path d="M3.29175 4.793c-.389.392-.389 1.027 0 1.419l2.939 2.965c.218.215.5.322.779.322s.556-.107.769-.322l2.93-2.955c.388-.392.388-1.027 0-1.419-.389-.392-1.018-.392-1.406 0l-2.298 2.317-2.307-2.327c-.194-.195-.449-.293-.703-.293-.255 0-.51.098-.703.293z" fill="#344563"></path></g></svg>
+							</span>
 							<span class="title">当前活跃Sprint</span>
 							<span class="issus-count">{{activeSprint.total}} 问题</span>
 							<span class="date">{{activeSprint. createTime}} <i class="iconfont icon-weibiaoti29"></i> {{activeSprint.endTime}}</span>
@@ -35,8 +31,7 @@
 							<span class="issus-count">{{backlogTotal}} 问题</span>
 						</div>
 						<div>
-							<el-button size="mini" @click="dialogTableVisible = true">新建issue</el-button>
-							<el-button size="mini" @click="hc_addissue()">新建事务</el-button>
+							<el-button size="mini" @click="dialogTableVisible = true" icon="el-icon-circle-plus" type="primary">新建Issue</el-button>
 						</div>
 					</div>
 					<v-draggleList handle=".handle"
@@ -113,17 +108,6 @@ export default {
 		handleClose() {
 			this.dialogTableVisible = false;
 		},
-		hc_addissue() {
-			this.$alert('这是一段内容', '标题名称', {
-        confirmButtonText: '确定',
-				callback: action => {
-					this.$message({
-						type: 'info',
-						message: `action: ${action}`
-					});
-				}
-			})
-		},
 		// 请求数据
 		endDraggable(obj) {
 			this.highlightSelectedList();
@@ -170,13 +154,13 @@ export default {
 			}
 		},
 		getsprintList() {
-			this.$axios.sprints.sprintList({type: 'sprint'}).then(activeSprint => {
+			this.$axios.sprints.activeSprintList({type: 'sprint'}).then(activeSprint => {
 				this.activeSprint = {...activeSprint, total: activeSprint.issueList.length}
 			})
 		},
 		getbacklogList() {
 			this.backlogLoading = true
-			this.$axios.sprints.backlogList({type: 'backlog'}).then(backlogSprint => {
+			this.$axios.sprints.backlogSprintList({type: 'backlog'}).then(backlogSprint => {
 				this.backlogLoading = false
 				this.backlogTotal = backlogSprint.issueList.length;
 				this.backlogSprint = backlogSprint
@@ -191,7 +175,7 @@ $bg-big:  #f4f5f7;
 
 #moduleStory {
 	.story-backlog {
-		position: absolute;
+		position: fixed;
 		left: 0;
 		right: 0;
 		bottom: 0px;
@@ -223,9 +207,13 @@ $bg-big:  #f4f5f7;
 						cursor: pointer;
 						position: relative;
 						display: inline-block;
-						background-color: #091e4214;
+						background-color: #f4f5f7;
 						color: #fff;
 						margin-right: 3px;
+						transform: rotate(-90deg);
+						&.visibleSprint {
+							transform: rotate(0);
+						}
 					}
 					.title {
 						font-weight: 600;

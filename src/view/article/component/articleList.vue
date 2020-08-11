@@ -179,7 +179,7 @@ export default {
           text-indent: -9999em;
           top: 0;
           width: 3px;
-          background-color: #f93;
+          background-color: #ffab00;
           border-top-left-radius: 3px;
           border-bottom-left-radius: 3px;
         }

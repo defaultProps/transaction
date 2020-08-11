@@ -1,6 +1,6 @@
 import controller from './initSaveData'
 import COOKIES from 'js-cookie'
-const env = COOKIES.get('saveType') || 'mock'
+const env = 'indexdb' || COOKIES.get('saveType')
 
 const HEADER_NAV = [
 	{name: '事务分发', link: 'story', color: '#5243aa', icon: ''},
@@ -71,15 +71,15 @@ export default {
 		}
 	},
 	sprints: {
-		sprintList: params => controller[env]('sprintList', params),
-		backlogList: params => controller[env]('backlogList', params),
+		activeSprintList: params => controller[env]('activeSprintList', params),
+		backlogSprintList: params => controller[env]('backlogSprintList', params),
 		storeSprint: params => controller[env]('storeSprint', params)
 	},
 	header: {
 		getMenu: obj => {
 			return {
 				status: 200,
-				data: HEADER_NAV.slice(0, 1)
+				data: HEADER_NAV.slice(0, 2)
 			}
 		}
 	}

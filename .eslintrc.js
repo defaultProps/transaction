@@ -3,7 +3,7 @@
 module.exports = {
   root: true,
   parserOptions: {
-    parser: 'babel-eslint'
+    parser: "babel-eslint"
   },
   env: {
     browser: true,
@@ -11,55 +11,58 @@ module.exports = {
   extends: [
     // https://github.com/vuejs/eslint-plugin-vue#priority-a-essential-error-prevention
     // consider switching to `plugin:vue/strongly-recommended` or `plugin:vue/recommended` for stricter rules.
-    'plugin:vue/essential',
+    "plugin:vue/essential",
     // https://github.com/standard/standard/blob/master/docs/RULES-en.md
-    'standard'
+    "standard"
   ],
   // required to lint *.vue files
   plugins: [
-    'vue'
+    "vue"
   ],
   // add your custom rules here
   rules: {
     // allow async-await
-    'generator-star-spacing': 'off',
-    'no-tabs': 0,
-    'indent': 0,
+    "generator-star-spacing": "off",
+    "no-tabs": 0,
+    "indent": 0,
     // allow debugger during development
-    'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
+    "no-debugger": process.env.NODE_ENV === "production" ? "error" : "off",
     // allow paren-less arrow functions
-    'arrow-parens': 0,
+    "arrow-parens": 0,
     // allow async-await
-    'generator-star-spacing': 0,
+    "generator-star-spacing": 0,
     // allow debugger during development
-    'no-debugger': process.env.NODE_ENV === 'production' ? 2 : 0,
+    "no-console": process.env.NODE_ENV === "production" ? 2 : 0,
     // 禁止函数括号之前校验空格
-    'space-before-function-paren': 0,
+    "space-before-function-paren": 0,
     // 禁止块之前校验空格
-    'padded-blocks': 0,
+    'prefer-rest-params': 1, //要求使用剩余参数而不是 arguments
+    'prefer-const': 1, //首选const
+    "padded-blocks": 0,
     // 不允许扩展JS基本对象
-    'no-extend-native': 0,
-    'no-trailing-spaces': 0,
-    'handle-callback-err': 0,
+    "no-extend-native": 0,
+    "no-trailing-spaces": 0,
+    "handle-callback-err": 0,
+    "tabWidth": 2, // tab缩进大小,默认为4
     // 强制将变量一起声明或单独声明
-    'one-var': 1,
-    'no-new': 0,
+    "one-var": 1,
+    "no-new": 0,
     // 清除无效转义字符
-    'no-useless-escape': 1,
+    "no-useless-escape": 1,
     // 允许声明未赋值的变量
-    'no-unused-vars': 1,
-    'indent': 0,
-    'quotes': 0,
-    'camelcase': 0,
-    'no-undef': 1,
-    'object-property-newline': 0,
-    'eqeqeq': 0,
-    'key-spacing': 0,
-    'operator-linebreak': 1,
-    'no-mixed-spaces-and-tabs': 0,
-    'no-caller': 0,
-    'no-multi-spaces': 0,
-    'space-unary-ops': 0,
+    "no-unused-vars": 1,
+    "indent": 0,
+    "quotes": 0,
+    "camelcase": 0,
+    "no-undef": 1,
+    "object-property-newline": 0,
+    "eqeqeq": 0,
+    "key-spacing": 0,
+    "operator-linebreak": 1,
+    "no-mixed-spaces-and-tabs": 0,
+    "no-caller": 0,
+    "no-multi-spaces": 0,
+    "space-unary-ops": 0,
     "no-control-regex": 0,
     // 强制 typeof 表达式与有效的字符串进行比较
     "valid-typeof": 1,
@@ -82,7 +85,7 @@ module.exports = {
     // 禁止不必要的括号
     "no-extra-parens": 1,
     //分号检查
-    'semi': 0,
+    "semi": 0,
     // 禁止不必要的分号
     "no-extra-semi": 1,
     // 禁止在嵌套的块中出现变量声明或 function 声明
@@ -104,6 +107,16 @@ module.exports = {
     // 禁止对关系运算符的左操作数使用否定操作符
     "no-unsafe-negation": 1,
     // 要求使用 isNaN() 检查 NaN
-    "use-isnan": 1
+    "use-isnan": 1,
+    "array-callback-return": 1, //return 后面是否允许省略
+    "consistent-return": 1, //要求 return 语句要么总是指定返回的值，要么不指定
+    "camelcase": 0, //强制驼峰法命名
+    "eqeqeq": 0, //强制全等( === 和 !==)
+    "func-names": 0, //函数表达式必须有名字
+    "indent": 1, //缩进风格(强制使用一致的缩进)
+    "max-len": 1, //字符串最大长度
+    "no-redeclare": 1, //禁止多次声明同一变量
+    "no-use-before-define": 1, //禁止在变量定义之前使用它们
+    'no-else-return': 1, //禁止 if 语句中 return 语句之后有 else 块
   }
 }

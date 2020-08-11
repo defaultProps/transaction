@@ -101,15 +101,17 @@
       list: 'initData',
       dropDraggleObj: {
         handler(v) {
+          console.log(this.group)
           if (v && this.oldIndex >= 0) {
             if (v.type === 'implement') {
               if (this.group === 'backlog') {
                 this.$set(this.draggbleList[this.oldIndex], 'progressState', v.link);
               } else {
-                this.$notify({
+                this.$notify.warning({
                   title: '提示',
                   message: 'Backlog中Issue不能设置执行状态',
-                  type: 'warning'
+                  size: 'mini',
+                  showClose: false
                 });
               }
             } else if (v.type === 'module') {

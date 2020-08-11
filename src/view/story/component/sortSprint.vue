@@ -2,7 +2,6 @@
   <div id="sortSprint">
     <el-button v-popover:type size="mini" type="text" icon="el-icon-info" class="type"></el-button>
     <el-button v-popover:level size="mini" type="text" icon="el-icon-info" class="level"></el-button>
-    <el-button v-popover:link size="mini" type="text" class="link">链接</el-button>
     <el-button v-popover:title size="mini" type="text" class="title">标题</el-button>
     <el-button v-popover:modules size="mini" type="text" class="modules">模块</el-button>
     <el-button v-popover:status size="mini" type="text" icon="el-icon-sort-down el-icon--right" class="status" @click="$emit('sortable', 'executiveMode')">状态</el-button>
