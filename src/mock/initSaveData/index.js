@@ -1,9 +1,7 @@
-import mock from './component/mock.js';
+import product from './component/product.js';
 import indexdb from './component/indexdb.js'
-import cloudServer from './component/cloudServer.js'
 
 export default {
-  mock,
-  indexdb,
-  cloudServer
+  product, // 生产数据
+  indexdb // 本地mock存储数据
 }

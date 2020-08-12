@@ -37,13 +37,11 @@ module.exports = {
     "space-before-function-paren": 0,
     // 禁止块之前校验空格
     'prefer-rest-params': 1, //要求使用剩余参数而不是 arguments
-    'prefer-const': 1, //首选const
     "padded-blocks": 0,
     // 不允许扩展JS基本对象
     "no-extend-native": 0,
     "no-trailing-spaces": 0,
     "handle-callback-err": 0,
-    "tabWidth": 2, // tab缩进大小,默认为4
     // 强制将变量一起声明或单独声明
     "one-var": 1,
     "no-new": 0,
@@ -108,15 +106,7 @@ module.exports = {
     "no-unsafe-negation": 1,
     // 要求使用 isNaN() 检查 NaN
     "use-isnan": 1,
-    "array-callback-return": 1, //return 后面是否允许省略
-    "consistent-return": 1, //要求 return 语句要么总是指定返回的值，要么不指定
-    "camelcase": 0, //强制驼峰法命名
-    "eqeqeq": 0, //强制全等( === 和 !==)
-    "func-names": 0, //函数表达式必须有名字
-    "indent": 1, //缩进风格(强制使用一致的缩进)
-    "max-len": 1, //字符串最大长度
     "no-redeclare": 1, //禁止多次声明同一变量
-    "no-use-before-define": 1, //禁止在变量定义之前使用它们
-    'no-else-return': 1, //禁止 if 语句中 return 语句之后有 else 块
+    "no-use-before-define": 1 //禁止在变量定义之前使用它们
   }
 }

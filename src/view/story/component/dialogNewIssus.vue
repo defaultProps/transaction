@@ -3,14 +3,14 @@
     <el-dialog
       :visible.sync="dialogTableVisible"
       size="mini"
+      title="创建问题"
+      custom-class="dialogNewIssus"
       :close-on-click-modal="false"
       :before-close="handleClose"
+      :append-to-body="true"
       :show-close="false"
-      width="40%"
+      width="50%"
     >
-      <div class="dialog-header">
-        <div class="title">创建问题</div>
-      </div>
       <el-form
         ref="form"
         :model="issueForm"
@@ -141,11 +141,10 @@ export default {
 }
 </script>
 <style lang="scss">
-#dialogNewIssus {
+.dialogNewIssus {
   .form {
     padding-top: 10px;
     .form-item {
-
       .select-item {
         width: 100px;
         .el-input__inner {
@@ -158,25 +157,6 @@ export default {
         left: 25px;
         top: 0;
       }
-    }
-  }
-  .dialog-header {
-    padding: 10px;
-    display: flex;
-    border-bottom: 2px solid #ebecf0;
-    justify-content: space-between;
-    align-items: center;
-    .title {
-      font-size: 18px;
-    }
-  }
-
-  .el-dialog__wrapper {
-    .el-dialog__header {
-      display: none;
-    }
-    .el-dialog__body {
-      padding: 0 10px;
     }
   }
 }

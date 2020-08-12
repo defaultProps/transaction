@@ -2,23 +2,6 @@ import controller from './initSaveData'
 import COOKIES from 'js-cookie'
 const env = 'indexdb' || COOKIES.get('saveType')
 
-const HEADER_NAV = [
-	{name: '事务分发', link: 'story', color: '#5243aa', icon: ''},
-	{name: '仪表盘', link: 'dashboard', color: '#ffab00', icon: ''},
-	{name: '大块文章', link: 'article', color: '#598ed4', icon: ''},
-	{name: '旅游指南', link: 'dashboard', color: '#598ed4', icon: ''},
-	{name: '农贸市场', link: 'existence', color: '#5243aa', icon: ''},
-	{name: '健身运动', link: 'Sketch', color: '#ffab00', icon: ''},
-	{name: '厨房日记', link: 'check', color: '#598ed4', icon: ''},
-	{name: '宇宙探索', link: 'universe', color: '#5243aa', icon: ''},
-	{name: '游戏人生', link: 'games', color: '#598ed4', icon: ''}
-].map((v, i) => {
-	return {
-		...v,
-		id: `module-${i}`
-	}
-})
-
 export default {
 	thus: {
 		list: obj => {
@@ -71,16 +54,12 @@ export default {
 		}
 	},
 	sprints: {
+		sprintIssueDetail: params => controller[env]('sprintIssueDetail', params),
 		activeSprintList: params => controller[env]('activeSprintList', params),
 		backlogSprintList: params => controller[env]('backlogSprintList', params),
 		storeSprint: params => controller[env]('storeSprint', params)
 	},
 	header: {
-		getMenu: obj => {
-			return {
-				status: 200,
-				data: HEADER_NAV.slice(0, 2)
-			}
-		}
+		getheaderMenu: params => controller[env]('getheaderMenu', params)
 	}
 }

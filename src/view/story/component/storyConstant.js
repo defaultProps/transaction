@@ -3,7 +3,7 @@ export let progressStateList = [
   {name: "处理中", link: "doing"},
   {name: "已完成", link: "finish"},
   {name: "关闭", link: "close"}
-];
+]
 
 export let modulesList = [
   {name: '大块文章', link: 'article', color: '#598ed4', icon: ''},
@@ -80,7 +80,7 @@ export let issusTypeArr = [
     icon: 'icon-shujuzhongjian',
     color: '#0065ff',
     label: '工作',
-    value: 'job',
+    value: 'work',
     moreIcon: ['icon-gongzuo', 'icon-code', 'icon-all-fill', 'icon-all', 'icon-auto', 'icon-raw', 'icon-discounts-fill', 'icon-tuishui']
   },
   {

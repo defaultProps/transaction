@@ -16,9 +16,10 @@ export default {
 		menu: params => Axios({method: 'post', url: protocol + 'article/menu', data: params})
 	},
 	header: {
-		menu: params => Axios({method: 'post', url: protocol + 'header/menu', data: params})
+		getheaderMenu: params => Axios({method: 'post', url: protocol + 'header/menu', data: params})
 	},
 	sprints: {
+		sprintIssueDetail: params => Axios({method: 'post', url: protocol + 'sprints/sprintIssueDetail', data: params}),
 		backlogSprintList: params => Axios({method: 'post', url: protocol + 'sprints/backlogSprintList', data: params}),
 		activeSprintList: params => Axios({method: 'post', url: protocol + 'sprints/activeSprintList', data: params}),
 		storeSprint: params => Axios({method: 'post', url: protocol + 'sprints/storeSprint', data: params})

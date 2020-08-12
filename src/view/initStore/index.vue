@@ -22,7 +22,7 @@
         </div>
       </div>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="centerDialogVisible = false" size="mini" :disabled="true">确 定</el-button>
+        <el-button @click="submitStore" size="mini">确 定</el-button>
       </span>
     </el-dialog>
 	</div>
@@ -40,6 +40,10 @@ export default {
     })
 	},
 	methods: {
+    async submitStore() {
+      await this.getbacklogList()
+      this.dialogVisible = false;
+    },
     renderEchartsLine() {
       let echartDom = document.getElementById('configLine');
 
@@ -98,12 +102,12 @@ export default {
       myChart.setOption(option, true);
     },
     handleClose(done) {
-      this.$confirm('确认关闭？')
-        .then(_ => {
-          done();
-          this.$router.push('/story')
-        })
-        .catch(_ => {});
+      this.$confirm('确认关闭？').then(_ => {
+        done();
+        this.$router.push('/story')
+      }).catch(_ => {
+
+      });
     },
     getbacklogList() {
 			this.$axios.sprints.storeSprint();

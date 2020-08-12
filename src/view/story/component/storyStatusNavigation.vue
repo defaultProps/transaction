@@ -10,8 +10,7 @@
             @dragleave="dragleave(p)"
             @dragover="dragover($event, p)"
             @drop="drop(p)"
-            :class="[p.dropStatus ? 'dropStatus': '', p.link]"
-          >
+            :class="[p.dropStatus ? 'dropStatus': '', p.link]">
             <span :class="[p.link]">{{p.name}}</span>
           </li>
         </ul>
@@ -19,7 +18,7 @@
       <div class="module module-type">
         <div class="module-title">
           模块类型
-          <el-button size="mini" icon="el-icon-edit" class="module-edit" type="text"></el-button>
+          <el-button size="mini" icon="el-icon-edit" class="module-edit" @click="handleClickModuleDialog"></el-button>
         </div>
         <ul class="scroll-style-none module-ul">
           <li
@@ -50,32 +49,43 @@
         </ul>
       </div> -->
     </div>
+    <v-dialogNavigationModule :visibleDialogModule="visibleDialogModule" @closeVisibleDialogModule="closeVisibleDialogModule"></v-dialogNavigationModule>
   </div>
 </template>
 <script>
-import {modulesList, progressStateList} from './storyConstant'
+import dialogNavigationModule from './dialogNavigationModule'
 
 export default {
-  data() {
-    progressStateList.forEach(item => {
-			item.dropStatus = false
-			item.type = 'implement'
-		})
-		modulesList.forEach(item => {
-			item.type = 'module'
-    })
-
-    return {
-      progressStateList,
-      modulesList,
-      thusList: [],
-      loadingNav: false
+  inject: {
+    progressStateList: {
+      type: Array,
+      default: () => ([])
+    },
+    modulesList: {
+      type: Array,
+      default: () => ([])
     }
+  },
+  data() {
+    return {
+      thusList: [],
+      loadingNav: false,
+      visibleDialogModule: false // 模块类型 - 编辑弹框
+    }
+  },
+  components: {
+    'v-dialogNavigationModule': dialogNavigationModule
   },
   created() {
     this.getThusList()
   },
   methods: {
+    closeVisibleDialogModule() {
+      this.visibleDialogModule = false;
+    },
+    handleClickModuleDialog() {
+      this.visibleDialogModule = true;
+    },
     handlelinkClick(link) {
 			window.open(link)
 		},
@@ -103,11 +113,12 @@ export default {
   }
 }
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
 #storyStatusNavtgation {
   height: 100%;
   box-sizing: border-box;
   overflow: hidden;
+  padding-bottom: 40px;
   border-right: 1px solid rgba(9,30,66,0.31);
   .nav-main {
     display: flex;
@@ -135,14 +146,15 @@ export default {
         color: #fff;
         background: #3282b8;
         font-size: 14px;
-        i {
-          color: #fff;
+        .module-edit {
+          padding: 3px 4px;
+          color: #3282b8;
         }
       }
       ul {
         overflow-y: scroll;
         &.module-ul {
-           height: calc(100% - 33px);
+           height: calc(100% - 40px);
           li {
             &::before {
               content: '';
@@ -213,7 +225,7 @@ export default {
         overflow-y: scroll;
         .module-title {
           position: sticky;
-          z-index: 200;
+          z-index: 100;
           top: 0;
         }
         ul {

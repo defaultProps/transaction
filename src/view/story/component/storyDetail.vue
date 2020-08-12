@@ -1,16 +1,12 @@
 <template>
-  <div id="sprint-detail" class="scroll-style-none">
+  <div id="sprint-detail" class="scroll-style-none" v-loading="loading">
     <div id="dragglePoint"><i class="iconfont icon-tuodong"></i></div>
     <div class="header">
-      <!-- <div class="link">
-        <router-link tag="a" v-show="details.tag" :to="details.link" class="tag">{{details.tag.name}}</router-link> /
-        <router-link tag="a" :to="`/story/${details.link}`" class="tag">{{details.link}}</router-link>
-      </div> -->
       <button size="mini" class="btn-del" type="text" @click="handleClickCloseDetailModule()">
         <i class="iconfont icon-chenghao"></i>
       </button>
     </div>
-    <v-edit class="title" :content="details.title" :uid="details.link"></v-edit>
+    <v-edit class="title" :content="sprintIssue.title" :guid="sprintIssue.guid"></v-edit>
     <div class="form-item item-top">
       <div class="form-label">
         紧急度
@@ -18,7 +14,7 @@
           <i class="el-icon-info"></i>
         </el-tooltip>
       </div>
-      <el-select v-model="details.level" placeholder="请选择" size="mini" class="select-level">
+      <el-select v-model="sprintIssue.urgencyLevel" placeholder="请选择" size="mini" class="select-level">
         <el-option-group v-for="group in levelArr" :key="group.label" :label="group.label">
           <el-option v-for="item in group.options" :key="item.value" :label="item.label" :value="item.value">
             <span :class="[item.icon, 'iconfont']" :style="{'color': item.color + ' !important'}"></span>
@@ -28,11 +24,11 @@
     </div>
     <div class="form-item">
       <div class="form-label">创建时间</div>
-      <div class="form-value">{{details.createTime}}</div>
+      <div class="form-value">{{sprintIssue.createTime}}</div>
     </div>
     <div class="form-item">
       <div class="form-label">最近更新</div>
-      <div class="form-value">{{details.updateTime}}</div>
+      <div class="form-value">{{sprintIssue.updateTime}}</div>
     </div>
     <div class="form-item desc">
       <div class="form-label">
@@ -41,7 +37,7 @@
           <i class="el-icon-info"></i>
         </el-tooltip>
       </div>
-      <v-edit class="form-value" :content="details.desc" :uid="details.link" textType="textarea"></v-edit>
+      <v-edit class="form-value" :content="sprintIssue.issueDesc" :uid="sprintIssue.guid" textType="textarea"></v-edit>
     </div>
     <div class="form-item remark">
       <div class="form-label">
@@ -50,7 +46,7 @@
           <i class="el-icon-info"></i>
         </el-tooltip>
       </div>
-      <v-edit class="form-value" :content="details.remark" :uid="details.link" textType="textarea"></v-edit>
+      <v-edit class="form-value" :content="sprintIssue.issueRemark" :uid="sprintIssue.guid" textType="textarea"></v-edit>
     </div>
     <div class="form-item remark">
       <div class="form-label">
@@ -70,7 +66,9 @@ export default {
     return {
       levelArr,
       pointsArr,
-      details: {
+      loading: true,
+      hasDraggle: false, // 用户是否拖动过
+      sprintIssue: {
         name: '',
         link: '',
         type: '',
@@ -84,24 +82,42 @@ export default {
     }
   },
   watch: {
-    sprintdetailData: function(v) {
+    sprintLink: function(v) {
       if (v) {
-        this.details = JSON.parse(JSON.stringify(v))
+        this.getsprintIssueDetail(v)
       }
     }
   },
   props: {
-    sprintdetailData: [Object]
+    sprintLink: {
+      type: String,
+      default: ''
+    }
+  },
+  created() {
+    this.getsprintIssueDetail(this.sprintLink)
   },
   mounted() {
-    // 非常消耗资源，卡顿
     this.addDraggleEvent();
   },
   methods: {
+    getsprintIssueDetail(sprintLink) {
+      this.loading = true;
+      this.$axios.sprints.sprintIssueDetail({link: sprintLink}).then(obj => {
+        if (obj.issueDetail) {
+          this.sprintIssue = obj.issueDetail
+        }
+
+        setTimeout(() => {
+          this.loading = false;
+        }, 300)
+      })
+    },
     addDraggleEvent() {
       let backlogDetailWrapper = document.getElementById('backlogDetailWrapper');
       let sprintDetailWrapper = document.getElementById('sprintDetailWrapper');
       let dragglePoint = document.getElementById('dragglePoint');
+      let that = this;
 
       document.onmouseup = function (evt) {
         document.onmousemove = null;
@@ -115,6 +131,7 @@ export default {
         let sprintDetailWidth = sprintDetailWrapper.offsetWidth;
 
         document.onmousemove = function mouseMove (e) {
+          that.hasDraggle = true;
           el.target.setCapture && el.target.setCapture();
           window.captureEvents && window.captureEvents(Event.MOUSEMOVE | Event.MOUSEUP);
 
@@ -137,7 +154,7 @@ export default {
       }
     },
     handleClickCloseDetailModule() {
-      this.$emit('closeDetail')
+      this.$emit('closeDetail', this.hasDraggle)
     }
   }
 }
@@ -182,7 +199,7 @@ export default {
   }
   .header {
     display: flex;
-    justify-content:flex-start;
+    justify-content:flex-end;
     align-items: center;
     padding: 10px 10px 0;
     .link {

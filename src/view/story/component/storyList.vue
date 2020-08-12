@@ -6,40 +6,35 @@
     <template v-show="draggbleList.length">
       <v-draggable
         v-model="draggbleList"
-        draggable=".item"
         class="backlog-list"
         tag="div"
         ghost-class="ghost"
         v-bind="dragOptions"
         :group="group"
-        animation="200"
+        animation="150"
         @start="startDraggable"
         @end="endDraggable"
         @add="addDraggable">
         <div
-          v-for="(p, i) of draggbleList"
-          :key="p.order"
-          :data-key="p.link"
-          class="item"
-          @contextmenu="showMenu"
-          @click="handleDraggleList(p, i)">
-          <span class="type" :class="[p.type]">
-            <i class="iconfont" :class="filterTypeIcon(p.type)" :style="{color: filterTypeColor(p.type)}"></i>
+          v-for="(issue, i) of draggbleList"
+          :key="issue.order"
+          :data-key="issue.guid"
+          class="item sprint-issue-draggable"
+          @contextmenu.prevent="contextmenuFn"
+          @click="handleDraggleList(issue, i)">
+          <span class="type" :class="[issue.issueType]">
+            <i class="iconfont" :class="filterTypeIcon(issue.issueType)" :style="{color: filterTypeColor(issue.issueType)}"></i>
           </span>
-          <span class="level"><i class="iconfont" :class="stylelevelClass(p.level)" :style="{'color': filterLevelColor(p.level)}"></i></span>
-          <span class="title" :title="p.title">{{p.title}}</span>
-          <el-button type="text" size="mini" :class="[p.moduleState && p.moduleState.value, 'modules-type']"  v-if="p.moduleState">{{p.moduleState.name}}</el-button>
-          <el-button type="text" size="mini" v-if="p.progressState" :class="[p.progressState, 'info-status']">{{p.progressState | filterprogressState}}</el-button>
+          <span class="level"><i class="iconfont" :class="stylelevelClass(issue.urgencyLevel)" :style="{'color': filterLevelColor(issue.urgencyLevel)}"></i></span>
+          <span class="title" :title="issue.title">{{issue.title}}</span>
+          <el-button type="text" size="mini" :class="[issue.tag && issue.tag.guid, 'modules-type']"  v-if="issue.tag">{{issue.tag.name}}</el-button>
+          <el-button type="text" size="mini" v-if="issue.moduleState" :class="[issue.moduleState.link, 'info-status']">{{issue.moduleState.name}}</el-button>
         </div>
       </v-draggable>
     </template>
     <div class="no-draggleList" v-if="draggbleList.length === 0">
       <div class="no-info">暂无事务</div>
     </div>
-    <vue-context-menu
-            :contextMenuData="contextMenuData"
-            @savedata="savedata"
-            @newdata="newdata"></vue-context-menu>
   </div>
 </template>
 <script>
@@ -48,7 +43,7 @@
   import sortSprint from './sortSprint'
   export default {
     props: {
-      list: {
+      issueList: {
         type: Array,
         default: function() { return [] }
       },
@@ -57,29 +52,27 @@
       loading: [Boolean],
       group: [String, Object]
     },
+    inject: {
+      progressStateList: {
+        type: Array,
+        default: () => ([])
+      },
+      modulesList: {
+        type: Array,
+        default: () => ([])
+      },
+      highlightSelectedList: {
+        type: Function,
+        default: () => {}
+      }
+    },
     data() {
       return {
-        contextMenuData: {
-          menuName: 'draggle',
-          axis: {
-            x: null,
-            y: null
-          },
-          menulists: [
-            {
-              fnHandler: 'moveToSprint',
-              btnName: '移动到Sprint'
-            },
-            {
-              fnHandler: 'deleteIssue',
-              btnName: '删除此Issue'
-            }
-          ]
-        },
         visibleContextMenu: false, // 右键点击框
         levelArr,
         issusTypeArr,
         draggbleList: [],
+        selectKey: '',
         oldIndex: -1,
         contextMenuTargets: []
       }
@@ -98,14 +91,13 @@
       'v-sortSprint': sortSprint
     },
     watch: {
-      list: 'initData',
+      issueList: 'initData',
       dropDraggleObj: {
         handler(v) {
-          console.log(this.group)
           if (v && this.oldIndex >= 0) {
             if (v.type === 'implement') {
               if (this.group === 'backlog') {
-                this.$set(this.draggbleList[this.oldIndex], 'progressState', v.link);
+                this.$set(this.draggbleList[this.oldIndex], 'progressState', v.guid);
               } else {
                 this.$notify.warning({
                   title: '提示',
@@ -128,30 +120,48 @@
       }
     },
     created() {
-      this.initData(this.list)
+      this.initData(this.issueList)
     },
     methods: {
-      showMenu () {
-        event.preventDefault()
-        var x = event.clientX
-        var y = event.clientY
-        // Get the current location
-        this.contextMenuData.axis = {
-          x, y
-        }
-      },
-      savedata () {
-        alert(1)
-      },
-      newdata () {
-        console.log('newdata!')
-      },
-      initData(list) {
-        this.contextMenuTargets = []
-        this.draggbleList = JSON.parse(JSON.stringify(list))
-        this.draggbleList.forEach(p => {
-          this.contextMenuTargets.push(document.querySelector([`.item[data-key='${p.link}']`]))
+      contextmenuFn(event) {
+        event.path.forEach((dom, index) => {
+          if (index < 4 && dom.classList.contains('sprint-issue-draggable')) {
+            this.selectKey = dom.getAttribute('data-key')
+          }
         })
+
+        this.highlightSelectedList(this.selectKey)
+        this.$contextmenu({
+          customClass: 'contextmenuContainer',
+          items: [
+            {
+              label: "执行状态",
+              disabled: false,
+              children: this.progressStateList.map(item => ({label: item.name, value: item.link, onClick: () => this.handleClickimplement(item.link)}))
+            },
+            {
+              label: "模型状态",
+              disabled: false,
+              children: [{ label: "翻译成简体中文" }, { label: "翻译成繁体中文" }],
+              onClick: () => {
+                this.clipboardContent = 'xxx';
+              }
+            }
+          ],
+          event,
+          zIndex: 3,
+          minWidth: 140
+        })
+      },
+      initData(issueList) {
+        this.contextMenuTargets = []
+        this.draggbleList = JSON.parse(JSON.stringify(issueList))
+        this.draggbleList.forEach(p => {
+          this.contextMenuTargets.push(document.querySelector([`.item[data-key='${p.guid}']`]))
+        })
+      },
+      handleClickimplement(implementType) {
+        console.log(implementType)
       },
       sortable(type = 'executiveMode') {
         if (type == 'executiveMode') {
@@ -337,11 +347,6 @@
       .icon-6_square {
         color: #F56C6C;
       }
-    }
-    .key-link {
-      color: #0052cc;
-      font-size: 12px;
-      font-weight: 600;
     }
   }
 }

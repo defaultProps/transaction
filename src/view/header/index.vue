@@ -4,7 +4,7 @@
 			<img class="logo" :src="$image.logo">
 			<span class="title">任务管理器</span>
 			<ul class="bubbles">
-				<li v-for="v of Array(20)" :key="v"></li>
+				<li v-for="v of Array(15)" :key="v"></li>
 			</ul>
 		</div>
 		<el-menu
@@ -55,7 +55,7 @@ export default {
 			let params = {
 				uid: this.$store.state.user.uid
 			}
-			this.$axios.header.menu(params).then(v => {
+			this.$axios.header.getheaderMenu(params).then(v => {
 				this.menu = v
 			})
 		}
@@ -90,9 +90,10 @@ body, html {
 		animation: hueRotate 10s infinite linear;
 		filter: contrast(15) hue-rotate(360deg);
 		.title {
-			font-size: 14px;
+			font-size: 12px;
 			user-select: none;
 			font-style: italic;
+			color: #fff;
 		}
 		.logo {
 			width: 20px;
@@ -103,8 +104,8 @@ body, html {
 		}
 		.bubbles {
 			position: absolute;
-			bottom: -3px;
-			width: 90px;
+			bottom: -5px;
+			width: 80px;
 			height: 5px;
 			left: 60px;
 			user-select: none;
@@ -123,7 +124,7 @@ body, html {
 			@for $i from 0 through 25 {
 				li:nth-child(#{$i}) {
 					$width: 5 + random(15) + px;
-					left: 5 + random(50) + px;
+					left: 15 + random(50) + px;
 					top: 15px;
 					transform: translate(-50%, -50%);
 					width: $width;

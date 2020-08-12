@@ -18,13 +18,11 @@ Axios.interceptors.request.use(config => {
   return Promise.reject(error)
 })
 
-Axios.interceptors.response.use(resp => {
-  let obj = resp.data
-
-  if (obj && obj.status === 200) {
-    return obj.data
+Axios.interceptors.response.use(response => {
+  if (response.data && response.data.status == 200) {
+    return response.data.data
   } else {
-    return Promise.reject(obj ? obj.errorinfo : '')
+    return Promise.reject(response.data ? response.data.errorinfo : '')
   }
 })
 

@@ -24,13 +24,13 @@ let routes = [
 		path: '/uxo',
 		name: 'uxo',
 		component: story,
-		meta: {title: '事务分发', level: 0, auth: 0, sidebar: false}
+		meta: {title: '面板', level: 0, auth: 0, sidebar: false}
 	},
 	{
 		path: '/story',
 		name: 'story',
 		component: story,
-		meta: {title: '事务分发', level: 0, auth: 0, sidebar: false}
+		meta: {title: '面板', level: 0, auth: 0, sidebar: false}
 	},
 	{
 		path: '/article',
@@ -42,7 +42,7 @@ let routes = [
 		path: '/dashboard',
 		name: 'dashboard',
 		component: dashboard,
-		meta: {title: '统计图', level: 0, auth: 0, sidebar: false}
+		meta: {title: '仪表盘', level: 0, auth: 0, sidebar: false}
 	},
 	{
 		path: '/thus',

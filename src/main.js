@@ -15,7 +15,8 @@ import common from '@/libs'
 import COOKIES from 'js-cookie'
 import VueTinymce from "@packy-tang/vue-tinymce"
 import echarts from 'echarts'
-import VueContextMenu from 'vue-contextmenu'
+import Contextmenu from "vue-contextmenujs"
+import localforage from 'localforage'
 
 Vue.config.productionTip = false
 Vue.prototype.$axios = axios
@@ -24,11 +25,13 @@ Vue.prototype.$image = image
 Vue.prototype.$common = common
 Vue.prototype.$echarts = echarts
 
+window.localforage = localforage;
+
 Vue.component('v-draggable', draggable)
 Vue.component('v-edit', edit)
 Vue.use(VueTinymce)
 Vue.use(ElementUI)
-Vue.use(VueContextMenu)
+Vue.use(Contextmenu)
 
 Mock.mockData()
 COOKIES.set('saveType', 'mock', { expires: 7, path: '' });
