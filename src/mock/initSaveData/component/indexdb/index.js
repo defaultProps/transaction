@@ -2,16 +2,16 @@ import Mock from "mockjs-async"
 import localforage from 'localforage';
 
 export const HEADER_NAV = [
-    {name: '事务分发', link: 'story', color: '#5243aa', icon: ''},
-    {name: '仪表盘', link: 'dashboard', color: '#ffab00', icon: ''},
-    {name: '大块文章', link: 'article', color: '#598ed4', icon: ''},
-    {name: '旅游指南', link: 'dashboard', color: '#598ed4', icon: ''},
-    {name: '农贸市场', link: 'existence', color: '#5243aa', icon: ''},
-    {name: '健身运动', link: 'Sketch', color: '#ffab00', icon: ''},
-    {name: '厨房日记', link: 'check', color: '#598ed4', icon: ''},
-    {name: '宇宙探索', link: 'universe', color: '#5243aa', icon: ''},
-    {name: '游戏人生', link: 'games', color: '#598ed4', icon: ''}
-  ].map((v, i) => ({...v, id: `module-${i}`}))
+  {name: '事务分发', link: 'story', color: '#5243aa', icon: ''},
+  {name: '仪表盘', link: 'dashboard', color: '#ffab00', icon: ''},
+  {name: '大块文章', link: 'article', color: '#598ed4', icon: ''},
+  {name: '旅游指南', link: 'dashboard', color: '#598ed4', icon: ''},
+  {name: '农贸市场', link: 'existence', color: '#5243aa', icon: ''},
+  {name: '健身运动', link: 'Sketch', color: '#ffab00', icon: ''},
+  {name: '厨房日记', link: 'check', color: '#598ed4', icon: ''},
+  {name: '宇宙探索', link: 'universe', color: '#5243aa', icon: ''},
+  {name: '游戏人生', link: 'games', color: '#598ed4', icon: ''}
+]
 
 const tags = [
   {name: '大块文章', guid: Mock.mock('@guid'), color: '#598ed4', icon: ''},
@@ -31,9 +31,26 @@ const tags = [
 ]
 
 const progressStateList = [
-  {name: "未开始", link: "not-start"},
-  {name: "处理中", link: "doing"},
-  {name: "已完成", link: "finish"}
+  {
+    name: "未开始",
+    link: "not-start",
+    guid: Mock.mock('@guid')
+  },
+  {
+    name: "处理中",
+    link: "doing",
+    guid: Mock.mock('@guid')
+  },
+  {
+    name: "已完成",
+    link: "finish",
+    guid: Mock.mock('@guid')
+  },
+  {
+    name: "关闭",
+    link: "close",
+    guid: Mock.mock('@guid')
+  }
 ]
 
 const activeSprints = [
@@ -123,7 +140,7 @@ const activeSprints = [
   }
 ]
 
-export const backlogSprints = [
+const backlogSprints = [
   {
     title: '初始一个项目hourse，设计家庭房屋设计图',
     urgencyLevel: 3,
@@ -317,19 +334,37 @@ export function localforageStore() {
   localforage.clear()
   localforage.dropInstance();
 
-  let backlogSprintStore = localforage.createInstance({
+  const backlogSprintStore = localforage.createInstance({
     name: 'todo',
     storeName: 'backlogSprint'
   })
 
-  let activeSprintStore = localforage.createInstance({
+  const activeSprintStore = localforage.createInstance({
     name: 'todo',
     storeName: 'activeSprint'
   })
 
+  const moduleSprintStore = localforage.createInstance({
+    name: 'todo',
+    storeName: 'moduleSprint'
+  })
+
+  const progressStateStore = localforage.createInstance({
+    name: 'todo',
+    storeName: 'progressStateSprint'
+  })
+
   let backlogSprintPromise = [];
   let activesprintPromise = [];
+  let moduleSprintPromise = [];
+  let progressStateListPromise = [];
 
+  progressStateList.forEach(progressState => {
+    progressStateListPromise.push(progressStateStore.setItem(progressState.guid, progressState))
+  })
+  tags.forEach(tag => {
+    moduleSprintPromise.push(moduleSprintStore.setItem(tag.guid, tag))
+  })
   backlogSprints.forEach(sprint => {
     backlogSprintPromise.push(backlogSprintStore.setItem(sprint.guid, sprint))
   })
@@ -337,7 +372,7 @@ export function localforageStore() {
     activesprintPromise.push(activeSprintStore.setItem(sprint.guid, sprint))
   })
 
-  Promise.all([...backlogSprintPromise, ...activesprintPromise]).then(() => {
+  Promise.all([...backlogSprintPromise, ...activesprintPromise, ...moduleSprintPromise, ...progressStateListPromise]).then(() => {
     return {
       data: {},
       status: 200

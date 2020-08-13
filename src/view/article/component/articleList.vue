@@ -10,7 +10,7 @@
       <el-button type="text" icon="el-icon-warning" size="medium" class="info"></el-button>
     </div>
     <div class="main">
-      <v-draggable v-model="draggbleList"
+      <uxo-draggable v-model="draggbleList"
                   draggable=".item"
                   class="draggable-list"
                   tag="div"
@@ -32,7 +32,7 @@
           <span class="title">{{p.title}}</span>
         </div>
       </transition-group>
-    </v-draggable>
+    </uxo-draggable>
     </div>
   </div>
 </template>

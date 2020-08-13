@@ -1,6 +1,6 @@
 <template>
 	<div id="todo-content" class="container-box">
-		<v-header></v-header>
+		<uxo-header></uxo-header>
 		<router-view class="router-main"></router-view>
 	</div>
 </template>
@@ -10,8 +10,8 @@ import footer from '@/view/footer'
 
 export default {
 	components: {
-		'v-footer': footer,
-		'v-header': header
+		'uxo-footer': footer,
+		'uxo-header': header
 	}
 }
 </script>

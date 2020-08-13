@@ -5,13 +5,13 @@
         <div class="module-title">执行状态</div>
         <ul class="scroll-style-none">
           <li
-            v-for="p of progressStateList"
-            :key="p.link"
-            @dragleave="dragleave(p)"
-            @dragover="dragover($event, p)"
-            @drop="drop(p)"
-            :class="[p.dropStatus ? 'dropStatus': '', p.link]">
-            <span :class="[p.link]">{{p.name}}</span>
+            v-for="list of progressStateList"
+            :key="list.guid"
+            @dragleave="dragleave(list)"
+            @dragover.prevent="dragover($event, list)"
+            @drop="drop(list)"
+            :class="[list.dropStatus ? 'dropStatus': '', list.link]">
+            <span :class="[list.link]">{{list.name}}</span>
           </li>
         </ul>
       </div>
@@ -22,14 +22,13 @@
         </div>
         <ul class="scroll-style-none module-ul">
           <li
-            v-for="p of modulesList"
-            :key="p.link"
-            @dragleave="dragleave(p)"
-            @dragover="dragover($event, p)"
-            @drop="drop(p)"
-            :class="{'dropStatus': p.dropStatus}"
-          >
-            <span :class="[p.link]">{{p.name}}</span>
+            v-for="list of moduleList"
+            :key="list.guid"
+            @dragleave="dragleave(list)"
+            @dragover.prevent="dragover($event, list)"
+            @drop="drop(list)"
+            :class="{'dropStatus': list.dropStatus}">
+            <span>{{list.name}}</span>
           </li>
         </ul>
       </div>
@@ -49,37 +48,46 @@
         </ul>
       </div> -->
     </div>
-    <v-dialogNavigationModule :visibleDialogModule="visibleDialogModule" @closeVisibleDialogModule="closeVisibleDialogModule"></v-dialogNavigationModule>
+    <uxo-dialogNavigationModule :visibleDialogModule="visibleDialogModule" @closeVisibleDialogModule="closeVisibleDialogModule"></uxo-dialogNavigationModule>
   </div>
 </template>
 <script>
 import dialogNavigationModule from './dialogNavigationModule'
 
 export default {
-  inject: {
-    progressStateList: {
-      type: Array,
-      default: () => ([])
-    },
-    modulesList: {
-      type: Array,
-      default: () => ([])
-    }
-  },
   data() {
     return {
       thusList: [],
+      moduleList: [],
+      progressStateList: [],
       loadingNav: false,
       visibleDialogModule: false // 模块类型 - 编辑弹框
     }
   },
   components: {
-    'v-dialogNavigationModule': dialogNavigationModule
+    'uxo-dialogNavigationModule': dialogNavigationModule
   },
   created() {
     this.getThusList()
+    this.getModuleList();
+    this.getProgressStateList();
   },
   methods: {
+    // 获取执行状态列表
+    getProgressStateList() {
+			this.$axios.sprints.getProgressStateList().then(obj => {
+        let sortVal = ['not-start', 'doing', 'finish', 'close']
+        let progressStateList = obj.progressStateList.map(v => ({...v, dropStatus: false, type: 'progressState'})) || []
+        progressStateList.sort((a, b) => sortVal.indexOf(a.link) - sortVal.indexOf(b.link))
+
+        this.progressStateList = progressStateList;
+			})
+		},
+    getModuleList() {
+			this.$axios.sprints.getModuleList().then(obj => {
+        this.moduleList = obj.moduleList.map(v => ({...v, dropStatus: false, type: 'module'})) || []
+			})
+		},
     closeVisibleDialogModule() {
       this.visibleDialogModule = false;
     },
@@ -102,13 +110,13 @@ export default {
 			this.$set(obj, 'dropStatus', false)
 		},
 		dragover(e, obj) {
-			e.preventDefault()
-			this.$set(obj, 'dropStatus', true)
+      if (!obj.dropStatus) {
+        this.$set(obj, 'dropStatus', true)
+      }
 		},
 		drop(obj) {
-			this.$set(obj, 'dropStatus', false)
-      this.dropDraggleObj = obj
-      this.$emit('dropDownStatus', obj);
+      this.$set(obj, 'dropStatus', false)
+      this.$emit('dropDownStatus', obj)
 		}
   }
 }
@@ -119,6 +127,7 @@ export default {
   box-sizing: border-box;
   overflow: hidden;
   padding-bottom: 40px;
+  box-sizing: border-box;
   border-right: 1px solid rgba(9,30,66,0.31);
   .nav-main {
     display: flex;

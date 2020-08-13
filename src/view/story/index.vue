@@ -2,10 +2,7 @@
 	<div id="moduleStory">
 		<el-row class="story-backlog" id="storyBacklog">
 			<el-col :span="3" class="storyNavigation" v-show="visibleNavigation">
-				<v-storyStatusNavigation
-					:modulesList="modulesList"
-					:progressStateList="progressStateList"
-					@dropDownStatus="dropDownStatus"></v-storyStatusNavigation>
+				<uxo-storyStatusNavigation @dropDownStatus="dropDownStatus"></uxo-storyStatusNavigation>
 			</el-col>
 			<el-button size="small" class="triggernavgation" @click="handleClickvisibleNavigation">
 				<i :class="[visibleNavigation ? 'el-icon-d-arrow-left' : 'el-icon-d-arrow-right']"></i>
@@ -22,13 +19,13 @@
 							<span class="date">{{activeSprint. createTime}} <i class="iconfont icon-weibiaoti29"></i> {{activeSprint.endTime}}</span>
 						</div>
 					</div>
-					<v-draggleList :issueList="activeSprint.issueList"
-													:dropDraggleObj="dropDraggleObj"
-													group="backlog"
+					<uxo-draggleList :issueList="activeSprint.issueList"
+													:dropObj="dropObj"
+													group="activeSprint"
 													v-show="visibleSprint"
-													:sprintType="'active'"
+													sprintType="active"
 													@endDraggable="endDraggable"
-													@handleDetail="handleDetail"></v-draggleList>
+													@handleDetail="handleDetail"></uxo-draggleList>
 				</div>
 				<div class="backlog">
 					<div class="backlog-title">
@@ -40,23 +37,23 @@
 							<el-button size="mini" @click="dialogTableVisible = true" icon="el-icon-circle-plus" type="primary">新建Issue</el-button>
 						</div>
 					</div>
-					<v-draggleList handle=".handle"
-												 :sprintType="'backlog'"
+					<uxo-draggleList handle=".handle"
+												 sprintType="backlog"
 												 @handleDetail="handleDetail"
-												 :dropDraggleObj="dropDraggleObj"
+												 :dropObj="dropObj"
 												 @endDraggable="endDraggable"
 												 :issueList="backlogSprint"
-												 :group="{ name: 'backlog', pull: true, put: true }"></v-draggleList>
+												 :group="{ name: 'activeSprint', pull: true, put: true }"></uxo-draggleList>
 				</div>
 			</el-col>
 			<!-- 分离detail分离至top parent -->
 			<el-col id="sprintDetailWrapper" :span="detailLen">
-				<v-sprintDetail class="detail-container"
+				<uxo-sprintDetail class="detail-container"
 											  :sprintLink="activeLightLink"
-												@closeDetail="closeDetail"></v-sprintDetail>
+												@closeDetail="closeDetail"></uxo-sprintDetail>
 			</el-col>
 		</el-row>
-		<v-dialogNewIssus :dialogTableVisible="dialogTableVisible" @handleClose="handleClose"></v-dialogNewIssus>
+		<uxo-dialogNewIssus :dialogTableVisible="dialogTableVisible" @handleClose="handleClose"></uxo-dialogNewIssus>
 	</div>
 </template>
 <script>
@@ -64,21 +61,10 @@ import draggleList from './component/storyList'
 import storyStatusNavigation from './component/storyStatusNavigation'
 import sprintDetail from './component/storyDetail'
 import dialogNewIssus from './component/dialogNewIssus'
-import { modulesList, progressStateList } from './component//storyConstant'
 
 export default {
 	data() {
-		progressStateList.forEach(item => {
-			item.dropStatus = false
-			item.type = 'implement'
-		})
-		modulesList.forEach(item => {
-			item.type = 'module'
-		})
-
 		return {
-			modulesList,
-			progressStateList,
 			visibleSprint: true,
 			dialogTableVisible: false,
 			sprintData: [],
@@ -94,34 +80,29 @@ export default {
 			activeLightLink: '', // 当前高亮选中link
 			affairVal: '',
 			sprintLen: 21,
-			dropDraggleObj: null // sprint列表拖动到左侧导航栏时的数据
-		}
-	},
-	computed: {
-		detailLen: function() {
-			return  (this.visibleNavigation ? 21 : 24) - this.sprintLen;
+			detailLen: 0,
+			sprintType: '', // 保存是active拖动还是backlog拖动
+			dropObj: null // sprint列表拖动到左侧导航栏时的数据
 		}
 	},
 	provide() {
 		return {
-			modulesList: this.modulesList,
-			progressStateList: this.progressStateList,
 			highlightSelectedList: this.highlightSelectedList
 		}
 	},
 	components: {
-		'v-storyStatusNavigation': storyStatusNavigation,
-		'v-draggleList': draggleList,
-		'v-sprintDetail': sprintDetail,
-		'v-dialogNewIssus': dialogNewIssus
+		'uxo-storyStatusNavigation': storyStatusNavigation,
+		'uxo-draggleList': draggleList,
+		'uxo-sprintDetail': sprintDetail,
+		'uxo-dialogNewIssus': dialogNewIssus
 	},
 	created() {
 		this.getbacklogList()
 		this.getsprintList()
 	},
 	methods: {
-		dropDownStatus(dropDownStatusObj) {
-			this.dropDraggleObj = dropDownStatusObj
+		dropDownStatus(obj) {
+			this.dropObj = obj;
 		},
 		handleClose() {
 			this.dialogTableVisible = false;
@@ -129,9 +110,9 @@ export default {
 		// 请求数据
 		endDraggable(obj) {
 			this.highlightSelectedList(this.activeLightLink);
-			if (this.dropDraggleObj) {
+			if (this.dropObj) {
 				setTimeout(() => {
-					this.dropDraggleObj = null;
+					this.dropObj = null;
 				}, 4000);
 			}
 		},
@@ -160,10 +141,12 @@ export default {
 		renderlayout(hasDraggle = true) {
 			if (this.visibleNavigation) {
 				this.sprintLen = this.activeLightLink ? 15 : 21;
+				this.detailLen = 21 - this.sprintLen;
 			} else {
 				this.sprintLen = this.activeLightLink ? 18 : 24;
+				this.detailLen = 24 - this.sprintLen;
 			}
-			console.log(this.visibleNavigation, this.activeLightLink, this.sprintLen)
+			// 只要拖动了，就一定保留右侧详情页宽度， 除非刷新
 			if (hasDraggle) {
 				document.getElementById('backlogDetailWrapper').style.width = this.sprintLen / 24 * 100 + '%'
 				document.getElementById('sprintDetailWrapper').style.width = this.detailLen / 24 * 100 + '%'
@@ -180,6 +163,7 @@ export default {
 
 			if (key && dom) {
 				dom.classList.add('light')
+				this.activeLightLink = key
 			}
 		},
 		getsprintList() {

@@ -2,6 +2,7 @@ import Axios from 'axios'
 
 Axios.defaults.timeout = 60 * 1000;
 Axios.defaults.withCredentials = true
+Axios.defaults.Samesite = 'Strict'
 
 Axios.interceptors.request.use(config => {
   config.headers['origin-type'] = 'WEB'

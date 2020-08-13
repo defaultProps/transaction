@@ -1,61 +1,63 @@
 <template>
-  <div id="sprint-detail" class="scroll-style-none" v-loading="loading">
+  <div id="sprint-detail">
+    <div class="scroll-style-none sprint-detail__container" v-loading="loading">
+      <div class="header">
+        <button size="mini" class="btn-del" type="text" @click="handleClickCloseDetailModule()">
+          <i class="iconfont icon-chenghao"></i>
+        </button>
+      </div>
+      <uxo-edit class="title" :content="sprintIssue.title" :guid="sprintIssue.guid"></uxo-edit>
+      <div class="form-item item-top">
+        <div class="form-label">
+          紧急度
+          <el-tooltip content="此issue处理的紧急程度，由低到高数字递增" placement="top">
+            <i class="el-icon-info"></i>
+          </el-tooltip>
+        </div>
+        <el-select v-model="sprintIssue.urgencyLevel" placeholder="请选择" size="mini" class="select-level">
+          <el-option-group v-for="group in levelArr" :key="group.label" :label="group.label">
+            <el-option v-for="item in group.options" :key="item.value" :label="item.label" :value="item.value">
+              <span :class="[item.icon, 'iconfont']" :style="{'color': item.color + ' !important'}"></span>
+            </el-option>
+          </el-option-group>
+        </el-select>
+      </div>
+      <div class="form-item">
+        <div class="form-label">创建时间</div>
+        <div class="form-value">{{sprintIssue.createTime}}</div>
+      </div>
+      <div class="form-item">
+        <div class="form-label">最近更新</div>
+        <div class="form-value">{{sprintIssue.updateTime}}</div>
+      </div>
+      <div class="form-item desc">
+        <div class="form-label">
+          描述
+          <el-tooltip content="此issue的详情描述信息" placement="top">
+            <i class="el-icon-info"></i>
+          </el-tooltip>
+        </div>
+        <uxo-edit class="form-value" :content="sprintIssue.issueDesc" :uid="sprintIssue.guid" textType="textarea"></uxo-edit>
+      </div>
+      <div class="form-item remark">
+        <div class="form-label">
+          备注
+          <el-tooltip content="此issue的备注信息" placement="top">
+            <i class="el-icon-info"></i>
+          </el-tooltip>
+        </div>
+        <uxo-edit class="form-value" :content="sprintIssue.issueRemark" :uid="sprintIssue.guid" textType="textarea"></uxo-edit>
+      </div>
+      <div class="form-item remark">
+        <div class="form-label">
+          相关链接
+          <el-tooltip content="此issue的备注信息" placement="top">
+            <i class="el-icon-info"></i>
+          </el-tooltip>
+        </div>
+      </div>
+    </div>
     <div id="dragglePoint"><i class="iconfont icon-tuodong"></i></div>
-    <div class="header">
-      <button size="mini" class="btn-del" type="text" @click="handleClickCloseDetailModule()">
-        <i class="iconfont icon-chenghao"></i>
-      </button>
-    </div>
-    <v-edit class="title" :content="sprintIssue.title" :guid="sprintIssue.guid"></v-edit>
-    <div class="form-item item-top">
-      <div class="form-label">
-        紧急度
-        <el-tooltip content="此issue处理的紧急程度，由低到高数字递增" placement="top">
-          <i class="el-icon-info"></i>
-        </el-tooltip>
-      </div>
-      <el-select v-model="sprintIssue.urgencyLevel" placeholder="请选择" size="mini" class="select-level">
-        <el-option-group v-for="group in levelArr" :key="group.label" :label="group.label">
-          <el-option v-for="item in group.options" :key="item.value" :label="item.label" :value="item.value">
-            <span :class="[item.icon, 'iconfont']" :style="{'color': item.color + ' !important'}"></span>
-          </el-option>
-        </el-option-group>
-      </el-select>
-    </div>
-    <div class="form-item">
-      <div class="form-label">创建时间</div>
-      <div class="form-value">{{sprintIssue.createTime}}</div>
-    </div>
-    <div class="form-item">
-      <div class="form-label">最近更新</div>
-      <div class="form-value">{{sprintIssue.updateTime}}</div>
-    </div>
-    <div class="form-item desc">
-      <div class="form-label">
-        描述
-        <el-tooltip content="此issue的详情描述信息" placement="top">
-          <i class="el-icon-info"></i>
-        </el-tooltip>
-      </div>
-      <v-edit class="form-value" :content="sprintIssue.issueDesc" :uid="sprintIssue.guid" textType="textarea"></v-edit>
-    </div>
-    <div class="form-item remark">
-      <div class="form-label">
-        备注
-        <el-tooltip content="此issue的备注信息" placement="top">
-          <i class="el-icon-info"></i>
-        </el-tooltip>
-      </div>
-      <v-edit class="form-value" :content="sprintIssue.issueRemark" :uid="sprintIssue.guid" textType="textarea"></v-edit>
-    </div>
-    <div class="form-item remark">
-      <div class="form-label">
-        相关链接
-        <el-tooltip content="此issue的备注信息" placement="top">
-          <i class="el-icon-info"></i>
-        </el-tooltip>
-      </div>
-    </div>
   </div>
 </template>
 <script>
@@ -104,13 +106,10 @@ export default {
     getsprintIssueDetail(sprintLink) {
       this.loading = true;
       this.$axios.sprints.sprintIssueDetail({link: sprintLink}).then(obj => {
+        this.loading = false;
         if (obj.issueDetail) {
           this.sprintIssue = obj.issueDetail
         }
-
-        setTimeout(() => {
-          this.loading = false;
-        }, 300)
       })
     },
     addDraggleEvent() {
@@ -133,7 +132,6 @@ export default {
         document.onmousemove = function mouseMove (e) {
           that.hasDraggle = true;
           el.target.setCapture && el.target.setCapture();
-          window.captureEvents && window.captureEvents(Event.MOUSEMOVE | Event.MOUSEUP);
 
           let dvalue =  e.clientX - currentPointClientX;
           let backlogPercent = ((backlogDetailWidth + dvalue) / windowWidth * 100)
@@ -174,11 +172,14 @@ export default {
   user-select: none;
   font-size: 14px;
   color: #172b4d;
-  height: 100%;
   padding: 0 5px 0 15px;
   box-sizing: border-box;
-  overflow-y: scroll;
   position: relative;
+  height: 100%;
+  .sprint-detail__container {
+    height: 100%;
+    overflow-y: scroll;
+  }
   #dragglePoint {
     position: absolute;
     box-sizing: border-box;
@@ -196,6 +197,9 @@ export default {
       position: relative;
       left: -3px;
     }
+  }
+  .loadingdetail {
+    color: #000;
   }
   .header {
     display: flex;

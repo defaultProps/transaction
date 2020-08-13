@@ -1,8 +1,8 @@
 <template>
 	<div id="article">
 		<el-row :gutter="20">
-			<v-sidebar></v-sidebar>
-			<v-list class="article-main"></v-list>
+			<uxo-sidebar></uxo-sidebar>
+			<uxo-list class="article-main"></uxo-list>
     </el-row>
 	</div>
 </template>
@@ -18,8 +18,8 @@ export default {
 		}
 	},
 	components: {
-		'v-sidebar': sidebar,
-		'v-list': list
+		'uxo-sidebar': sidebar,
+		'uxo-list': list
 	}
 }
 </script>

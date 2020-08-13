@@ -22,6 +22,15 @@ export default {
 		sprintIssueDetail: params => Axios({method: 'post', url: protocol + 'sprints/sprintIssueDetail', data: params}),
 		backlogSprintList: params => Axios({method: 'post', url: protocol + 'sprints/backlogSprintList', data: params}),
 		activeSprintList: params => Axios({method: 'post', url: protocol + 'sprints/activeSprintList', data: params}),
+		updateSprintIssueDetail: params => Axios({method: 'post', url: protocol + 'sprints/updateSprintIssueDetail', data: params}),
+		// activeSprint执行状态设置为close
+		closeActiveSprintIssue: params => Axios({method: 'post', url: protocol + 'sprints/closeActiveSprintIssue', data: params}),
+		// issue设置模块类型、执行状态（除了close）
+		updateSptintmoduleState: params => Axios({method: 'post', url: protocol + 'sprints/updateSptintmoduleState', data: params}),
+		// 获取模块类型列表
+		getModuleList: params => Axios({method: 'post', url: protocol + 'sprints/getModuleList', data: params}),
+		// 获取执行状态列表
+		getProgressStateList: params => Axios({method: 'post', url: protocol + 'sprints/getProgressStateList', data: params}),
 		storeSprint: params => Axios({method: 'post', url: protocol + 'sprints/storeSprint', data: params})
 	},
 	thus: {

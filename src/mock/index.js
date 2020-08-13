@@ -14,6 +14,11 @@ export default {
 
 		Mock.mock(protocol + 'sprints/backlogSprintList', 'post', req => api.sprints.backlogSprintList(JSON.parse(req.body)))
 		Mock.mock(protocol + 'sprints/activeSprintList', 'post', req => api.sprints.activeSprintList(JSON.parse(req.body)))
+		Mock.mock(protocol + 'sprints/updateSprintIssueDetail', 'post', req => api.sprints.updateSprintIssueDetail(JSON.parse(req.body)))
+		Mock.mock(protocol + 'sprints/closeActiveSprintIssue', 'post', req => api.sprints.closeActiveSprintIssue(JSON.parse(req.body)))
+		Mock.mock(protocol + 'sprints/getModuleList', 'post', req => api.sprints.getModuleList(JSON.parse(req.body)))
+		Mock.mock(protocol + 'sprints/getProgressStateList', 'post', req => api.sprints.getProgressStateList(JSON.parse(req.body)))
+		Mock.mock(protocol + 'sprints/updateSptintmoduleState', 'post', req => api.sprints.updateSptintmoduleState(JSON.parse(req.body)))
 		Mock.mock(protocol + 'sprints/sprintIssueDetail', 'post', req => api.sprints.sprintIssueDetail(JSON.parse(req.body)))
 		Mock.mock(protocol + 'sprints/storeSprint', 'post', req => api.sprints.storeSprint(JSON.parse(req.body)))
 	}

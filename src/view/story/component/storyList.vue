@@ -1,23 +1,23 @@
 <template>
   <div id="draggable-list">
     <div class="sort-contain" v-show="draggbleList.length && sprintType =='active'">
-      <v-sortSprint @sortable="sortable"></v-sortSprint>
+      <uxo-sortSprint @sortable="sortable"></uxo-sortSprint>
     </div>
     <template v-show="draggbleList.length">
-      <v-draggable
+      <uxo-draggable
         v-model="draggbleList"
         class="backlog-list"
         tag="div"
         ghost-class="ghost"
         v-bind="dragOptions"
         :group="group"
-        animation="150"
+        animation="200"
         @start="startDraggable"
         @end="endDraggable"
         @add="addDraggable">
         <div
           v-for="(issue, i) of draggbleList"
-          :key="issue.order"
+          :key="issue.guid"
           :data-key="issue.guid"
           class="item sprint-issue-draggable"
           @contextmenu.prevent="contextmenuFn"
@@ -25,12 +25,12 @@
           <span class="type" :class="[issue.issueType]">
             <i class="iconfont" :class="filterTypeIcon(issue.issueType)" :style="{color: filterTypeColor(issue.issueType)}"></i>
           </span>
-          <span class="level"><i class="iconfont" :class="stylelevelClass(issue.urgencyLevel)" :style="{'color': filterLevelColor(issue.urgencyLevel)}"></i></span>
+          <span class="level"><i class="iconfont" :class="stylelevelClass(issue.urgencyLevel)"></i></span>
           <span class="title" :title="issue.title">{{issue.title}}</span>
-          <el-button type="text" size="mini" :class="[issue.tag && issue.tag.guid, 'modules-type']"  v-if="issue.tag">{{issue.tag.name}}</el-button>
+          <el-button type="text" size="mini" class="modules-type"  v-if="issue.tag">{{issue.tag.name}}</el-button>
           <el-button type="text" size="mini" v-if="issue.moduleState" :class="[issue.moduleState.link, 'info-status']">{{issue.moduleState.name}}</el-button>
         </div>
-      </v-draggable>
+      </uxo-draggable>
     </template>
     <div class="no-draggleList" v-if="draggbleList.length === 0">
       <div class="no-info">暂无事务</div>
@@ -48,7 +48,10 @@
         default: function() { return [] }
       },
       sprintType: [String],
-      dropDraggleObj: [Object],
+      dropObj: {
+        type: Object,
+        default: null
+      },
       loading: [Boolean],
       group: [String, Object]
     },
@@ -88,27 +91,14 @@
       }
     },
     components: {
-      'v-sortSprint': sortSprint
+      'uxo-sortSprint': sortSprint
     },
     watch: {
       issueList: 'initData',
-      dropDraggleObj: {
+      dropObj: {
         handler(v) {
           if (v && this.oldIndex >= 0) {
-            if (v.type === 'implement') {
-              if (this.group === 'backlog') {
-                this.$set(this.draggbleList[this.oldIndex], 'progressState', v.guid);
-              } else {
-                this.$notify.warning({
-                  title: '提示',
-                  message: 'Backlog中Issue不能设置执行状态',
-                  size: 'mini',
-                  showClose: false
-                });
-              }
-            } else if (v.type === 'module') {
-              this.$set(this.draggbleList[this.oldIndex], 'moduleState', v);
-            }
+            this.handleUpdateSprintModuleState(v);
           }
         },
         immediate: true
@@ -123,6 +113,82 @@
       this.initData(this.issueList)
     },
     methods: {
+      // action & 拖动到右侧
+      handleUpdateSprintModuleState(dropObj) {
+        // 判断是否是执行状态
+        let moduleState = this.draggbleList[this.oldIndex].moduleState
+
+        if (dropObj.type === 'progressState') {
+          if (this.group === 'activeSprint') {
+            if (dropObj.link === 'close') {
+              if (moduleState.link === 'finish') {
+                this.closeActiveSprintIssue(this.draggbleList[this.oldIndex].guid)
+              } else {
+                this.$notify.info({
+                  title: '提示',
+                  showClose: false,
+                  message: '未完成的Issue不能拖动到关闭'
+                })
+              }
+            } else {
+              this.updateSptintmoduleState({
+                type: dropObj.type,
+                link: dropObj.guid,
+                name: dropObj.name,
+                issueLink: this.draggbleList[this.oldIndex].guid
+              }, 'progressState',  dropObj.link)
+            }
+          } else if (this.$store.state.story.sprintType === 'backlog') {
+            this.$notify.warning({
+              title: '提示',
+              message: 'Backlog中Issue不能设置执行状态',
+              size: 'mini',
+              showClose: false
+            })
+          }
+        } else if (dropObj.type === 'module') {
+          this.updateSptintmoduleState({
+            type: dropObj.type,
+            link: dropObj.guid,
+            name: dropObj.name,
+            issueLink: this.draggbleList[this.oldIndex].guid
+          }, 'module')
+        }
+      },
+      // 设置执行状态和模块类型
+      updateSptintmoduleState(params, type, value) {
+        this.$axios.sprints.updateSptintmoduleState(params).then(data => {
+          if (data.hasUpdateSptintmoduleState) {
+            let item = this.draggbleList.find(v => v.guid === params.issueLink)
+
+            if (item) {
+              if (type === 'progressState') {
+                this.$set(item, 'moduleState', { link: value, name: params.name, guid: params.link })
+              }
+              if (type === 'module') {
+                this.$set(item, 'tag', { name: params.name, guid: params.link })
+              }
+            }
+          }
+        })
+      },
+      // 关闭
+      closeActiveSprintIssue(link) {
+        let that = this;
+        this.$axios.sprints.closeActiveSprintIssue({ link }).then(data => {
+          if (data.hasCloseActiveSprintIssue) {
+            let index = that.draggbleList.findIndex(v => v.guid === link);
+
+            that.draggbleList.splice(index, 1)
+            that.$notify.success({
+              title: '提示',
+              message: '已存入仓库， <a href="/closeStoryIssue">点击查看</a>',
+              dangerouslyUseHTMLString: true,
+              showClose: false
+            })
+          }
+        })
+      },
       contextmenuFn(event) {
         event.path.forEach((dom, index) => {
           if (index < 4 && dom.classList.contains('sprint-issue-draggable')) {
@@ -137,15 +203,13 @@
             {
               label: "执行状态",
               disabled: false,
-              children: this.progressStateList.map(item => ({label: item.name, value: item.link, onClick: () => this.handleClickimplement(item.link)}))
+              children: this.progressStateList.map(item => ({label: item.name, value: item.link, onClick: () => this.handleClickimplement(item)}))
             },
             {
               label: "模型状态",
               disabled: false,
-              children: [{ label: "翻译成简体中文" }, { label: "翻译成繁体中文" }],
-              onClick: () => {
-                this.clipboardContent = 'xxx';
-              }
+              customClass: 'contextmenu-subMenu',
+              children: this.modulesList.map(item => ({label: item.name, value: item.link, onClick: () => this.handleClickimplement(item)}))
             }
           ],
           event,
@@ -160,14 +224,22 @@
           this.contextMenuTargets.push(document.querySelector([`.item[data-key='${p.guid}']`]))
         })
       },
-      handleClickimplement(implementType) {
-        console.log(implementType)
+      handleClickimplement(obj) {
+        let params = {
+          link: this.selectKey || obj.link,
+          type: obj.type,
+          status: obj.link,
+          name: obj.name
+        }
+
+        this.$axios.sprints.updateSprintIssueDetail(params).then(res => {
+        })
       },
       sortable(type = 'executiveMode') {
         if (type == 'executiveMode') {
           this.draggbleList.sort((pre, next) => {
-            let preIndex = ['not-start', 'doing', 'finish'].indexOf(pre.progressState)
-            let nextIndex = ['not-start', 'doing', 'finish'].indexOf(next.progressState)
+            let preIndex = ['not-start', 'doing', 'finish'].indexOf(pre.moduleState.link)
+            let nextIndex = ['not-start', 'doing', 'finish'].indexOf(next.moduleState.link)
 
             return preIndex - nextIndex;
           })
@@ -178,14 +250,12 @@
       },
       startDraggable(evt) {
         this.oldIndex = evt.oldIndex
+        this.$store.commit('sprintType', this.sprintType)
       },
       endDraggable(v) {
         this.$emit('endDraggable', v);
       },
       addDraggable(v) {
-
-      },
-      filterLevelColor(v) {
 
       },
       stylelevelClass(v) {
@@ -247,7 +317,7 @@
     height: 32px;
     line-height: 32px;
     font-size: 14px;
-    margin-bottom: 0px;
+    margin: 0;
     user-select: none;
     padding: 0 6px 0 4px;
     display: flex;
@@ -312,11 +382,6 @@
       }
       &.finish {
         background-color: rgba(0, 0, 0, 0.4);
-      }
-    }
-    @for $i from 1 through 30 {
-      .module-#{$i} {
-        background-color: #ffab00;
       }
     }
     .type {

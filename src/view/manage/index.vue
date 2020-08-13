@@ -4,10 +4,10 @@
       <el-tabs v-model="activeName" @tab-click="handleClick" tab-position="left">
         <h2>Setting</h2>
         <el-tab-pane label="用户管理" name="userManage">
-          <v-userManage></v-userManage>
+          <uxo-userManage></uxo-userManage>
         </el-tab-pane>
         <el-tab-pane label="系统管理" name="configManage">
-          <!-- <v-confManage></v-confManage> -->
+          <!-- <uxo-confManage></uxo-confManage> -->
         </el-tab-pane>
       </el-tabs>
     </div>
@@ -29,8 +29,8 @@ export default {
 		}
   },
   components: {
-    'v-userManage': userManage,
-    'v-confManage': confManage
+    'uxo-userManage': userManage,
+    'uxo-confManage': confManage
   },
   methods: {
     handleClick() {

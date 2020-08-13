@@ -27,8 +27,8 @@ Vue.prototype.$echarts = echarts
 
 window.localforage = localforage;
 
-Vue.component('v-draggable', draggable)
-Vue.component('v-edit', edit)
+Vue.component('uxo-draggable', draggable)
+Vue.component('uxo-edit', edit)
 Vue.use(VueTinymce)
 Vue.use(ElementUI)
 Vue.use(Contextmenu)
