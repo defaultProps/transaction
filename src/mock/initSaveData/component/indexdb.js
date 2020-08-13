@@ -38,8 +38,6 @@ export default function (keys, params) {
       return getbacklogSprintList(params);
     case 'getheaderMenu':
       return getheaderMenu(params);
-    case 'updateSprintIssueDetail':
-      return updateSprintIssueDetail(params);
     case 'closeActiveSprintIssue':
       return closeActiveSprintIssue(params);
     case 'updateSptintmoduleState':
@@ -178,30 +176,6 @@ export default function (keys, params) {
           status: 200,
           data: {
             hasCloseActiveSprintIssue: 'success'
-          }
-        })
-      })
-    })
-  }
-
-  function updateSprintIssueDetail(params) {
-    return new Promise(async resolve => {
-      await Promise.all([backlogSprintStore.getItem(params.link), activeSprintStore.getItem(params.link)]).then(issueDetail => {
-        let item = issueDetail.find(v => !!v);
-
-        if (item) {
-          if (params.type === 'module') {
-            // item.tag.name = param.name;
-
-          }
-          if (params.type == '"progressState"') {
-            // item.moduleState =
-          }
-        }
-        resolve({
-          status: 200,
-          data: {
-            issueDetail: issueDetail.find(v => !!v)
           }
         })
       })

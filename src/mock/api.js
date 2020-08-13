@@ -56,7 +56,6 @@ export default {
 	sprints: {
 		sprintIssueDetail: params => controller[env]('sprintIssueDetail', params),
 		activeSprintList: params => controller[env]('activeSprintList', params),
-		updateSprintIssueDetail: params => controller[env]('updateSprintIssueDetail', params),
 		closeActiveSprintIssue: params => controller[env]('closeActiveSprintIssue', params),
 		getModuleList: params => controller[env]('getModuleList', params),
 		getProgressStateList: params => controller[env]('getProgressStateList', params),

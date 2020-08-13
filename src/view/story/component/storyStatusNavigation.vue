@@ -78,14 +78,17 @@ export default {
 			this.$axios.sprints.getProgressStateList().then(obj => {
         let sortVal = ['not-start', 'doing', 'finish', 'close']
         let progressStateList = obj.progressStateList.map(v => ({...v, dropStatus: false, type: 'progressState'})) || []
+
         progressStateList.sort((a, b) => sortVal.indexOf(a.link) - sortVal.indexOf(b.link))
 
         this.progressStateList = progressStateList;
+        this.$store.commit('progressStateList', progressStateList);
 			})
 		},
     getModuleList() {
 			this.$axios.sprints.getModuleList().then(obj => {
         this.moduleList = obj.moduleList.map(v => ({...v, dropStatus: false, type: 'module'})) || []
+         this.$store.commit('moduleList', this.moduleList);
 			})
 		},
     closeVisibleDialogModule() {

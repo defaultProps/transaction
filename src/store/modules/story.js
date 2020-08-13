@@ -1,6 +1,8 @@
 export default {
 	state: {
-		sprintType: ''
+		sprintType: '',
+		progressStateList: [],
+		moduleList: []
 	},
 	getters: {
 		sprintType: state => state.sprintType
@@ -8,6 +10,12 @@ export default {
 	mutations: {
 		sprintType: (state, data) => {
 			state.sprintType = data
+		},
+		progressStateList: (state, data) => {
+			state.progressStateList = data
+		},
+		moduleList: (state, data) => {
+			state.moduleList = data
 		}
 	}
 }

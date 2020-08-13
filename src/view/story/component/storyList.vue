@@ -38,9 +38,10 @@
   </div>
 </template>
 <script>
-  // import * as KeyCode from 'keycode-js';
   import { issusTypeArr, levelArr } from './storyConstant'
   import sortSprint from './sortSprint'
+  import { mapState } from 'vuex'
+
   export default {
     props: {
       issueList: {
@@ -56,10 +57,6 @@
       group: [String, Object]
     },
     inject: {
-      progressStateList: {
-        type: Array,
-        default: () => ([])
-      },
       modulesList: {
         type: Array,
         default: () => ([])
@@ -80,7 +77,10 @@
         contextMenuTargets: []
       }
     },
-    computed: {
+    computed: mapState({
+      // 箭头函数可使代码更简练
+      moduleList: state => state.story.moduleList,
+      progressStateList: state => state.story.progressStateList,
       dragOptions() {
         return {
           animation: 0,
@@ -89,7 +89,7 @@
           ghostClass: "ghost"
         }
       }
-    },
+    }),
     components: {
       'uxo-sortSprint': sortSprint
     },
@@ -157,6 +157,7 @@
       },
       // 设置执行状态和模块类型
       updateSptintmoduleState(params, type, value) {
+        console.log(params, type, value)
         this.$axios.sprints.updateSptintmoduleState(params).then(data => {
           if (data.hasUpdateSptintmoduleState) {
             let item = this.draggbleList.find(v => v.guid === params.issueLink)
@@ -209,7 +210,7 @@
               label: "模型状态",
               disabled: false,
               customClass: 'contextmenu-subMenu',
-              children: this.modulesList.map(item => ({label: item.name, value: item.link, onClick: () => this.handleClickimplement(item)}))
+              children: this.moduleList.map(item => ({label: item.name, value: item.link, onClick: () => this.handleClickimplement(item)}))
             }
           ],
           event,
@@ -225,15 +226,10 @@
         })
       },
       handleClickimplement(obj) {
-        let params = {
-          link: this.selectKey || obj.link,
-          type: obj.type,
-          status: obj.link,
-          name: obj.name
-        }
+        // obj.issueLink = this.selectKey
+        console.log(this.draggbleList[this.oldIndex], this.oldIndex)
 
-        this.$axios.sprints.updateSprintIssueDetail(params).then(res => {
-        })
+        // this.handleUpdateSprintModuleState(obj)
       },
       sortable(type = 'executiveMode') {
         if (type == 'executiveMode') {
