@@ -8,25 +8,23 @@
     <el-popover
       ref="type"
       placement="bottom"
-      width="160"
-      v-model="visibleType"
-    >
+      v-model="visibleType">
       <div id="sortSprintMain">
         <div class="work">
           <el-button type="text">工作:</el-button>
           <el-button size="mini" type="text" class="currentIcon"><i :class="[currentworkIcon, 'iconfont']" :style="{'color': issusTypeArr[0].color}"></i></el-button>
-          <el-button icon="el-icon-refresh" size="mini" type="info" class="btn" @click="selectIcon('work')"></el-button>
+          <!-- <el-button icon="el-icon-refresh" size="mini" type="info" class="btn" @click="selectIcon('work')"></el-button> -->
         </div>
         <div class="life">
           <el-button type="text">生活:</el-button>
           <el-button size="mini" type="text" class="currentIcon"><i :class="[currentLifeIcon, 'iconfont']" :style="{'color': issusTypeArr[1].color}"></i></el-button>
-          <el-button icon="el-icon-refresh" size="mini" type="info" class="btn" @click="selectIcon('life')"></el-button>
+          <!-- <el-button icon="el-icon-refresh" size="mini" type="info" class="btn" @click="selectIcon('life')"></el-button> -->
         </div>
       </div>
-      <div class="footer">
+      <!-- <div class="footer">
         <el-button size="mini" type="text" @click="visibleType = false" class="btn">取消</el-button>
         <el-button type="primary" size="mini" @click="visibleType = false" class="btn">确定</el-button>
-      </div>
+      </div> -->
     </el-popover>
     <el-popover
       ref="level"
@@ -98,7 +96,7 @@ export default {
   }
   .link {
     max-width: 100px;
-    min-width: 90px;
+    min-width: 70px;
   }
   .title {
     flex: 1;

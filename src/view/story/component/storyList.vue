@@ -78,7 +78,6 @@
       }
     },
     computed: mapState({
-      // 箭头函数可使代码更简练
       moduleList: state => state.story.moduleList,
       progressStateList: state => state.story.progressStateList,
       dragOptions() {
@@ -117,7 +116,6 @@
       handleUpdateSprintModuleState(dropObj) {
         // 判断是否是执行状态
         let moduleState = this.draggbleList[this.oldIndex].moduleState
-
         if (dropObj.type === 'progressState') {
           if (this.group === 'activeSprint') {
             if (dropObj.link === 'close') {
@@ -157,7 +155,6 @@
       },
       // 设置执行状态和模块类型
       updateSptintmoduleState(params, type, value) {
-        console.log(params, type, value)
         this.$axios.sprints.updateSptintmoduleState(params).then(data => {
           if (data.hasUpdateSptintmoduleState) {
             let item = this.draggbleList.find(v => v.guid === params.issueLink)
@@ -197,25 +194,36 @@
           }
         })
 
+        let items = [
+          {
+            label: "编辑",
+            icon: "el-icon-edit",
+            disabled: true
+          },
+          {
+            label: "执行状态",
+            disabled: false,
+            children: this.progressStateList.map(item => ({label: item.name, value: item.link, onClick: () => this.handleClickimplement(item)}))
+          },
+          {
+            label: "模型状态",
+            disabled: false,
+            customClass: 'contextmenu-subMenu',
+            children: this.moduleList.map(item => ({label: item.name, value: item.link, onClick: () => this.handleClickimplement(item)}))
+          }
+        ];
+
+        if (this.sprintType === 'backlog') {
+          items = [items[0], items[2]]
+        }
+
         this.highlightSelectedList(this.selectKey)
         this.$contextmenu({
           customClass: 'contextmenuContainer',
-          items: [
-            {
-              label: "执行状态",
-              disabled: false,
-              children: this.progressStateList.map(item => ({label: item.name, value: item.link, onClick: () => this.handleClickimplement(item)}))
-            },
-            {
-              label: "模型状态",
-              disabled: false,
-              customClass: 'contextmenu-subMenu',
-              children: this.moduleList.map(item => ({label: item.name, value: item.link, onClick: () => this.handleClickimplement(item)}))
-            }
-          ],
+          items,
           event,
           zIndex: 3,
-          minWidth: 140
+          minWidth: 120
         })
       },
       initData(issueList) {
@@ -226,10 +234,13 @@
         })
       },
       handleClickimplement(obj) {
-        // obj.issueLink = this.selectKey
-        console.log(this.draggbleList[this.oldIndex], this.oldIndex)
-
-        // this.handleUpdateSprintModuleState(obj)
+        this.draggbleList.forEach((item, index) => {
+          if (item.guid === this.selectKey) {
+            this.oldIndex = index;
+            this.$emit('handleDetail', item, false)
+            this.handleUpdateSprintModuleState(obj)
+          }
+        })
       },
       sortable(type = 'executiveMode') {
         if (type == 'executiveMode') {

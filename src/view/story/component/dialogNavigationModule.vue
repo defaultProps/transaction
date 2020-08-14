@@ -41,43 +41,4 @@ export default {
 }
 </script>
 <style lang="scss">
-#dialogNewIssus {
-  .form {
-    padding-top: 10px;
-    .form-item {
-
-      .select-item {
-        width: 100px;
-        .el-input__inner {
-          text-indent: 10px;
-          background: #ebecf0;
-        }
-      }
-      .icon-prex {
-        position: absolute;
-        left: 25px;
-        top: 0;
-      }
-    }
-  }
-  .dialog-header {
-    padding: 10px;
-    display: flex;
-    border-bottom: 2px solid #ebecf0;
-    justify-content: space-between;
-    align-items: center;
-    .title {
-      font-size: 18px;
-    }
-  }
-
-  .el-dialog__wrapper {
-    .el-dialog__header {
-      display: none;
-    }
-    .el-dialog__body {
-      padding: 0 10px;
-    }
-  }
-}
 </style>

@@ -61,6 +61,7 @@ import draggleList from './component/storyList'
 import storyStatusNavigation from './component/storyStatusNavigation'
 import sprintDetail from './component/storyDetail'
 import dialogNewIssus from './component/dialogNewIssus'
+import { mapState } from 'vuex'
 
 export default {
 	data() {
@@ -100,6 +101,9 @@ export default {
 		this.getbacklogList()
 		this.getsprintList()
 	},
+	computed: mapState({
+		hasDraggle: state => state.story.hasDraggle
+	}),
 	methods: {
 		dropDownStatus(obj) {
 			this.dropObj = obj;
@@ -123,14 +127,18 @@ export default {
 			e.preventDefault()
 			this.$set(obj, 'dropStatus', true)
 		},
-		closeDetail(hasDraggle) {
+		closeDetail() {
 			this.activeLightLink = null;
 			this.highlightSelectedList()
-			this.renderlayout(hasDraggle)
-		},
-		handleDetail(v) {
-			this.activeLightLink = v.guid;
 			this.renderlayout()
+		},
+		handleDetail(v, hasRenderLayout = true) {
+			this.activeLightLink = v.guid;
+
+			if (hasRenderLayout) {
+				this.renderlayout()
+			}
+
 			this.highlightSelectedList(this.activeLightLink)
 		},
 		// css - 排版 - 左侧导航关闭
@@ -138,7 +146,7 @@ export default {
 			this.visibleNavigation = !this.visibleNavigation;
 			this.renderlayout();
 		},
-		renderlayout(hasDraggle = true) {
+		renderlayout() {
 			if (this.visibleNavigation) {
 				this.sprintLen = this.activeLightLink ? 15 : 21;
 				this.detailLen = 21 - this.sprintLen;
@@ -146,11 +154,9 @@ export default {
 				this.sprintLen = this.activeLightLink ? 18 : 24;
 				this.detailLen = 24 - this.sprintLen;
 			}
-			// 只要拖动了，就一定保留右侧详情页宽度， 除非刷新
-			if (hasDraggle) {
-				document.getElementById('backlogDetailWrapper').style.width = this.sprintLen / 24 * 100 + '%'
-				document.getElementById('sprintDetailWrapper').style.width = this.detailLen / 24 * 100 + '%'
-			}
+
+			document.getElementById('backlogDetailWrapper').style.width = this.sprintLen / 24 * 100 + '%'
+			document.getElementById('sprintDetailWrapper').style.width = this.detailLen / 24 * 100 + '%'
 		},
 		// css & 拖动列表高亮
 		highlightSelectedList(key) {

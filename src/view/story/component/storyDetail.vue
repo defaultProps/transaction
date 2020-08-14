@@ -130,7 +130,7 @@ export default {
         let sprintDetailWidth = sprintDetailWrapper.offsetWidth;
 
         document.onmousemove = function mouseMove (e) {
-          that.hasDraggle = true;
+          that.$store.commit('hasDraggle', true)
           el.target.setCapture && el.target.setCapture();
 
           let dvalue =  e.clientX - currentPointClientX;
@@ -152,22 +152,24 @@ export default {
       }
     },
     handleClickCloseDetailModule() {
-      this.$emit('closeDetail', this.hasDraggle)
+      this.$store.commit('hasDraggle', false)
+      this.$emit('closeDetail')
     }
   }
 }
+
 </script>
 <style lang="scss">
-  .el-select-dropdown__item {
-    display: flex;
-    justify-content: space-between;
-    align-content: center;
-    .label-info {
-      font-size: 12px;
-      float: right;
-      color: #8492a6;
-    }
+.el-select-dropdown__item {
+  display: flex;
+  justify-content: space-between;
+  align-content: center;
+  .label-info {
+    font-size: 12px;
+    float: right;
+    color: #8492a6;
   }
+}
 #sprint-detail {
   user-select: none;
   font-size: 14px;
