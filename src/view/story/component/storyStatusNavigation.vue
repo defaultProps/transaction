@@ -2,8 +2,13 @@
   <div id="storyStatusNavtgation">
     <div class="nav-main">
       <div class="module">
-        <div class="module-title">执行状态</div>
-        <ul class="scroll-style-none">
+        <div class="module-title">
+          <span>执行状态</span>
+          <el-button type="primary" size="mini" @click="visibleProgressState = !visibleProgressState">
+            <i :class="[visibleProgressState ? 'el-icon-arrow-down' : 'el-icon-arrow-right']"></i>
+          </el-button>
+        </div>
+        <ul class="scroll-style-none" v-show="visibleProgressState">
           <li
             v-for="list of progressStateList"
             :key="list.guid"
@@ -18,9 +23,14 @@
       <div class="module module-type">
         <div class="module-title">
           模块类型
-          <el-button size="mini" icon="el-icon-edit" class="module-edit" @click="handleClickModuleDialog"></el-button>
+          <el-button-group>
+             <el-button type="primary" icon="el-icon-edit" size="mini" @click="handleClickModuleDialog()"></el-button>
+            <el-button type="primary" size="mini" @click="visibleModule = !visibleModule">
+               <i :class="[visibleModule ? 'el-icon-arrow-down' : 'el-icon-arrow-right']"></i>
+            </el-button>
+          </el-button-group>
         </div>
-        <ul class="scroll-style-none module-ul">
+        <ul class="scroll-style-none module-ul" v-show="visibleModule">
           <li
             v-for="list of moduleList"
             :key="list.guid"
@@ -32,12 +42,17 @@
           </li>
         </ul>
       </div>
-      <!-- <div class="module navgation scroll-style-none">
+      <div class="module navgation scroll-style-none">
         <div class="module-title">
           附加链接
-          <el-button size="mini" icon="el-icon-edit" class="module-edit" type="text"></el-button>
+          <el-button-group>
+             <el-button type="primary" icon="el-icon-edit" size="mini" @click="handleClickNavgationDialog()"></el-button>
+            <el-button type="primary" size="mini" @click="visiblenavgation = !visiblenavgation">
+               <i :class="[visiblenavgation ? 'el-icon-arrow-down' : 'el-icon-arrow-right']"></i>
+            </el-button>
+          </el-button-group>
         </div>
-        <ul class="scroll-style-none">
+        <ul class="scroll-style-none" v-show="visiblenavgation">
           <li v-for="p of thusList"
               :key="p.name"
               :title="p.name"
@@ -46,7 +61,7 @@
               {{p.name}}
           </li>
         </ul>
-      </div> -->
+      </div>
     </div>
     <uxo-dialogNavigationModule :visibleDialogModule="visibleDialogModule" @closeVisibleDialogModule="closeVisibleDialogModule"></uxo-dialogNavigationModule>
   </div>
@@ -61,6 +76,9 @@ export default {
       moduleList: [],
       progressStateList: [],
       loadingNav: false,
+      visibleProgressState: true,
+      visibleModule: true,
+      visiblenavgation: true,
       visibleDialogModule: false // 模块类型 - 编辑弹框
     }
   },
@@ -97,6 +115,9 @@ export default {
     handleClickModuleDialog() {
       this.visibleDialogModule = true;
     },
+    handleClickNavgationDialog() {
+
+    },
     handlelinkClick(link) {
 			window.open(link)
 		},
@@ -128,7 +149,7 @@ export default {
 #storyStatusNavtgation {
   height: 100%;
   box-sizing: border-box;
-  overflow: hidden;
+  overflow-y: scroll;
   padding-bottom: 40px;
   box-sizing: border-box;
   border-right: 1px solid rgba(9,30,66,0.31);
@@ -141,10 +162,6 @@ export default {
     box-sizing: border-box;
     position: relative;
     .module {
-      &.module-type {
-        flex: 1;
-        overflow-y: scroll;
-      }
       .module-title {
         height: 34px;
         box-sizing: border-box;
@@ -152,7 +169,7 @@ export default {
         justify-content: space-between;
         align-items: center;
         box-sizing: border-box;
-        padding: 3px 7px 3px 20px;
+        padding: 3px 7px 3px 10px;
         background: #409EFF;
         font-weight: 600;
         color: #fff;
@@ -166,7 +183,7 @@ export default {
       ul {
         overflow-y: scroll;
         &.module-ul {
-           height: calc(100% - 40px);
+           height: 400px;
           li {
             &::before {
               content: '';
@@ -185,7 +202,6 @@ export default {
           align-items: center;
           text-indent: 10px;
           position: relative;
-          border-top: 1px solid #f6f6f6;
           white-space: nowrap;
           overflow: hidden;
           text-overflow: ellipsis;
@@ -232,8 +248,6 @@ export default {
       &.navgation {
         text-overflow: ellipsis;
         word-break: break-all;
-        border-top: 1px solid #e6e6e6;
-        flex: 1;
         overflow-y: scroll;
         .module-title {
           position: sticky;
@@ -244,7 +258,7 @@ export default {
           max-height: none;
           overflow-y: scroll;
           li {
-            font-size: 12px;
+            font-size: 13px;
             cursor: pointer;
             &:hover {
               background: #f6f6f6;
@@ -253,7 +267,7 @@ export default {
             }
             .iconfont {
               color: #0065ff;
-              font-size: 12px;
+              font-size: 14px;
             }
           }
         }
