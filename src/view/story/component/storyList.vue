@@ -48,6 +48,7 @@
         type: Array,
         default: function() { return [] }
       },
+      activeSprintListLoading: [Boolean],
       sprintType: [String],
       dropObj: {
         type: Object,
@@ -143,6 +144,7 @@
               size: 'mini',
               showClose: false
             })
+            return false;
           }
         } else if (dropObj.type === 'module') {
           this.updateSptintmoduleState({
@@ -211,7 +213,7 @@
             customClass: 'contextmenu-subMenu',
             children: this.moduleList.map(item => ({label: item.name, value: item.link, onClick: () => this.handleClickimplement(item)}))
           }
-        ];
+        ]
 
         if (this.sprintType === 'backlog') {
           items = [items[0], items[2]]
@@ -257,6 +259,8 @@
       },
       startDraggable(evt) {
         this.oldIndex = evt.oldIndex
+        // evt.target.children[evt.oldIndex].style.color = 'red'
+        console.log(evt.target.children[evt.oldIndex])
         this.$store.commit('sprintType', this.sprintType)
       },
       endDraggable(v) {

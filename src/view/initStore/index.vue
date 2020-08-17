@@ -7,6 +7,7 @@
       custom-class="storeSprint-dialog"
       :show-close="false"
       center
+      :close-on-click-modal="false"
       :before-close="handleClose">
       <div id="storeSprint">
         <div class="title-meta">
@@ -37,12 +38,15 @@ export default {
 	mounted() {
     this.$nextTick(() => {
       this.renderEchartsLine()
+
+      let a = this.$axios.sprints.storeSprint();
+      console.log(a)
     })
 	},
 	methods: {
     async submitStore() {
-      await this.getbacklogList()
       this.dialogVisible = false;
+      this.$router.push('/story')
     },
     renderEchartsLine() {
       let echartDom = document.getElementById('configLine');
@@ -110,7 +114,7 @@ export default {
       });
     },
     getbacklogList() {
-			this.$axios.sprints.storeSprint();
+		// 	this.$axios.sprints.storeSprint();
 		}
 	}
 }

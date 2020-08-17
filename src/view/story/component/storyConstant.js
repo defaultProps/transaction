@@ -9,7 +9,6 @@ export let modulesList = [
   {name: '大块文章', link: 'article', color: '#598ed4', icon: ''},
   {name: '日常学习', link: 'study', color: '#598ed4', icon: ''},
 	{name: '繁忙工作', link: 'story', color: '#5243aa', icon: ''},
-	{name: '个人兴趣', link: 'thus', color: '#ffab00', icon: ''},
 	{name: '旅游指南', link: 'dashboard', color: '#598ed4', icon: ''},
 	{name: '开源项目', link: 'existence', color: '#5243aa', icon: ''},
 	{name: '健身运动', link: 'Sketch', color: '#ffab00', icon: ''},

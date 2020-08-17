@@ -53,6 +53,9 @@ export default {
 			}
 		}
 	},
+	dashboard: {
+		getdashboardList: params => controller[env]('getdashboardList', params)
+	},
 	sprints: {
 		sprintIssueDetail: params => controller[env]('sprintIssueDetail', params),
 		activeSprintList: params => controller[env]('activeSprintList', params),

@@ -24,6 +24,7 @@
 													group="activeSprint"
 													v-show="visibleSprint"
 													sprintType="active"
+													:activeSprintListLoading="activeSprintListLoading"
 													@endDraggable="endDraggable"
 													@handleDetail="handleDetail"></uxo-draggleList>
 				</div>
@@ -68,6 +69,7 @@ export default {
 		return {
 			visibleSprint: true,
 			dialogTableVisible: false,
+			activeSprintListLoading: false,
 			sprintData: [],
 			selecType: null,
 			backlogSprint: [],
@@ -99,7 +101,7 @@ export default {
 	},
 	created() {
 		this.getbacklogList()
-		this.getsprintList()
+		this.getsprintList();
 	},
 	computed: mapState({
 		hasDraggle: state => state.story.hasDraggle
@@ -173,7 +175,9 @@ export default {
 			}
 		},
 		getsprintList() {
+			this.activeSprintListLoading = true;
 			this.$axios.sprints.activeSprintList({type: 'sprint'}).then(activeSprint => {
+				this.activeSprintListLoading = false;
 				this.activeSprint = activeSprint;
 			})
 		},
@@ -199,8 +203,8 @@ $bg-big:  #f4f5f7;
     font-weight: 600;
     background: #EBEEF5;
 		position: fixed;
-		bottom: 5px;
-		left: 5px;
+		bottom: 0;
+		left: 0;
 		z-index: 100;
   }
 	.story-backlog {

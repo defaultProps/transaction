@@ -1,10 +1,14 @@
 import Mock from "mockjs-async"
-import localforage from 'localforage';
+import localforage from 'localforage'
 
 export const HEADER_NAV = [
-  {name: '事务分发', link: 'story', color: '#5243aa', icon: ''},
-  {name: '仪表盘', link: 'dashboard', color: '#ffab00', icon: ''},
-  {name: '大块文章', link: 'article', color: '#598ed4', icon: ''},
+  {name: '事务面板', link: 'story', color: '#5243aa', icon: ''},
+  {
+    name: '仪表盘', link: 'dashboard', color: '#ffab00', icon: '',
+    children: [
+      {name: '游戏人生', link: 'games', color: '#598ed4', icon: ''}
+    ]
+  },
   {name: '旅游指南', link: 'dashboard', color: '#598ed4', icon: ''},
   {name: '农贸市场', link: 'existence', color: '#5243aa', icon: ''},
   {name: '健身运动', link: 'Sketch', color: '#ffab00', icon: ''},
@@ -67,7 +71,7 @@ const activeSprints = [
     guid: Mock.mock('@guid') // 唯一id
   },
   {
-    title: '搜集国内外的各类蔬菜并运用于厨房营养搭配中',
+    title: '新建项目 | 搜集国内外的各类蔬菜并运用于厨房营养搭配中',
     urgencyLevel: 3,
     issueDesc: Mock.mock('@cparagraph(3, 10)'),
     issueType: 'life',
@@ -91,7 +95,7 @@ const activeSprints = [
     guid: Mock.mock('@guid')
   },
   {
-    title: '购买域名并进行备案',
+    title: '购买.com域名并进行备案',
     urgencyLevel: 3,
     issueDesc: Mock.mock('@cparagraph(3, 10)'),
     issueType: 'life',
@@ -127,7 +131,7 @@ const activeSprints = [
     guid: Mock.mock('@guid')
   },
   {
-    title: '使用react搭建项目 - 世界植物录',
+    title: '新建项目react | 世界植物录',
     urgencyLevel: 3,
     issueDesc: Mock.mock('@cparagraph(3, 10)'),
     issueType: 'life',
@@ -142,7 +146,7 @@ const activeSprints = [
 
 const backlogSprints = [
   {
-    title: '初始一个项目hourse，设计家庭房屋设计图',
+    title: '新建项目hourse | 3D动画设计家庭房屋设计图',
     urgencyLevel: 3,
     issueDesc: Mock.mock('@cparagraph(3, 10)'),
     issueType: 'life',
@@ -164,7 +168,7 @@ const backlogSprints = [
     guid: Mock.mock('@guid')
   },
   {
-    title: '准备素描工具和选取学习教程',
+    title: '准备素描工具和bilibili选取学习教程',
     urgencyLevel: 3,
     issueDesc: Mock.mock('@cparagraph(3, 10)'),
     issueType: 'life',
@@ -175,18 +179,7 @@ const backlogSprints = [
     guid: Mock.mock('@guid')
   },
   {
-    title: '#生活乐趣 | 根据国内外养殖业的行情设计一套在线查询网站',
-    urgencyLevel: 3,
-    issueDesc: Mock.mock('@cparagraph(3, 10)'),
-    issueType: 'life',
-    issueRemark: Mock.mock('@cparagraph(3, 10)'),
-    createTime: Mock.mock('@date("yyyy/MM/dd")'),
-    updateTime: Mock.mock('@date("yyyy/MM/dd")'),
-    tag: tags[6],
-    guid: Mock.mock('@guid')
-  },
-  {
-    title: '#初始一个项目animals， 搜集各类有趣生物信息',
+    title: '新建项目animals | 搜集各类有趣生物信息',
     urgencyLevel: 3,
     issueDesc: Mock.mock('@cparagraph(3, 10)'),
     issueType: 'work',
@@ -208,7 +201,7 @@ const backlogSprints = [
     guid: Mock.mock('@guid')
   },
   {
-    title: '初始一个项目， 搜集心理学、哲学',
+    title: '新建项目 | 搜集心理学、哲学',
     urgencyLevel: 3,
     issueDesc: Mock.mock('@cparagraph(3, 10)'),
     issueType: 'work',
@@ -219,7 +212,7 @@ const backlogSprints = [
     guid: Mock.mock('@guid')
   },
   {
-    title: '初始一个项目， 收集世界范围有趣新闻娱乐',
+    title: '新建项目 | 收集世界范围有趣新闻娱乐',
     urgencyLevel: 3,
     issueDesc: Mock.mock('@cparagraph(3, 10)'),
     issueType: 'work',
@@ -241,7 +234,7 @@ const backlogSprints = [
     guid: Mock.mock('@guid')
   },
   {
-    title: '#日常学习 | 写作 | #JS | 类型转换和如何防错',
+    title: '#大块文章 | #JS 类型转换和如何防错',
     urgencyLevel: 3,
     issueDesc: Mock.mock('@cparagraph(3, 10)'),
     issueType: 'work',
@@ -252,7 +245,7 @@ const backlogSprints = [
     guid: Mock.mock('@guid')
   },
   {
-    title: '#日常学习 | 写作 | CSS电池充电',
+    title: '#大块文章 | #CSS 电池充电',
     urgencyLevel: 3,
     issueDesc: Mock.mock('@cparagraph(3, 10)'),
     issueType: 'work',
@@ -263,7 +256,7 @@ const backlogSprints = [
     guid: Mock.mock('@guid')
   },
   {
-    title: '#日常学习 | 写作 | 爬虫实现和防爬',
+    title: '#大块文章 | #Nodejs 爬虫实现和防爬',
     urgencyLevel: 3,
     issueDesc: Mock.mock('@cparagraph(3, 10)'),
     issueType: 'work',
@@ -274,7 +267,7 @@ const backlogSprints = [
     guid: Mock.mock('@guid')
   },
   {
-    title: '#日常学习 | 写作 | Git基本操作和常用插件及其配置',
+    title: '#大块文章 | #Git git基本操作和常用插件及其配置',
     urgencyLevel: 3,
     issueDesc: Mock.mock('@cparagraph(3, 10)'),
     issueType: 'life',
@@ -285,7 +278,7 @@ const backlogSprints = [
     guid: Mock.mock('@guid')
   },
   {
-    title: '#日常学习 | 写作 | babel编译class的过程和技巧展示',
+    title: '#大块文章 | #babel babel编译class的过程和技巧展示',
     urgencyLevel: 3,
     issueDesc: Mock.mock('@cparagraph(3, 10)'),
     issueType: 'life',
@@ -331,28 +324,29 @@ const backlogSprints = [
 ]
 
 export function localforageStore() {
-  localforage.clear()
-  localforage.dropInstance();
-
   const backlogSprintStore = localforage.createInstance({
     name: 'todo',
     storeName: 'backlogSprint'
   })
+  backlogSprintStore.clear();
 
   const activeSprintStore = localforage.createInstance({
     name: 'todo',
     storeName: 'activeSprint'
   })
+  activeSprintStore.clear();
 
   const moduleSprintStore = localforage.createInstance({
     name: 'todo',
     storeName: 'moduleSprint'
   })
+  moduleSprintStore.clear();
 
   const progressStateStore = localforage.createInstance({
     name: 'todo',
     storeName: 'progressStateSprint'
   })
+  progressStateStore.clear();
 
   let backlogSprintPromise = [];
   let activesprintPromise = [];
@@ -372,7 +366,7 @@ export function localforageStore() {
     activesprintPromise.push(activeSprintStore.setItem(sprint.guid, sprint))
   })
 
-  Promise.all([...backlogSprintPromise, ...activesprintPromise, ...moduleSprintPromise, ...progressStateListPromise]).then(() => {
+  return () => Promise.all([...backlogSprintPromise, ...activesprintPromise, ...moduleSprintPromise, ...progressStateListPromise]).then(() => {
     return {
       data: {},
       status: 200

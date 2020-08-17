@@ -3,7 +3,10 @@
     <div class="nav-main">
       <div class="module">
         <div class="module-title">
-          <span>执行状态</span>
+          <span>
+            <i class="iconfont icon-connections"></i>
+            执行状态
+          </span>
           <el-button type="primary" size="mini" @click="visibleProgressState = !visibleProgressState">
             <i :class="[visibleProgressState ? 'el-icon-arrow-down' : 'el-icon-arrow-right']"></i>
           </el-button>
@@ -22,7 +25,7 @@
       </div>
       <div class="module module-type">
         <div class="module-title">
-          模块类型
+          <i class="iconfont icon-machinery"></i>模块类型
           <el-button-group>
              <el-button type="primary" icon="el-icon-edit" size="mini" @click="handleClickModuleDialog()"></el-button>
             <el-button type="primary" size="mini" @click="visibleModule = !visibleModule">
@@ -44,7 +47,7 @@
       </div>
       <div class="module navgation scroll-style-none">
         <div class="module-title">
-          附加链接
+          <i class="iconfont icon-fenxiang5"></i>附加链接
           <el-button-group>
              <el-button type="primary" icon="el-icon-edit" size="mini" @click="handleClickNavgationDialog()"></el-button>
             <el-button type="primary" size="mini" @click="visiblenavgation = !visiblenavgation">
@@ -76,9 +79,9 @@ export default {
       moduleList: [],
       progressStateList: [],
       loadingNav: false,
-      visibleProgressState: true,
-      visibleModule: true,
-      visiblenavgation: true,
+      visibleProgressState: false,
+      visibleModule: false,
+      visiblenavgation: false,
       visibleDialogModule: false // 模块类型 - 编辑弹框
     }
   },
@@ -101,12 +104,14 @@ export default {
 
         this.progressStateList = progressStateList;
         this.$store.commit('progressStateList', progressStateList);
+        this.visibleProgressState = true;
 			})
 		},
     getModuleList() {
 			this.$axios.sprints.getModuleList().then(obj => {
         this.moduleList = obj.moduleList.map(v => ({...v, dropStatus: false, type: 'module'})) || []
-         this.$store.commit('moduleList', this.moduleList);
+        this.$store.commit('moduleList', this.moduleList);
+        this.visibleModule = true;
 			})
 		},
     closeVisibleDialogModule() {
@@ -150,8 +155,8 @@ export default {
   height: 100%;
   box-sizing: border-box;
   overflow-y: scroll;
-  padding-bottom: 40px;
   box-sizing: border-box;
+  padding-bottom: 35px;
   border-right: 1px solid rgba(9,30,66,0.31);
   .nav-main {
     display: flex;
@@ -174,7 +179,7 @@ export default {
         font-weight: 600;
         color: #fff;
         background: #3282b8;
-        font-size: 14px;
+        font-size: 13px;
         .module-edit {
           padding: 3px 4px;
           color: #3282b8;

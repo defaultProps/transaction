@@ -34,5 +34,10 @@ export default {
 	},
 	thus: {
 		list: params => Axios({method: 'post', url: protocol + 'thus/list', data: params})
+	},
+	// 仪表盘
+	dashboard: {
+		// 仪表盘列表
+		getdashboardList: params => Axios({method: 'post', url: protocol + 'dashboard/getdashboardList', data: params})
 	}
 }

@@ -48,8 +48,17 @@ export default function (keys, params) {
         return getProgressStateList(params);
     case 'storeSprint':
       return localforageStore(params);
+      case 'getdashboardList':
+        return getdashboardList(params);
     default:
       return ''
+  }
+
+  function getdashboardList(params) {
+    return {
+      data: [],
+      status: 200
+    }
   }
 
   function getProgressStateList() {
@@ -159,7 +168,7 @@ export default function (keys, params) {
   function getheaderMenu(params) {
     return {
       status: 200,
-      data: HEADER_NAV.slice(0, 1)
+      data: HEADER_NAV.slice(0, 2)
     }
   }
 
