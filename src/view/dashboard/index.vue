@@ -86,7 +86,8 @@ export default {
 				}
 			]
 		}
-		var chart = Highcharts.chart('uxoHighCharts-0', options);
+
+		Highcharts.chart('uxoHighCharts-0', options);
 	},
 	methods: {
 		getdashboardList() {
@@ -126,6 +127,23 @@ export default {
 			width: calc(100% - 350px);
 			height: 100%;
 			box-sizing: border-box;
+		}
+	}
+}
+.support{
+	position: absolute;
+	right: 10px;
+	bottom: 10px;
+	padding: 10px;
+	display: flex;
+	a{
+		margin: 0 10px;
+		color: #333333;
+		font-size: 1.8rem;
+		backface-visibility: hidden;
+		transition: all 150ms ease;
+		&:hover{
+			transform: scale(1.1);
 		}
 	}
 }

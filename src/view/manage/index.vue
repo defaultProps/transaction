@@ -13,6 +13,7 @@
     </div>
 	</div>
 </template>
+
 <script>
 import userManage from './component/userManage'
 import confManage from './component/confManage'
@@ -41,7 +42,7 @@ export default {
   }
 }
 </script>
-<style lang="scss" scoped>
+<style lang="scss">
 #manage {
   margin: 30px auto;
   .manage-content {

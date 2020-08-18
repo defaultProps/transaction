@@ -2,10 +2,10 @@
   <div id="userManage">
     <div class="userManage scroll-style-none">
       <el-row>
-        <el-col :span="24">
+        <el-col :span="12">
           <el-form
             label-position="right"
-            label-width="80px"
+            label-width="60px"
             :inline="true"
             :model="formLabelAlign"
             size="small">
@@ -18,7 +18,7 @@
                   :show-file-list="false"
                   :on-success="handleAvatarSuccess"
                   :before-upload="beforeAvatarUpload">
-                  <el-button icon="el-icon-upload" size="mini" class="upload-btn">上传头像</el-button>
+                  <el-button icon="el-icon-upload" size="small" class="upload-btn">上传头像</el-button>
                 </el-upload>
               </div>
             </el-form-item>
@@ -38,13 +38,26 @@
               <el-input v-model="formLabelAlign.email" type="email" disabled style="width: 230px"></el-input>
               <el-button size="small">校验</el-button>
             </el-form-item>
+            <el-form-item label="强校验">
+              <div class="uxo-radio">
+                <v-switchRadio :checkRadio.sync="formLabelAlign.checkRadio"></v-switchRadio>
+              </div>
+            </el-form-item>
           </el-form>
+        </el-col>
+        <el-col :span="12">
+          共享账号
+          <div class="formShares" v-for="(item, index) in formShares" :key="index">
+            <el-input v-model="formShares[index]" :disabled="true" size="small"></el-input>
+          </div>
         </el-col>
       </el-row>
     </div>
   </div>
 </template>
 <script>
+
+import switchRadio from '@/components/common/formComponent/radio'
 export default {
   data() {
     return {
@@ -55,10 +68,14 @@ export default {
         password: 'password',
         type: '',
         email: '1748416084@qq.com',
-        tel: '17779116463'
+        tel: '17779116463',
+        checkRadio: false
       },
       formShares: ['17779116461', '17779116462']
     }
+  },
+  components: {
+    'v-switchRadio': switchRadio
   },
   methods: {
     handleClick() {},
@@ -69,6 +86,12 @@ export default {
 </script>
 <style lang="scss" scoped>
 #userManage {
+  .formShares {
+    .el-input {
+      margin: 10px 0;
+      width: 300px;
+    }
+  }
   .el-form {
     width: 500px;
     .avatar {
@@ -91,6 +114,11 @@ export default {
       user-select: none;
       background: #e3e4e5;
     }
+  }
+  .uxo-radio {
+    position: relative;
+    display: block;
+    width: 350px;
   }
 }
 </style>

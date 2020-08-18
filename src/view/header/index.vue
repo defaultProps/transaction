@@ -12,6 +12,7 @@
 			class="el-menu-demo"
 			mode="horizontal"
 			@select="handleSelect"
+			router
 			background-color="#205081"
 			text-color="#fff"
 			active-text-color="#ffab00"
@@ -19,7 +20,7 @@
 			<el-menu-item v-for="l in menu" :key="l.title" :index="l.link">{{l.name}}</el-menu-item>
 		</el-menu>
 		<div class="nav-right">
-			<!-- <el-input v-model="inputVal" size="mini" class="input" suffix-icon="el-icon-search"></el-input> -->
+			<el-input v-model="inputVal" size="mini" class="input" prefix-icon="el-icon-search"></el-input>
 			<el-button title="配置域" type="text" size="mini" icon="el-icon-lock" @click="$router.push('/manage')" class="">配置域</el-button>
 			<div class="avatar"></div>
 			<!-- <el-popover placement="bottom-start"

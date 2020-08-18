@@ -182,7 +182,7 @@
             that.draggbleList.splice(index, 1)
             that.$notify.success({
               title: '提示',
-              message: '已存入仓库， <a href="/closeStoryIssue">点击查看</a>',
+              message: '已存入<a href="/closeStoryIssue">仓库</a>',
               dangerouslyUseHTMLString: true,
               showClose: false
             })
