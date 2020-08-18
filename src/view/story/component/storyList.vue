@@ -26,7 +26,17 @@
             <i class="iconfont" :class="filterTypeIcon(issue.issueType)" :style="{color: filterTypeColor(issue.issueType)}"></i>
           </span>
           <span class="level"><i class="iconfont" :class="stylelevelClass(issue.urgencyLevel)"></i></span>
-          <span class="title" :title="issue.title">{{issue.title}}</span>
+          <uxo-edit
+            v-if="visibleeditoSprintTitle"
+            class="title"
+            :content="issue.title"
+            :guid="issue.guid"></uxo-edit>
+          <span
+            v-else
+            class="title"
+            :title="issue.title">
+            {{issue.title}}
+          </span>
           <el-button type="text" size="mini" class="modules-type"  v-if="issue.tag">{{issue.tag.name}}</el-button>
           <el-button type="text" size="mini" v-if="issue.moduleState" :class="[issue.moduleState.link, 'info-status']">{{issue.moduleState.name}}</el-button>
         </div>
@@ -69,6 +79,7 @@
     },
     data() {
       return {
+        visibleeditoSprintTitle: false,
         visibleContextMenu: false, // 右键点击框
         levelArr,
         issusTypeArr,
@@ -200,7 +211,8 @@
           {
             label: "编辑",
             icon: "el-icon-edit",
-            disabled: true
+            disabled: false,
+            onClick: () => this.editSprint()
           },
           {
             label: "执行状态",
@@ -227,6 +239,9 @@
           zIndex: 3,
           minWidth: 120
         })
+      },
+      editSprint() {
+        this.visibleeditoSprintTitle = !this.visibleeditoSprintTitle
       },
       initData(issueList) {
         this.contextMenuTargets = []

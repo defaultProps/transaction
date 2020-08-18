@@ -23,7 +23,7 @@ export default {
   },
   watch: {
     radio(v) {
-      this.$emit('update:checkRadio',this.radio);
+      this.$emit('update:checkRadio', this.radio);
     }
   },
   mounted() {

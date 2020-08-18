@@ -17,7 +17,7 @@
       </div>
     </div>
     <div v-else class="info">
-      <span class="content">{{content}}</span>
+      <span class="content" v-html="content"></span>
       <span class="edit-wrap">
         <i class="icon-writefill iconfont"></i>
       </span>
@@ -32,7 +32,7 @@ export default {
       value: '',
       loading: false,
       cencelBtnCick: false,
-      descContentHTML: "<p>html content</p>",
+      descContentHTML: "",
       setting: {
         menubar: false,
         toolbar: "undo redo | fullscreen | alignleft aligncenter alignright alignjustify | link unlink | numlist bullist | image media | bold italic underline strikethrough | indent outdent | superscript subscript | removeformat |",

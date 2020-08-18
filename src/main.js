@@ -24,6 +24,7 @@ Vue.prototype.$dayjs = dayjs
 Vue.prototype.$image = image
 Vue.prototype.$common = common
 Vue.prototype.$echarts = echarts
+Vue.prototype.$common = common
 
 window.localforage = localforage;
 

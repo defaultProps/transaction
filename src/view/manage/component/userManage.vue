@@ -48,7 +48,7 @@
         <el-col :span="12">
           共享账号
           <div class="formShares" v-for="(item, index) in formShares" :key="index">
-            <el-input v-model="formShares[index]" :disabled="true" size="small"></el-input>
+            <el-input v-model="formShares[index]" size="small"></el-input>
           </div>
         </el-col>
       </el-row>
