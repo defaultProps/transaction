@@ -1,67 +1,63 @@
 <template>
   <div id="sprint-detail">
+    <div class="scroll-style-none sprint-detail__container" v-loading="loading">
+      <div class="header">
+        <button size="mini" class="btn-del" type="text" @click="handleClickCloseDetailModule()">
+          <i class="iconfont icon-chenghao"></i>
+        </button>
+      </div>
+      <uxo-edit class="title" :content="sprintIssue.title" :guid="sprintIssue.guid"></uxo-edit>
+      <div class="form-item item-top">
+        <div class="form-label">
+          紧急度
+          <el-tooltip content="此issue处理的紧急程度，由低到高数字递增" placement="top">
+            <i class="el-icon-info"></i>
+          </el-tooltip>
+        </div>
+        <el-select v-model="sprintIssue.urgencyLevel" placeholder="请选择" size="mini" class="select-level">
+          <el-option-group v-for="group in levelArr" :key="group.label" :label="group.label">
+            <el-option v-for="item in group.options" :key="item.value" :label="item.label" :value="item.value">
+              <span :class="[item.icon, 'iconfont']" :style="{'color': item.color + ' !important'}"></span>
+            </el-option>
+          </el-option-group>
+        </el-select>
+      </div>
+      <div class="form-item">
+        <div class="form-label">创建时间</div>
+        <div class="form-value">{{sprintIssue.createTime}}</div>
+      </div>
+      <div class="form-item">
+        <div class="form-label">最近更新</div>
+        <div class="form-value">{{sprintIssue.updateTime}}</div>
+      </div>
+      <div class="form-item desc">
+        <div class="form-label">
+          描述
+          <el-tooltip content="此issue的详情描述信息" placement="top">
+            <i class="el-icon-info"></i>
+          </el-tooltip>
+        </div>
+        <uxo-edit class="form-value" :content="sprintIssue.issueDesc" :uid="sprintIssue.guid" textType="textarea"></uxo-edit>
+      </div>
+      <div class="form-item remark">
+        <div class="form-label">
+          备注
+          <el-tooltip content="此issue的备注信息" placement="top">
+            <i class="el-icon-info"></i>
+          </el-tooltip>
+        </div>
+        <uxo-edit class="form-value" :content="sprintIssue.issueRemark" :uid="sprintIssue.guid" textType="textarea"></uxo-edit>
+      </div>
+      <div class="form-item remark">
+        <div class="form-label">
+          相关链接
+          <el-tooltip content="此issue的备注信息" placement="top">
+            <i class="el-icon-info"></i>
+          </el-tooltip>
+        </div>
+      </div>
+    </div>
     <div id="dragglePoint"><i class="iconfont icon-tuodong"></i></div>
-    <div class="header">
-      <div class="link">
-        <router-link tag="a" v-show="details.tag" :to="details.link" class="tag">{{details.tag.name}}</router-link> /
-        <router-link tag="a" :to="`/story/${details.link}`" class="tag">{{details.link}}</router-link>
-      </div>
-      <el-button type="text" icon="el-icon-close" class="btn-del" @click="handleClickCloseDetail()"></el-button>
-    </div>
-    <v-edit class="title" :content="details.title" :uid="details.link"></v-edit>
-    <div class="form-item item-top">
-      <div class="form-label">
-        紧急度
-        <el-tooltip content="此issue处理的紧急程度，由低到高数字递增" placement="top">
-          <i class="el-icon-info"></i>
-        </el-tooltip>
-      </div>
-      <el-select v-model="details.level" placeholder="请选择" size="mini" class="select-level">
-        <el-option-group v-for="group in levelArr" :key="group.label" :label="group.label">
-          <el-option v-for="item in group.options" :key="item.value" :label="item.label" :value="item.value">
-            <span style="float: left">{{ item.label }}</span>
-            <span style="float: right; color: #8492a6; font-size: 13px">{{ item.value }}</span>
-          </el-option>
-        </el-option-group>
-      </el-select>
-    </div>
-    <div class="form-item">
-      <div class="form-label">
-        预估
-        <el-tooltip content="此issue的耗时时间，取预估值，数值越大，耗时越长" placement="top">
-          <i class="el-icon-info"></i>
-        </el-tooltip>
-      </div>
-      <el-select v-model="details.point" placeholder="请选择" size="mini" class="select-point">
-        <el-option v-for="v in pointsArr" :key="v" :label="v" :value="v"></el-option>
-      </el-select>
-    </div>
-    <div class="form-item">
-      <div class="form-label">创建时间</div>
-      <div class="form-value">{{details.createTime}}</div>
-    </div>
-    <div class="form-item">
-      <div class="form-label">最近更新</div>
-      <div class="form-value">{{details.updateTime}}</div>
-    </div>
-    <div class="form-item desc">
-      <div class="form-label">
-        描述
-        <el-tooltip content="此issue的详情描述信息" placement="top">
-          <i class="el-icon-info"></i>
-        </el-tooltip>
-      </div>
-      <v-edit class="form-value" :content="details.desc" :uid="details.link" textType="textarea"></v-edit>
-    </div>
-    <div class="form-item remark">
-      <div class="form-label">
-        备注
-        <el-tooltip content="此issue的备注信息" placement="top">
-          <i class="el-icon-info"></i>
-        </el-tooltip>
-      </div>
-      <v-edit class="form-value" :content="details.remark" :uid="details.link" textType="textarea"></v-edit>
-    </div>
   </div>
 </template>
 <script>
@@ -72,7 +68,9 @@ export default {
     return {
       levelArr,
       pointsArr,
-      details: {
+      loading: true,
+      hasDraggle: false, // 用户是否拖动过
+      sprintIssue: {
         name: '',
         link: '',
         type: '',
@@ -86,24 +84,39 @@ export default {
     }
   },
   watch: {
-    sprintdetailData: function(v) {
+    sprintLink: function(v) {
       if (v) {
-        this.details = JSON.parse(JSON.stringify(v))
+        this.getsprintIssueDetail(v)
       }
     }
   },
   props: {
-    sprintdetailData: [Object]
+    sprintLink: {
+      type: String,
+      default: ''
+    }
+  },
+  created() {
+    this.getsprintIssueDetail(this.sprintLink)
   },
   mounted() {
-    // 非常消耗资源，卡顿
-    // this.addDraggleEvent();
+    this.addDraggleEvent();
   },
   methods: {
+    getsprintIssueDetail(sprintLink) {
+      this.loading = true;
+      this.$axios.sprints.sprintIssueDetail({link: sprintLink}).then(obj => {
+        this.loading = false;
+        if (obj.issueDetail) {
+          this.sprintIssue = obj.issueDetail
+        }
+      })
+    },
     addDraggleEvent() {
       let backlogDetailWrapper = document.getElementById('backlogDetailWrapper');
       let sprintDetailWrapper = document.getElementById('sprintDetailWrapper');
       let dragglePoint = document.getElementById('dragglePoint');
+      let that = this;
 
       document.onmouseup = function (evt) {
         document.onmousemove = null;
@@ -117,8 +130,8 @@ export default {
         let sprintDetailWidth = sprintDetailWrapper.offsetWidth;
 
         document.onmousemove = function mouseMove (e) {
+          that.$store.commit('hasDraggle', true)
           el.target.setCapture && el.target.setCapture();
-          window.captureEvents && window.captureEvents(Event.MOUSEMOVE | Event.MOUSEUP);
 
           let dvalue =  e.clientX - currentPointClientX;
           let backlogPercent = ((backlogDetailWidth + dvalue) / windowWidth * 100)
@@ -138,33 +151,37 @@ export default {
         }
       }
     },
-    handleClickCloseDetail() {
-      document.getElementById('backlogDetailWrapper').style.width = '87.5%'
+    handleClickCloseDetailModule() {
+      this.$store.commit('hasDraggle', false)
       this.$emit('closeDetail')
     }
   }
 }
+
 </script>
 <style lang="scss">
-  .el-select-dropdown__item {
-    display: flex;
-    justify-content: space-between;
-    align-content: center;
-    .label-info {
-      font-size: 12px;
-      float: right;
-      color: #8492a6;
-    }
+.el-select-dropdown__item {
+  display: flex;
+  justify-content: space-between;
+  align-content: center;
+  .label-info {
+    font-size: 12px;
+    float: right;
+    color: #8492a6;
   }
+}
 #sprint-detail {
   user-select: none;
   font-size: 14px;
   color: #172b4d;
-  height: 100%;
   padding: 0 5px 0 15px;
   box-sizing: border-box;
-  overflow-y: scroll;
   position: relative;
+  height: 100%;
+  .sprint-detail__container {
+    height: 100%;
+    overflow-y: scroll;
+  }
   #dragglePoint {
     position: absolute;
     box-sizing: border-box;
@@ -183,15 +200,21 @@ export default {
       left: -3px;
     }
   }
+  .loadingdetail {
+    color: #000;
+  }
   .header {
     display: flex;
-    justify-content: space-between;
+    justify-content:flex-end;
     align-items: center;
-    padding-right: 10px;
+    padding: 10px 10px 0;
     .link {
       .tag {
         text-indent: 4px;
       }
+    }
+    .btn-del {
+      border: none;
     }
   }
   .title {
@@ -224,9 +247,6 @@ export default {
     }
     .form-value {
       width: 100%;
-    }
-    .select-point {
-      width: 64px;
     }
   }
 }

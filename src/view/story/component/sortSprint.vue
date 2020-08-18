@@ -2,47 +2,43 @@
   <div id="sortSprint">
     <el-button v-popover:type size="mini" type="text" icon="el-icon-info" class="type"></el-button>
     <el-button v-popover:level size="mini" type="text" icon="el-icon-info" class="level"></el-button>
-    <el-button v-popover:link size="mini" type="text" class="link">链接</el-button>
     <el-button v-popover:title size="mini" type="text" class="title">标题</el-button>
     <el-button v-popover:modules size="mini" type="text" class="modules">模块</el-button>
-    <el-button v-popover:status size="mini" type="text" icon="el-icon-refresh-right el-icon--right" class="status" @click="$emit('sortable', 'executiveMode')">状态</el-button>
-    <el-button v-popover:point size="mini" type="text" class="point" icon="el-icon-refresh-right el-icon--right" @click="$emit('sortable', 'point')">点</el-button>
-    <el-popover ref="type"
-                placement="bottom"
-                width="160"
-                v-model="visibleType">
+    <el-button v-popover:status size="mini" type="text" icon="el-icon-sort-down el-icon--right" class="status" @click="$emit('sortable', 'executiveMode')">状态</el-button>
+    <el-popover
+      ref="type"
+      placement="bottom"
+      v-model="visibleType">
       <div id="sortSprintMain">
         <div class="work">
           <el-button type="text">工作:</el-button>
           <el-button size="mini" type="text" class="currentIcon"><i :class="[currentworkIcon, 'iconfont']" :style="{'color': issusTypeArr[0].color}"></i></el-button>
-          <el-button icon="el-icon-refresh" size="mini" type="info" class="btn" @click="selectIcon('work')"></el-button>
+          <!-- <el-button icon="el-icon-refresh" size="mini" type="info" class="btn" @click="selectIcon('work')"></el-button> -->
         </div>
         <div class="life">
           <el-button type="text">生活:</el-button>
           <el-button size="mini" type="text" class="currentIcon"><i :class="[currentLifeIcon, 'iconfont']" :style="{'color': issusTypeArr[1].color}"></i></el-button>
-          <el-button icon="el-icon-refresh" size="mini" type="info" class="btn" @click="selectIcon('life')"></el-button>
+          <!-- <el-button icon="el-icon-refresh" size="mini" type="info" class="btn" @click="selectIcon('life')"></el-button> -->
         </div>
       </div>
-      <div class="footer">
+      <!-- <div class="footer">
         <el-button size="mini" type="text" @click="visibleType = false" class="btn">取消</el-button>
         <el-button type="primary" size="mini" @click="visibleType = false" class="btn">确定</el-button>
-      </div>
+      </div> -->
     </el-popover>
-    <el-popover ref="level"
-                placement="bottom"
-                width="160"
-                v-model="visibleLevel">
+    <el-popover
+      ref="level"
+      placement="bottom"
+      width="160"
+      v-model="visibleLevel"
+      >
       <div id="sortSprintMain">
         <div class="work" v-for="(item, index) in levelArr" :key="index">
           <el-button type="text">{{item.label}}:</el-button>
           <el-button size="mini" type="text" class="currentIcon">
-            <i v-for="(p, i) in item.options" :key="i" :class="[p.icon, 'iconfont']" :style="{'color': p.color}"></i></el-button>
-          <el-button icon="el-icon-refresh" size="mini" type="info" class="btn"></el-button>
+            <i v-for="(p, i) in item.options" :key="i" :class="[p.icon, 'iconfont']" :style="{'color': p.color}"></i>
+          </el-button>
         </div>
-      </div>
-      <div class="footer">
-        <el-button size="mini" type="text" @click="visibleLevel = false" class="btn">取消</el-button>
-        <el-button type="primary" size="mini" @click="visibleLevel = false" class="btn">确定</el-button>
       </div>
     </el-popover>
   </div>
@@ -100,7 +96,7 @@ export default {
   }
   .link {
     max-width: 100px;
-    min-width: 90px;
+    min-width: 70px;
   }
   .title {
     flex: 1;
@@ -109,11 +105,6 @@ export default {
   .modules, .status {
     width: 56px;
   }
-  .point {
-    width: 40px;
-    margin-left: 0;
-  }
-
 }
 #sortSprintMain {
   .work, .life {

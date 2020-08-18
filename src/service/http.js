@@ -2,6 +2,7 @@ import Axios from 'axios'
 
 Axios.defaults.timeout = 60 * 1000;
 Axios.defaults.withCredentials = true
+Axios.defaults.Samesite = 'Strict'
 
 Axios.interceptors.request.use(config => {
   config.headers['origin-type'] = 'WEB'
@@ -18,13 +19,11 @@ Axios.interceptors.request.use(config => {
   return Promise.reject(error)
 })
 
-Axios.interceptors.response.use(resp => {
-  let obj = resp.data
-
-  if (obj && obj.status === 200) {
-    return obj.data
+Axios.interceptors.response.use(response => {
+  if (response.data && response.data.status == 200) {
+    return response.data.data
   } else {
-    return Promise.reject(obj ? obj.errorinfo : '')
+    return Promise.reject(response.data ? response.data.errorinfo : '')
   }
 })
 

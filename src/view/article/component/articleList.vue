@@ -10,7 +10,7 @@
       <el-button type="text" icon="el-icon-warning" size="medium" class="info"></el-button>
     </div>
     <div class="main">
-      <v-draggable v-model="draggbleList"
+      <uxo-draggable v-model="draggbleList"
                   draggable=".item"
                   class="draggable-list"
                   tag="div"
@@ -32,7 +32,7 @@
           <span class="title">{{p.title}}</span>
         </div>
       </transition-group>
-    </v-draggable>
+    </uxo-draggable>
     </div>
   </div>
 </template>
@@ -179,7 +179,7 @@ export default {
           text-indent: -9999em;
           top: 0;
           width: 3px;
-          background-color: #f93;
+          background-color: #ffab00;
           border-top-left-radius: 3px;
           border-bottom-left-radius: 3px;
         }

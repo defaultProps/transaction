@@ -1,56 +1,60 @@
 <template>
 	<div id="moduleStory">
 		<el-row class="story-backlog" id="storyBacklog">
-			<el-col :span="3" class="storyNavigation">
-				<v-storyStatusNavigation @dropDownStatus="dropDownStatus"></v-storyStatusNavigation>
+			<el-col :span="3" class="storyNavigation" v-show="visibleNavigation">
+				<uxo-storyStatusNavigation @dropDownStatus="dropDownStatus"></uxo-storyStatusNavigation>
 			</el-col>
+			<el-button size="small" class="triggernavgation" @click="handleClickvisibleNavigation">
+				<i :class="[visibleNavigation ? 'el-icon-d-arrow-left' : 'el-icon-d-arrow-right']"></i>
+			</el-button>
 			<el-col :span="sprintLen" class="scroll-style-theme1" id="backlogDetailWrapper">
 				<div class="backlog">
 					<div class="backlog-title">
 						<div>
-							<div size="mini" :class="[activeSprint.visible ? 'el-icon-arrow-down' : 'el-icon-arrow-right']" class="trigger-sprint" @click="activeSprint.visible = !activeSprint.visible"></div>
-							<span class="title">{{activeSprint.title}}</span>
-							<span class="issus-count">{{activeSprint.total}} 问题</span>
-							<span class="status" :class="[activeSprint.status]">{{activeSprint.status === 'doing' ? 'open' : 'close'}}</span>
+							<span size="mini" :class="{'visibleSprint': visibleSprint}" @click="visibleSprint = !visibleSprint" class="header-expander">
+								<svg xmlns="http://www.w3.org/2000/svg" width="14" height="10"><g fill="none" fill-rule="evenodd"><path d="M3.29175 4.793c-.389.392-.389 1.027 0 1.419l2.939 2.965c.218.215.5.322.779.322s.556-.107.769-.322l2.93-2.955c.388-.392.388-1.027 0-1.419-.389-.392-1.018-.392-1.406 0l-2.298 2.317-2.307-2.327c-.194-.195-.449-.293-.703-.293-.255 0-.51.098-.703.293z" fill="#344563"></path></g></svg>
+							</span>
+							<span class="title">当前活跃Sprint</span>
+							<span class="issus-count">{{activeSprint.issueList.length}} 问题</span>
 							<span class="date">{{activeSprint. createTime}} <i class="iconfont icon-weibiaoti29"></i> {{activeSprint.endTime}}</span>
 						</div>
-						<span class="status count">{{activeSprint.points}}</span>
 					</div>
-					<v-draggleList v-show="activeSprint.visible"
-													v-loading="sprintLoading"
-													:list="activeSprint.issueList"
-													:highlightSelectedList="highlightSelectedList"
-													:dropDraggleObj="dropDraggleObj"
-													group="backlog"
+					<uxo-draggleList :issueList="activeSprint.issueList"
+													:dropObj="dropObj"
+													group="activeSprint"
+													v-show="visibleSprint"
+													sprintType="active"
+													:activeSprintListLoading="activeSprintListLoading"
 													@endDraggable="endDraggable"
-													@handleDetail="handleDetail"></v-draggleList>
+													@handleDetail="handleDetail"></uxo-draggleList>
 				</div>
 				<div class="backlog">
 					<div class="backlog-title">
 						<div>
 							<span class="title">Backlog</span>
-							<span class="issus-count">{{backlogTotal}} 问题</span>
+							<span class="issus-count">{{backlogSprint.length}} 问题</span>
 						</div>
 						<div>
-							<el-button type="primary" size="mini" icon="el-icon-setting" class="btn config-btn">配置域上传<i class="el-icon-caret-bottom el-icon--right"></i></el-button>
-							<el-button type="primary" size="mini" class="btn" @click="hc_addissue()">new Sprint</el-button>
-							<el-button type="primary" size="mini" class="btn" @click="dialogTableVisible = true">new Issue</el-button>
+							<el-button size="mini" @click="dialogTableVisible = true" icon="el-icon-circle-plus" type="primary">新建Issue</el-button>
 						</div>
 					</div>
-					<v-draggleList v-loading="backlogLoading"
-										     handle=".handle"
-												 :list="backlogSprint.issueList"
-												 :highlightSelectedList="highlightSelectedList"
-												 :group="{ name: 'backlog', pull: true, put: true }"></v-draggleList>
+					<uxo-draggleList handle=".handle"
+												 sprintType="backlog"
+												 @handleDetail="handleDetail"
+												 :dropObj="dropObj"
+												 @endDraggable="endDraggable"
+												 :issueList="backlogSprint"
+												 :group="{ name: 'activeSprint', pull: true, put: true }"></uxo-draggleList>
 				</div>
 			</el-col>
+			<!-- 分离detail分离至top parent -->
 			<el-col id="sprintDetailWrapper" :span="detailLen">
-				<v-sprintDetail class="detail-container"
-											  :sprintdetailData="sprintdetailData"
-												@closeDetail="closeDetail"></v-sprintDetail>
+				<uxo-sprintDetail class="detail-container"
+											  :sprintLink="activeLightLink"
+												@closeDetail="closeDetail"></uxo-sprintDetail>
 			</el-col>
 		</el-row>
-		<v-dialogNewIssus :dialogTableVisible="dialogTableVisible" @handleClose="handleClose"></v-dialogNewIssus>
+		<uxo-dialogNewIssus :dialogTableVisible="dialogTableVisible" @handleClose="handleClose"></uxo-dialogNewIssus>
 	</div>
 </template>
 <script>
@@ -58,66 +62,63 @@ import draggleList from './component/storyList'
 import storyStatusNavigation from './component/storyStatusNavigation'
 import sprintDetail from './component/storyDetail'
 import dialogNewIssus from './component/dialogNewIssus'
+import { mapState } from 'vuex'
 
 export default {
 	data() {
 		return {
+			visibleSprint: true,
 			dialogTableVisible: false,
+			activeSprintListLoading: false,
 			sprintData: [],
 			selecType: null,
 			backlogSprint: [],
 			activeSprint: {
 				issueList: []
 			},
-			sprintLen: 21,
-			backlogTotal: 0,
+			visibleNavigation: true, // 是否显示左侧状态栏
 			backlogLoading: false,
 			sprintLoading: false,
 			activeCollapse: 0,
+			activeLightLink: '', // 当前高亮选中link
 			affairVal: '',
-			dropDraggleObj: null, // sprint列表拖动到左侧导航栏时的数据
-			sprintdetailData: null
+			sprintLen: 21,
+			detailLen: 0,
+			sprintType: '', // 保存是active拖动还是backlog拖动
+			dropObj: null // sprint列表拖动到左侧导航栏时的数据
 		}
 	},
-	computed: {
-		detailLen: function() {
-			return 21 - this.sprintLen;
+	provide() {
+		return {
+			highlightSelectedList: this.highlightSelectedList
 		}
 	},
 	components: {
-		'v-storyStatusNavigation': storyStatusNavigation,
-		'v-draggleList': draggleList,
-		'v-sprintDetail': sprintDetail,
-		'v-dialogNewIssus': dialogNewIssus
+		'uxo-storyStatusNavigation': storyStatusNavigation,
+		'uxo-draggleList': draggleList,
+		'uxo-sprintDetail': sprintDetail,
+		'uxo-dialogNewIssus': dialogNewIssus
 	},
 	created() {
 		this.getbacklogList()
-		this.getsprintList()
+		this.getsprintList();
 	},
+	computed: mapState({
+		hasDraggle: state => state.story.hasDraggle
+	}),
 	methods: {
-		dropDownStatus(dropDownStatusObj) {
-			this.dropDraggleObj = dropDownStatusObj
+		dropDownStatus(obj) {
+			this.dropObj = obj;
 		},
 		handleClose() {
 			this.dialogTableVisible = false;
 		},
-		hc_addissue() {
-			this.$alert('这是一段内容', '标题名称', {
-        confirmButtonText: '确定',
-				callback: action => {
-					this.$message({
-						type: 'info',
-						message: `action: ${action}`
-					});
-				}
-			})
-		},
 		// 请求数据
 		endDraggable(obj) {
-			if (this.dropDraggleObj) {
-				// this.$axios.sprint.
+			this.highlightSelectedList(this.activeLightLink);
+			if (this.dropObj) {
 				setTimeout(() => {
-					this.dropDraggleObj = null;
+					this.dropObj = null;
 				}, 4000);
 			}
 		},
@@ -128,50 +129,63 @@ export default {
 			e.preventDefault()
 			this.$set(obj, 'dropStatus', true)
 		},
-		drop(obj) {
-			this.$set(obj, 'dropStatus', false)
-			this.dropDraggleObj = obj
-		},
 		closeDetail() {
-			this.sprintLen = 21;
+			this.activeLightLink = null;
 			this.highlightSelectedList()
+			this.renderlayout()
 		},
-		handleDetail(v) {
-			this.sprintLen = 15;
-			this.sprintdetailData = v;
-			this.highlightSelectedList(v.link)
+		handleDetail(v, hasRenderLayout = true) {
+			this.activeLightLink = v.guid;
+
+			if (hasRenderLayout) {
+				this.renderlayout()
+			}
+
+			this.highlightSelectedList(this.activeLightLink)
+		},
+		// css - 排版 - 左侧导航关闭
+		handleClickvisibleNavigation() {
+			this.visibleNavigation = !this.visibleNavigation;
+			this.renderlayout();
+		},
+		renderlayout() {
+			if (this.visibleNavigation) {
+				this.sprintLen = this.activeLightLink ? 15 : 21;
+				this.detailLen = 21 - this.sprintLen;
+			} else {
+				this.sprintLen = this.activeLightLink ? 18 : 24;
+				this.detailLen = 24 - this.sprintLen;
+			}
+
+			document.getElementById('backlogDetailWrapper').style.width = this.sprintLen / 24 * 100 + '%'
+			document.getElementById('sprintDetailWrapper').style.width = this.detailLen / 24 * 100 + '%'
 		},
 		// css & 拖动列表高亮
 		highlightSelectedList(key) {
-			let currentDOM = document.querySelector(`.item[data-key="${key}"]`);
-			let allDraggableList = document.querySelectorAll(`.item[data-key`);
+			let dom = document.querySelector(`.item[data-key="${key}"]`);
+			let allDraggableList = document.querySelectorAll(`.item[data-key]`);
 
 			allDraggableList.forEach(el => {
 				el.classList.remove('light')
 			})
 
-			if (key) {
-				currentDOM.classList.add('light')
+			if (key && dom) {
+				dom.classList.add('light')
+				this.activeLightLink = key
 			}
 		},
 		getsprintList() {
-			this.$axios.sprints.sprintList({type: 'sprint'}).then(activeSprint => {
-				let points = 0;
-
-				activeSprint.issueList.forEach(v => {
-					points += v.point
-				})
-				this.activeSprint = {...activeSprint, visible: true, points, total: activeSprint.issueList.length}
+			this.activeSprintListLoading = true;
+			this.$axios.sprints.activeSprintList({type: 'sprint'}).then(activeSprint => {
+				this.activeSprintListLoading = false;
+				this.activeSprint = activeSprint;
 			})
 		},
 		getbacklogList() {
 			this.backlogLoading = true
-			this.$axios.sprints.backlogList({type: 'backlog'}).then(backlogSprint => {
-				setTimeout(() => {
-					this.backlogLoading = false
-					this.backlogTotal = backlogSprint.issueList.length;
-					this.backlogSprint = backlogSprint
-				}, 500)
+			this.$axios.sprints.backlogSprintList({type: 'backlog'}).then(backlogSprint => {
+				this.backlogLoading = false
+				this.backlogSprint = backlogSprint.issueList
 			})
 		}
 	}
@@ -182,8 +196,19 @@ $color-highColor: #172b4d;;
 $bg-big:  #f4f5f7;
 
 #moduleStory {
+	.triggernavgation {
+    float: right;
+    color: #172b4d;;
+    font-size: 16px;
+    font-weight: 600;
+    background: #EBEEF5;
+		position: fixed;
+		bottom: 0;
+		left: 0;
+		z-index: 100;
+  }
 	.story-backlog {
-		position: absolute;
+		position: fixed;
 		left: 0;
 		right: 0;
 		bottom: 0px;
@@ -200,10 +225,8 @@ $bg-big:  #f4f5f7;
 					margin-bottom: 0;
 				}
 				.backlog-title {
-					height: 40px;
-					line-height: 40px;
+					height: 45px;
 					font-size: 16px;
-					line-height: 40px;
 					padding: 0 10px;
 					position: sticky;
 					top: 0;
@@ -212,18 +235,18 @@ $bg-big:  #f4f5f7;
 					display: flex;
 					justify-content: space-between;
 					align-items: center;
-					.trigger-sprint {
-						padding: 0px;
-						border-radius: 4px;
-						height: 14px;
-						width: 14px;
-						font-size: 14px;
+					.header-expander {
+						padding: 2px 3px;
 						cursor: pointer;
 						position: relative;
 						display: inline-block;
-						background-color: rgba(0, 0, 0, 0.5);
+						background-color: #f4f5f7;
 						color: #fff;
 						margin-right: 3px;
+						transform: rotate(-90deg);
+						&.visibleSprint {
+							transform: rotate(0);
+						}
 					}
 					.title {
 						font-weight: 600;
@@ -254,8 +277,8 @@ $bg-big:  #f4f5f7;
 						height: 20px;
 						text-align: left;
 						font-weight: 600;
-						background-color: #909399;
-						border-color: #909399;
+						background-color: #00875a;
+						border-color: #00875a;
 						&.doing {
 							background-color: #00875a;
 							border-color: #00875a;
@@ -267,6 +290,7 @@ $bg-big:  #f4f5f7;
 							height: 16px;
 							font-size: 12px;
 							padding: 0 7px;
+							margin-left: 10px;
 							border-radius: 3px;
 						}
 					}
@@ -284,13 +308,6 @@ $bg-big:  #f4f5f7;
 							border-color: #b3d8ff;
 							outline:none;
 						}
-					}
-					.btn {
-						padding: 1px 3px;
-						height: 25px;
-						float: right;
-						font-size: 12px;
-						margin: 5px;
 					}
 				}
 			}

@@ -1,23 +1,6 @@
 import controller from './initSaveData'
 import COOKIES from 'js-cookie'
-const env = COOKIES.get('saveType')
-
-const HEADER_NAV = [
-	{name: '事务分发', link: 'story', color: '#5243aa', icon: ''},
-	{name: '仪表盘', link: 'dashboard', color: '#ffab00', icon: ''},
-	{name: '大块文章', link: 'article', color: '#598ed4', icon: ''},
-	{name: '旅游指南', link: 'dashboard', color: '#598ed4', icon: ''},
-	{name: '农贸市场', link: 'existence', color: '#5243aa', icon: ''},
-	{name: '健身运动', link: 'Sketch', color: '#ffab00', icon: ''},
-	{name: '厨房日记', link: 'check', color: '#598ed4', icon: ''},
-	{name: '宇宙探索', link: 'universe', color: '#5243aa', icon: ''},
-	{name: '游戏人生', link: 'games', color: '#598ed4', icon: ''}
-].map((v, i) => {
-	return {
-		...v,
-		id: `module-${i}`
-	}
-})
+const env = 'indexdb' || COOKIES.get('saveType')
 
 export default {
 	thus: {
@@ -59,7 +42,9 @@ export default {
 				{name: 'ly2011博客', link: 'https://github.com/ly2011/blog/issues'},
 				{name: 'yygmind博客', link: 'https://github.com/yygmind/blog/issues'},
 				{name: '算法网', link: 'http://ddrv.cn/'},
-				{name: 'react学习', link: 'https://github.com/reactnativecn/react-native-guide'}
+				{name: 'react学习', link: 'https://github.com/reactnativecn/react-native-guide'},
+				{name: '人人FED', link: 'https://www.rrfed.com/'},
+				{name: '码农头条', link: 'http://hao.caibaojian.com.cn/'}
 			]
 
 			return {
@@ -68,16 +53,20 @@ export default {
 			}
 		}
 	},
+	dashboard: {
+		getdashboardList: params => controller[env]('getdashboardList', params)
+	},
 	sprints: {
-		sprintList: params => controller[env]('sprintList', params),
-		backlogList: params => controller[env]('backlogList', params)
+		sprintIssueDetail: params => controller[env]('sprintIssueDetail', params),
+		activeSprintList: params => controller[env]('activeSprintList', params),
+		closeActiveSprintIssue: params => controller[env]('closeActiveSprintIssue', params),
+		getModuleList: params => controller[env]('getModuleList', params),
+		getProgressStateList: params => controller[env]('getProgressStateList', params),
+		updateSptintmoduleState: params => controller[env]('updateSptintmoduleState', params),
+		backlogSprintList: params => controller[env]('backlogSprintList', params),
+		storeSprint: params => controller[env]('storeSprint', params)
 	},
 	header: {
-		getMenu: obj => {
-			return {
-				status: 200,
-				data: HEADER_NAV.slice(0, 1)
-			}
-		}
+		getheaderMenu: params => controller[env]('getheaderMenu', params)
 	}
 }

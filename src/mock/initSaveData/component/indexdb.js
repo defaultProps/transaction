@@ -1,13 +1,258 @@
-const TITLES = [
-	'#健身运动 | 针对个人体型和身体素质进行合理的筛选健身运动、指导视频以及设计一套基础健身计划方案',
-	'#生活乐趣 | 爬虫知乎文章中有趣故事、SCP官网等有趣网站数据',
-	'#农贸市场 | 初始一项蔬菜网站，针对各大农贸市场网站设计一款有趣蔬菜网站',
-	'#生活乐趣 | 设计家庭房屋设计图稿(autoCAD)',
-	'#生活乐趣 | 购买素描所需工具及选购在线学习方案(哔哩哔哩搜索)',
-	'#生活乐趣 | 初始一项收集水果项目',
-	'#生活乐趣 | 初始一项有趣物理化学实验',
-	'#生活乐趣 | 初始一项收集生物项目',
-	'#生活乐趣 | 初始一项心理学、哲学项目',
-	'#项目 | 任务管理器 | 删除文章模块，并修改为面板模块',
-	'#项目 | 任务管理器 | 新增汇编模块，文章模块中收集导航栏移动到汇编模块'
-]
+import Mock from 'mockjs-async'
+import localforage from 'localforage';
+import { localforageStore, HEADER_NAV } from './indexdb/index'
+
+// 设置响应时间， 与实操更加接近
+Mock.setup({
+  timeout: '100-500'
+})
+
+const backlogSprintStore = localforage.createInstance({
+  name: 'todo',
+  storeName: 'backlogSprint'
+})
+
+const activeSprintStore = localforage.createInstance({
+  name: 'todo',
+  storeName: 'activeSprint'
+})
+
+const moduleSprintStore = localforage.createInstance({
+  name: 'todo',
+  storeName: 'moduleSprint'
+})
+
+const progressStateStore = localforage.createInstance({
+  name: 'todo',
+  storeName: 'progressStateSprint'
+})
+
+export default function (keys, params) {
+  // axios请求接口归档
+  switch (keys) {
+    case 'activeSprintList':
+      return getactiveSprintList(params);
+    case 'sprintIssueDetail':
+      return getsprintIssueDetail(params);
+    case 'backlogSprintList':
+      return getbacklogSprintList(params);
+    case 'getheaderMenu':
+      return getheaderMenu(params);
+    case 'closeActiveSprintIssue':
+      return closeActiveSprintIssue(params);
+    case 'updateSptintmoduleState':
+      return updateSptintmoduleState(params);
+    case 'getModuleList':
+      return getModuleList(params);
+      case 'getProgressStateList':
+        return getProgressStateList(params);
+    case 'storeSprint':
+      return localforageStore(params);
+      case 'getdashboardList':
+        return getdashboardList(params);
+    default:
+      return ''
+  }
+
+  function getdashboardList(params) {
+    return {
+      data: [],
+      status: 200
+    }
+  }
+
+  function getProgressStateList() {
+    return new Promise(async resolve => {
+      let keys = [];
+      let progressStateList = [];
+
+      await progressStateStore.keys().then(key => {
+        keys = key;
+      })
+
+      for (let i = 0; i < keys.length; i++) {
+        await progressStateStore.getItem(keys[i]).then(value => {
+          progressStateList.push(value)
+        })
+      }
+
+      resolve({
+        status: 200,
+        data: {
+          progressStateList
+        }
+      })
+    })
+  }
+
+  function getModuleList() {
+    return new Promise(async resolve => {
+      let keys = [];
+      let moduleList = [];
+
+      await moduleSprintStore.keys().then(key => {
+        keys = key;
+      })
+
+      for (let i = 0; i < keys.length; i++) {
+        await moduleSprintStore.getItem(keys[i]).then(value => {
+          moduleList.push(value)
+        })
+      }
+
+      resolve({
+        status: 200,
+        data: {
+          moduleList
+        }
+      })
+    })
+  }
+
+  function updateSptintmoduleState(params) {
+    if (params.type == "module") {
+      return new Promise(async resolve => {
+        await moduleSprintStore.getItem(params.link).then(async modulelist => {
+          if (modulelist) {
+            await Promise.all([backlogSprintStore.getItem(params.issueLink), activeSprintStore.getItem(params.issueLink)]).then(async issue => {
+              let item = issue.find(v => !!v);
+              let index = issue.findIndex(v => !!v);
+
+              if (item) {
+                item.tag = modulelist;
+                if (index == 0) {
+                  await backlogSprintStore.setItem(params.issueLink, item);
+                } else {
+                  await activeSprintStore.setItem(params.issueLink, item);
+                }
+              }
+            })
+            resolve({
+              status: 200,
+              data: {
+                hasUpdateSptintmoduleState: 'success'
+              }
+            })
+          }
+        })
+      })
+    } else if (params.type == "progressState") {
+      return new Promise(async resolve => {
+        await progressStateStore.getItem(params.link).then(async list => {
+          if (list) {
+            await Promise.all([backlogSprintStore.getItem(params.issueLink), activeSprintStore.getItem(params.issueLink)]).then(async issue => {
+              let item = issue.find(v => !!v);
+              let index = issue.findIndex(v => !!v);
+
+              if (item) {
+                item.moduleState = list;
+                if (index == 0) {
+                  await backlogSprintStore.setItem(params.issueLink, item);
+                } else {
+                  await activeSprintStore.setItem(params.issueLink, item);
+                }
+              }
+            })
+            resolve({
+              status: 200,
+              data: {
+                hasUpdateSptintmoduleState: 'success'
+              }
+            })
+          }
+        })
+      })
+    }
+  }
+
+  function getheaderMenu(params) {
+    return {
+      status: 200,
+      data: HEADER_NAV.slice(0, 2)
+    }
+  }
+
+  function closeActiveSprintIssue(params) {
+    return new Promise(async resolve => {
+      await Promise.all([activeSprintStore.getItem(params.link)]).then(async issueDetail => {
+        let item = issueDetail.find(v => !!v);
+
+        if (item) {
+          item.moduleState = {link: 'close', name: '关闭'}
+          await activeSprintStore.setItem(params.link, item);
+        }
+        resolve({
+          status: 200,
+          data: {
+            hasCloseActiveSprintIssue: 'success'
+          }
+        })
+      })
+    })
+  }
+
+  function getsprintIssueDetail(params) {
+    return new Promise(async resolve => {
+      await Promise.all([backlogSprintStore.getItem(params.link), activeSprintStore.getItem(params.link)]).then(issueDetail => {
+        resolve({
+          status: 200,
+          data: {
+            issueDetail: issueDetail.find(v => !!v)
+          }
+        })
+      })
+    })
+  }
+
+  // 当前活跃sprint列表
+  function getactiveSprintList(params) {
+    return new Promise(async resolve => {
+      let issueList = [];
+      let keys = [];
+
+      await activeSprintStore.keys().then(key => {
+        keys = key;
+      })
+      for (let i = 0; i < keys.length; i++) {
+        await activeSprintStore.getItem(keys[i]).then(value => {
+          if (value.moduleState.link !== 'close') {
+            issueList.push(value)
+          }
+        })
+      }
+
+      resolve({
+        status: 200,
+        data: {
+          id: Mock.mock('@guid'),
+          title: Mock.mock('@cword(4, 9)'),
+          createTime: Mock.mock('@date("yyyy/MM/dd")'),
+          endTime: Mock.mock('@date("yyyy/MM/dd")'),
+          issueList
+        }
+      })
+    })
+  }
+  function getbacklogSprintList(params) {
+    return new Promise(async resolve => {
+      let issueList = [];
+      let keys = [];
+
+      await backlogSprintStore.keys().then(key => {
+        keys = key;
+      })
+      for (let i = 0; i < keys.length; i++) {
+        await backlogSprintStore.getItem(keys[i]).then(value => {
+          issueList.push(value)
+        })
+      }
+
+      resolve({
+        status: 200,
+        data: {
+          issueList
+        }
+      })
+    })
+  }
+}

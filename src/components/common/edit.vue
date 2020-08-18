@@ -2,7 +2,14 @@
   <div id="uxo-edit" @click="hc_edit">
     <div v-if="editMode" class="edit-mode">
       <el-form @submit.native="handleClickSubmit()">
-        <el-input v-model="val" @blur="blur" class="input" :rows="10" ref="inputNode" :type="textType"></el-input>
+        <el-input v-show="textType === 'text'" v-model="value" @blur="blur" class="input" :rows="10" ref="inputNode"></el-input>
+        <div v-show="textType === 'textarea'">
+          <vue-tinymce
+            v-model="value"
+            :setup="setup"
+            @blur="blur"
+            :setting="setting" />
+        </div>
       </el-form>
       <div class="save-options">
         <el-button size="mini" @click.prevent.stop="handleClickSubmit()" :class="[loading ? 'saved' : '']"><i class="icon" :class="[loading ? 'el-icon-loading' : 'el-icon-check']"></i></el-button>
@@ -10,7 +17,7 @@
       </div>
     </div>
     <div v-else class="info">
-      <span class="content">{{content}}</span>
+      <span class="content" v-html="content"></span>
       <span class="edit-wrap">
         <i class="icon-writefill iconfont"></i>
       </span>
@@ -22,14 +29,24 @@ export default {
   data() {
     return {
       editMode: false,
-      val: '',
+      value: '',
       loading: false,
-      cencelBtnCick: false
+      cencelBtnCick: false,
+      descContentHTML: "",
+      setting: {
+        menubar: false,
+        toolbar: "undo redo | fullscreen | alignleft aligncenter alignright alignjustify | link unlink | numlist bullist | image media | bold italic underline strikethrough | indent outdent | superscript subscript | removeformat |",
+        toolbar_drawer: "sliding",
+        quickbars_selection_toolbar: "removeformat | bold italic underline strikethrough | fontsizeselect forecolor backcolor",
+        plugins: "link image media table lists fullscreen quickbars",
+        language: 'zh_CN',
+        height: 450
+      }
     }
   },
   watch: {
     'editMode'(newVal) {
-      if (newVal) {
+      if (newVal && this.textType === 'text') {
         this.$nextTick(() => {
           this.$refs.inputNode.focus()
           this.$refs.inputNode.select()
@@ -40,11 +57,11 @@ export default {
       this.editMode = false;
     },
     'content'(v) {
-      this.val = v;
-    },
+      this.value = v;
+    }
   },
   created() {
-    this.val = this.content
+    this.value = this.content
   },
   props: {
     uid: [String],
@@ -65,6 +82,12 @@ export default {
     }
   },
   methods: {
+    setup(editor) {
+
+    },
+    editorChange(v) {
+
+    },
     blur() {
       setTimeout(async () => {
         if (this.cencelBtnCick) {

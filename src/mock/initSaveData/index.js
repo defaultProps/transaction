@@ -1,11 +1,7 @@
-import mock from './component/mock.js';
-import indexedDB from './component/indexdb.js'
-import websql from './component/websql.js'
-import cloudServer from './component/cloudServer.js'
+import product from './component/product.js';
+import indexdb from './component/indexdb.js'
 
 export default {
-  mock,
-  indexedDB,
-  websql,
-  cloudServer
+  product, // 生产数据
+  indexdb // 本地mock存储数据
 }
