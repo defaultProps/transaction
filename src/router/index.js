@@ -8,7 +8,7 @@ Vue.use(Router)
 let router = new Router({
   routes,
   linkActiveClass: 'active',
-  mode: 'hash'
+  mode: 'history'
 })
 
 router.beforeEach((to, from, next) => {

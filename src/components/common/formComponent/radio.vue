@@ -23,7 +23,7 @@ export default {
       const circle = document.getElementById('circle')
       const bg = document.getElementById('bg')
       const checkbox = document.getElementById('checkbox')
-      let isChecked = checkbox.ckecked;
+      let isChecked = checkbox.checked;
 
       checkbox.addEventListener("pointerdown", e => {
         e.preventDefault();
@@ -64,7 +64,15 @@ export default {
             "M 7.2340776,0.79375 25.305335,2.303431 c 3.340746,0.2790873 6.051234,2.1696843 6.051234,5.5220673 0,3.3523827 -2.710489,5.2429797 -6.051234,5.5220667 L 7.2340776,14.857247 C 3.1241941,14.671597 0.52916667,11.177881 0.52916667,7.8254983 0.52916667,4.4731152 3.14652,1.0351291 7.2340776,0.79375 Z"
           });
       }
-      });
+      })
+    }
+  },
+  beforeDestroy() {
+    const checkbox = document.getElementById('checkbox')
+
+    if (checkbox) {
+      checkbox.onpointerdown = null;
+      checkbox.onpointerup = null;
     }
   }
 }
