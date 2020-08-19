@@ -40,7 +40,7 @@
             </el-form-item>
             <el-form-item label="强校验">
               <div class="uxo-radio">
-                <v-switchRadio :checkRadio.sync="formLabelAlign.checkRadio"></v-switchRadio>
+                <v-switchRadio v-model="fst"></v-switchRadio>
               </div>
             </el-form-item>
           </el-form>
@@ -61,6 +61,7 @@ import switchRadio from '@/components/common/formComponent/radio'
 export default {
   data() {
     return {
+      fst: true,
       activeName: 'userManage',
       imageUrl: 'https://dss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3389396624,1488513240&fm=26&gp=0.jpg',
       formLabelAlign: {
@@ -69,7 +70,7 @@ export default {
         type: '',
         email: '1748416084@qq.com',
         tel: '17779116463',
-        checkRadio: false
+        checkRadio: true
       },
       formShares: ['17779116461', '17779116462']
     }

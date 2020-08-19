@@ -274,8 +274,6 @@
       },
       startDraggable(evt) {
         this.oldIndex = evt.oldIndex
-        // evt.target.children[evt.oldIndex].style.color = 'red'
-        console.log(evt.target.children[evt.oldIndex])
         this.$store.commit('sprintType', this.sprintType)
       },
       endDraggable(v) {

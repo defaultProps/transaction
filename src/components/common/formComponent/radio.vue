@@ -1,30 +1,18 @@
 <template>
-  <span id="switch">
-    <input type="checkbox" id="checkbox" v-model="radio">
+  <div id="todo-checkbox">
+    <input type="checkbox" id="checkbox" :value="checked" @change="$emit('todo-radiochange', $event.target.checked)">
     <svg viewBox="0 0 38 16">
       <path id="bg" d="M 7.2340776,0.79375 25.305335,2.303431 c 3.340746,0.2790873 6.051234,2.1696843 6.051234,5.5220673 0,3.3523827 -2.710489,5.2429797 -6.051234,5.5220667 L 7.2340776,14.857247 C 3.1241941,14.671597 0.52916667,11.177881 0.52916667,7.8254983 0.52916667,4.4731152 3.14652,1.0351291 7.2340776,0.79375 Z" />
       <path id="circle" d="m 13.682389,7.8092461 c 0,3.3960409 -2.734396,6.1534299 -6.1216329,6.1906119 -0.02309,2.54e-4 -0.04621,3.81e-4 -0.06936,3.81e-4 -3.4191911,0 -6.1909932,-2.771802 -6.1909934,-6.1909929 0,-3.4191912 2.7718022,-6.1909935 6.1909934,-6.1909933 0.01911,0 0.0382,8.66e-5 0.05727,2.594e-4 3.3928184,0.030745 6.1337234,2.790653 6.1337234,6.1907339 z" />
     </svg>
-  </span>
+  </div>
 </template>
 <script>
 export default {
-  props: {
-    'checkRadio': {
-      type: Boolean,
-      default: false,
-      required: true
-    }
-  },
-  data() {
-    return {
-      radio: this.checkRadio
-    }
-  },
-  watch: {
-    radio(v) {
-      this.$emit('update:checkRadio', this.radio);
-    }
+  props: ['checked'],
+  model: {
+    prop: 'checked',
+    event: 'todo-radiochange'
   },
   mounted() {
     this.handleClickCheckbox();
@@ -35,12 +23,9 @@ export default {
       const circle = document.getElementById('circle')
       const bg = document.getElementById('bg')
       const checkbox = document.getElementById('checkbox')
-
-      gsap.registerPlugin(MorphSVGPlugin);
-
       let isChecked = checkbox.ckecked;
 
-      checkbox.addEventListener("pointerdown", (e) => {
+      checkbox.addEventListener("pointerdown", e => {
         e.preventDefault();
 
         if (!isChecked) {
@@ -57,10 +42,8 @@ export default {
         }
         isChecked = !isChecked;
       })
-
       checkbox.addEventListener("pointerup", () => {
         if (isChecked) {
-          checkbox.classList.add('active')
           gsap.to(circle, 0.2, {
             morphSVG:
             "m 13.682389,7.8092461 c 0,3.3960409 -2.734396,6.1534299 -6.1216329,6.1906119 -0.02309,2.54e-4 -0.04621,3.81e-4 -0.06936,3.81e-4 -3.4191911,0 -6.1909932,-2.771802 -6.1909934,-6.1909929 0,-3.4191912 2.7718022,-6.1909935 6.1909934,-6.1909933 0.01911,0 0.0382,8.66e-5 0.05727,2.594e-4 3.3928184,0.030745 6.1337234,2.790653 6.1337234,6.1907339 z",
@@ -71,7 +54,6 @@ export default {
             "M 24.651658,0.7937995 6.5804018,2.3034742 C 3.2396563,2.5825604 0.52916883,4.4731385 0.52916883,7.8254985 c 0,3.3523605 2.70377397,5.3403985 6.05123297,5.5220215 l 18.0712562,1.509678 c 4.109882,-0.185649 6.704909,-3.679339 6.704909,-7.0316995 0,-3.35236 -2.617352,-6.790321 -6.704909,-7.031699 z"
           });
         } else {
-          checkbox.classList.remove('active')
           gsap.to(circle, 0.2, {
             morphSVG:
             "m 13.682389,7.8092461 c 0,3.3960409 -2.734396,6.1534299 -6.1216329,6.1906119 -0.02309,2.54e-4 -0.04621,3.81e-4 -0.06936,3.81e-4 -3.4191911,0 -6.1909932,-2.771802 -6.1909934,-6.1909929 0,-3.4191912 2.7718022,-6.1909935 6.1909934,-6.1909933 0.01911,0 0.0382,8.66e-5 0.05727,2.594e-4 3.3928184,0.030745 6.1337234,2.790653 6.1337234,6.1907339 z",
@@ -81,36 +63,38 @@ export default {
             morphSVG:
             "M 7.2340776,0.79375 25.305335,2.303431 c 3.340746,0.2790873 6.051234,2.1696843 6.051234,5.5220673 0,3.3523827 -2.710489,5.2429797 -6.051234,5.5220667 L 7.2340776,14.857247 C 3.1241941,14.671597 0.52916667,11.177881 0.52916667,7.8254983 0.52916667,4.4731152 3.14652,1.0351291 7.2340776,0.79375 Z"
           });
-        }
-      })
+      }
+      });
     }
   }
 }
 </script>
-<style lang="scss" scoped>
-#switch {
-  --fill: #d1d6ee;
-  --fill-active: #275efe;
+<style lang="scss">
+#todo-checkbox {
   position: relative;
   display: inline;
-  --switch-width: 50px;
-  --switch-height: 32px;
+  overflow: hidden;
+
+  --todo-checkbox-width: 50px;
+  --todo-checkbox-height: 32px;
+  --todo-fill: #d1d6ee;
+  --todo-fill-active: #275efe;
   input {
+    position: absolute;
+    display: block;
+    width: var(--todo-checkbox-width);
+    height: var(--todo-checkbox-height);
+    padding: 0;
+    margin: 0;
     -webkit-tap-highlight-color: transparent;
     -webkit-appearance: none;
     outline: none;
-    display: block;
     border: none;
-    width: var(--switch-width);
-    height: var(--switch-height);
-    padding: 0;
-    margin: 0;
-    position: absolute;
     cursor: pointer;
-    &:checked, &.active {
-      & + svg{
-        #bg{
-          fill: var(--fill-active);
+    &:checked {
+      & + svg {
+        #bg {
+          fill: var(--todo-fill-active);
         }
       }
     }
@@ -123,7 +107,7 @@ export default {
     height: 32px;
     pointer-events: none;
     #bg {
-      fill: var(--fill);
+      fill: var(--todo-fill);
       transition: fill 0.2s ease;
     }
     #circle {
