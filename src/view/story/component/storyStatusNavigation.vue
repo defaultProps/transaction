@@ -1,17 +1,14 @@
 <template>
   <div id="storyStatusNavtgation">
     <div class="nav-main">
-      <div class="module">
+      <div class="module scroll-style-none">
         <div class="module-title">
-          <span>
-            <i class="iconfont icon-connections"></i>
-            执行状态
-          </span>
+          执行状态
           <el-button type="primary" size="mini" @click="visibleProgressState = !visibleProgressState">
             <i :class="[visibleProgressState ? 'el-icon-arrow-down' : 'el-icon-arrow-right']"></i>
           </el-button>
         </div>
-        <ul class="scroll-style-none" v-show="visibleProgressState">
+        <ul class="scroll-style-none status-implete" v-show="visibleProgressState">
           <li
             v-for="list of progressStateList"
             :key="list.guid"
@@ -23,7 +20,7 @@
           </li>
         </ul>
       </div>
-      <div class="module module-type">
+      <div class="module module-type scroll-style-none">
         <div class="module-title">
           <i class="iconfont icon-machinery"></i>模块类型
           <el-button-group>
@@ -45,7 +42,7 @@
           </li>
         </ul>
       </div>
-      <div class="module navgation scroll-style-none">
+      <div class="module navgation">
         <div class="module-title">
           <i class="iconfont icon-fenxiang5"></i>附加链接
           <el-button-group>
@@ -79,9 +76,10 @@ export default {
       moduleList: [],
       progressStateList: [],
       loadingNav: false,
-      visibleProgressState: false,
-      visibleModule: false,
-      visiblenavgation: false,
+      
+      visibleProgressState: true,
+      visibleModule: true,
+      visiblenavgation: true,
       visibleDialogModule: false // 模块类型 - 编辑弹框
     }
   },
@@ -154,10 +152,10 @@ export default {
 #storyStatusNavtgation {
   height: 100%;
   box-sizing: border-box;
-  overflow-y: scroll;
+  padding-bottom: 40px;
+  overflow: hidden;
   box-sizing: border-box;
-  padding-bottom: 35px;
-  border-right: 1px solid rgba(9,30,66,0.31);
+  border-right: 1px solid #0006;
   .nav-main {
     display: flex;
     flex-direction: column;
@@ -178,8 +176,9 @@ export default {
         background: #409EFF;
         font-weight: 600;
         color: #fff;
+        user-select: none;
         background: #3282b8;
-        font-size: 13px;
+        font-size: 16px;
         .module-edit {
           padding: 3px 4px;
           color: #3282b8;
@@ -187,9 +186,14 @@ export default {
       }
       ul {
         overflow-y: scroll;
+        max-height: 400px;
+        &.status-implete {
+          height: 140px;
+        }
         &.module-ul {
            height: 400px;
           li {
+            user-select: none;
             &::before {
               content: '';
               background: #0006;
@@ -198,9 +202,10 @@ export default {
         }
         li {
           background: #fff;
+          user-select: none;
           height: 35px;
           line-height: 35px;
-          font-size: 14px;
+          font-size: 16px;
           margin-bottom: 0;
           user-select: text;
           box-sizing: border-box;
@@ -230,9 +235,9 @@ export default {
             top: 0;
             width: 3px;
             background: #0006;
-            border-top-left-radius: 3px;
-            border-bottom-left-radius: 3px;
-          }
+            border-top-left-radius: 5px;
+            border-bottom-left-radius: 5px;
+          } 
           &.not-start {
             &::before {
               background-color: #00875a;
@@ -248,31 +253,44 @@ export default {
               background-color: #0006;
             }
           }
+          &.close {
+            &::before {
+              background-color: #205081;
+            }
+          }
         }
       }
       &.navgation {
-        text-overflow: ellipsis;
-        word-break: break-all;
-        overflow-y: scroll;
-        .module-title {
-          position: sticky;
-          z-index: 100;
-          top: 0;
-        }
         ul {
-          max-height: none;
           overflow-y: scroll;
           li {
-            font-size: 13px;
+            font-size: 16px;
             cursor: pointer;
+            position: relative;
+            margin: 2px 0;
+            &::after {
+              content: '';
+              width: 100%;
+              height: 2px;
+              position: absolute;
+              bottom: 0;
+              left: 0;
+              background: #0065ff;/*当前标签继承的文字颜色，这里让伪元素的背景色与父元素的文字颜色相同*/
+              transition:all .35s;
+              transform-origin: left;
+              transform: scale(0);
+            }
             &:hover {
               background: #f6f6f6;
-              text-decoration: underline;
+              // text-decoration: underline;
               color: #0065ff;
+              &::after {
+                transform: scale(1);
+              }
             }
             .iconfont {
               color: #0065ff;
-              font-size: 14px;
+              font-size: 16px;
             }
           }
         }

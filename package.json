@@ -41,6 +41,7 @@
     "mockjs-async": "0.0.5",
     "nprogress": "^0.2.0",
     "showdown": "^1.9.1",
+    "sortablejs": "^1.10.2",
     "stats-js": "^1.0.1",
     "three": "^0.105.2",
     "three-obj-mtl-loader": "^1.0.3",

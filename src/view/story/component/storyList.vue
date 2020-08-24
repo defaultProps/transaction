@@ -7,39 +7,31 @@
       <uxo-draggable
         v-model="draggbleList"
         class="backlog-list"
-        tag="div"
+        tag="ul"
+        draggable=".item"
         ghost-class="ghost"
         v-bind="dragOptions"
         :group="group"
-        animation="200"
         @start="startDraggable"
         @end="endDraggable"
         @add="addDraggable">
-        <div
-          v-for="(issue, i) of draggbleList"
-          :key="issue.guid"
-          :data-key="issue.guid"
-          class="item sprint-issue-draggable"
-          @contextmenu.prevent="contextmenuFn"
-          @click="handleDraggleList(issue, i)">
-          <span class="type" :class="[issue.issueType]">
-            <i class="iconfont" :class="filterTypeIcon(issue.issueType)" :style="{color: filterTypeColor(issue.issueType)}"></i>
-          </span>
-          <span class="level"><i class="iconfont" :class="stylelevelClass(issue.urgencyLevel)"></i></span>
-          <uxo-edit
-            v-if="visibleeditoSprintTitle"
-            class="title"
-            :content="issue.title"
-            :guid="issue.guid"></uxo-edit>
-          <span
-            v-else
-            class="title"
-            :title="issue.title">
-            {{issue.title}}
-          </span>
-          <el-button type="text" size="mini" class="modules-type"  v-if="issue.tag">{{issue.tag.name}}</el-button>
-          <el-button type="text" size="mini" v-if="issue.moduleState" :class="[issue.moduleState.link, 'info-status']">{{issue.moduleState.name}}</el-button>
-        </div>
+        <transition-group>
+          <li
+            v-for="(issue, i) of draggbleList"
+            :key="issue.guid"
+            :data-key="issue.guid"
+            class="item sprint-list"
+            @contextmenu.prevent="contextmenuFn"
+            @click="handleDraggleList(issue, i)">
+            <span class="type" :class="[issue.issueType]">
+              <i class="iconfont" :class="filterTypeIcon(issue.issueType)" :style="{color: filterTypeColor(issue.issueType)}"></i>
+            </span>
+            <span class="level"><i class="iconfont" :class="stylelevelClass(issue.urgencyLevel)"></i></span>
+            <span class="title" :title="issue.title">{{issue.title}}</span>
+            <el-button type="text" size="medium" class="modules-type"  v-if="issue.tag">{{issue.tag.name}}</el-button>
+            <el-button type="text" size="medium" v-if="issue.moduleState" :class="[issue.moduleState.link, 'info-status']">{{issue.moduleState.name}}</el-button>
+          </li>
+        </transition-group>
       </uxo-draggable>
     </template>
     <div class="no-draggleList" v-if="draggbleList.length === 0">
@@ -94,7 +86,7 @@
       progressStateList: state => state.story.progressStateList,
       dragOptions() {
         return {
-          animation: 0,
+          animation: 200,
           group: "description",
           disabled: false,
           ghostClass: "ghost"
@@ -202,7 +194,7 @@
       },
       contextmenuFn(event) {
         event.path.forEach((dom, index) => {
-          if (index < 4 && dom.classList.contains('sprint-issue-draggable')) {
+          if (index < 4 && dom.classList.contains('sprint-list')) {
             this.selectKey = dom.getAttribute('data-key')
           }
         })
@@ -340,8 +332,8 @@
     overflow: hidden;
     height: 32px;
     line-height: 32px;
-    font-size: 14px;
-    margin: 0;
+    font-size: 16px;
+    margin: 3px 0;
     user-select: none;
     padding: 0 6px 0 4px;
     display: flex;
@@ -355,14 +347,17 @@
     white-space: nowrap;
     border-top-left-radius: 4px;
     border-bottom-left-radius: 4px;
-    &.ghost:hover {
-      background-color: #deebff;
+
+    &.sortable-chosen {
+      // visibility: hidden;
+      &:hover {
+        background: #deebff;
+      }
     }
     &:hover {
-      filter: contrast(0.9)
+       background: #deebff;
     }
     &.light {
-      filter: contrast(0.9);
       background: #deebff;
     }
     &::before {
@@ -374,7 +369,7 @@
       text-indent: -9999em;
       top: 0;
       width: 3px;
-      background-color: #f93;
+      background-color: #205081;
       border-top-left-radius: 3px;
       border-bottom-left-radius: 3px;
     }
@@ -383,7 +378,7 @@
       text-overflow: ellipsis;
       white-space: nowrap;
       overflow: hidden;
-      font-size: 14px;
+      font-size: 16px;
       flex: 1;
       white-space: nowrap;
       text-overflow: ellipsis;
@@ -391,7 +386,7 @@
     .modules-type {
       border-radius: 4px;
       color: #fff;
-      padding: 2px 3px;
+      padding: 3px 4px;
       background: rgba(0,0,0,0.4);
     }
     .info-status {
@@ -417,7 +412,7 @@
     }
     .level {
       color: #E6A23C;
-      font-size: 17px;
+      font-size: 16px;
       .icon-1_square {
         color: #67C23A;
       }
@@ -442,7 +437,7 @@
 // context
 .vue-contextmenuName-draggle {
   width: 240px;
-  font-size: 14px;
+  font-size: 16px;
   .context-menu-list {
     height: 32px;
     line-height: 32px;

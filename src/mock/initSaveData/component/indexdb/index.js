@@ -83,6 +83,30 @@ const activeSprints = [
     guid: Mock.mock('@guid')
   },
   {
+    title: '#开源todo | 事务分发 | 模块类型 | 模块增加统计总数',
+    urgencyLevel: 3,
+    issueDesc: Mock.mock('@cparagraph(3, 10)'),
+    issueType: 'worK',
+    issueRemark: Mock.mock('@cparagraph(3, 10)'),
+    createTime: Mock.mock('@date("yyyy/MM/dd")'),
+    updateTime: Mock.mock('@date("yyyy/MM/dd")'),
+    tag: tags[5],
+    moduleState: progressStateList[1],
+    guid: Mock.mock('@guid')
+  },
+  {
+    title: '#开源todo | 事务分发 | 详情页样式切换抽屉样式',
+    urgencyLevel: 3,
+    issueDesc: Mock.mock('@cparagraph(3, 10)'),
+    issueType: 'worK',
+    issueRemark: Mock.mock('@cparagraph(3, 10)'),
+    createTime: Mock.mock('@date("yyyy/MM/dd")'),
+    updateTime: Mock.mock('@date("yyyy/MM/dd")'),
+    tag: tags[5],
+    moduleState: progressStateList[1],
+    guid: Mock.mock('@guid')
+  },
+  {
     title: '购买腾讯云服务器并搭建完成',
     urgencyLevel: 3,
     issueDesc: Mock.mock('@cparagraph(3, 10)'),
