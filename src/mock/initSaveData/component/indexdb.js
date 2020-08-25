@@ -1,30 +1,26 @@
 import Mock from 'mockjs-async'
 import localforage from 'localforage';
-import { localforageStore, HEADER_NAV } from './indexdb/index'
+import { localforageStore } from './indexdb/index'
+import { headerNav } from './indexdb/data'
 
 // 设置响应时间， 与实操更加接近
 Mock.setup({
   timeout: '100-500'
 })
 
-const backlogSprintStore = localforage.createInstance({
+const sprints = localforage.createInstance({
   name: 'todo',
-  storeName: 'backlogSprint'
-})
-
-const activeSprintStore = localforage.createInstance({
-  name: 'todo',
-  storeName: 'activeSprint'
+  storeName: 'sprints'
 })
 
 const moduleSprintStore = localforage.createInstance({
   name: 'todo',
-  storeName: 'moduleSprint'
+  storeName: 'modules'
 })
 
 const progressStateStore = localforage.createInstance({
   name: 'todo',
-  storeName: 'progressStateSprint'
+  storeName: 'progressState'
 })
 
 export default function (keys, params) {
@@ -114,17 +110,12 @@ export default function (keys, params) {
       return new Promise(async resolve => {
         await moduleSprintStore.getItem(params.link).then(async modulelist => {
           if (modulelist) {
-            await Promise.all([backlogSprintStore.getItem(params.issueLink), activeSprintStore.getItem(params.issueLink)]).then(async issue => {
+            await sprints.getItem(params.issueLink).then(async issue => {
               let item = issue.find(v => !!v);
-              let index = issue.findIndex(v => !!v);
 
               if (item) {
                 item.tag = modulelist;
-                if (index == 0) {
-                  await backlogSprintStore.setItem(params.issueLink, item);
-                } else {
-                  await activeSprintStore.setItem(params.issueLink, item);
-                }
+                await sprints.setItem(params.issueLink, item);
               }
             })
             resolve({
@@ -140,17 +131,12 @@ export default function (keys, params) {
       return new Promise(async resolve => {
         await progressStateStore.getItem(params.link).then(async list => {
           if (list) {
-            await Promise.all([backlogSprintStore.getItem(params.issueLink), activeSprintStore.getItem(params.issueLink)]).then(async issue => {
+            await sprints.getItem(params.issueLink).then(async issue => {
               let item = issue.find(v => !!v);
-              let index = issue.findIndex(v => !!v);
 
               if (item) {
                 item.moduleState = list;
-                if (index == 0) {
-                  await backlogSprintStore.setItem(params.issueLink, item);
-                } else {
-                  await activeSprintStore.setItem(params.issueLink, item);
-                }
+                await sprints.setItem(params.issueLink, item);
               }
             })
             resolve({
@@ -168,18 +154,18 @@ export default function (keys, params) {
   function getheaderMenu(params) {
     return {
       status: 200,
-      data: HEADER_NAV.slice(0, 2)
+      data: headerNav.slice(0, 2)
     }
   }
 
   function closeActiveSprintIssue(params) {
     return new Promise(async resolve => {
-      await Promise.all([activeSprintStore.getItem(params.link)]).then(async issueDetail => {
-        let item = issueDetail.find(v => !!v);
+      await sprints.getItem(params.link).then(async issue => {
+        let item = issue.find(v => !!v);
 
         if (item) {
           item.moduleState = {link: 'close', name: '关闭'}
-          await activeSprintStore.setItem(params.link, item);
+          await sprints.setItem(params.link, item);
         }
         resolve({
           status: 200,
@@ -193,11 +179,11 @@ export default function (keys, params) {
 
   function getsprintIssueDetail(params) {
     return new Promise(async resolve => {
-      await Promise.all([backlogSprintStore.getItem(params.link), activeSprintStore.getItem(params.link)]).then(issueDetail => {
+      await sprints.getItem(params.link).then(v => {
         resolve({
           status: 200,
           data: {
-            issueDetail: issueDetail.find(v => !!v)
+            issueDetail: v
           }
         })
       })
@@ -210,12 +196,13 @@ export default function (keys, params) {
       let issueList = [];
       let keys = [];
 
-      await activeSprintStore.keys().then(key => {
+      await sprints.keys().then(key => {
         keys = key;
       })
+
       for (let i = 0; i < keys.length; i++) {
-        await activeSprintStore.getItem(keys[i]).then(value => {
-          if (value.moduleState.link !== 'close') {
+        await sprints.getItem(keys[i]).then(value => {
+          if (value.type === 'active' && value.moduleState && value.moduleState.link !== 'close') {
             issueList.push(value)
           }
         })
@@ -233,17 +220,20 @@ export default function (keys, params) {
       })
     })
   }
+
   function getbacklogSprintList(params) {
     return new Promise(async resolve => {
       let issueList = [];
       let keys = [];
 
-      await backlogSprintStore.keys().then(key => {
+      await sprints.keys().then(key => {
         keys = key;
       })
       for (let i = 0; i < keys.length; i++) {
-        await backlogSprintStore.getItem(keys[i]).then(value => {
-          issueList.push(value)
+        await sprints.getItem(keys[i]).then(value => {
+          if (value.type === 'backlog') {
+            issueList.push(value)
+          }
         })
       }
 

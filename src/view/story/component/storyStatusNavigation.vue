@@ -8,7 +8,7 @@
             <i :class="[visibleProgressState ? 'el-icon-arrow-down' : 'el-icon-arrow-right']"></i>
           </el-button>
         </div>
-        <ul class="scroll-style-none status-implete" v-show="visibleProgressState">
+        <ul class="scroll-style-none" v-show="visibleProgressState">
           <li
             v-for="list of progressStateList"
             :key="list.guid"
@@ -22,7 +22,7 @@
       </div>
       <div class="module module-type scroll-style-none">
         <div class="module-title">
-          <i class="iconfont icon-machinery"></i>模块类型
+          模块类型
           <el-button-group>
              <el-button type="primary" icon="el-icon-edit" size="mini" @click="handleClickModuleDialog()"></el-button>
             <el-button type="primary" size="mini" @click="visibleModule = !visibleModule">
@@ -44,7 +44,7 @@
       </div>
       <div class="module navgation">
         <div class="module-title">
-          <i class="iconfont icon-fenxiang5"></i>附加链接
+          附加链接
           <el-button-group>
              <el-button type="primary" icon="el-icon-edit" size="mini" @click="handleClickNavgationDialog()"></el-button>
             <el-button type="primary" size="mini" @click="visiblenavgation = !visiblenavgation">
@@ -76,7 +76,7 @@ export default {
       moduleList: [],
       progressStateList: [],
       loadingNav: false,
-      
+
       visibleProgressState: true,
       visibleModule: true,
       visiblenavgation: true,
@@ -187,9 +187,6 @@ export default {
       ul {
         overflow-y: scroll;
         max-height: 400px;
-        &.status-implete {
-          height: 140px;
-        }
         &.module-ul {
            height: 400px;
           li {
@@ -206,7 +203,7 @@ export default {
           height: 35px;
           line-height: 35px;
           font-size: 16px;
-          margin-bottom: 0;
+          margin: 3px 0;
           user-select: text;
           box-sizing: border-box;
           align-items: center;
@@ -217,9 +214,6 @@ export default {
           text-overflow: ellipsis;
           word-break: break-all;
           cursor: default;
-          &:last-child {
-            border-bottom: 1px solid #f6f6f6;
-          }
           &.dropStatus {
             background: #EBEEF5;
             &::before {
@@ -237,7 +231,7 @@ export default {
             background: #0006;
             border-top-left-radius: 5px;
             border-bottom-left-radius: 5px;
-          } 
+          }
           &.not-start {
             &::before {
               background-color: #00875a;

@@ -286,11 +286,15 @@
         })
         return result;
       },
-      filterTypeIcon(v) {
-        return this.issusTypeArr.find(p => p.value === v).icon
+      filterTypeIcon(v = 'work') {
+        let p = this.issusTypeArr.find(p => p.value === v);
+
+        return p ? p.icon : 'icon-shujuzhongjian'
       },
       filterTypeColor(v) {
-        return this.issusTypeArr.find(p => p.value === v).color
+        let p = this.issusTypeArr.find(p => p.value === v);
+
+        return p ? p.color : 'rgb(0, 101, 255)'
       }
     }
   }
@@ -333,7 +337,7 @@
     height: 32px;
     line-height: 32px;
     font-size: 16px;
-    margin: 3px 0;
+    margin: 6px 0;
     user-select: none;
     padding: 0 6px 0 4px;
     display: flex;

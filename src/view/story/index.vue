@@ -7,8 +7,8 @@
 			<el-button size="small" class="triggernavgation" @click="handleClickvisibleNavigation">
 				<i :class="[visibleNavigation ? 'el-icon-d-arrow-left' : 'el-icon-d-arrow-right']"></i>
 			</el-button>
-			<el-col 
-				:span="sprintLen" 
+			<el-col
+				:span="sprintLen"
 				:class="[activeLightLink ? 'scroll-style-theme1' : '']" id="backlogDetailWrapper">
 				<div class="backlog">
 					<div class="backlog-title">
@@ -16,11 +16,11 @@
 							<span size="mini" :class="{'visibleSprint': visibleSprint}" @click="visibleSprint = !visibleSprint" class="header-expander">
 								<svg xmlns="http://www.w3.org/2000/svg" width="14" height="10"><g fill="none" fill-rule="evenodd"><path d="M3.29175 4.793c-.389.392-.389 1.027 0 1.419l2.939 2.965c.218.215.5.322.779.322s.556-.107.769-.322l2.93-2.955c.388-.392.388-1.027 0-1.419-.389-.392-1.018-.392-1.406 0l-2.298 2.317-2.307-2.327c-.194-.195-.449-.293-.703-.293-.255 0-.51.098-.703.293z" fill="#344563"></path></g></svg>
 							</span>
-							<span class="title">2020年</span>
+							<span class="title">{{activeSprint.title}}</span>
 							<span class="issus-count">{{activeSprint.issueList.length}} 问题</span>
 						</div>
 					</div>
-					<uxo-draggleList 
+					<uxo-draggleList
 						:issueList="activeSprint.issueList"
 						:dropObj="dropObj"
 						group="activeSprint"
@@ -40,7 +40,7 @@
 							<el-button size="medium" @click="dialogTableVisible = true" icon="el-icon-circle-plus" type="primary">新建Issue</el-button>
 						</div>
 					</div>
-					<uxo-draggleList 
+					<uxo-draggleList
 						handle=".handle"
 						sprintType="backlog"
 						@handleDetail="handleDetail"
