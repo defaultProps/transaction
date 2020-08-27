@@ -204,7 +204,7 @@ export default {
           line-height: 35px;
           font-size: 16px;
           margin: 3px 0;
-          user-select: text;
+          user-select: none;
           box-sizing: border-box;
           align-items: center;
           text-indent: 10px;

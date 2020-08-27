@@ -207,6 +207,12 @@
             onClick: () => this.editSprint()
           },
           {
+            label: "拖动到执行列表",
+            icon: "el-icon-finished",
+            disabled: false,
+            onClick: () => this.editSprint()
+          },
+          {
             label: "执行状态",
             disabled: false,
             children: this.progressStateList.map(item => ({label: item.name, value: item.link, onClick: () => this.handleClickimplement(item)}))
@@ -219,8 +225,8 @@
           }
         ]
 
-        if (this.sprintType === 'backlog') {
-          items = [items[0], items[2]]
+        if (this.sprintType === 'active') {
+          items = items.filter((v, i) => i !== 1)
         }
 
         this.highlightSelectedList(this.selectKey)

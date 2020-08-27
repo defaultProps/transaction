@@ -101,7 +101,7 @@ export const progressStateList = [
 export const sprints = [
   {
     title: '针对个人体型和身体素质合理筛选健身运动、指导视频并设计一套长期的基础健身计划方案',
-    urgencyLevel: 3, // 紧急度
+    urgencyLevel: 2, // 紧急度
     issueDesc: Mock.mock('@cparagraph(3, 10)'), // 描述
     issueType: 'work', // 类型
     issueRemark: Mock.mock('@cparagraph(3, 10)'), // 备注
@@ -127,7 +127,7 @@ export const sprints = [
   },
   {
     title: '#开源todo | 事务分发 | 模块类型 | 模块增加统计总数',
-    urgencyLevel: 3,
+    urgencyLevel: 4,
     issueDesc: Mock.mock('@cparagraph(3, 10)'),
     issueType: 'worK',
     issueRemark: Mock.mock('@cparagraph(3, 10)'),
@@ -153,7 +153,7 @@ export const sprints = [
   },
   {
     title: '购买腾讯云服务器并搭建完成',
-    urgencyLevel: 3,
+    urgencyLevel: 6,
     issueDesc: Mock.mock('@cparagraph(3, 10)'),
     issueType: 'work',
     issueRemark: Mock.mock('@cparagraph(3, 10)'),
@@ -166,7 +166,7 @@ export const sprints = [
   },
   {
     title: '购买.com域名并进行备案',
-    urgencyLevel: 3,
+    urgencyLevel: 5,
     issueDesc: Mock.mock('@cparagraph(3, 10)'),
     issueType: 'life',
     issueRemark: Mock.mock('@cparagraph(3, 10)'),
@@ -179,7 +179,7 @@ export const sprints = [
   },
   {
     title: 'todo项目中所有数据迁移至远程服务器',
-    urgencyLevel: 3,
+    urgencyLevel: 2,
     issueDesc: Mock.mock('@cparagraph(3, 10)'),
     issueType: 'work',
     issueRemark: Mock.mock('@cparagraph(3, 10)'),
@@ -205,7 +205,7 @@ export const sprints = [
   },
   {
     title: '新建项目react | 世界植物录',
-    urgencyLevel: 3,
+    urgencyLevel: 1,
     issueDesc: Mock.mock('@cparagraph(3, 10)'),
     issueType: 'life',
     issueRemark: Mock.mock('@cparagraph(3, 10)'),
@@ -231,7 +231,7 @@ export const sprints = [
   },
   {
     title: '根据国内外养殖业的行情设计一套在线查询网站',
-    urgencyLevel: 3,
+    urgencyLevel: 4,
     issueDesc: Mock.mock('@cparagraph(3, 10)'),
     issueType: 'life',
     issueRemark: Mock.mock('@cparagraph(3, 10)'),
@@ -244,7 +244,7 @@ export const sprints = [
   },
   {
     title: '准备素描工具和bilibili选取学习教程',
-    urgencyLevel: 3,
+    urgencyLevel: 4,
     issueDesc: Mock.mock('@cparagraph(3, 10)'),
     issueType: 'life',
     issueRemark: Mock.mock('@cparagraph(3, 10)'),
@@ -270,7 +270,7 @@ export const sprints = [
   },
   {
     title: '选购100本学习书籍， 存入管理器项目中',
-    urgencyLevel: 3,
+    urgencyLevel: 5,
     issueDesc: Mock.mock('@cparagraph(3, 10)'),
     issueType: 'life',
     issueRemark: Mock.mock('@cparagraph(3, 10)'),
@@ -296,7 +296,7 @@ export const sprints = [
   },
   {
     title: '新建项目 | 收集世界范围有趣新闻娱乐',
-    urgencyLevel: 3,
+    urgencyLevel: 6,
     issueDesc: Mock.mock('@cparagraph(3, 10)'),
     issueType: 'work',
     issueRemark: Mock.mock('@cparagraph(3, 10)'),
@@ -335,7 +335,7 @@ export const sprints = [
   },
   {
     title: '#大块文章 | #CSS 电池充电',
-    urgencyLevel: 3,
+    urgencyLevel: 6,
     issueDesc: Mock.mock('@cparagraph(3, 10)'),
     issueType: 'work',
     issueRemark: Mock.mock('@cparagraph(3, 10)'),
@@ -361,7 +361,7 @@ export const sprints = [
   },
   {
     title: '#大块文章 | #Git git基本操作和常用插件及其配置',
-    urgencyLevel: 3,
+    urgencyLevel: 5,
     issueDesc: Mock.mock('@cparagraph(3, 10)'),
     issueType: 'life',
     issueRemark: Mock.mock('@cparagraph(3, 10)'),
@@ -400,7 +400,7 @@ export const sprints = [
   },
   {
     title: '#日常学习 | 写作 | CSS常用函数',
-    urgencyLevel: 3,
+    urgencyLevel: 4,
     issueDesc: Mock.mock('@cparagraph(3, 10)'),
     issueType: 'life',
     issueRemark: Mock.mock('@cparagraph(3, 10)'),
@@ -439,7 +439,7 @@ export const sprints = [
   },
   {
     title: '#清理记录 | 注销常用网站App内的隐私敏感信息, 删除无用App',
-    urgencyLevel: 3,
+    urgencyLevel: 1,
     issueDesc: Mock.mock('@cparagraph(3, 10)'),
     issueType: 'life',
     issueRemark: Mock.mock('@cparagraph(3, 10)'),
@@ -465,7 +465,7 @@ export const sprints = [
   },
   {
     title: '#写作 | 撰写一篇文章恐怖小说',
-    urgencyLevel: 3,
+    urgencyLevel: 1,
     issueDesc: Mock.mock('@cparagraph(3, 10)'),
     issueType: 'life',
     issueRemark: Mock.mock('@cparagraph(3, 10)'),
@@ -504,7 +504,7 @@ export const sprints = [
   },
   {
     title: '#新建项目 | 开始制作小游戏',
-    urgencyLevel: 3,
+    urgencyLevel: 1,
     issueDesc: Mock.mock('@cparagraph(3, 10)'),
     issueType: 'life',
     issueRemark: Mock.mock('@cparagraph(3, 10)'),
@@ -517,7 +517,7 @@ export const sprints = [
   },
   {
     title: '#写作 | 坚持日记',
-    urgencyLevel: 6,
+    urgencyLevel: 2,
     issueDesc: Mock.mock('@cparagraph(3, 10)'),
     issueType: 'life',
     issueRemark: Mock.mock('@cparagraph(3, 10)'),

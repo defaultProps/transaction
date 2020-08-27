@@ -47,7 +47,7 @@
 						:dropObj="dropObj"
 						@endDraggable="endDraggable"
 						:issueList="backlogSprint"
-						:group="{ name: 'activeSprint', pull: true, put: false }"></uxo-draggleList>
+						:group="{ name: 'activeSprint', pull: false, put: false }"></uxo-draggleList>
 				</div>
 			</el-col>
 			<!-- 分离detail分离至top parent -->
