@@ -203,7 +203,6 @@ export default {
           height: 35px;
           line-height: 35px;
           font-size: 16px;
-          margin: 3px 0;
           user-select: none;
           box-sizing: border-box;
           align-items: center;
@@ -216,8 +215,9 @@ export default {
           cursor: default;
           &.dropStatus {
             background: #EBEEF5;
+            color: #3282b8;
             &::before {
-              background: #ffab00;
+              background: #3282b8;
             }
           }
           &::before {
@@ -258,10 +258,11 @@ export default {
         ul {
           overflow-y: scroll;
           li {
-            font-size: 16px;
+            font-size: 14px;
             cursor: pointer;
             position: relative;
             margin: 2px 0;
+            font-weight: 600;
             &::after {
               content: '';
               width: 100%;

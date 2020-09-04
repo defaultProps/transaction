@@ -28,7 +28,7 @@
             </span>
             <span class="level"><i class="iconfont" :class="stylelevelClass(issue.urgencyLevel)"></i></span>
             <span class="title" :title="issue.title">{{issue.title}}</span>
-            <el-button type="text" size="medium" class="modules-type"  v-if="issue.tag">{{issue.tag.name}}</el-button>
+            <el-button type="text" size="medium" class="modules-type" v-if="issue.tag">{{issue.tag.name}}</el-button>
             <el-button type="text" size="medium" v-if="issue.moduleState" :class="[issue.moduleState.link, 'info-status']">{{issue.moduleState.name}}</el-button>
           </li>
         </transition-group>
@@ -40,9 +40,9 @@
   </div>
 </template>
 <script>
-  import { issusTypeArr, levelArr } from './storyConstant'
-  import sortSprint from './sortSprint'
-  import { mapState } from 'vuex'
+  import { issusTypeArr, levelArr } from './storyConstant';
+  import sortSprint from './sortSprint';
+  import { mapState } from 'vuex';
 
   export default {
     props: {
@@ -84,6 +84,7 @@
     computed: mapState({
       moduleList: state => state.story.moduleList,
       progressStateList: state => state.story.progressStateList,
+
       dragOptions() {
         return {
           animation: 200,
@@ -343,7 +344,7 @@
     height: 32px;
     line-height: 32px;
     font-size: 16px;
-    margin: 6px 0;
+    margin: 5px 0;
     user-select: none;
     padding: 0 6px 0 4px;
     display: flex;
@@ -396,13 +397,14 @@
     .modules-type {
       border-radius: 4px;
       color: #fff;
-      padding: 3px 4px;
+      padding: 3px 5px;
+      font-weight: 500;
       background: rgba(0,0,0,0.4);
     }
     .info-status {
       border-radius: 4px;
-      color: #fff;
-      padding: 2px 3px;
+      color: #ffffff;
+      padding: 3px 5px;
       &.not-start {
         background-color: #00875a;
       }

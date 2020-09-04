@@ -9,7 +9,7 @@
 			</el-button>
 			<el-col
 				:span="sprintLen"
-				:class="[activeLightLink ? 'scroll-style-theme1' : '']" id="backlogDetailWrapper">
+				:class="[activeLightLink ? 'scroll-style-theme1' : 'scroll-style-none']" id="backlogDetailWrapper">
 				<div class="backlog">
 					<div class="backlog-title">
 						<div>
@@ -29,7 +29,7 @@
 						@endDraggable="endDraggable"
 						@handleDetail="handleDetail"></uxo-draggleList>
 				</div>
-				<div class="space-between"></div>
+				<div class="space-between">waiting...</div>
 				<div class="backlog">
 					<div class="backlog-title">
 						<div>
@@ -225,6 +225,9 @@ $bg-big:  #f4f5f7;
 			.space-between {
 				height: 100px;
 				margin: 10px 0;
+				line-height: 100px;
+				text-align: center;
+				font-size: 16px;
 				background: #f4f5f7;
 			}
 			.backlog {

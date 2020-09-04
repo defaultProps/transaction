@@ -264,8 +264,8 @@ export const sprints = [
     createTime: Mock.mock('@date("yyyy/MM/dd")'),
     updateTime: Mock.mock('@date("yyyy/MM/dd")'),
     tag: tags[6],
-    moduleState: null,
-    type: 'backlog',
+    moduleState: progressStateList[1],
+    type: 'active',
     guid: Mock.mock('@guid')
   },
   {
@@ -290,8 +290,8 @@ export const sprints = [
     createTime: Mock.mock('@date("yyyy/MM/dd")'),
     updateTime: Mock.mock('@date("yyyy/MM/dd")'),
     tag: tags[6],
-    moduleState: null,
-    type: 'backlog',
+    moduleState: progressStateList[1],
+    type: 'active',
     guid: Mock.mock('@guid')
   },
   {
@@ -303,8 +303,8 @@ export const sprints = [
     createTime: Mock.mock('@date("yyyy/MM/dd")'),
     updateTime: Mock.mock('@date("yyyy/MM/dd")'),
     tag: tags[6],
-    moduleState: null,
-    type: 'backlog',
+    moduleState: progressStateList[1],
+    type: 'active',
     guid: Mock.mock('@guid')
   },
   {
@@ -329,8 +329,8 @@ export const sprints = [
     createTime: Mock.mock('@date("yyyy/MM/dd")'),
     updateTime: Mock.mock('@date("yyyy/MM/dd")'),
     tag: tags[6],
-    moduleState: null,
-    type: 'backlog',
+    moduleState: progressStateList[1],
+    type: 'active',
     guid: Mock.mock('@guid')
   },
   {
@@ -355,8 +355,8 @@ export const sprints = [
     createTime: Mock.mock('@date("yyyy/MM/dd")'),
     updateTime: Mock.mock('@date("yyyy/MM/dd")'),
     tag: tags[6],
-    moduleState: null,
-    type: 'backlog',
+    moduleState: progressStateList[1],
+    type: 'active',
     guid: Mock.mock('@guid')
   },
   {
@@ -368,8 +368,8 @@ export const sprints = [
     createTime: Mock.mock('@date("yyyy/MM/dd")'),
     updateTime: Mock.mock('@date("yyyy/MM/dd")'),
     tag: tags[6],
-    moduleState: null,
-    type: 'backlog',
+    moduleState: progressStateList[1],
+    type: 'active',
     guid: Mock.mock('@guid')
   },
   {
@@ -394,8 +394,8 @@ export const sprints = [
     createTime: Mock.mock('@date("yyyy/MM/dd")'),
     updateTime: Mock.mock('@date("yyyy/MM/dd")'),
     tag: tags[6],
-    moduleState: null,
-    type: 'backlog',
+    moduleState: progressStateList[1],
+    type: 'active',
     guid: Mock.mock('@guid')
   },
   {
