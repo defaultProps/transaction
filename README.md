@@ -1,30 +1,10 @@
-# my-project
 
-> A Vue.js project
+ ## INTRO
 
-## Build Setup
+我很喜欢有规划的、有目的的对制定的事情徐徐图之。
 
-``` bash
-# install dependencies
-npm install
+然而工作的繁忙和生活的琐事会渐渐淡忘很多要去做的事情，于是我尝试使用了手写笔记，发现效果并不是很好，当然也使用了很多优秀的笔记产品：有道云的简约、印象笔记的优雅、jira的自定义定制等等，都没有让我感到十分舒适，于是我决定花费俩个月的时间，自己设计一个简单的适合日常操作的任务管理器。
 
-# serve with hot reload at localhost:8080
-npm run dev
+## 备注
 
-# build for production with minification
-npm run build
-
-# build for production and view the bundle analyzer report
-npm run build --report
-
-# run unit tests
-npm run unit
-
-# run e2e tests
-npm run e2e
-
-# run all tests
-npm test
-```
-
-For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+本项目借鉴jira的UI和自身的习惯改编而来，不具备商用价值。

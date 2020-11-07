@@ -23,9 +23,11 @@ export default {
       const circle = document.getElementById('circle')
       const bg = document.getElementById('bg')
       const checkbox = document.getElementById('checkbox')
-      let isChecked = checkbox.checked;
+      gsap.registerPlugin(window.MorphSVGPlugin);
 
-      checkbox.addEventListener("pointerdown", e => {
+      let isChecked = checkbox.ckecked;
+
+      checkbox.addEventListener("pointerdown", (e) => {
         e.preventDefault();
 
         if (!isChecked) {
