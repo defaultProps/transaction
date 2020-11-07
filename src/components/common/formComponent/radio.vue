@@ -35,8 +35,7 @@ export default {
       const circle = document.getElementById('circle')
       const bg = document.getElementById('bg')
       const checkbox = document.getElementById('checkbox')
-
-      gsap.registerPlugin(MorphSVGPlugin);
+      gsap.registerPlugin(window.MorphSVGPlugin);
 
       let isChecked = checkbox.ckecked;
 

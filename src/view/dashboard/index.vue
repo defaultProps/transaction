@@ -87,7 +87,7 @@ export default {
 			]
 		}
 
-		Highcharts.chart('uxoHighCharts-0', options);
+		window.Highcharts.chart('uxoHighCharts-0', options);
 	},
 	methods: {
 		getdashboardList() {
