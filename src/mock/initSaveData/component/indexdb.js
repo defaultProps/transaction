@@ -1,60 +1,60 @@
-import Mock from 'mockjs-async'
-import localforage from 'localforage';
-import { localforageStore } from './indexdb/index'
-import { headerNav } from './indexdb/data'
+import Mock from "mockjs-async";
+import localforage from "localforage";
+import { localforageStore } from "./indexdb/index";
+import { headerNav } from "./indexdb/data";
 
 // 设置响应时间， 与实操更加接近
 Mock.setup({
-  timeout: '100-500'
-})
+  timeout: "100-500"
+});
 
 const sprints = localforage.createInstance({
-  name: 'todo',
-  storeName: 'sprints'
-})
+  name: "transaction",
+  storeName: "sprints"
+});
 
 const moduleSprintStore = localforage.createInstance({
-  name: 'todo',
-  storeName: 'modules'
-})
+  name: "transaction",
+  storeName: "modules"
+});
 
 const progressStateStore = localforage.createInstance({
-  name: 'todo',
-  storeName: 'progressState'
-})
+  name: "transaction",
+  storeName: "progressState"
+});
 
-export default function (keys, params) {
+export default function(keys, params) {
   // axios请求接口归档
   switch (keys) {
-    case 'activeSprintList':
+    case "activeSprintList":
       return getactiveSprintList(params);
-    case 'sprintIssueDetail':
+    case "sprintIssueDetail":
       return getsprintIssueDetail(params);
-    case 'backlogSprintList':
+    case "backlogSprintList":
       return getbacklogSprintList(params);
-    case 'getheaderMenu':
+    case "getheaderMenu":
       return getheaderMenu(params);
-    case 'closeActiveSprintIssue':
+    case "closeActiveSprintIssue":
       return closeActiveSprintIssue(params);
-    case 'updateSptintmoduleState':
+    case "updateSptintmoduleState":
       return updateSptintmoduleState(params);
-    case 'getModuleList':
+    case "getModuleList":
       return getModuleList(params);
-      case 'getProgressStateList':
-        return getProgressStateList(params);
-    case 'storeSprint':
+    case "getProgressStateList":
+      return getProgressStateList(params);
+    case "storeSprint":
       return localforageStore(params);
-      case 'getdashboardList':
-        return getdashboardList(params);
+    case "getdashboardList":
+      return getdashboardList(params);
     default:
-      return ''
+      return "";
   }
 
   function getdashboardList(params) {
     return {
       data: [],
       status: 200
-    }
+    };
   }
 
   function getProgressStateList() {
@@ -64,12 +64,12 @@ export default function (keys, params) {
 
       await progressStateStore.keys().then(key => {
         keys = key;
-      })
+      });
 
       for (let i = 0; i < keys.length; i++) {
         await progressStateStore.getItem(keys[i]).then(value => {
-          progressStateList.push(value)
-        })
+          progressStateList.push(value);
+        });
       }
 
       resolve({
@@ -77,8 +77,8 @@ export default function (keys, params) {
         data: {
           progressStateList
         }
-      })
-    })
+      });
+    });
   }
 
   function getModuleList() {
@@ -88,12 +88,12 @@ export default function (keys, params) {
 
       await moduleSprintStore.keys().then(key => {
         keys = key;
-      })
+      });
 
       for (let i = 0; i < keys.length; i++) {
         await moduleSprintStore.getItem(keys[i]).then(value => {
-          moduleList.push(value)
-        })
+          moduleList.push(value);
+        });
       }
 
       resolve({
@@ -101,8 +101,8 @@ export default function (keys, params) {
         data: {
           moduleList
         }
-      })
-    })
+      });
+    });
   }
 
   function updateSptintmoduleState(params) {
@@ -117,16 +117,16 @@ export default function (keys, params) {
                 item.tag = modulelist;
                 await sprints.setItem(params.issueLink, item);
               }
-            })
+            });
             resolve({
               status: 200,
               data: {
-                hasUpdateSptintmoduleState: 'success'
+                hasUpdateSptintmoduleState: "success"
               }
-            })
+            });
           }
-        })
-      })
+        });
+      });
     } else if (params.type == "progressState") {
       return new Promise(async resolve => {
         await progressStateStore.getItem(params.link).then(async list => {
@@ -138,16 +138,16 @@ export default function (keys, params) {
                 item.moduleState = list;
                 await sprints.setItem(params.issueLink, item);
               }
-            })
+            });
             resolve({
               status: 200,
               data: {
-                hasUpdateSptintmoduleState: 'success'
+                hasUpdateSptintmoduleState: "success"
               }
-            })
+            });
           }
-        })
-      })
+        });
+      });
     }
   }
 
@@ -155,7 +155,7 @@ export default function (keys, params) {
     return {
       status: 200,
       data: headerNav.slice(0, 2)
-    }
+    };
   }
 
   function closeActiveSprintIssue(params) {
@@ -164,17 +164,17 @@ export default function (keys, params) {
         let item = issue.find(v => !!v);
 
         if (item) {
-          item.moduleState = {link: 'close', name: '关闭'}
+          item.moduleState = { link: "close", name: "关闭" };
           await sprints.setItem(params.link, item);
         }
         resolve({
           status: 200,
           data: {
-            hasCloseActiveSprintIssue: 'success'
+            hasCloseActiveSprintIssue: "success"
           }
-        })
-      })
-    })
+        });
+      });
+    });
   }
 
   function getsprintIssueDetail(params) {
@@ -185,9 +185,9 @@ export default function (keys, params) {
           data: {
             issueDetail: v
           }
-        })
-      })
-    })
+        });
+      });
+    });
   }
 
   // 当前活跃sprint列表
@@ -198,27 +198,31 @@ export default function (keys, params) {
 
       await sprints.keys().then(key => {
         keys = key;
-      })
+      });
 
       for (let i = 0; i < keys.length; i++) {
         await sprints.getItem(keys[i]).then(value => {
-          if (value.type === 'active' && value.moduleState && value.moduleState.link !== 'close') {
-            issueList.push(value)
+          if (
+            value.type === "active" &&
+            value.moduleState &&
+            value.moduleState.link !== "close"
+          ) {
+            issueList.push(value);
           }
-        })
+        });
       }
 
       resolve({
         status: 200,
         data: {
-          id: Mock.mock('@guid'),
-          title: Mock.mock('@cword(4, 9)'),
+          id: Mock.mock("@guid"),
+          title: Mock.mock("@cword(4, 9)"),
           createTime: Mock.mock('@date("yyyy/MM/dd")'),
           endTime: Mock.mock('@date("yyyy/MM/dd")'),
           issueList
         }
-      })
-    })
+      });
+    });
   }
 
   function getbacklogSprintList(params) {
@@ -228,13 +232,13 @@ export default function (keys, params) {
 
       await sprints.keys().then(key => {
         keys = key;
-      })
+      });
       for (let i = 0; i < keys.length; i++) {
         await sprints.getItem(keys[i]).then(value => {
-          if (value.type === 'backlog') {
-            issueList.push(value)
+          if (value.type === "backlog") {
+            issueList.push(value);
           }
-        })
+        });
       }
 
       resolve({
@@ -242,7 +246,7 @@ export default function (keys, params) {
         data: {
           issueList
         }
-      })
-    })
+      });
+    });
   }
 }

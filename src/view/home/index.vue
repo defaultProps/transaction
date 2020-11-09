@@ -1,5 +1,5 @@
 <template>
-	<div id="todo-content" class="container-box">
+	<div id="transaction-content" class="container-box">
 		<uxo-header v-if="$route.meta.showheaderBar"></uxo-header>
 		<div class="router-main">
 			<div class="router-wrap">
