@@ -1,6 +1,6 @@
 <template>
 	<div id="todo-content" class="container-box">
-		<uxo-header></uxo-header>
+		<uxo-header v-if="$route.meta.showheaderBar"></uxo-header>
 		<div class="router-main">
 			<div class="router-wrap">
 				<router-view></router-view>
@@ -26,7 +26,6 @@ export default {
 	bottom: 0;
 	left: 0;
 	right: 0;
-	overflow: scroll;
 	.router-wrap {
 		position: relative;
 		widows: 100%;

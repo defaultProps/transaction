@@ -1,33 +1,35 @@
 <template>
 	<div id="moduleStory">
 		<el-row class="story-backlog" id="storyBacklog">
-			<el-col :span="3" class="storyNavigation" v-show="visibleNavigation">
+			<el-col :span="4" class="storyNavigation" v-show="visibleNavigation">
 				<uxo-storyStatusNavigation @dropDownStatus="dropDownStatus"></uxo-storyStatusNavigation>
 			</el-col>
 			<el-button size="small" class="triggernavgation" @click="handleClickvisibleNavigation">
 				<i :class="[visibleNavigation ? 'el-icon-d-arrow-left' : 'el-icon-d-arrow-right']"></i>
 			</el-button>
-			<el-col :span="sprintLen" class="scroll-style-theme1" id="backlogDetailWrapper">
+			<el-col
+				:span="sprintLen"
+				:class="[activeLightLink ? 'scroll-style-theme1' : 'scroll-style-none']" id="backlogDetailWrapper">
 				<div class="backlog">
 					<div class="backlog-title">
 						<div>
 							<span size="mini" :class="{'visibleSprint': visibleSprint}" @click="visibleSprint = !visibleSprint" class="header-expander">
 								<svg xmlns="http://www.w3.org/2000/svg" width="14" height="10"><g fill="none" fill-rule="evenodd"><path d="M3.29175 4.793c-.389.392-.389 1.027 0 1.419l2.939 2.965c.218.215.5.322.779.322s.556-.107.769-.322l2.93-2.955c.388-.392.388-1.027 0-1.419-.389-.392-1.018-.392-1.406 0l-2.298 2.317-2.307-2.327c-.194-.195-.449-.293-.703-.293-.255 0-.51.098-.703.293z" fill="#344563"></path></g></svg>
 							</span>
-							<span class="title">当前活跃Sprint</span>
+							<span class="title">{{activeSprint.title}}</span>
 							<span class="issus-count">{{activeSprint.issueList.length}} 问题</span>
-							<span class="date">{{activeSprint. createTime}} <i class="iconfont icon-weibiaoti29"></i> {{activeSprint.endTime}}</span>
 						</div>
 					</div>
-					<uxo-draggleList :issueList="activeSprint.issueList"
-													:dropObj="dropObj"
-													group="activeSprint"
-													v-show="visibleSprint"
-													sprintType="active"
-													:activeSprintListLoading="activeSprintListLoading"
-													@endDraggable="endDraggable"
-													@handleDetail="handleDetail"></uxo-draggleList>
+					<uxo-draggleList
+						:issueList="activeSprint.issueList"
+						:dropObj="dropObj"
+						group="activeSprint"
+						v-show="visibleSprint"
+						sprintType="active"
+						@endDraggable="endDraggable"
+						@handleDetail="handleDetail"></uxo-draggleList>
 				</div>
+				<div class="space-between">waiting...</div>
 				<div class="backlog">
 					<div class="backlog-title">
 						<div>
@@ -35,16 +37,17 @@
 							<span class="issus-count">{{backlogSprint.length}} 问题</span>
 						</div>
 						<div>
-							<el-button size="mini" @click="dialogTableVisible = true" icon="el-icon-circle-plus" type="primary">新建Issue</el-button>
+							<el-button size="medium" @click="dialogTableVisible = true" icon="el-icon-circle-plus" type="primary">新建Issue</el-button>
 						</div>
 					</div>
-					<uxo-draggleList handle=".handle"
-												 sprintType="backlog"
-												 @handleDetail="handleDetail"
-												 :dropObj="dropObj"
-												 @endDraggable="endDraggable"
-												 :issueList="backlogSprint"
-												 :group="{ name: 'activeSprint', pull: true, put: true }"></uxo-draggleList>
+					<uxo-draggleList
+						handle=".handle"
+						sprintType="backlog"
+						@handleDetail="handleDetail"
+						:dropObj="dropObj"
+						@endDraggable="endDraggable"
+						:issueList="backlogSprint"
+						:group="{ name: 'activeSprint', pull: false, put: false }"></uxo-draggleList>
 				</div>
 			</el-col>
 			<!-- 分离detail分离至top parent -->
@@ -82,7 +85,7 @@ export default {
 			activeCollapse: 0,
 			activeLightLink: '', // 当前高亮选中link
 			affairVal: '',
-			sprintLen: 21,
+			sprintLen: 20,
 			detailLen: 0,
 			sprintType: '', // 保存是active拖动还是backlog拖动
 			dropObj: null // sprint列表拖动到左侧导航栏时的数据
@@ -150,15 +153,15 @@ export default {
 		},
 		renderlayout() {
 			if (this.visibleNavigation) {
-				this.sprintLen = this.activeLightLink ? 15 : 21;
-				this.detailLen = 21 - this.sprintLen;
+				this.sprintLen = this.activeLightLink ? 15 : 20;
+				this.detailLen = 20 - this.sprintLen;
 			} else {
 				this.sprintLen = this.activeLightLink ? 18 : 24;
 				this.detailLen = 24 - this.sprintLen;
 			}
 
 			document.getElementById('backlogDetailWrapper').style.width = this.sprintLen / 24 * 100 + '%'
-			document.getElementById('sprintDetailWrapper').style.width = this.detailLen / 24 * 100 + '%'
+			document.getElementById('sprintDetailWrapper').style.width = Math.floor(this.detailLen / 24 * 100) + '%'
 		},
 		// css & 拖动列表高亮
 		highlightSelectedList(key) {
@@ -219,8 +222,15 @@ $bg-big:  #f4f5f7;
 			height: 100%;
 			overflow-y: scroll;
 			box-sizing: border-box;
+			.space-between {
+				height: 100px;
+				margin: 10px 0;
+				line-height: 100px;
+				text-align: center;
+				font-size: 16px;
+				background: #f4f5f7;
+			}
 			.backlog {
-				margin: 0 0 20px;
 				&:last-child{
 					margin-bottom: 0;
 				}

@@ -2,7 +2,7 @@
 	<div id="header">
 		<div class="header-logo">
 			<img class="logo" :src="$image.logo">
-			<span class="title">任务管理器</span>
+			<span class="title">transaction</span>
 			<ul class="bubbles">
 				<li v-for="v of Array(15)" :key="v"></li>
 			</ul>

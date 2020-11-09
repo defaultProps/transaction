@@ -2,9 +2,9 @@
   <div id="sprint-detail">
     <div class="scroll-style-none sprint-detail__container" v-loading="loading">
       <div class="header">
-        <button size="mini" class="btn-del" type="text" @click="handleClickCloseDetailModule()">
+        <el-button size="mini" type="text" @click="handleClickCloseDetailModule()">
           <i class="iconfont icon-chenghao"></i>
-        </button>
+        </el-button>
       </div>
       <uxo-edit class="title" :content="sprintIssue.title" :guid="sprintIssue.guid"></uxo-edit>
       <div class="form-item item-top">
