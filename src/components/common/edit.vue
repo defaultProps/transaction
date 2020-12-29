@@ -4,11 +4,7 @@
       <el-form @submit.native="handleClickSubmit()">
         <el-input v-show="textType === 'text'" v-model="value" @blur="blur" class="input" :rows="10" ref="inputNode"></el-input>
         <div v-show="textType === 'textarea'">
-          <vue-tinymce
-            v-model="value"
-            :setup="setup"
-            @blur="blur"
-            :setting="setting" />
+          <vue-tinymce v-model="value" :setup="setup" @blur="blur" :setting="setting" />
         </div>
       </el-form>
       <div class="save-options">
@@ -26,7 +22,7 @@
 </template>
 <script>
 export default {
-  data() {
+  data () {
     return {
       editMode: false,
       value: '',
@@ -45,7 +41,7 @@ export default {
     }
   },
   watch: {
-    'editMode'(newVal) {
+    'editMode' (newVal) {
       if (newVal && this.textType === 'text') {
         this.$nextTick(() => {
           this.$refs.inputNode.focus()
@@ -53,14 +49,14 @@ export default {
         })
       }
     },
-    'uid'() {
+    'uid' () {
       this.editMode = false;
     },
-    'content'(v) {
+    'content' (v) {
       this.value = v;
     }
   },
-  created() {
+  created () {
     this.value = this.content
   },
   props: {
@@ -77,18 +73,18 @@ export default {
     },
     cb: {
       type: Function,
-      default: function() {},
+      default: function () { },
       required: false
     }
   },
   methods: {
-    setup(editor) {
+    setup (editor) {
 
     },
-    editorChange(v) {
+    editorChange (v) {
 
     },
-    blur() {
+    blur () {
       setTimeout(async () => {
         if (this.cencelBtnCick) {
           return
@@ -102,7 +98,7 @@ export default {
         }, 300);
       }, 100)
     },
-    async handleClickSubmit() {
+    async handleClickSubmit () {
       this.cencelBtnCick = false;
       this.loading = true;
       await this.cb()
@@ -111,10 +107,10 @@ export default {
         this.editMode = false;
       }, 300);
     },
-    hc_edit() {
+    hc_edit () {
       this.editMode = true;
     },
-    handleClickCencel() {
+    handleClickCencel () {
       this.cencelBtnCick = true;
       this.editMode = false;
     }
@@ -202,7 +198,7 @@ export default {
       background: rgba(0, 0, 0, 0.2);
     }
     .saved {
-      background: #E6A23C;
+      background: #e6a23c;
       color: #fff;
     }
   }

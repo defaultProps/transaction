@@ -1,5 +1,5 @@
 <template>
-  <div id="storyStatusNavtgation">
+  <div id="storyStatusNavtgation" class="scroll-style-none">
     <div class="nav-main">
       <div class="module scroll-style-none">
         <div class="module-title">
@@ -9,13 +9,7 @@
           </el-button>
         </div>
         <ul class="scroll-style-none" v-show="visibleProgressState">
-          <li
-            v-for="list of progressStateList"
-            :key="list.guid"
-            @dragleave="dragleave(list)"
-            @dragover.prevent="dragover($event, list)"
-            @drop="drop(list)"
-            :class="[list.dropStatus ? 'dropStatus': '', list.link]">
+          <li v-for="list of progressStateList" :key="list.guid" @dragleave="dragleave(list)" @dragover.prevent="dragover($event, list)" @drop="drop(list)" :class="[list.dropStatus ? 'dropStatus': '', list.link]">
             <span :class="[list.link]">{{list.name}}</span>
           </li>
         </ul>
@@ -24,20 +18,14 @@
         <div class="module-title">
           模块类型
           <el-button-group>
-             <el-button type="primary" icon="el-icon-edit" size="mini" @click="handleClickModuleDialog()"></el-button>
+            <el-button type="primary" icon="el-icon-edit" size="mini" @click="handleClickModuleDialog()"></el-button>
             <el-button type="primary" size="mini" @click="visibleModule = !visibleModule">
-               <i :class="[visibleModule ? 'el-icon-arrow-down' : 'el-icon-arrow-right']"></i>
+              <i :class="[visibleModule ? 'el-icon-arrow-down' : 'el-icon-arrow-right']"></i>
             </el-button>
           </el-button-group>
         </div>
         <ul class="scroll-style-none module-ul" v-show="visibleModule">
-          <li
-            v-for="list of moduleList"
-            :key="list.guid"
-            @dragleave="dragleave(list)"
-            @dragover.prevent="dragover($event, list)"
-            @drop="drop(list)"
-            :class="{'dropStatus': list.dropStatus}">
+          <li v-for="list of moduleList" :key="list.guid" @dragleave="dragleave(list)" @dragover.prevent="dragover($event, list)" @drop="drop(list)" :class="{'dropStatus': list.dropStatus}">
             <span>{{list.name}}</span>
           </li>
         </ul>
@@ -46,19 +34,16 @@
         <div class="module-title">
           附加链接
           <el-button-group>
-             <el-button type="primary" icon="el-icon-edit" size="mini" @click="handleClickNavgationDialog()"></el-button>
+            <el-button type="primary" icon="el-icon-edit" size="mini" @click="handleClickNavgationDialog()"></el-button>
             <el-button type="primary" size="mini" @click="visiblenavgation = !visiblenavgation">
-               <i :class="[visiblenavgation ? 'el-icon-arrow-down' : 'el-icon-arrow-right']"></i>
+              <i :class="[visiblenavgation ? 'el-icon-arrow-down' : 'el-icon-arrow-right']"></i>
             </el-button>
           </el-button-group>
         </div>
         <ul class="scroll-style-none" v-show="visiblenavgation">
-          <li v-for="p of thusList"
-              :key="p.name"
-              :title="p.name"
-              @click="handlelinkClick(p.link)">
-              <i class="iconfont icon-fenxiang"></i>
-              {{p.name}}
+          <li v-for="p of thusList" :key="p.name" :title="p.name" @click="handlelinkClick(p.link)">
+            <i class="iconfont icon-fenxiang"></i>
+            {{p.name}}
           </li>
         </ul>
       </div>
@@ -70,7 +55,7 @@
 import dialogNavigationModule from './dialogNavigationModule'
 
 export default {
-  data() {
+  data () {
     return {
       thusList: [],
       moduleList: [],
@@ -86,65 +71,65 @@ export default {
   components: {
     'uxo-dialogNavigationModule': dialogNavigationModule
   },
-  created() {
+  created () {
     this.getThusList()
     this.getModuleList();
     this.getProgressStateList();
   },
   methods: {
     // 获取执行状态列表
-    getProgressStateList() {
-			this.$axios.sprints.getProgressStateList().then(obj => {
+    getProgressStateList () {
+      this.$axios.sprints.getProgressStateList().then(obj => {
         let sortVal = ['not-start', 'doing', 'finish', 'close']
-        let progressStateList = obj.progressStateList.map(v => ({...v, dropStatus: false, type: 'progressState'})) || []
+        let progressStateList = obj.progressStateList.map(v => ({ ...v, dropStatus: false, type: 'progressState' })) || []
 
         progressStateList.sort((a, b) => sortVal.indexOf(a.link) - sortVal.indexOf(b.link))
 
         this.progressStateList = progressStateList;
         this.$store.commit('progressStateList', progressStateList);
         this.visibleProgressState = true;
-			})
-		},
-    getModuleList() {
-			this.$axios.sprints.getModuleList().then(obj => {
-        this.moduleList = obj.moduleList.map(v => ({...v, dropStatus: false, type: 'module'})) || []
+      })
+    },
+    getModuleList () {
+      this.$axios.sprints.getModuleList().then(obj => {
+        this.moduleList = obj.moduleList.map(v => ({ ...v, dropStatus: false, type: 'module' })) || []
         this.$store.commit('moduleList', this.moduleList);
         this.visibleModule = true;
-			})
-		},
-    closeVisibleDialogModule() {
+      })
+    },
+    closeVisibleDialogModule () {
       this.visibleDialogModule = false;
     },
-    handleClickModuleDialog() {
+    handleClickModuleDialog () {
       this.visibleDialogModule = true;
     },
-    handleClickNavgationDialog() {
+    handleClickNavgationDialog () {
 
     },
-    handlelinkClick(link) {
-			window.open(link)
-		},
-    getThusList() {
-			this.loadingNav = true;
-			this.$axios.thus.list().then(v => {
-				setTimeout(() => {
-					this.thusList = v
-					this.loadingNav = false;
-				}, 600);
-			})
-		},
-    dragleave(obj) {
-			this.$set(obj, 'dropStatus', false)
-		},
-		dragover(e, obj) {
+    handlelinkClick (link) {
+      window.open(link)
+    },
+    getThusList () {
+      this.loadingNav = true;
+      this.$axios.thus.list().then(v => {
+        setTimeout(() => {
+          this.thusList = v
+          this.loadingNav = false;
+        }, 600);
+      })
+    },
+    dragleave (obj) {
+      this.$set(obj, 'dropStatus', false)
+    },
+    dragover (e, obj) {
       if (!obj.dropStatus) {
         this.$set(obj, 'dropStatus', true)
       }
-		},
-		drop(obj) {
+    },
+    drop (obj) {
       this.$set(obj, 'dropStatus', false)
       this.$emit('dropDownStatus', obj)
-		}
+    }
   }
 }
 </script>
@@ -153,7 +138,7 @@ export default {
   height: 100%;
   box-sizing: border-box;
   padding-bottom: 40px;
-  overflow: hidden;
+  overflow-y: scroll;
   box-sizing: border-box;
   border-right: 1px solid #0006;
   .nav-main {
@@ -169,11 +154,14 @@ export default {
         height: 34px;
         box-sizing: border-box;
         display: flex;
+        position: sticky;
+        top: 0px;
+        z-index: 2000;
         justify-content: space-between;
         align-items: center;
         box-sizing: border-box;
         padding: 3px 7px 3px 10px;
-        background: #409EFF;
+        background: #409eff;
         font-weight: 600;
         color: #fff;
         user-select: none;
@@ -185,14 +173,11 @@ export default {
         }
       }
       ul {
-        overflow-y: scroll;
-        max-height: 400px;
         &.module-ul {
-           height: 400px;
           li {
             user-select: none;
             &::before {
-              content: '';
+              content: "";
               background: #0006;
             }
           }
@@ -214,14 +199,14 @@ export default {
           word-break: break-all;
           cursor: default;
           &.dropStatus {
-            background: #EBEEF5;
+            background: #ebeef5;
             color: #3282b8;
             &::before {
               background: #3282b8;
             }
           }
           &::before {
-            content: '';
+            content: "";
             position: absolute;
             right: 0;
             height: 100%;
@@ -264,14 +249,14 @@ export default {
             margin: 2px 0;
             font-weight: 600;
             &::after {
-              content: '';
+              content: "";
               width: 100%;
               height: 2px;
               position: absolute;
               bottom: 0;
               left: 0;
-              background: #0065ff;/*当前标签继承的文字颜色，这里让伪元素的背景色与父元素的文字颜色相同*/
-              transition:all .35s;
+              background: #0065ff; /*当前标签继承的文字颜色，这里让伪元素的背景色与父元素的文字颜色相同*/
+              transition: all 0.35s;
               transform-origin: left;
               transform: scale(0);
             }

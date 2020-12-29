@@ -5,33 +5,21 @@
     <el-button v-popover:title size="small" type="text" class="title">标题</el-button>
     <el-button v-popover:modules size="small" type="text" class="modules">模块</el-button>
     <el-button v-popover:status size="small" type="text" icon="el-icon-sort-down el-icon--right" class="status" @click="$emit('sortable', 'executiveMode')">状态</el-button>
-    <el-popover
-      ref="type"
-      placement="bottom"
-      v-model="visibleType">
+    <el-popover ref="type" placement="bottom" v-model="visibleType">
       <div id="sortSprintMain">
         <div class="work">
           <el-button type="text">工作:</el-button>
           <el-button size="small" type="text" class="currentIcon"><i :class="[currentworkIcon, 'iconfont']" :style="{'color': issusTypeArr[0].color}"></i></el-button>
-          <!-- <el-button icon="el-icon-refresh" size="small" type="info" class="btn" @click="selectIcon('work')"></el-button> -->
+          <el-button icon="el-icon-refresh" size="small" type="info" class="btn" @click="selectIcon('work')"></el-button>
         </div>
         <div class="life">
           <el-button type="text">生活:</el-button>
           <el-button size="small" type="text" class="currentIcon"><i :class="[currentLifeIcon, 'iconfont']" :style="{'color': issusTypeArr[1].color}"></i></el-button>
-          <!-- <el-button icon="el-icon-refresh" size="small" type="info" class="btn" @click="selectIcon('life')"></el-button> -->
+          <el-button icon="el-icon-refresh" size="small" type="info" class="btn" @click="selectIcon('life')"></el-button>
         </div>
       </div>
-      <!-- <div class="footer">
-        <el-button size="small" type="text" @click="visibleType = false" class="btn">取消</el-button>
-        <el-button type="primary" size="small" @click="visibleType = false" class="btn">确定</el-button>
-      </div> -->
     </el-popover>
-    <el-popover
-      ref="level"
-      placement="bottom"
-      width="160"
-      v-model="visibleLevel"
-      >
+    <el-popover ref="level" placement="bottom" width="160" v-model="visibleLevel">
       <div id="sortSprintMain">
         <div class="work" v-for="(item, index) in levelArr" :key="index">
           <el-button type="text">{{item.label}}:</el-button>
@@ -46,7 +34,7 @@
 <script>
 import { issusTypeArr, levelArr } from './storyConstant'
 export default {
-  data() {
+  data () {
     return {
       issusTypeArr,
       levelArr,
@@ -58,19 +46,19 @@ export default {
       flaglifeIconIndex: 0
     }
   },
-  created() {
+  created () {
     this.currentworkIcon = issusTypeArr[0].icon;
     this.currentLifeIcon = issusTypeArr[1].icon;
   },
   methods: {
-    selectIcon(issueType) {
+    selectIcon (issueType) {
       if (issueType == 'work') {
         if (this.flagWorkIconIndex >= issusTypeArr[0].moreIcon.length) {
           this.flagWorkIconIndex = 0;
         }
 
         this.currentworkIcon = issusTypeArr[0].moreIcon[this.flagWorkIconIndex]
-        this.flagWorkIconIndex ++;
+        this.flagWorkIconIndex++;
       }
 
       if (issueType == 'life') {
@@ -79,7 +67,7 @@ export default {
         }
 
         this.currentLifeIcon = issusTypeArr[1].moreIcon[this.flaglifeIconIndex]
-        this.flaglifeIconIndex ++;
+        this.flaglifeIconIndex++;
       }
     }
   }
@@ -88,7 +76,8 @@ export default {
 <style lang="scss">
 #sortSprint {
   display: flex;
-  .type, .level {
+  .type,
+  .level {
     width: 25px;
   }
   .level {
@@ -102,12 +91,14 @@ export default {
     flex: 1;
     text-align: left;
   }
-  .modules, .status {
+  .modules,
+  .status {
     width: 56px;
   }
 }
 #sortSprintMain {
-  .work, .life {
+  .work,
+  .life {
     display: flex;
     justify-content: flex-start;
     align-items: center;
@@ -120,16 +111,6 @@ export default {
     padding: 3px;
     height: 20px;
     float: right;
-    font-size: 14px;
-    margin: 5px;
-  }
-}
-.footer {
-  text-align: right;
-  margin: 5px 0 0;
-  .btn {
-    padding: 0 3px;
-    height: 20px;
     font-size: 14px;
     margin: 5px;
   }

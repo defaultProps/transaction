@@ -1,5 +1,5 @@
 <template>
-	<div id="manage">
+  <div id="manage">
     <div class="manage-content">
       <el-tabs v-model="activeName" @tab-click="handleClick" tab-position="left">
         <h2>Setting</h2>
@@ -7,19 +7,19 @@
           <uxo-userManage></uxo-userManage>
         </el-tab-pane>
         <el-tab-pane label="系统管理" name="configManage">
-          <!-- <uxo-confManage></uxo-confManage> -->
+          <uxo-confManage></uxo-confManage>
         </el-tab-pane>
       </el-tabs>
     </div>
-	</div>
+  </div>
 </template>
 
 <script>
 import userManage from './component/userManage'
 import confManage from './component/confManage'
 export default {
-	data() {
-		return {
+  data () {
+    return {
       activeName: 'userManage',
       imageUrl: 'https://dss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3389396624,1488513240&fm=26&gp=0.jpg',
       formLabelAlign: {
@@ -27,18 +27,18 @@ export default {
         region: '',
         type: ''
       }
-		}
+    }
   },
   components: {
     'uxo-userManage': userManage,
     'uxo-confManage': confManage
   },
   methods: {
-    handleClick() {
+    handleClick () {
 
     },
-    handleAvatarSuccess() {},
-    beforeAvatarUpload() {}
+    handleAvatarSuccess () { },
+    beforeAvatarUpload () { }
   }
 }
 </script>

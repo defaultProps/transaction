@@ -1,12 +1,6 @@
-function routeErrorCallback() {}
+function routeErrorCallback () { }
 
-let article = r =>
-  require.ensure(
-    [],
-    () => r(require("@/view/article/index")),
-    routeErrorCallback,
-    "article"
-  );
+let article = r => require.ensure([], () => r(require("@/view/article/index")), routeErrorCallback, "article")
 let story = r =>
   require.ensure(
     [],
