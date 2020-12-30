@@ -65,8 +65,5 @@ export default {
 		updateSptintmoduleState: params => controller[env]('updateSptintmoduleState', params),
 		backlogSprintList: params => controller[env]('backlogSprintList', params),
 		storeSprint: params => controller[env]('storeSprint', params)
-	},
-	header: {
-		getheaderMenu: params => controller[env]('getheaderMenu', params)
 	}
 }

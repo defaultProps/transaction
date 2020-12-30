@@ -1,11 +1,10 @@
 import Mock from 'mockjs-async'
 import localforage from 'localforage';
 import { localforageStore } from './indexdb/index'
-import { headerNav } from './indexdb/data'
 
 // 设置响应时间， 与实操更加接近
 Mock.setup({
-  timeout: '100-500'
+  timeout: '300-1500'
 })
 
 const sprints = localforage.createInstance({
@@ -32,32 +31,30 @@ export default function (keys, params) {
       return getsprintIssueDetail(params);
     case 'backlogSprintList':
       return getbacklogSprintList(params);
-    case 'getheaderMenu':
-      return getheaderMenu(params);
     case 'closeActiveSprintIssue':
       return closeActiveSprintIssue(params);
     case 'updateSptintmoduleState':
       return updateSptintmoduleState(params);
     case 'getModuleList':
       return getModuleList(params);
-      case 'getProgressStateList':
-        return getProgressStateList(params);
+    case 'getProgressStateList':
+      return getProgressStateList(params);
     case 'storeSprint':
       return localforageStore(params);
-      case 'getdashboardList':
-        return getdashboardList(params);
+    case 'getdashboardList':
+      return getdashboardList(params);
     default:
       return ''
   }
 
-  function getdashboardList(params) {
+  function getdashboardList (params) {
     return {
       data: [],
       status: 200
     }
   }
 
-  function getProgressStateList() {
+  function getProgressStateList () {
     return new Promise(async resolve => {
       let keys = [];
       let progressStateList = [];
@@ -81,7 +78,7 @@ export default function (keys, params) {
     })
   }
 
-  function getModuleList() {
+  function getModuleList () {
     return new Promise(async resolve => {
       let keys = [];
       let moduleList = [];
@@ -105,7 +102,7 @@ export default function (keys, params) {
     })
   }
 
-  function updateSptintmoduleState(params) {
+  function updateSptintmoduleState (params) {
     if (params.type == "module") {
       return new Promise(async resolve => {
         await moduleSprintStore.getItem(params.link).then(async modulelist => {
@@ -151,20 +148,13 @@ export default function (keys, params) {
     }
   }
 
-  function getheaderMenu(params) {
-    return {
-      status: 200,
-      data: headerNav.slice(0, 2)
-    }
-  }
-
-  function closeActiveSprintIssue(params) {
+  function closeActiveSprintIssue (params) {
     return new Promise(async resolve => {
       await sprints.getItem(params.link).then(async issue => {
         let item = issue.find(v => !!v);
 
         if (item) {
-          item.moduleState = {link: 'close', name: '关闭'}
+          item.moduleState = { link: 'close', name: '关闭' }
           await sprints.setItem(params.link, item);
         }
         resolve({
@@ -177,7 +167,7 @@ export default function (keys, params) {
     })
   }
 
-  function getsprintIssueDetail(params) {
+  function getsprintIssueDetail (params) {
     return new Promise(async resolve => {
       await sprints.getItem(params.link).then(v => {
         resolve({
@@ -191,7 +181,7 @@ export default function (keys, params) {
   }
 
   // 当前活跃sprint列表
-  function getactiveSprintList(params) {
+  function getactiveSprintList (params) {
     return new Promise(async resolve => {
       let issueList = [];
       let keys = [];
@@ -221,7 +211,7 @@ export default function (keys, params) {
     })
   }
 
-  function getbacklogSprintList(params) {
+  function getbacklogSprintList (params) {
     return new Promise(async resolve => {
       let issueList = [];
       let keys = [];

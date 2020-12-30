@@ -64,7 +64,7 @@
 import { levelArr, pointsArr } from './storyConstant.js'
 
 export default {
-  data() {
+  data () {
     return {
       levelArr,
       pointsArr,
@@ -78,13 +78,13 @@ export default {
         title: '',
         fixed: '',
         progressState: '',
-        tag: {name: '', link: ''},
+        tag: { name: '', link: '' },
         points: ''
       }
     }
   },
   watch: {
-    sprintLink: function(v) {
+    sprintLink: function (v) {
       if (v) {
         this.getsprintIssueDetail(v)
       }
@@ -96,23 +96,23 @@ export default {
       default: ''
     }
   },
-  created() {
+  created () {
     this.getsprintIssueDetail(this.sprintLink)
   },
-  mounted() {
-    this.addDraggleEvent();
+  mounted () {
+    // this.addDraggleEvent();
   },
   methods: {
-    getsprintIssueDetail(sprintLink) {
+    getsprintIssueDetail (sprintLink) {
       this.loading = true;
-      this.$axios.sprints.sprintIssueDetail({link: sprintLink}).then(obj => {
+      this.$axios.sprints.sprintIssueDetail({ link: sprintLink }).then(obj => {
         this.loading = false;
         if (obj.issueDetail) {
           this.sprintIssue = obj.issueDetail
         }
       })
     },
-    addDraggleEvent() {
+    addDraggleEvent () {
       let backlogDetailWrapper = document.getElementById('backlogDetailWrapper');
       let sprintDetailWrapper = document.getElementById('sprintDetailWrapper');
       let dragglePoint = document.getElementById('dragglePoint');
@@ -123,7 +123,11 @@ export default {
         document.onmouseup = null;
       }
 
-      dragglePoint.onmousedown = function(el) {
+      if (!dragglePoint || !backlogDetailWrapper || !sprintDetailWrapper) {
+        return
+      }
+
+      dragglePoint.onmousedown = function (el) {
         let currentPointClientX = el.clientX;
         let windowWidth = window.innerWidth;
         let backlogDetailWidth = backlogDetailWrapper.offsetWidth;
@@ -133,25 +137,25 @@ export default {
           that.$store.commit('hasDraggle', true)
           el.target.setCapture && el.target.setCapture();
 
-          let dvalue =  e.clientX - currentPointClientX;
+          let dvalue = e.clientX - currentPointClientX;
           let backlogPercent = ((backlogDetailWidth + dvalue) / windowWidth * 100)
           let sprintDetailPercent = ((sprintDetailWidth - dvalue) / windowWidth * 100)
 
           if (backlogPercent > 46 && sprintDetailPercent > 22) {
             backlogDetailWrapper.style.width = backlogPercent + '%'
-            sprintDetailWrapper.style.width =  sprintDetailPercent + '%'
+            sprintDetailWrapper.style.width = sprintDetailPercent + '%'
           }
         }
 
-        document.onmouseup = function() {
+        document.onmouseup = function () {
           document.onmousemove = null;
           // 释放线程的指定窗口里设置鼠标捕获
-          dragglePoint.releaseCapture &&  dragglePoint.releaseCapture();
+          dragglePoint.releaseCapture && dragglePoint.releaseCapture();
           window.releaseEvents && window.releaseEvents(Event.MOUSEMOVE | Event.MOUSEUP);
         }
       }
     },
-    handleClickCloseDetailModule() {
+    handleClickCloseDetailModule () {
       this.$store.commit('hasDraggle', false)
       this.$emit('closeDetail')
     }
@@ -178,6 +182,7 @@ export default {
   box-sizing: border-box;
   position: relative;
   height: 100%;
+  width: 200px;
   .sprint-detail__container {
     height: 100%;
     overflow-y: scroll;
@@ -205,7 +210,7 @@ export default {
   }
   .header {
     display: flex;
-    justify-content:flex-end;
+    justify-content: flex-end;
     align-items: center;
     padding: 10px 10px 0;
     .link {
@@ -228,7 +233,8 @@ export default {
     &.item-top {
       margin-top: 15px;
     }
-    &.desc, &.remark {
+    &.desc,
+    &.remark {
       margin: 10px 0;
       display: block;
       .form-label {

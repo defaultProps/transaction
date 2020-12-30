@@ -156,7 +156,7 @@ export default {
         display: flex;
         position: sticky;
         top: 0px;
-        z-index: 2000;
+        z-index: 200;
         justify-content: space-between;
         align-items: center;
         box-sizing: border-box;

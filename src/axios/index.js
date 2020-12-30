@@ -15,9 +15,6 @@ export default {
 		// 首页文章菜单栏
 		menu: params => Axios({method: 'post', url: protocol + 'article/menu', data: params})
 	},
-	header: {
-		getheaderMenu: params => Axios({method: 'post', url: protocol + 'header/menu', data: params})
-	},
 	sprints: {
 		sprintIssueDetail: params => Axios({method: 'post', url: protocol + 'sprints/sprintIssueDetail', data: params}),
 		backlogSprintList: params => Axios({method: 'post', url: protocol + 'sprints/backlogSprintList', data: params}),

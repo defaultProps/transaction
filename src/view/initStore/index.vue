@@ -1,14 +1,5 @@
 <template>
-	<el-dialog
-    :visible.sync="dialogVisible"
-    width="80%"
-    title="初始配置"
-    custom-class="storeSprint-dialog"
-    :show-close="false"
-    center
-    top="40px"
-    :close-on-click-modal="false"
-    :before-close="handleClose">
+  <el-dialog :visible.sync="dialogVisible" width="80%" title="初始配置" :append-to-body="true" custom-class="storeSprint-dialog" :show-close="false" center top="40px" :close-on-click-modal="false" :before-close="handleClose">
     <div id="storeSprint">
       <div class="title-meta">
         <div class="title">自动化配置: </div>
@@ -34,24 +25,24 @@
 </template>
 <script>
 export default {
-	data() {
-		return {
+  data () {
+    return {
       dialogVisible: true,
       disabled: true
-		}
-	},
-	mounted() {
+    }
+  },
+  mounted () {
     this.$nextTick(() => {
       this.renderEchartsLine()
       this.getbacklogList()
     })
-	},
-	methods: {
-    async submitStore() {
+  },
+  methods: {
+    async submitStore () {
       this.dialogVisible = false;
       this.$router.push('/story')
     },
-    renderEchartsLine() {
+    renderEchartsLine () {
       let echartDom = document.getElementById('configLine');
 
       if (!echartDom) {
@@ -146,7 +137,7 @@ export default {
       }
       myChart.setOption(option, true);
     },
-    handleClose(done) {
+    handleClose (done) {
       this.$confirm('确认关闭？').then(_ => {
         done();
         this.$router.push('/story')
@@ -154,14 +145,14 @@ export default {
 
       });
     },
-    getbacklogList() {
-			this.$axios.sprints.storeSprint().then(() => {
+    getbacklogList () {
+      this.$axios.sprints.storeSprint().then(() => {
         setTimeout(() => {
           this.disabled = false;
         }, 500);
       })
-		}
-	}
+    }
+  }
 }
 </script>
 <style lang="scss">
@@ -192,7 +183,7 @@ export default {
       margin-left: 35px;
       position: relative;
       &::before {
-        content: '';
+        content: "";
         position: absolute;
         width: 15px;
         height: 15px;
@@ -207,7 +198,7 @@ export default {
       }
       &.evor {
         &::before {
-          background: #E6A23C;
+          background: #e6a23c;
         }
       }
       &.store {

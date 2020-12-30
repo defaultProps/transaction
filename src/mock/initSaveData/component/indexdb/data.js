@@ -1,21 +1,5 @@
 import Mock from "mockjs-async"
 
-export const headerNav = [
-  { name: '事务面板', link: 'story', color: '#5243aa', icon: '' },
-  {
-    name: '仪表盘', link: 'dashboard', color: '#ffab00', icon: '',
-    children: [
-      { name: '游戏人生', link: 'games', color: '#598ed4', icon: '' }
-    ]
-  },
-  { name: '旅游指南', link: 'dashboard', color: '#598ed4', icon: '' },
-  { name: '农贸市场', link: 'existence', color: '#5243aa', icon: '' },
-  { name: '健身运动', link: 'Sketch', color: '#ffab00', icon: '' },
-  { name: '厨房日记', link: 'check', color: '#598ed4', icon: '' },
-  { name: '宇宙探索', link: 'universe', color: '#5243aa', icon: '' },
-  { name: '游戏人生', link: 'games', color: '#598ed4', icon: '' }
-]
-
 export const links = [
   { name: '世界之妖，带你走进妖怪的世界', link: 'https://www.cbaigui.com/' },
   { name: '雪花之美，领略另一种风域', link: 'http://www.snowcrystals.com/guide/guide.html' },

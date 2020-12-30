@@ -8,6 +8,7 @@
       :close-on-click-modal="false"
       :before-close="handleClose"
       :show-close="false"
+      :append-to-body="true"
       width="50%">
       <h3 class="newissue-title">问题详情</h3>
       <el-form

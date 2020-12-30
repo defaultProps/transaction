@@ -1,13 +1,10 @@
 <template>
   <div id="moduleStory">
-    <el-row class="story-backlog">
-      <el-col :span="4" class="storyNavigation" v-show="visibleNavigation">
+    <div class="story-backlog">
+      <div class="sidebar-left" v-show="visibleNavigation">
         <uxo-storyStatusNavigation @dropDownStatus="dropDownStatus"></uxo-storyStatusNavigation>
-      </el-col>
-      <el-button size="small" class="triggernavgation" @click="handleClickvisibleNavigation">
-        <i :class="[visibleNavigation ? 'el-icon-d-arrow-left' : 'el-icon-d-arrow-right']"></i>
-      </el-button>
-      <el-col :span="sprintLen" :class="[activeLightLink ? 'scroll-style-theme1' : 'scroll-style-none']" id="backlogDetailWrapper">
+      </div>
+      <div class="sprint-list-box" :class="[activeLightLink ? 'scroll-style-theme1' : 'scroll-style-none']">
         <div class="backlog">
           <div class="backlog-title">
             <div>
@@ -18,7 +15,7 @@
                   </g>
                 </svg>
               </span>
-              <span class="title">{{activeSprint.title}}</span>
+              <span class="title">工作区</span>
               <span class="issus-count">{{activeSprint.issueList.length}} 问题</span>
             </div>
           </div>
@@ -28,21 +25,21 @@
         <div class="backlog">
           <div class="backlog-title">
             <div>
-              <span class="title">Backlog</span>
+              <span class="title">缓存区</span>
               <span class="issus-count">{{backlogSprint.length}} 问题</span>
-            </div>
-            <div>
-              <el-button size="medium" @click="dialogTableVisible = true" icon="el-icon-circle-plus" type="primary">新建Issue</el-button>
             </div>
           </div>
           <uxo-draggleList handle=".handle" sprintType="backlog" @handleDetail="handleDetail" :dropObj="dropObj" @endDraggable="endDraggable" :issueList="backlogSprint" :group="{ name: 'activeSprint', pull: false, put: false }"></uxo-draggleList>
         </div>
-      </el-col>
-      <!-- 分离detail分离至top parent -->
-      <el-col id="sprintDetailWrapper" :span="detailLen">
+      </div>
+      <div class="sprint-detail-box">
         <uxo-sprintDetail class="detail-container" :sprintLink="activeLightLink" @closeDetail="closeDetail"></uxo-sprintDetail>
-      </el-col>
-    </el-row>
+      </div>
+    </div>
+    <div class="newIssue-btn" size="medium" @click="dialogTableVisible = true"><i class="el-icon-plus"></i></div>
+    <el-button size="small" class="triggernavgation" @click="handleClickvisibleNavigation">
+      <i :class="[visibleNavigation ? 'el-icon-d-arrow-left' : 'el-icon-d-arrow-right']"></i>
+    </el-button>
     <uxo-dialogNewIssus :dialogTableVisible="dialogTableVisible" @handleClose="handleClose"></uxo-dialogNewIssus>
   </div>
 </template>
@@ -146,8 +143,8 @@ export default {
         this.detailLen = 24 - this.sprintLen;
       }
 
-      document.getElementById('backlogDetailWrapper').style.width = this.sprintLen / 24 * 100 + '%'
-      document.getElementById('sprintDetailWrapper').style.width = Math.floor(this.detailLen / 24 * 100) + '%'
+      // document.getElementById('backlogDetailWrapper').style.width = this.sprintLen / 24 * 100 + '%'
+      // document.getElementById('sprintDetailWrapper').style.width = Math.floor(this.detailLen / 24 * 100) + '%'
     },
     // css & 拖动列表高亮
     highlightSelectedList (key) {
@@ -187,6 +184,27 @@ $bg-big: #f4f5f7;
 #moduleStory {
   width: 100%;
   height: 100%;
+  .newIssue-btn {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+    border: 1px solid #205081;
+    background: #205081;
+    border-radius: 50%;
+    color: #fff;
+    font-size: 20px;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    &:hover {
+      color: rgb(255, 171, 0);
+      font-size: 22px;
+    }
+  }
   .triggernavgation {
     float: right;
     color: #172b4d;
@@ -204,12 +222,18 @@ $bg-big: #f4f5f7;
     right: 0;
     bottom: 0px;
     top: 40px;
-    // filter: blur(3px);
+    position: flex;
     box-sizing: border-box;
-    #backlogDetailWrapper {
+    .sidebar-left {
+      height: 100%;
+      width: 200px;
+      float: left;
+    }
+    .sprint-list-box {
       height: 100%;
       overflow-y: scroll;
       box-sizing: border-box;
+      flex: 1;
       .space-between {
         height: 100px;
         margin: 10px 0;
@@ -327,14 +351,8 @@ $bg-big: #f4f5f7;
         }
       }
     }
-    .storyNavigation {
+    .sprint-detail-box {
       height: 100%;
-      box-sizing: border-box;
-    }
-    #sprintDetailWrapper {
-      height: 100%;
-      height: 100%;
-      box-sizing: border-box;
     }
   }
 }

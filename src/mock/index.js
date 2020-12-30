@@ -9,7 +9,6 @@ export default {
 	mockData () {
 		Mock.mock(protocol + 'article/list', 'post', req => api.article.list(JSON.parse(req.body)))
 		Mock.mock(protocol + 'article/menu', 'post', req => api.article.menu(JSON.parse(req.body)))
-		Mock.mock(protocol + 'header/menu', 'post', req => api.header.getheaderMenu(JSON.parse(req.body)))
 
 		Mock.mock(protocol + 'thus/list', 'post', req => api.thus.list(JSON.parse(req.body)))
 
