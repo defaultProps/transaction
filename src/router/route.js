@@ -13,7 +13,7 @@ import feature from '@/view/feature/'
 let routes = [
   {
     path: "/",
-    redirect: "/initStore"
+    redirect: "/login"
   },
   {
     path: "/login",
