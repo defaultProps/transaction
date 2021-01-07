@@ -21,7 +21,7 @@
           </div>
           <uxo-draggleList :issueList="activeSprint.issueList" :dropObj="dropObj" group="activeSprint" v-show="visibleSprint" sprintType="active" @endDraggable="endDraggable" @handleDetail="handleDetail"></uxo-draggleList>
         </div>
-        <div class="space-between">waiting...</div>
+        <div class="space-between"></div>
         <div class="backlog">
           <div class="backlog-title">
             <div>
@@ -29,7 +29,7 @@
               <span class="issus-count">{{backlogSprint.length}} 问题</span>
             </div>
           </div>
-          <uxo-draggleList handle=".handle" sprintType="backlog" @handleDetail="handleDetail" :dropObj="dropObj" @endDraggable="endDraggable" :issueList="backlogSprint" :group="{ name: 'activeSprint', pull: false, put: false }"></uxo-draggleList>
+          <uxo-draggleList handle=".handle" sprintType="backlog" @handleDetail="handleDetail" :dropObj="dropObj" @endDraggable="endDraggable" :issueList="backlogSprint" :group="{ name: 'activeSprint', pull: true, put: true }"></uxo-draggleList>
         </div>
       </div>
       <div class="sprint-detail-box">
@@ -235,7 +235,7 @@ $bg-big: #f4f5f7;
       box-sizing: border-box;
       flex: 1;
       .space-between {
-        height: 100px;
+        height: 120px;
         margin: 10px 0;
         line-height: 100px;
         text-align: center;

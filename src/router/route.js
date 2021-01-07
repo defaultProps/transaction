@@ -6,6 +6,7 @@ import manage from '@/view/manage/'
 import dashboard from '@/view/dashboard/'
 import initStore from '@/view/initStore/'
 import feature from '@/view/feature/'
+import product from '@/view/product/'
 
 /**
  * @meta: auth: 用户级别 0无需登录，1普通用户，2管理员， showheaderBar 是否显示左侧顶部栏
@@ -52,6 +53,16 @@ let routes = [
       title: "面板",
       auth: 0,
       showheaderBar: true
+    }
+  },
+  {
+    path: "/product",
+    name: "product",
+    component: product,
+    meta: {
+      title: "产品",
+      auth: 0,
+      showheaderBar: false
     }
   },
   {

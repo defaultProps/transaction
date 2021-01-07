@@ -20,7 +20,8 @@ export default {
 <style lang="scss">
 .router-main {
   position: fixed;
-  top: 40px;
+  // top: 40px;
+  top: 0;
   bottom: 0;
   left: 0;
   right: 0;

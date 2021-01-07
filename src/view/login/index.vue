@@ -2,10 +2,10 @@
   <div id="login" :style="{'background-image': `url('${this.switchImgList[this.activeNum]}')`}">
     <div class="header-box">
       <div class="left-panel">
-        <span>产品</span>
+        <router-link to="/product" tag="span">产品</router-link>
         <span class="quarantine">|</span>
-        <span>技术</span>
-        <span>设计</span>
+        <router-link to="/product" tag="span">技术</router-link>
+        <router-link to="/product" tag="span">设计</router-link>
         <span></span>
       </div>
       <div class="right-panel"></div>
@@ -20,7 +20,7 @@
           <el-form :model="loginForm">
             <div class="title">账号</div>
             <el-form-item>
-              <el-input prefix-icon="el-icon-user" v-model="loginForm.username" class="username"></el-input>
+              <el-input prefix-icon="el-icon-user" ref="usernameRef" v-model="loginForm.username" class="username"></el-input>
             </el-form-item>
             <div class="title">密码</div>
             <el-form-item>
@@ -86,8 +86,8 @@ export default {
       isLoginPage: true,
       isFirstLogin: true,
       loginForm: {
-        username: 'uxo2',
-        password: 'xyz-t'
+        username: '',
+        password: ''
       },
       registerForm: {
         username: '',
@@ -97,9 +97,8 @@ export default {
       remberCounter: true,
       activeNum: 0,
       switchImgList: [
+        '../../../static/image/login-bg5.jfif',
         '../../../static/image/login-bg3.jpg',
-        '../../../static/image/login-bg2.jpg',
-        '../../../static/image/login-bg1.jpg',
         '../../../static/image/login-bg.jpg'
       ]
     }
@@ -112,12 +111,10 @@ export default {
     },
     submitLogin () {
       this.loadingLogin = true
-      if (this.loginForm.username === 'uxo2' && this.loginForm.password === 'xyz-t') {
-        setTimeout(() => {
-          this.loadingLogin = false
-          this.$router.push('/story')
-        }, 800);
-      }
+      setTimeout(() => {
+        this.loadingLogin = false
+        this.$router.push('/story')
+      }, 800);
     }
   }
 }
@@ -255,29 +252,29 @@ export default {
         }
       }
       .login-form {
-        z-index: 1;
+        z-index: 5;
         left: 0;
         top: 0;
         &.hidden-login_animation {
-          z-index: 6;
-          animation: hiddenLoginPanel 0.8s forwards;
+          z-index: 10;
+          animation: hiddenLoginPanel 0.5s forwards;
         }
         &.show-login_animation {
-          z-index: 6;
-          animation: showLoginPanel 0.8s forwards;
+          z-index: 20;
+          animation: showLoginPanel 0.5s forwards;
         }
       }
       .register-form {
-        z-index: -1;
+        z-index: 5;
         left: 375px;
         top: 0;
         &.show-register_animation {
-          z-index: 10;
-          animation: showRegisterPanel 0.8s forwards;
+          z-index: 20;
+          animation: showRegisterPanel 0.5s forwards;
         }
         &.hidden-register_animation {
           z-index: 10;
-          animation: hiddenRegisterPanel 0.8s forwards;
+          animation: hiddenRegisterPanel 0.5s forwards;
         }
       }
       .login-transprent,
@@ -308,17 +305,17 @@ export default {
         background-size: cover;
         overflow: hidden;
         &.hidden-login_animation {
-          animation: registerBtnHidden 0.8s forwards;
+          animation: registerBtnHidden 0.5s forwards;
           .btn {
             position: relative;
-            animation: hiddenBtnAnimation 0.8s forwards;
+            animation: hiddenBtnAnimation 0.5s forwards;
           }
         }
         &.show-register_animation {
-          animation: LoginBtnHidden 0.8s forwards;
+          animation: LoginBtnHidden 0.5s forwards;
           .btn {
             position: relative;
-            animation: showBtnAnimation 0.8s forwards;
+            animation: showBtnAnimation 0.5s forwards;
           }
         }
       }

@@ -187,6 +187,7 @@ export default {
           user-select: none;
           height: 35px;
           line-height: 35px;
+          border-bottom: 1px solid #f0f0f0;
           font-size: 16px;
           user-select: none;
           box-sizing: border-box;
@@ -247,7 +248,6 @@ export default {
             cursor: pointer;
             position: relative;
             margin: 2px 0;
-            font-weight: 600;
             &::after {
               content: "";
               width: 100%;

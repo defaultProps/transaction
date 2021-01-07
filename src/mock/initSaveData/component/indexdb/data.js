@@ -44,16 +44,9 @@ export const links = [
 
 export const tags = [
   { name: '大块文章', guid: Mock.mock('@guid'), color: '#598ed4', icon: '' },
-  { name: '日常学习', guid: Mock.mock('@guid'), color: '#598ed4', icon: '' },
+  { name: '探索未知', guid: Mock.mock('@guid'), color: '#598ed4', icon: '' },
   { name: '工作上班', guid: Mock.mock('@guid'), color: '#5243aa', icon: '' },
-  { name: '生活乐趣', guid: Mock.mock('@guid'), color: '#ffab00', icon: '' },
-  { name: '旅游指南', guid: Mock.mock('@guid'), color: '#598ed4', icon: '' },
-  { name: '个人开源', guid: Mock.mock('@guid'), color: '#5243aa', icon: '' },
-  { name: '健身运动', guid: Mock.mock('@guid'), color: '#ffab00', icon: '' },
-  { name: '厨房日记', guid: Mock.mock('@guid'), color: '#598ed4', icon: '' },
-  { name: '宇宙探索', guid: Mock.mock('@guid'), color: '#5243aa', icon: '' },
-  { name: '游戏人生', guid: Mock.mock('@guid'), color: '#598ed4', icon: '' },
-  { name: '绘画兴趣', guid: Mock.mock('@guid'), color: '#598ed4', icon: '' },
+  { name: '随记乐趣', guid: Mock.mock('@guid'), color: '#ffab00', icon: '' },
   { name: '思考意义', guid: Mock.mock('@guid'), color: '#598ed4', icon: '' },
   { name: '情感心事', guid: Mock.mock('@guid'), color: '#598ed4', icon: '' },
   { name: '其他模块', guid: Mock.mock('@guid'), color: '#598ed4', icon: '' }
@@ -87,7 +80,7 @@ export const sprints = [
     title: '针对个人体型和身体素质合理筛选健身运动、指导视频并设计一套长期的基础健身计划方案',
     urgencyLevel: 5, // 紧急度
     issueDesc: Mock.mock('@cparagraph(10, 20)'), // 描述
-    issueType: 'work', // 类型
+    issueType: 'life', // 类型
     issueRemark: Mock.mock('@cparagraph(10, 20)'), // 备注
     createTime: Mock.mock('@date("yyyy/MM/dd")'), // 创建时间
     updateTime: Mock.mock('@date("yyyy/MM/dd")'), // 最近更新
@@ -97,10 +90,10 @@ export const sprints = [
     guid: Mock.mock('@guid') // 唯一id
   },
   {
-    title: '新建项目 | 搜集国内外的各类蔬菜并运用于厨房营养搭配中',
+    title: '#文章 | 正则表达式的常用校验',
     urgencyLevel: 3,
     issueDesc: Mock.mock('@cparagraph(3, 10)'),
-    issueType: 'life',
+    issueType: 'work',
     issueRemark: Mock.mock('@cparagraph(3, 10)'),
     createTime: Mock.mock('@date("yyyy/MM/dd")'),
     updateTime: Mock.mock('@date("yyyy/MM/dd")'),
@@ -110,7 +103,7 @@ export const sprints = [
     guid: Mock.mock('@guid')
   },
   {
-    title: '#开源todo | 事务分发 | 模块类型 | 模块增加统计总数',
+    title: '#文章 | 函数柯里化',
     urgencyLevel: 4,
     issueDesc: Mock.mock('@cparagraph(3, 10)'),
     issueType: 'worK',
@@ -118,12 +111,12 @@ export const sprints = [
     createTime: Mock.mock('@date("yyyy/MM/dd")'),
     updateTime: Mock.mock('@date("yyyy/MM/dd")'),
     tag: tags[5],
-    moduleState: progressStateList[1],
+    moduleState: progressStateList[0],
     type: 'active',
     guid: Mock.mock('@guid')
   },
   {
-    title: '#开源todo | 事务分发 | 详情页样式切换抽屉样式',
+    title: '#文章 | 节流和防抖',
     urgencyLevel: 3,
     issueDesc: Mock.mock('@cparagraph(3, 10)'),
     issueType: 'worK',
@@ -131,15 +124,15 @@ export const sprints = [
     createTime: Mock.mock('@date("yyyy/MM/dd")'),
     updateTime: Mock.mock('@date("yyyy/MM/dd")'),
     tag: tags[5],
-    moduleState: progressStateList[1],
+    moduleState: progressStateList[0],
     type: 'active',
     guid: Mock.mock('@guid')
   },
   {
-    title: '购买腾讯云服务器并搭建完成',
+    title: '#随记 | 购买腾讯云服务器并搭建完成',
     urgencyLevel: 6,
     issueDesc: Mock.mock('@cparagraph(3, 10)'),
-    issueType: 'work',
+    issueType: 'life',
     issueRemark: Mock.mock('@cparagraph(3, 10)'),
     createTime: Mock.mock('@date("yyyy/MM/dd")'),
     updateTime: Mock.mock('@date("yyyy/MM/dd")'),
@@ -149,7 +142,7 @@ export const sprints = [
     guid: Mock.mock('@guid')
   },
   {
-    title: '购买.com域名并进行备案',
+    title: '#随记 | 购买.com域名并进行备案',
     urgencyLevel: 5,
     issueDesc: Mock.mock('@cparagraph(3, 10)'),
     issueType: 'life',
@@ -162,7 +155,7 @@ export const sprints = [
     guid: Mock.mock('@guid')
   },
   {
-    title: 'todo项目中所有数据迁移至远程服务器',
+    title: '#文章 | HTTP状态码',
     urgencyLevel: 2,
     issueDesc: Mock.mock('@cparagraph(3, 10)'),
     issueType: 'work',
@@ -170,12 +163,12 @@ export const sprints = [
     createTime: Mock.mock('@date("yyyy/MM/dd")'),
     updateTime: Mock.mock('@date("yyyy/MM/dd")'),
     tag: tags[5],
-    moduleState: progressStateList[1],
+    moduleState: progressStateList[0],
     type: 'active',
     guid: Mock.mock('@guid')
   },
   {
-    title: 'todo项目增加node后端处理数据',
+    title: '#文章 | popoer.js源码分析',
     urgencyLevel: 3,
     issueDesc: Mock.mock('@cparagraph(3, 10)'),
     issueType: 'work',
@@ -188,7 +181,7 @@ export const sprints = [
     guid: Mock.mock('@guid')
   },
   {
-    title: '新建项目react | 世界植物录',
+    title: '#code | 构建新项目',
     urgencyLevel: 1,
     issueDesc: Mock.mock('@cparagraph(3, 10)'),
     issueType: 'life',
@@ -201,10 +194,10 @@ export const sprints = [
     guid: Mock.mock('@guid')
   },
   {
-    title: '新建项目hourse | 3D动画设计家庭房屋设计图',
+    title: 'GIT FLS如何管理二进制大文件',
     urgencyLevel: 3,
     issueDesc: Mock.mock('@cparagraph(3, 10)'),
-    issueType: 'life',
+    issueType: 'work',
     issueRemark: Mock.mock('@cparagraph(3, 10)'),
     createTime: Mock.mock('@date("yyyy/MM/dd")'),
     updateTime: Mock.mock('@date("yyyy/MM/dd")'),
@@ -248,7 +241,7 @@ export const sprints = [
     createTime: Mock.mock('@date("yyyy/MM/dd")'),
     updateTime: Mock.mock('@date("yyyy/MM/dd")'),
     tag: tags[6],
-    moduleState: progressStateList[1],
+    moduleState: progressStateList[0],
     type: 'active',
     guid: Mock.mock('@guid')
   },
@@ -274,7 +267,7 @@ export const sprints = [
     createTime: Mock.mock('@date("yyyy/MM/dd")'),
     updateTime: Mock.mock('@date("yyyy/MM/dd")'),
     tag: tags[6],
-    moduleState: progressStateList[1],
+    moduleState: progressStateList[0],
     type: 'active',
     guid: Mock.mock('@guid')
   },
@@ -287,7 +280,7 @@ export const sprints = [
     createTime: Mock.mock('@date("yyyy/MM/dd")'),
     updateTime: Mock.mock('@date("yyyy/MM/dd")'),
     tag: tags[6],
-    moduleState: progressStateList[1],
+    moduleState: progressStateList[0],
     type: 'active',
     guid: Mock.mock('@guid')
   },
@@ -313,7 +306,7 @@ export const sprints = [
     createTime: Mock.mock('@date("yyyy/MM/dd")'),
     updateTime: Mock.mock('@date("yyyy/MM/dd")'),
     tag: tags[6],
-    moduleState: progressStateList[1],
+    moduleState: progressStateList[0],
     type: 'active',
     guid: Mock.mock('@guid')
   },

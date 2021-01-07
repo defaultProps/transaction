@@ -328,7 +328,7 @@ export default {
     height: 32px;
     line-height: 32px;
     font-size: 16px;
-    margin: 5px 0;
+    margin: 0px 0;
     user-select: none;
     padding: 0 6px 0 4px;
     display: flex;

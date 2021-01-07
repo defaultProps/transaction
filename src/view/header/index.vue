@@ -27,17 +27,10 @@
     </el-menu>
     <div class="nav-right">
       <el-input v-model="inputVal" size="mini" class="input" prefix-icon="el-icon-search"></el-input>
-      <el-button title="配置域" type="text" size="mini" icon="el-icon-lock" @click="$router.push('/manage')" class="">配置域</el-button>
-      <div class="avatar"></div>
-      <!-- <el-popover placement="bottom-start"
-									width="300"
-									trigger="click"
-									visible-arrow="false">
-				<span slot="reference" class="avatar"></span>
-				<div class="user-meta">
-					<el-button></el-button>
-				</div>
-			</el-popover> -->
+      <el-button title="配置域" type="text" size="mini" icon="el-icon-lock" @click="drawer = true" class="">配置域</el-button>
+      <el-drawer title="配置域" :visible.sync="drawer" direction="btt" :before-close="handleClose">
+        <span>我来啦!</span>
+      </el-drawer>
     </div>
   </div>
 </template>
@@ -47,11 +40,15 @@ import { menuList } from '@/libs/constant/header.js'
 export default {
   data () {
     return {
+      drawer: false,
       menuList,
       dialogVisible: false,
       activeIndex: 'story',
       inputVal: ''
     }
+  },
+  methods: {
+    handleClose (done) { done() }
   }
 }
 </script>
