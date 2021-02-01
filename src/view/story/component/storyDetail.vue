@@ -182,7 +182,7 @@ export default {
   box-sizing: border-box;
   position: relative;
   height: 100%;
-  width: 200px;
+  width: 100%;
   .sprint-detail__container {
     height: 100%;
     overflow-y: scroll;

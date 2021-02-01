@@ -222,12 +222,11 @@ $bg-big: #f4f5f7;
     right: 0;
     bottom: 0px;
     top: 40px;
-    position: flex;
+    display: flex;
     box-sizing: border-box;
     .sidebar-left {
       height: 100%;
       width: 200px;
-      float: left;
     }
     .sprint-list-box {
       height: 100%;
@@ -353,6 +352,7 @@ $bg-big: #f4f5f7;
     }
     .sprint-detail-box {
       height: 100%;
+      width: 400px;
     }
   }
 }

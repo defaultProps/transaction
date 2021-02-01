@@ -27,9 +27,25 @@
     </el-menu>
     <div class="nav-right">
       <el-input v-model="inputVal" size="mini" class="input" prefix-icon="el-icon-search"></el-input>
-      <el-button title="配置域" type="text" size="mini" icon="el-icon-lock" @click="drawer = true" class="">配置域</el-button>
-      <el-drawer title="配置域" :visible.sync="drawer" direction="btt" :before-close="handleClose">
-        <span>我来啦!</span>
+      <el-button title="配置域" size="mini" icon="el-icon-lock" @click="visibleDrawer = true">配置域</el-button>
+      <el-drawer title="配置域" size="50%" :visible.sync="visibleDrawer" direction="ltr">
+        <div class="typesetting-box">
+          <el-tabs v-model="activeTab" tab-position="top">
+            <el-tab-pane label="页面排版" name="first">
+              <el-carousel type="card" trigger="click" :autoplay="false">
+                <el-carousel-item v-for="item in typesettingList" :key="item.title">
+                  <div class="tyesetting">
+                    <div class="image"></div>
+                    <div class="title">{{item.title}}</div>
+                  </div>
+                </el-carousel-item>
+              </el-carousel>
+            </el-tab-pane>
+            <el-tab-pane label="配置管理" name="second">配置管理</el-tab-pane>
+            <el-tab-pane label="角色管理" name="third">角色管理</el-tab-pane>
+            <el-tab-pane label="定时任务补偿" name="fourth">定时任务补偿</el-tab-pane>
+          </el-tabs>
+        </div>
       </el-drawer>
     </div>
   </div>
@@ -40,11 +56,18 @@ import { menuList } from '@/libs/constant/header.js'
 export default {
   data () {
     return {
-      drawer: false,
+      visibleDrawer: false,
       menuList,
       dialogVisible: false,
       activeIndex: 'story',
-      inputVal: ''
+      inputVal: '',
+      activeTab: 'first',
+      typesettingList: [
+        { title: '标准排版', img: '' },
+        { title: '嵌套排版', img: '' },
+        { title: '横向排版', img: '' },
+        { title: '纵向排版', img: '' }
+      ]
     }
   },
   methods: {
@@ -176,6 +199,40 @@ html {
       border: none;
       font-weight: 400;
       font-size: 14px;
+    }
+    .typesetting-box {
+      width: 100%;
+      padding: 0 10px;
+      .el-carousel__item:nth-child(2n) {
+        background-color: #d3dce6;
+      }
+      .el-carousel__item:nth-child(2n + 1) {
+        background-color: #d3dce6;
+      }
+      color: #999;
+      .tyesetting {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        color: #333;
+        height: 100%;
+        align-items: center;
+        justify-content: center;
+        display: inline-block;
+        .image {
+          width: 450px;
+          height: 220px;
+          cursor: pointer;
+          margin: 10px auto;
+          border: 1px solid #999;
+          border-radius: 3px;
+        }
+        .title {
+          font-size: 16px;
+          text-align: center;
+          margin-top: 10px;
+        }
+      }
     }
     .input {
       width: 145px;

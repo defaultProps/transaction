@@ -86,8 +86,8 @@ export default {
       isLoginPage: true,
       isFirstLogin: true,
       loginForm: {
-        username: '',
-        password: ''
+        username: 'uxo2',
+        password: 'xyz-t'
       },
       registerForm: {
         username: '',
@@ -97,8 +97,8 @@ export default {
       remberCounter: true,
       activeNum: 0,
       switchImgList: [
-        '../../../static/image/login-bg5.jfif',
         '../../../static/image/login-bg3.jpg',
+        '../../../static/image/login-bg5.jfif',
         '../../../static/image/login-bg.jpg'
       ]
     }
@@ -144,8 +144,8 @@ export default {
   .container {
     background-color: transparent;
     border-radius: var(--button-radius);
-    box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.25),
-      -5px 5px 5px rgba(0, 0, 0, 0.22), 0px -5px 5px rgba(0, 0, 0, 0.22);
+    // box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.25),
+    //   -5px 5px 5px rgba(0, 0, 0, 0.22), 0px -5px 5px rgba(0, 0, 0, 0.22);
     height: var(--max-height);
     max-width: var(--max-width);
     overflow: hidden;
