@@ -1,17 +1,26 @@
 <template>
   <div id="moduleStory">
     <div class="story-backlog">
-      <div class="sidebar-left" v-show="visibleNavigation">
+      <div class="sidebar-left"
+           v-show="visibleNavigation">
         <uxo-storyStatusNavigation @dropDownStatus="dropDownStatus"></uxo-storyStatusNavigation>
       </div>
-      <div class="sprint-list-box" :class="[activeLightLink ? 'scroll-style-theme1' : 'scroll-style-none']">
+      <div class="sprint-list-box"
+           :class="[activeLightLink ? 'scroll-style-theme1' : 'scroll-style-none']">
         <div class="backlog">
           <div class="backlog-title">
             <div>
-              <span size="mini" :class="{'visibleSprint': visibleSprint}" @click="visibleSprint = !visibleSprint" class="header-expander">
-                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="10">
-                  <g fill="none" fill-rule="evenodd">
-                    <path d="M3.29175 4.793c-.389.392-.389 1.027 0 1.419l2.939 2.965c.218.215.5.322.779.322s.556-.107.769-.322l2.93-2.955c.388-.392.388-1.027 0-1.419-.389-.392-1.018-.392-1.406 0l-2.298 2.317-2.307-2.327c-.194-.195-.449-.293-.703-.293-.255 0-.51.098-.703.293z" fill="#344563"></path>
+              <span size="mini"
+                    :class="{'visibleSprint': visibleSprint}"
+                    @click="visibleSprint = !visibleSprint"
+                    class="header-expander">
+                <svg xmlns="http://www.w3.org/2000/svg"
+                     width="14"
+                     height="10">
+                  <g fill="none"
+                     fill-rule="evenodd">
+                    <path d="M3.29175 4.793c-.389.392-.389 1.027 0 1.419l2.939 2.965c.218.215.5.322.779.322s.556-.107.769-.322l2.93-2.955c.388-.392.388-1.027 0-1.419-.389-.392-1.018-.392-1.406 0l-2.298 2.317-2.307-2.327c-.194-.195-.449-.293-.703-.293-.255 0-.51.098-.703.293z"
+                          fill="#344563"></path>
                   </g>
                 </svg>
               </span>
@@ -19,7 +28,13 @@
               <span class="issus-count">{{activeSprint.issueList.length}} 问题</span>
             </div>
           </div>
-          <uxo-draggleList :issueList="activeSprint.issueList" :dropObj="dropObj" group="activeSprint" v-show="visibleSprint" sprintType="active" @endDraggable="endDraggable" @handleDetail="handleDetail"></uxo-draggleList>
+          <uxo-draggleList :issueList="activeSprint.issueList"
+                           :dropObj="dropObj"
+                           group="activeSprint"
+                           v-show="visibleSprint"
+                           sprintType="active"
+                           @endDraggable="endDraggable"
+                           @handleDetail="handleDetail"></uxo-draggleList>
         </div>
         <div class="space-between"></div>
         <div class="backlog">
@@ -29,18 +44,29 @@
               <span class="issus-count">{{backlogSprint.length}} 问题</span>
             </div>
           </div>
-          <uxo-draggleList handle=".handle" sprintType="backlog" @handleDetail="handleDetail" :dropObj="dropObj" @endDraggable="endDraggable" :issueList="backlogSprint" :group="{ name: 'activeSprint', pull: true, put: true }"></uxo-draggleList>
+          <uxo-draggleList handle=".handle"
+                           sprintType="backlog"
+                           @handleDetail="handleDetail"
+                           :dropObj="dropObj"
+                           @endDraggable="endDraggable"
+                           :issueList="backlogSprint"
+                           :group="{ name: 'activeSprint', pull: true, put: true }"></uxo-draggleList>
         </div>
       </div>
-      <div class="sprint-detail-box">
-        <uxo-sprintDetail class="detail-container" :sprintLink="activeLightLink" @closeDetail="closeDetail"></uxo-sprintDetail>
-      </div>
+      <uxo-sprintDetail class="detail-container"
+                        :sprintLink="activeLightLink"
+                        @closeDetail="closeDetail"></uxo-sprintDetail>
     </div>
-    <div class="newIssue-btn" size="medium" @click="dialogTableVisible = true"><i class="el-icon-plus"></i></div>
-    <el-button size="small" class="triggernavgation" @click="handleClickvisibleNavigation">
+    <div class="newIssue-btn"
+         size="medium"
+         @click="dialogTableVisible = true"><i class="el-icon-plus"></i></div>
+    <el-button size="small"
+               class="triggernavgation"
+               @click="handleClickvisibleNavigation">
       <i :class="[visibleNavigation ? 'el-icon-d-arrow-left' : 'el-icon-d-arrow-right']"></i>
     </el-button>
-    <uxo-dialogNewIssus :dialogTableVisible="dialogTableVisible" @handleClose="handleClose"></uxo-dialogNewIssus>
+    <uxo-dialogNewIssus :dialogTableVisible="dialogTableVisible"
+                        @handleClose="handleClose"></uxo-dialogNewIssus>
   </div>
 </template>
 <script>
@@ -349,10 +375,6 @@ $bg-big: #f4f5f7;
           }
         }
       }
-    }
-    .sprint-detail-box {
-      height: 100%;
-      width: 400px;
     }
   }
 }

@@ -1,39 +1,71 @@
 <template>
   <div id="header">
     <div class="header-logo">
-      <img class="logo" :src="$image.logo">
-      <span class="title">transaction</span>
+      <img class="logo"
+           :src="$image.logo">
+      <span class="title">TRANSACTION</span>
       <ul class="bubbles">
-        <li v-for="v of Array(15)" :key="v"></li>
+        <li v-for="v of Array(15)"
+            :key="v"></li>
       </ul>
     </div>
-    <el-menu :default-active="activeIndex" size="mini" class="el-menu-demo" mode="horizontal" router background-color="#205081" text-color="#fff" active-text-color="#ffab00">
+    <el-menu :default-active="activeIndex"
+             size="mini"
+             class="el-menu-demo"
+             mode="horizontal"
+             router
+             background-color="#205081"
+             text-color="#fff"
+             active-text-color="#ffab00">
       <template v-for="menu in menuList">
-        <el-submenu v-if="menu.children" :key="menu.link" :index="menu.link">
+        <el-submenu v-if="menu.children"
+                    :key="menu.link"
+                    :index="menu.link">
           <template slot="title">
-            <i v-if="menu.icon" :class="menu.icon"></i>
+            <i v-if="menu.icon"
+               :class="menu.icon"></i>
             {{menu.name}}
           </template>
-          <el-menu-item v-for="item in menu.children" :key="item.link" :index="item.link">
-            <i v-if="item.icon" :class="item.icon"></i>
+          <el-menu-item v-for="item in menu.children"
+                        :key="item.link"
+                        :index="item.link">
+            <i v-if="item.icon"
+               :class="item.icon"></i>
             {{item.name}}
           </el-menu-item>
         </el-submenu>
-        <el-menu-item v-else :key="menu.title" :index="menu.link">
-          <i v-if="menu.icon" :class="menu.icon"></i>
+        <el-menu-item v-else
+                      :key="menu.title"
+                      :index="menu.link">
+          <i v-if="menu.icon"
+             :class="menu.icon"></i>
           {{menu.name}}
         </el-menu-item>
       </template>
     </el-menu>
     <div class="nav-right">
-      <el-input v-model="inputVal" size="mini" class="input" prefix-icon="el-icon-search"></el-input>
-      <el-button title="配置域" size="mini" icon="el-icon-lock" @click="visibleDrawer = true">配置域</el-button>
-      <el-drawer title="配置域" size="50%" :visible.sync="visibleDrawer" direction="ltr">
+      <el-input v-model="inputVal"
+                size="mini"
+                class="input"
+                prefix-icon="el-icon-search"></el-input>
+      <el-button title="配置域"
+                 size="mini"
+                 icon="el-icon-lock"
+                 @click="visibleDrawer = true">配置域</el-button>
+      <el-drawer title="配置域"
+                 size="50%"
+                 :visible.sync="visibleDrawer"
+                 direction="ltr">
         <div class="typesetting-box">
-          <el-tabs v-model="activeTab" tab-position="top">
-            <el-tab-pane label="页面排版" name="first">
-              <el-carousel type="card" trigger="click" :autoplay="false">
-                <el-carousel-item v-for="item in typesettingList" :key="item.title">
+          <el-tabs v-model="activeTab"
+                   tab-position="top">
+            <el-tab-pane label="页面排版"
+                         name="first">
+              <el-carousel type="card"
+                           trigger="click"
+                           :autoplay="false">
+                <el-carousel-item v-for="item in typesettingList"
+                                  :key="item.title">
                   <div class="tyesetting">
                     <div class="image"></div>
                     <div class="title">{{item.title}}</div>
@@ -41,9 +73,12 @@
                 </el-carousel-item>
               </el-carousel>
             </el-tab-pane>
-            <el-tab-pane label="配置管理" name="second">配置管理</el-tab-pane>
-            <el-tab-pane label="角色管理" name="third">角色管理</el-tab-pane>
-            <el-tab-pane label="定时任务补偿" name="fourth">定时任务补偿</el-tab-pane>
+            <el-tab-pane label="配置管理"
+                         name="second">配置管理</el-tab-pane>
+            <el-tab-pane label="角色管理"
+                         name="third">角色管理</el-tab-pane>
+            <el-tab-pane label="定时任务补偿"
+                         name="fourth">定时任务补偿</el-tab-pane>
           </el-tabs>
         </div>
       </el-drawer>

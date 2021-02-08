@@ -1,15 +1,24 @@
 <template>
-  <div id="storyStatusNavtgation" class="scroll-style-none">
+  <div id="storyStatusNavtgation"
+       class="scroll-style-none">
     <div class="nav-main">
       <div class="module scroll-style-none">
         <div class="module-title">
           执行状态
-          <el-button type="primary" size="mini" @click="visibleProgressState = !visibleProgressState">
+          <el-button type="primary"
+                     size="mini"
+                     @click="visibleProgressState = !visibleProgressState">
             <i :class="[visibleProgressState ? 'el-icon-arrow-down' : 'el-icon-arrow-right']"></i>
           </el-button>
         </div>
-        <ul class="scroll-style-none" v-show="visibleProgressState">
-          <li v-for="list of progressStateList" :key="list.guid" @dragleave="dragleave(list)" @dragover.prevent="dragover($event, list)" @drop="drop(list)" :class="[list.dropStatus ? 'dropStatus': '', list.link]">
+        <ul class="scroll-style-none"
+            v-show="visibleProgressState">
+          <li v-for="list of progressStateList"
+              :key="list.guid"
+              @dragleave="dragleave(list)"
+              @dragover.prevent="dragover($event, list)"
+              @drop="drop(list)"
+              :class="[list.dropStatus ? 'dropStatus': '', list.link]">
             <span :class="[list.link]">{{list.name}}</span>
           </li>
         </ul>
@@ -18,14 +27,25 @@
         <div class="module-title">
           模块类型
           <el-button-group>
-            <el-button type="primary" icon="el-icon-edit" size="mini" @click="handleClickModuleDialog()"></el-button>
-            <el-button type="primary" size="mini" @click="visibleModule = !visibleModule">
+            <el-button type="primary"
+                       icon="el-icon-edit"
+                       size="mini"
+                       @click="handleClickModuleDialog()"></el-button>
+            <el-button type="primary"
+                       size="mini"
+                       @click="visibleModule = !visibleModule">
               <i :class="[visibleModule ? 'el-icon-arrow-down' : 'el-icon-arrow-right']"></i>
             </el-button>
           </el-button-group>
         </div>
-        <ul class="scroll-style-none module-ul" v-show="visibleModule">
-          <li v-for="list of moduleList" :key="list.guid" @dragleave="dragleave(list)" @dragover.prevent="dragover($event, list)" @drop="drop(list)" :class="{'dropStatus': list.dropStatus}">
+        <ul class="scroll-style-none module-ul"
+            v-show="visibleModule">
+          <li v-for="list of moduleList"
+              :key="list.guid"
+              @dragleave="dragleave(list)"
+              @dragover.prevent="dragover($event, list)"
+              @drop="drop(list)"
+              :class="{'dropStatus': list.dropStatus}">
             <span>{{list.name}}</span>
           </li>
         </ul>
@@ -34,21 +54,31 @@
         <div class="module-title">
           附加链接
           <el-button-group>
-            <el-button type="primary" icon="el-icon-edit" size="mini" @click="handleClickNavgationDialog()"></el-button>
-            <el-button type="primary" size="mini" @click="visiblenavgation = !visiblenavgation">
+            <el-button type="primary"
+                       icon="el-icon-edit"
+                       size="mini"
+                       @click="handleClickNavgationDialog()"></el-button>
+            <el-button type="primary"
+                       size="mini"
+                       @click="visiblenavgation = !visiblenavgation">
               <i :class="[visiblenavgation ? 'el-icon-arrow-down' : 'el-icon-arrow-right']"></i>
             </el-button>
           </el-button-group>
         </div>
-        <ul class="scroll-style-none" v-show="visiblenavgation">
-          <li v-for="p of thusList" :key="p.name" :title="p.name" @click="handlelinkClick(p.link)">
+        <ul class="scroll-style-none"
+            v-show="visiblenavgation">
+          <li v-for="p of thusList"
+              :key="p.name"
+              :title="p.name"
+              @click="handlelinkClick(p.link)">
             <i class="iconfont icon-fenxiang"></i>
             {{p.name}}
           </li>
         </ul>
       </div>
     </div>
-    <uxo-dialogNavigationModule :visibleDialogModule="visibleDialogModule" @closeVisibleDialogModule="closeVisibleDialogModule"></uxo-dialogNavigationModule>
+    <uxo-dialogNavigationModule :visibleDialogModule="visibleDialogModule"
+                                @closeVisibleDialogModule="closeVisibleDialogModule"></uxo-dialogNavigationModule>
   </div>
 </template>
 <script>

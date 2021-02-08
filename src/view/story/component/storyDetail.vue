@@ -100,7 +100,7 @@ export default {
     this.getsprintIssueDetail(this.sprintLink)
   },
   mounted () {
-    // this.addDraggleEvent();
+    this.addDraggleEvent();
   },
   methods: {
     getsprintIssueDetail (sprintLink) {
@@ -117,6 +117,8 @@ export default {
       let sprintDetailWrapper = document.getElementById('sprintDetailWrapper');
       let dragglePoint = document.getElementById('dragglePoint');
       let that = this;
+
+      console.log(backlogDetailWrapper)
 
       document.onmouseup = function (evt) {
         document.onmousemove = null;
@@ -161,7 +163,6 @@ export default {
     }
   }
 }
-
 </script>
 <style lang="scss">
 .el-select-dropdown__item {
@@ -183,6 +184,8 @@ export default {
   position: relative;
   height: 100%;
   width: 100%;
+  height: 100%;
+      width: 400px;
   .sprint-detail__container {
     height: 100%;
     overflow-y: scroll;

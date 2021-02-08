@@ -1,35 +1,12 @@
 <template>
   <div id="dialogNewIssus" v-if="dialogTableVisible">
-    <el-dialog
-      :visible.sync="dialogTableVisible"
-      size="mini"
-      top="40px"
-      custom-class="dialogNewIssus"
-      :close-on-click-modal="false"
-      :before-close="handleClose"
-      :show-close="false"
-      :append-to-body="true"
-      width="50%">
+    <el-dialog :visible.sync="dialogTableVisible" size="mini" top="40px" custom-class="dialogNewIssus" :close-on-click-modal="false" :before-close="handleClose" :show-close="false" :append-to-body="true" width="50%">
       <h3 class="newissue-title">问题详情</h3>
-      <el-form
-        ref="form"
-        :model="issueForm"
-        label-width="80px"
-        :rules="rules"
-        class="form"
-        size="small">
+      <el-form ref="form" :model="issueForm" label-width="80px" :rules="rules" class="form" size="small">
         <el-form-item label="问题类型" class="form-item">
           <el-tooltip content="工作不全是生活，生活也不全是工作。" placement="top"><i class="el-icon-info"></i></el-tooltip>
-          <el-select
-            v-model="issueForm.type"
-            placeholder="请选择"
-            size="small"
-            class="select-item">
-            <el-option
-              v-for="v in progressStateList"
-              :key="v.name"
-              :label="v.label"
-              :value="v.value">
+          <el-select v-model="issueForm.type" placeholder="请选择" size="small" class="select-item">
+            <el-option v-for="v in progressStateList" :key="v.name" :label="v.label" :value="v.value">
               <i class="iconfont" :class="[v.icon]" :style="{'color': v.color}"></i>
               {{v.label}}
             </el-option>
@@ -45,20 +22,9 @@
           </el-select>
         </el-form-item>
         <el-form-item label="紧急度" prop="level">
-          <el-select
-            v-model="issueForm.level"
-            placeholder="请选择"
-            size="small"
-            class="select-item">
-            <el-option-group
-              v-for="group in levelArr"
-              :key="group.label"
-              :label="group.label">
-              <el-option
-                v-for="item in group.options"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value">
+          <el-select v-model="issueForm.level" placeholder="请选择" size="small" class="select-item">
+            <el-option-group v-for="group in levelArr" :key="group.label" :label="group.label">
+              <el-option v-for="item in group.options" :key="item.value" :label="item.label" :value="item.value">
                 <span style="float: left">{{ item.label }}</span>
                 <span style="float: right; color: #8492a6; font-size: 13px">{{ item.value }}</span>
               </el-option>
@@ -81,7 +47,7 @@ import { levelArr, pointsArr } from './storyConstant.js'
 import { mapState } from 'vuex'
 
 export default {
-  data() {
+  data () {
     return {
       levelArr,
       pointsArr,
@@ -105,7 +71,7 @@ export default {
         title: '',
         fixed: '',
         progressState: '',
-        tag: {name: '', link: ''}
+        tag: { name: '', link: '' }
       }
     }
   },
@@ -113,7 +79,7 @@ export default {
     dialogTableVisible: Boolean
   },
   watch: {
-    'issueForm.type'(p) {
+    'issueForm.type' (p) {
       this.issusTypeArr.forEach(v => {
         if (v.value === p) {
           this.issueForm.typeIcon = v.icon;
@@ -127,7 +93,7 @@ export default {
     progressStateList: state => state.story.progressStateList
   }),
   methods: {
-    handleClose() {
+    handleClose () {
       this.$emit('handleClose')
     }
   }
@@ -143,7 +109,7 @@ export default {
     padding: 0;
   }
   .newissue-title {
-    font-size: 22px;
+    font-size: 16px;
     padding: 10px 10px;
     margin: 0;
     border-bottom: 1px solid #e3e4e5;

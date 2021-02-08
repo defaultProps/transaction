@@ -4,8 +4,7 @@ const fs = require('fs')
 const path = require('path')
 const baseurl = 'https://zhuanlan.zhihu.com/p/'
 const promiseList = [];
-const zhihu = [58349237, 87667349, 130812111, 64033141, 77782049, 84386456,151342495, 140004463, 139286000, 130884857, 53599723]
-const github = []
+const zhihu = [58349237, 87667349, 130812111, 64033141, 77782049, 84386456, 151342495, 140004463, 139286000, 130884857, 53599723]
 const urls = [
   {
     type: 'technology',
@@ -27,6 +26,7 @@ urls.forEach((p, i) => {
   console.log('开始爬取数据....')
   p.value.forEach(url => {
     promiseList.push(
+      // eslint-disable-next-line promise/param-names
       new Promise((res, rej) => {
         axios.get(url).then(response => {
           const $ = cheerio.load(response.data)
