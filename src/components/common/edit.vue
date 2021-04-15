@@ -1,19 +1,38 @@
 <template>
-  <div id="uxo-edit" @click="hc_edit">
-    <div v-if="editMode" class="edit-mode">
+  <div id="uxo-edit"
+       @click="hc_edit">
+    <div v-if="editMode"
+         class="edit-mode">
       <el-form @submit.native="handleClickSubmit()">
-        <el-input v-show="textType === 'text'" v-model="value" @blur="blur" class="input" :rows="10" ref="inputNode"></el-input>
+        <el-input v-show="textType === 'text'"
+                  ref="inputNode"
+                  v-model="value"
+                  :rows="10"
+                  class="input"
+                  @blur="blur"></el-input>
         <div v-show="textType === 'textarea'">
-          <vue-tinymce v-model="value" :setup="setup" @blur="blur" :setting="setting" />
+          <!-- <vue-tinymce v-model="value"
+                       :setup="setup"
+                       :setting="setting"
+                       @blur="blur" /> -->
         </div>
       </el-form>
       <div class="save-options">
-        <el-button size="mini" @click.prevent.stop="handleClickSubmit()" :class="[loading ? 'saved' : '']"><i class="icon" :class="[loading ? 'el-icon-loading' : 'el-icon-check']"></i></el-button>
-        <el-button size="mini" @click.prevent.stop="handleClickCencel()" icon="el-icon-close"></el-button>
+        <el-button :class="[loading ? 'saved' : '']"
+                   size="mini"
+                   @click.prevent.stop="handleClickSubmit()">
+          <i :class="[loading ? 'el-icon-loading' : 'el-icon-check']"
+             class="icon"></i>
+        </el-button>
+        <el-button size="mini"
+                   icon="el-icon-close"
+                   @click.prevent.stop="handleClickCencel()"></el-button>
       </div>
     </div>
-    <div v-else class="info">
-      <span class="content" v-html="content"></span>
+    <div v-else
+         class="info">
+      <!-- <span class="content"
+            v-html="content"></span> -->
       <span class="edit-wrap">
         <i class="icon-writefill iconfont"></i>
       </span>
@@ -22,7 +41,7 @@
 </template>
 <script>
 export default {
-  data () {
+  data() {
     return {
       editMode: false,
       value: '',
@@ -41,7 +60,7 @@ export default {
     }
   },
   watch: {
-    'editMode' (newVal) {
+    'editMode'(newVal) {
       if (newVal && this.textType === 'text') {
         this.$nextTick(() => {
           this.$refs.inputNode.focus()
@@ -49,14 +68,14 @@ export default {
         })
       }
     },
-    'uid' () {
+    'uid'() {
       this.editMode = false;
     },
-    'content' (v) {
+    'content'(v) {
       this.value = v;
     }
   },
-  created () {
+  created() {
     this.value = this.content
   },
   props: {
@@ -78,13 +97,13 @@ export default {
     }
   },
   methods: {
-    setup (editor) {
+    setup(editor) {
 
     },
-    editorChange (v) {
+    editorChange(v) {
 
     },
-    blur () {
+    blur() {
       setTimeout(async () => {
         if (this.cencelBtnCick) {
           return
@@ -98,7 +117,7 @@ export default {
         }, 300);
       }, 100)
     },
-    async handleClickSubmit () {
+    async handleClickSubmit() {
       this.cencelBtnCick = false;
       this.loading = true;
       await this.cb()
@@ -107,26 +126,25 @@ export default {
         this.editMode = false;
       }, 300);
     },
-    hc_edit () {
+    hc_edit() {
       this.editMode = true;
     },
-    handleClickCencel () {
+    handleClickCencel() {
       this.cencelBtnCick = true;
       this.editMode = false;
     }
   }
 }
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
 #uxo-edit {
-  padding: 0;
-  box-sizing: border-box;
-  border: 1px solid transparent;
   position: relative;
-  border-top-left-radius: 4px;
-  border-bottom-left-radius: 4px;
   align-items: top;
-  position: relative;
+  box-sizing: border-box;
+  padding: 0;
+  border: 1px solid transparent;
+  border-bottom-left-radius: 4px;
+  border-top-left-radius: 4px;
   .info {
     display: flex;
     justify-content: space-between;
@@ -179,7 +197,7 @@ export default {
     }
   }
   .save-options {
-    font-size: 16px;
+    font-size: 14px;
     position: absolute;
     right: 0px;
     bottom: -25px;

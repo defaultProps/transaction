@@ -1,7 +1,7 @@
 import localforage from 'localforage'
 import { tags, progressStateList, sprints, links } from './data'
 
-export function localforageStore() {
+export function initLocalForageStore() {
   const sprintStore = localforage.createInstance({
     name: 'todo',
     storeName: 'sprints'
@@ -29,25 +29,25 @@ export function localforageStore() {
   let linksPromise = [];
 
   // 填充扩展链接links数据
-  linkStore.clear().then(function() {
+  linkStore.clear().then(function () {
     links.forEach(link => {
       linksPromise.push(linkStore.setItem(link.link, link))
     })
   })
 
   // 填充执行状态implete数据
-  progressStateStore.clear().then(function() {
+  progressStateStore.clear().then(function () {
     progressStateList.forEach(progressState => {
       progressStateListPromise.push(progressStateStore.setItem(progressState.guid, progressState))
     })
   })
   // 填充模块状态tag数据
-  moduleSprintStore.clear().then(function() {
+  moduleSprintStore.clear().then(function () {
     tags.forEach(tag => {
       moduleSprintPromise.push(moduleSprintStore.setItem(tag.guid, tag))
     })
   })
-  sprintStore.clear().then(function() {
+  sprintStore.clear().then(function () {
     sprints.forEach(sprint => {
       if (sprint.type === 'backlog') {
         backlogSprintPromise.push(sprintStore.setItem(sprint.guid, sprint))

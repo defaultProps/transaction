@@ -1,5 +1,14 @@
 <template>
-  <el-dialog :visible.sync="dialogVisible" width="80%" title="初始配置" :append-to-body="true" custom-class="storeSprint-dialog" :show-close="false" center top="40px" :close-on-click-modal="false" :before-close="handleClose">
+  <el-dialog :visible.sync="dialogVisible"
+             :append-to-body="true"
+             :show-close="false"
+             :close-on-click-modal="false"
+             :before-close="handleClose"
+             width="80%"
+             title="初始配置"
+             custom-class="storeSprint-dialog"
+             center
+             top="40px">
     <div id="storeSprint">
       <div class="title-meta">
         <div class="title">自动化配置: </div>
@@ -16,33 +25,37 @@
         <p>- 校验用户信息</p>
       </div>
     </div>
-    <span slot="footer" class="dialog-footer">
-      <el-button @click="submitStore" :disabled="disabled">
+    <span slot="footer"
+          class="dialog-footer">
+      <el-button :disabled="disabled"
+                 @click="submitStore">
         {{disabled ? '取 消' : '确 认'}}
       </el-button>
     </span>
   </el-dialog>
 </template>
 <script>
+import { sprintAxios } from '@/axios'
+
 export default {
-  data () {
+  data() {
     return {
       dialogVisible: true,
       disabled: true
     }
   },
-  mounted () {
+  mounted() {
     this.$nextTick(() => {
       this.renderEchartsLine()
       this.getbacklogList()
     })
   },
   methods: {
-    async submitStore () {
+    async submitStore() {
       this.dialogVisible = false;
       this.$router.push('/story')
     },
-    renderEchartsLine () {
+    renderEchartsLine() {
       let echartDom = document.getElementById('configLine');
 
       if (!echartDom) {
@@ -137,16 +150,16 @@ export default {
       }
       myChart.setOption(option, true);
     },
-    handleClose (done) {
+    handleClose(done) {
       this.$confirm('确认关闭？').then(_ => {
         done();
         this.$router.push('/story')
       }).catch(_ => {
 
-      });
+      })
     },
-    getbacklogList () {
-      this.$axios.sprints.storeSprint().then(() => {
+    getbacklogList() {
+      sprintAxios.initLocalForageStore().then(() => {
         setTimeout(() => {
           this.disabled = false;
         }, 500);
@@ -164,43 +177,49 @@ export default {
 </style>
 <style lang="scss" scoped>
 #storeSprint {
-  height: 250px;
   width: 100%;
+  height: 250px;
   padding: 4px;
-  border: 1px solid #e3e4e5;
   background: #f6f6f6;
+  border: 1px solid #e3e4e5;
+
   .title-meta {
     display: flex;
-    justify-content: flex-start;
     align-items: center;
-    font-size: 16px;
-    font-weight: 600;
+    justify-content: flex-start;
     margin-bottom: 20px;
+    font-weight: 600;
+    font-size: 14px;
+
     .title {
       padding-right: 9px;
     }
     .point {
-      margin-left: 35px;
       position: relative;
+      margin-left: 35px;
+
       &::before {
-        content: "";
         position: absolute;
+        top: 3px;
+        left: -18px;
         width: 15px;
         height: 15px;
-        top: 3px;
         background: #4a4961;
-        left: -18px;
+        content: "";
       }
+
       &.init {
         &::before {
           background: #00875a;
         }
       }
+
       &.evor {
         &::before {
           background: #e6a23c;
         }
       }
+
       &.store {
         &::before {
           background: #005086;
@@ -213,11 +232,11 @@ export default {
     height: 100px;
   }
   .config-detail {
+    box-sizing: border-box;
     height: 78px;
-    font-size: 14px;
     padding: 10px;
     color: #000;
-    box-sizing: border-box;
+    font-size: 14px;
     border-top: 1px solid #e3e4e5;
   }
 }

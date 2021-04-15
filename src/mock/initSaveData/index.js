@@ -1,4 +1,4 @@
-import product from './component/product.js';
+import product from './component/product.js'
 import indexdb from './component/indexdb.js'
 
 export default {

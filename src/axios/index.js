@@ -4,37 +4,41 @@ let protocol = document.location.protocol === 'https:' ? 'https://' : 'http://'
 
 protocol += process.env.NODE_ENV === 'development' ? 'dev.uxo.com.cn/' : 'uxo.com.cn/'
 
+// 仪表盘axios
+export const dashboardAxios = {
+  // 获取仪表盘列表信息
+  getdashboardList: data => Axios({ method: 'post', url: protocol + 'dashboard/getdashboardList', data })
+}
+
+export const sprintAxios = {
+  sprintIssueDetail: data => Axios({ method: 'post', url: protocol + 'sprints/sprintIssueDetail', data }),
+
+  backlogSprintList: data => Axios({ method: 'post', url: protocol + 'sprints/backlogSprintList', data }),
+
+  activeSprintList: data => Axios({ method: 'post', url: protocol + 'sprints/activeSprintList', data }),
+
+  // activeSprint执行状态设置为close
+  closeActiveSprintIssue: data => Axios({ method: 'post', url: protocol + 'sprints/closeActiveSprintIssue', data }),
+
+  // issue设置模块类型、执行状态（除了close）
+  updateSptintmoduleState: data => Axios({ method: 'post', url: protocol + 'sprints/updateSptintmoduleState', data }),
+
+  // 获取模块类型列表
+  getModuleList: data => Axios({ method: 'post', url: protocol + 'sprints/getModuleList', data }),
+
+  // 获取执行状态列表
+  getProgressStateList: data => Axios({ method: 'post', url: protocol + 'sprints/getProgressStateList', data }),
+
+  // 初始化项目数据
+  initLocalForageStore: data => Axios({ method: 'post', url: protocol + 'sprints/initLocalForageStore', data })
+}
+
+export const thusAxios = {
+  getthusList: params => Axios({ method: 'post', url: protocol + 'thus/list', data: params })
+}
+
 export default {
-	article: {
-		// 首页文章列表
-		list: params => Axios({method: 'post', url: protocol + 'article/list', data: params}),
-		// 文章详情
-		detail: params => Axios({method: 'post', url: protocol + 'article/detail', data: params}),
-		// 新建/编辑 - 文章
-		edit: params => Axios({method: 'post', url: protocol + 'article/edit', data: params}),
-		// 首页文章菜单栏
-		menu: params => Axios({method: 'post', url: protocol + 'article/menu', data: params})
-	},
-	sprints: {
-		sprintIssueDetail: params => Axios({method: 'post', url: protocol + 'sprints/sprintIssueDetail', data: params}),
-		backlogSprintList: params => Axios({method: 'post', url: protocol + 'sprints/backlogSprintList', data: params}),
-		activeSprintList: params => Axios({method: 'post', url: protocol + 'sprints/activeSprintList', data: params}),
-		// activeSprint执行状态设置为close
-		closeActiveSprintIssue: params => Axios({method: 'post', url: protocol + 'sprints/closeActiveSprintIssue', data: params}),
-		// issue设置模块类型、执行状态（除了close）
-		updateSptintmoduleState: params => Axios({method: 'post', url: protocol + 'sprints/updateSptintmoduleState', data: params}),
-		// 获取模块类型列表
-		getModuleList: params => Axios({method: 'post', url: protocol + 'sprints/getModuleList', data: params}),
-		// 获取执行状态列表
-		getProgressStateList: params => Axios({method: 'post', url: protocol + 'sprints/getProgressStateList', data: params}),
-		storeSprint: params => Axios({method: 'post', url: protocol + 'sprints/storeSprint', data: params})
-	},
-	thus: {
-		list: params => Axios({method: 'post', url: protocol + 'thus/list', data: params})
-	},
-	// 仪表盘
-	dashboard: {
-		// 仪表盘列表
-		getdashboardList: params => Axios({method: 'post', url: protocol + 'dashboard/getdashboardList', data: params})
-	}
+  dashboardAxios,
+  sprintAxios,
+  thusAxios
 }

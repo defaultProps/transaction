@@ -1,74 +1,112 @@
 <template>
-  <div id="login" :style="{'background-image': `url('${this.switchImgList[this.activeNum]}')`}">
+  <div id="login-container"
+       :style="{'background-image': `url('${this.switchImgList[this.activeNum]}')`}">
     <div class="header-box">
       <div class="left-panel">
-        <router-link to="/product" tag="span">产品</router-link>
+        <router-link to="/product"
+                     tag="span">产品</router-link>
         <span class="quarantine">|</span>
-        <router-link to="/product" tag="span">技术</router-link>
-        <router-link to="/product" tag="span">设计</router-link>
-        <span></span>
+        <router-link to="/product"
+                     tag="span">技术</router-link>
+        <router-link to="/product"
+                     tag="span">设计</router-link>
+        <span class="quarantine">|</span>
+        <router-link to="/product"
+                     tag="span">认知</router-link>
+        <router-link to="/product"
+                     tag="span">规划</router-link>
       </div>
-      <div class="right-panel"></div>
     </div>
-    <div class="container">
+    <div class="main-box">
       <div class="form-box">
-        <div class="login-form" :class="[isFirstLogin ? '' : (showRegisterAnimtion ? 'hidden-login_animation': 'show-login_animation')]">
-          <div class="header-tag" :class="[isLoginPage]">
-            <div class="login" @click="isLoginPage = 'hidden-login_animation'">登录</div>
-          </div>
-          <div class="language-btn" @click="isZhlanguage = !isZhlanguage">{{isZhlanguage ? '中文' : 'En'}}</div>
+        <div :class="animationFormLoginClass()">
+          <div class="header-title">登录</div>
           <el-form :model="loginForm">
-            <div class="title">账号</div>
+            <div class="label-title">账号</div>
             <el-form-item>
-              <el-input prefix-icon="el-icon-user" ref="usernameRef" v-model="loginForm.username" class="username"></el-input>
+              <el-input v-model="loginForm.username"
+                        prefix-icon="el-icon-user"
+                        clearable
+                        disabled
+                        class="username"></el-input>
             </el-form-item>
-            <div class="title">密码</div>
+            <div class="label-title">密码</div>
             <el-form-item>
-              <el-input prefix-icon="el-icon-lock" type="password" v-model="loginForm.password" class="password"></el-input>
+              <el-input v-model="loginForm.password"
+                        prefix-icon="el-icon-lock"
+                        type="password"
+                        clearable
+                        disabled
+                        class="password"></el-input>
             </el-form-item>
             <el-form-item>
-              <el-checkbox v-model="remberCounter" disabled>记住账号</el-checkbox>
+              <el-checkbox v-model="remberCounter"
+                           disabled>记住账号</el-checkbox>
             </el-form-item>
             <el-form-item>
-              <el-button class="submit-btn" type="primary" @click="submitLogin()" :disabled="loadingLogin" :icon="loadingLogin ? 'el-icon-loading' : ''">登录</el-button>
+              <el-button :disabled="loadingLogin"
+                         :icon="loadingLogin ? 'el-icon-loading' : ''"
+                         class="register-btn"
+                         type="primary"
+                         @click="handleClickLoginSubmit()">登录</el-button>
             </el-form-item>
           </el-form>
           <div class="tip-info">
-            <span class="title">账号：</span><span class="data">uxo2</span>
-            <span class="title">密码：</span><span class="data">xyz-t</span>
+            <span class="tip-title">账号：</span><span class="tip-value">uxo</span>
+            <span class="tip-title">密码：</span><span class="tip-value">123456</span>
           </div>
         </div>
-        <div class="register-form" :class="[isFirstLogin ? '' : (showRegisterAnimtion ? 'show-register_animation': 'hidden-register_animation')]">
-          <div class="header-tag" :class="[isLoginPage]">
-            <div class="login" @click="isLoginPage = 'hidden-login_animation'">注册</div>
-          </div>
-          <div class="language-btn" @click="isZhlanguage = !isZhlanguage">{{isZhlanguage ? '中文' : 'En'}}</div>
+        <div :class="animationFormRegisterClass()">
+          <div class="header-title">注册</div>
           <el-form :model="registerForm">
-            <div class="title">账号</div>
+            <div class="label-title">账号</div>
             <el-form-item>
-              <el-input prefix-icon="el-icon-user" v-model="registerForm.username" class="username"></el-input>
+              <el-input v-model="registerForm.username"
+                        prefix-icon="el-icon-user"
+                        class="username"></el-input>
             </el-form-item>
-            <div class="title">密码</div>
+            <div class="label-title">密码</div>
             <el-form-item>
-              <el-input prefix-icon="el-icon-lock" type="password" v-model="registerForm.password" class="password"></el-input>
+              <el-input v-model="registerForm.password"
+                        prefix-icon="el-icon-lock"
+                        type="password"
+                        class="password"></el-input>
             </el-form-item>
-            <div class="title">确认密码</div>
+            <div class="label-title">确认密码</div>
             <el-form-item>
-              <el-input prefix-icon="el-icon-lock" type="password" v-model="registerForm.comfirmPassword" class="password"></el-input>
+              <el-input v-model="registerForm.comfirmPassword"
+                        prefix-icon="el-icon-lock"
+                        type="password"
+                        class="password"></el-input>
             </el-form-item>
             <el-form-item>
-              <el-button class="submit-btn" type="primary">注册</el-button>
+              <el-button class="register-btn"
+                         type="primary">注册</el-button>
             </el-form-item>
           </el-form>
         </div>
-        <div class="register-transprent" :class="[isFirstLogin ? '' : (showRegisterAnimtion ? 'hidden-login_animation' : 'show-register_animation')]" :style="{'background-image': `url('${this.switchImgList[this.activeNum]}')`}">
-          <el-button @click="changeView(!showRegisterAnimtion)" type="primary" class="btn">{{showRegisterAnimtion ? '登录' : '注册'}}</el-button>
+        <div :class="[isFirstLogin ? '' : (showRegisterAnimtion ? 'hidden-login_animation' : 'show-register_animation')]"
+             :style="{'background-image': `url('${this.switchImgList[this.activeNum]}')`}"
+             class="register-transprent">
+          <el-button type="primary"
+                     class="switch-btn"
+                     @click="handleChangeView(!showRegisterAnimtion)">
+            {{ showRegisterAnimtion ? '登录' : '注册' }}
+          </el-button>
         </div>
       </div>
     </div>
     <div class="switch-box">
-      <el-button @click="activeNum = activeNum - 1" :disabled="activeNum === 0" class="switch-left" icon="el-icon-arrow-left" circle></el-button>
-      <el-button @click="activeNum = activeNum + 1" :disabled="activeNum === switchImgList.length - 1" class="switch-right" icon="el-icon-arrow-right" circle></el-button>
+      <el-button :disabled="activeNum === 0"
+                 circle
+                 class="switch-left"
+                 icon="el-icon-arrow-left"
+                 @click="activeNum = activeNum - 1"></el-button>
+      <el-button :disabled="activeNum === switchImgList.length - 1"
+                 class="switch-right"
+                 icon="el-icon-arrow-right"
+                 circle
+                 @click="activeNum = activeNum + 1"></el-button>
     </div>
   </div>
 </template>
@@ -77,50 +115,76 @@
  * @desc: This amination comes form https://codepen.io/danielkvist/pen/LYNVyPL
  *        and it's funny so much that borrowed css(background-attachment: fixed) special attributes for configuration rendering.
  */
+import coreAxios from '@/axios'
+
+const switchImgList = [
+  '../../../static/image/login-bg3.jpg',
+  '../../../static/image/login-bg5.jfif',
+  '../../../static/image/login-bg.jpg'
+]
+
 export default {
-  data () {
+  data() {
     return {
-      loadingLogin: false,
-      isZhlanguage: true,
-      showRegisterAnimtion: false,
-      isLoginPage: true,
-      isFirstLogin: true,
-      loginForm: {
-        username: 'uxo2',
-        password: 'xyz-t'
-      },
+      loadingLogin: false, // 登录按钮提交点击loading
+      showRegisterAnimtion: false, // 是否切换到注册页面动画
+      isFirstLogin: true, // 是否为首次登录， 首次登录关闭动画效果，非首次登录开启效果
+      loginForm: { // 登录表单数据
+        username: 'uxo',
+        password: '123456'
+      }, // 注册表单数据
       registerForm: {
         username: '',
         password: '',
         confirmPassword: ''
       },
-      remberCounter: true,
-      activeNum: 0,
-      switchImgList: [
-        '../../../static/image/login-bg3.jpg',
-        '../../../static/image/login-bg5.jfif',
-        '../../../static/image/login-bg.jpg'
-      ]
+      remberCounter: true, // 是否记住账号
+      activeNum: 0, // 当前背景图片页数
+      switchImgList // 背景图片列表
     }
   },
   methods: {
-    changeView (val) {
+    // 登录页面动画切换classname
+    animationFormLoginClass() {
+      let classname = 'login-form '
+
+      if (this.isFirstLogin) {
+        classname += this.showRegisterAnimtion ? 'hidden-login_animation' : 'show-login_animation'
+      }
+
+      return classname
+    },
+    // 注册页面动画切换classname
+    animationFormRegisterClass() {
+      let classname = 'register-form '
+
+      if (this.isFirstLogin) {
+        classname += this.showRegisterAnimtion ? 'show-register_animation' : 'hidden-register_animation'
+      }
+
+      return classname
+    },
+    // 切换表单
+    handleChangeView(val) {
       this.isFirstLogin = false
       this.showRegisterAnimtion = val
-      this.isLoginPage = !this.isLoginPage
     },
-    submitLogin () {
+    // axios 登录提交表单
+    handleClickLoginSubmit() {
       this.loadingLogin = true
-      setTimeout(() => {
-        this.loadingLogin = false
-        this.$router.push('/story')
-      }, 800);
+
+      coreAxios.sprintAxios.initLocalForageStore().then(() => {
+        this.$nextTick(() => {
+          this.loadingLogin = false
+          this.$router.push('/todoList')
+        })
+      })
     }
   }
 }
 </script>
-<style lang="scss">
-#login {
+<style lang="scss" scoped>
+#login-container {
   --white: #e9e9e9;
   --gray: #333;
   --blue: #0367a6;
@@ -128,199 +192,190 @@ export default {
   --button-radius: 0;
   --max-width: 758px;
   --max-height: 420px;
-
   position: fixed;
   top: 0;
-  left: 0;
   right: 0;
   bottom: 0;
+  left: 0;
+  height: 100vh;
   min-height: 660px;
   background-color: var(--white);
-  background-attachment: fixed;
-  background-position: center;
   background-repeat: no-repeat;
+  background-position: center;
   background-size: cover;
-  height: 100vh;
-  .container {
-    background-color: transparent;
-    border-radius: var(--button-radius);
-    // box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.25),
-    //   -5px 5px 5px rgba(0, 0, 0, 0.22), 0px -5px 5px rgba(0, 0, 0, 0.22);
-    height: var(--max-height);
-    max-width: var(--max-width);
-    overflow: hidden;
-    position: relative;
-    width: 750px;
-    height: 428px;
-    position: absolute;
-    left: calc(50% - 375px);
-    top: calc(50% - 230px);
-    border-radius: 4px;
-    .form-box {
-      background: #fff;
-      height: 100%;
-      position: relative;
-      .language-btn {
-        position: absolute;
-        right: 2px;
-        top: 2px;
-        padding: 2px 4px;
+  background-attachment: fixed;
+  .header-box {
+    position: fixed;
+    top: 0;
+    right: 20px;
+    left: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 40px;
+    .left-panel {
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      color: #fff;
+      span {
+        margin: 0 15px;
         font-size: 13px;
-        cursor: pointer;
-        color: #909399;
-        border: 1px solid #ebeef5;
-        border-radius: 3px;
         opacity: 0.8;
-        &:hover {
-          opacity: 1;
-          border-color: #409eff;
+        &:not(.quarantine) {
+          cursor: pointer;
+          &:hover {
+            opacity: 1;
+          }
         }
       }
+    }
+  }
+
+  .main-box {
+    position: absolute;
+    top: calc(50% - 230px);
+    left: calc(50% - 375px);
+    width: 750px;
+    max-width: var(--max-width);
+    height: 428px;
+    overflow: hidden;
+    background-color: transparent;
+    border-radius: var(--button-radius);
+    border-radius: 4px;
+    .form-box {
+      position: relative;
+      height: 100%;
+      background: #fff;
       .login-form,
       .register-form {
         position: absolute;
+        width: 50%;
+        height: 100%;
         margin: 0 auto;
         padding: 0 20px;
         background: #fff;
-        width: 50%;
-        height: 100%;
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: cover;
         background-attachment: fixed;
         visibility: visible;
-        background-attachment: fixed;
-        background-position: center;
-        background-repeat: no-repeat;
-        background-size: cover;
-        .header-tag {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          width: 100%;
-          height: 50px;
-          line-height: 50px;
-          font-size: 20px;
+        .header-title {
           color: #8d8d8d;
-          background: transparent;
-          background-attachment: fixed;
+          font-size: 20px;
+          line-height: 50px;
+          text-align: center;
           .login,
           .register {
             width: 100%;
             height: 100%;
             text-align: center;
-            cursor: pointer;
             background: transparent;
+            cursor: pointer;
           }
         }
-        .title {
+        .label-title {
           padding: 10px 0;
-          font-size: 12px;
-          font-weight: 600;
           color: #bfbfbf;
+          font-size: 12px;
         }
         .el-form-item {
-          input {
-            border-top: none;
-            border-left: none;
-            border-right: none;
-            border-bottom-left-radius: 0;
-            border-bottom-right-radius: 0;
-            background: transparent;
-            color: #8d8d8d;
-            font-size: 14px;
-          }
-          .submit-btn {
-            margin-top: 20px;
+          .register-btn {
             display: inline-block;
             width: 100%;
+            margin-top: 20px;
             letter-spacing: 2px;
           }
         }
         .tip-info {
           display: flex;
-          justify-content: flex-end;
           align-items: center;
-          .title {
+          justify-content: flex-end;
+          font-size: 12px;
+
+          .tip-title {
             margin: 0 5px;
-            font-weight: 600;
           }
-          .data {
-            font-size: 14px;
-            color: #ffab00;
+
+          .tpi-value {
             padding: 1px 4px;
-            border-radius: 2px;
+            color: #ffab00;
             background: transparent;
+            border-radius: 2px;
           }
         }
       }
       .login-form {
-        z-index: 5;
-        left: 0;
         top: 0;
+        left: 0;
+        z-index: 5;
         &.hidden-login_animation {
           z-index: 10;
-          animation: hiddenLoginPanel 0.5s forwards;
+          animation: hiddenLoginPanel 0.6s forwards;
         }
         &.show-login_animation {
           z-index: 20;
-          animation: showLoginPanel 0.5s forwards;
+          animation: showLoginPanel 0.6s forwards;
         }
       }
       .register-form {
-        z-index: 5;
-        left: 375px;
         top: 0;
+        left: 375px;
+        z-index: 5;
         &.show-register_animation {
           z-index: 20;
-          animation: showRegisterPanel 0.5s forwards;
+          animation: showRegisterPanel 0.6s forwards;
         }
         &.hidden-register_animation {
-          z-index: 10;
-          animation: hiddenRegisterPanel 0.5s forwards;
+          z-index: 2;
+          animation: hiddenRegisterPanel 0.6s forwards;
         }
       }
       .login-transprent,
       .register-transprent {
         position: absolute;
         top: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 50%;
+        height: 100%;
         margin: 0 auto;
         padding: 0 10px;
         background: transparent;
-        width: 50%;
-        height: 100%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
       }
       .login-transprent {
-        z-index: 5;
         top: 0;
         left: 0;
+        z-index: 5;
       }
       .register-transprent {
-        z-index: 20;
         top: 0;
         left: 375px;
-        background-attachment: fixed;
-        background-position: center;
-        background-repeat: no-repeat;
-        background-size: cover;
+        z-index: 20;
         overflow: hidden;
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: cover;
+        background-attachment: fixed;
         &.hidden-login_animation {
-          animation: registerBtnHidden 0.5s forwards;
-          .btn {
+          animation: registerBtnHidden 0.6s forwards;
+          .switch-btn {
             position: relative;
-            animation: hiddenBtnAnimation 0.5s forwards;
+            animation: hiddenBtnAnimation 0.6s forwards;
           }
         }
         &.show-register_animation {
-          animation: LoginBtnHidden 0.5s forwards;
-          .btn {
+          animation: LoginBtnHidden 0.6s forwards;
+          .switch-btn {
             position: relative;
-            animation: showBtnAnimation 0.5s forwards;
+            animation: showBtnAnimation 0.6s forwards;
           }
         }
       }
     }
   }
+
   @keyframes LoginBtnHidden {
     0% {
       left: 0;
@@ -329,6 +384,7 @@ export default {
       left: 375px;
     }
   }
+
   @keyframes showBtnAnimation {
     0% {
       opacity: 0;
@@ -340,6 +396,7 @@ export default {
       opacity: 1;
     }
   }
+
   @keyframes hiddenBtnAnimation {
     0% {
       opacity: 0;
@@ -351,6 +408,7 @@ export default {
       opacity: 1;
     }
   }
+
   @keyframes showLoginPanel {
     0% {
       left: 375px;
@@ -360,11 +418,13 @@ export default {
       z-index: 1;
       opacity: 1;
     }
+
     100% {
       left: 0;
       opacity: 1;
     }
   }
+
   @keyframes hiddenLoginPanel {
     0% {
       left: 0;
@@ -387,9 +447,10 @@ export default {
     30% {
       opacity: 1;
     }
+
     50% {
-      opacity: 0;
       z-index: 10;
+      opacity: 0;
     }
     100% {
       left: 0;
@@ -405,8 +466,8 @@ export default {
       opacity: 0;
     }
     50% {
-      opacity: 1;
       z-index: 10;
+      opacity: 1;
     }
     100% {
       left: 375px;
@@ -423,43 +484,16 @@ export default {
   }
   .switch-box {
     position: fixed;
-    bottom: 20px;
     right: 20px;
+    bottom: 20px;
   }
-  .btn {
+  .switch-btn {
+    padding: 14px 50px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
     border-radius: 20px;
     cursor: pointer;
-    letter-spacing: 2px;
-    padding: 14px 50px;
-    text-transform: uppercase;
     transition: transform 80ms ease-in;
-  }
-  .header-box {
-    position: fixed;
-    top: 0;
-    left: 20px;
-    right: 20px;
-    height: 40px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    .left-panel {
-      color: #fff;
-      display: flex;
-      justify-content: space-around;
-      align-items: center;
-      span {
-        margin: 0 15px;
-        opacity: 0.8;
-        font-size: 13px;
-        &:not(.quarantine) {
-          cursor: pointer;
-          &:hover {
-            opacity: 1;
-          }
-        }
-      }
-    }
   }
 }
 </style>

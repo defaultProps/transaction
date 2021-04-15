@@ -1,29 +1,25 @@
 <template>
-  <div id="todo-content" class="container-box">
-    <uxo-header v-if="$route.meta.showheaderBar"></uxo-header>
-    <div class="router-main">
-      <router-view></router-view>
-    </div>
+  <div class="transaction-container">
+    <uxo-header-box v-if="$route.meta.showheaderBar"></uxo-header-box>
+    <router-view></router-view>
   </div>
 </template>
 <script>
-import header from '@/view/header'
-import footer from '@/view/footer'
+import headerBox from '@/view/header'
 
 export default {
   components: {
-    'uxo-footer': footer,
-    'uxo-header': header
+    'uxo-header-box': headerBox
   }
 }
 </script>
-<style lang="scss">
-.router-main {
+<style lang="scss" scoped>
+.transaction-container {
   position: fixed;
-  top: 40px;
+  top: 0;
+  right: 0;
   bottom: 0;
   left: 0;
-  right: 0;
   min-width: 1200px;
   min-height: 760px;
 }

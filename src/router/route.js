@@ -1,5 +1,4 @@
-import article from '@/view/article/'
-import story from '@/view/story/'
+import todoList from '@/view/todoList/index.vue'
 import thus from '@/view/thus/'
 import login from '@/view/login/'
 import manage from '@/view/manage/'
@@ -17,6 +16,19 @@ let routes = [
     redirect: "/login"
   },
   {
+    path: "/uxo",
+    redirect: '/todoList'
+  },
+  {
+    path: "/todoList",
+    component: todoList,
+    meta: {
+      title: "代办事项",
+      auth: 1,
+      showheaderBar: true
+    }
+  },
+  {
     path: "/login",
     component: login,
     meta: {
@@ -27,7 +39,6 @@ let routes = [
   },
   {
     path: "/initStore",
-    name: "initStore",
     component: initStore,
     meta: {
       title: "初始配置",
@@ -36,28 +47,7 @@ let routes = [
     }
   },
   {
-    path: "/uxo",
-    name: "uxo",
-    component: story,
-    meta: {
-      title: "面板",
-      auth: 0,
-      showheaderBar: true
-    }
-  },
-  {
-    path: "/story",
-    name: "story",
-    component: story,
-    meta: {
-      title: "面板",
-      auth: 0,
-      showheaderBar: true
-    }
-  },
-  {
     path: "/product",
-    name: "product",
     component: product,
     meta: {
       title: "产品",
@@ -66,18 +56,7 @@ let routes = [
     }
   },
   {
-    path: "/article",
-    name: "article",
-    component: article,
-    meta: {
-      title: "大块文章",
-      auth: 0,
-      showheaderBar: true
-    }
-  },
-  {
     path: "/dashboard",
-    name: "dashboard",
     component: dashboard,
     meta: {
       title: "仪表盘",
@@ -87,7 +66,6 @@ let routes = [
   },
   {
     path: '/feature',
-    name: 'feature',
     component: feature,
     meta: {
       title: '功能列表',
@@ -97,7 +75,6 @@ let routes = [
   },
   {
     path: "/thus",
-    name: "thus",
     component: thus,
     meta: {
       title: "兴趣使然的模块",
@@ -107,7 +84,6 @@ let routes = [
   },
   {
     path: "/manage",
-    name: "manage",
     component: manage,
     meta: {
       title: "用户管理",
