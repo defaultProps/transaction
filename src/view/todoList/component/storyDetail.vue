@@ -10,7 +10,7 @@
         </el-button>
       </div>
       <uxo-edit :content="sprintIssue.title"
-                :guid="sprintIssue.guid"
+                :guid="sprintIssue.id"
                 class="title"></uxo-edit>
       <div class="form-item item-top">
         <div class="form-label">
@@ -24,7 +24,7 @@
                    placeholder="请选择"
                    size="mini"
                    class="select-level">
-          <el-option-group v-for="group in levelArr"
+          <el-option-group v-for="group in levelList"
                            :key="group.label"
                            :label="group.label">
             <el-option v-for="item in group.options"
@@ -54,7 +54,7 @@
           </el-tooltip>
         </div>
         <uxo-edit :content="sprintIssue.issueDesc"
-                  :uid="sprintIssue.guid"
+                  :uid="sprintIssue.id"
                   class="form-value"
                   textType="textarea"></uxo-edit>
       </div>
@@ -67,7 +67,7 @@
           </el-tooltip>
         </div>
         <uxo-edit :content="sprintIssue.issueRemark"
-                  :uid="sprintIssue.guid"
+                  :uid="sprintIssue.id"
                   textType="textarea"
                   class="form-value"></uxo-edit>
       </div>
@@ -85,13 +85,13 @@
   </div>
 </template>
 <script>
-import { levelArr, pointsArr } from './storyConstant.js'
+import { levelList, pointsArr } from './storyConstant.js'
 import { sprintAxios } from '@/axios'
 
 export default {
   data() {
     return {
-      levelArr,
+      levelList,
       pointsArr,
       loading: true,
       hasDraggle: false, // 用户是否拖动过
@@ -182,7 +182,7 @@ export default {
     },
     handleClickCloseDetailModule() {
       this.$store.commit('hasDraggle', false)
-      this.$emit('closeDetail')
+      this.$store.dispatch('sprint/selectActiveIssue', null)
     }
   }
 }

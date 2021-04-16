@@ -69,7 +69,7 @@
                      placeholder="请选择"
                      size="small"
                      class="select-item">
-            <el-option-group v-for="group in levelArr"
+            <el-option-group v-for="group in levelList"
                              :key="group.label"
                              :label="group.label">
               <el-option v-for="item in group.options"
@@ -101,13 +101,13 @@
   </div>
 </template>
 <script>
-import { levelArr, pointsArr } from './storyConstant.js'
+import { levelList, pointsArr } from './storyConstant.js'
 import { mapState } from 'vuex'
 
 export default {
   data() {
     return {
-      levelArr,
+      levelList,
       pointsArr,
       rules: {
         name: [

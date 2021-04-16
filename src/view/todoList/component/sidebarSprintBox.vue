@@ -14,12 +14,12 @@
         <ul v-show="visibleProgressState"
             class="scroll-style-none">
           <li v-for="list of progressStateList"
-              :key="list.guid"
+              :key="list.id"
               :class="[list.dropStatus ? 'dropStatus': '', list.link]"
               @dragleave="dragleave(list)"
               @dragover.prevent="dragover($event, list)"
               @drop="drop(list)">
-            <span :class="[list.link]">{{list.name}}</span>
+            <span :class="[list.link]">{{ list.name }}</span>
           </li>
         </ul>
       </div>
@@ -41,12 +41,12 @@
         <ul v-show="visibleModule"
             class="scroll-style-none module-ul">
           <li v-for="list of moduleList"
-              :key="list.guid"
+              :key="list.id"
               :class="{'dropStatus': list.dropStatus}"
               @dragleave="dragleave(list)"
               @dragover.prevent="dragover($event, list)"
               @drop="drop(list)">
-            <span>{{list.name}}</span>
+            <span>{{ list.name }}</span>
           </li>
         </ul>
       </div>
@@ -72,7 +72,7 @@
               :title="p.name"
               @click="handlelinkClick(p.link)">
             <i class="iconfont icon-fenxiang"></i>
-            {{p.name}}
+            {{ p.name }}
           </li>
         </ul>
       </div>
@@ -166,11 +166,8 @@ export default {
 </script>
 <style lang="scss" scoped>
 #storyStatusNavtgation {
-  height: 100%;
   box-sizing: border-box;
-  padding-bottom: 40px;
   overflow-y: scroll;
-  box-sizing: border-box;
   border-right: 1px solid #0006;
   .nav-main {
     display: flex;

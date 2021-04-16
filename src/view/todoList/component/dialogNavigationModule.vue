@@ -22,13 +22,13 @@
   </div>
 </template>
 <script>
-import { levelArr, pointsArr, modulesList, issusTypeArr } from './storyConstant.js'
+import { levelList, pointsArr, modulesList, issusTypeArr } from './storyConstant.js'
 
 export default {
   data() {
     return {
       issusTypeArr,
-      levelArr,
+      levelList,
       modulesList,
       pointsArr
     }

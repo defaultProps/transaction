@@ -63,7 +63,7 @@
                 placement="bottom"
                 width="160">
       <div id="sortSprintMain">
-        <div v-for="(item, index) in levelArr"
+        <div v-for="(item, index) in levelList"
              :key="index"
              class="work">
           <el-button type="text">{{ item.label }}:</el-button>
@@ -81,12 +81,12 @@
   </div>
 </template>
 <script>
-import { issusTypeArr, levelArr } from './storyConstant'
+import { issusTypeArr, levelList } from './storyConstant'
 export default {
   data() {
     return {
       issusTypeArr,
-      levelArr,
+      levelList,
       currentworkIcon: '',
       currentLifeIcon: '',
       visibleType: false,

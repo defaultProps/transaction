@@ -23,7 +23,7 @@ let routes = [
     path: "/todoList",
     component: todoList,
     meta: {
-      title: "代办事项",
+      title: "事务面板",
       auth: 1,
       showheaderBar: true
     }

@@ -43,35 +43,51 @@ export const links = [
 ]
 
 export const tags = [
-  { name: '大块文章', guid: Mock.mock('@guid'), color: '#598ed4', icon: '' },
-  { name: '探索未知', guid: Mock.mock('@guid'), color: '#598ed4', icon: '' },
-  { name: '工作上班', guid: Mock.mock('@guid'), color: '#5243aa', icon: '' },
-  { name: '随记乐趣', guid: Mock.mock('@guid'), color: '#ffab00', icon: '' },
-  { name: '思考意义', guid: Mock.mock('@guid'), color: '#598ed4', icon: '' },
-  { name: '情感心事', guid: Mock.mock('@guid'), color: '#598ed4', icon: '' },
-  { name: '其他模块', guid: Mock.mock('@guid'), color: '#598ed4', icon: '' }
+  { name: '大块文章', id: Mock.mock('@guid'), color: '#598ed4', icon: '' },
+  { name: '探索未知', id: Mock.mock('@guid'), color: '#598ed4', icon: '' },
+  { name: '工作上班', id: Mock.mock('@guid'), color: '#5243aa', icon: '' },
+  { name: '随记乐趣', id: Mock.mock('@guid'), color: '#ffab00', icon: '' },
+  { name: '思考意义', id: Mock.mock('@guid'), color: '#598ed4', icon: '' },
+  { name: '情感心事', id: Mock.mock('@guid'), color: '#598ed4', icon: '' },
+  { name: '其他模块', id: Mock.mock('@guid'), color: '#598ed4', icon: '' }
+]
+export const issueTypeList = [
+  {
+    id: Mock.mock('@guid'),
+    icon: 'icon-shujuzhongjian',
+    color: '#0065ff',
+    label: '工作',
+    moreIcon: ['icon-gongzuo', 'icon-code', 'icon-all-fill', 'icon-all', 'icon-auto', 'icon-raw', 'icon-discounts-fill', 'icon-tuishui']
+  },
+  {
+    id: Mock.mock('@guid'),
+    icon: 'icon-shenghuo',
+    color: '#E6A23C',
+    label: '生活',
+    moreIcon: ['icon-process', 'icon-waihuishuju', 'icon-read2', 'icon-pic-fill', 'icon-landtransportation']
+  }
 ]
 
 export const progressStateList = [
   {
     name: "未开始",
     link: "not-start",
-    guid: Mock.mock('@guid')
+    id: Mock.mock('@guid')
   },
   {
     name: "处理中",
     link: "doing",
-    guid: Mock.mock('@guid')
+    id: Mock.mock('@guid')
   },
   {
     name: "已完成",
     link: "finish",
-    guid: Mock.mock('@guid')
+    id: Mock.mock('@guid')
   },
   {
     name: "关闭",
     link: "close",
-    guid: Mock.mock('@guid')
+    id: Mock.mock('@guid')
   }
 ]
 
@@ -87,7 +103,7 @@ export const sprints = [
     tag: tags[6], // 模块
     moduleState: progressStateList[0],
     type: 'active',
-    guid: Mock.mock('@guid') // 唯一id
+    id: Mock.mock('@guid') // 唯一id
   },
   {
     title: '#文章 | 正则表达式的常用校验',
@@ -100,7 +116,7 @@ export const sprints = [
     tag: tags[5],
     moduleState: progressStateList[1],
     type: 'active',
-    guid: Mock.mock('@guid')
+    id: Mock.mock('@guid')
   },
   {
     title: '#文章 | 函数柯里化',
@@ -113,7 +129,7 @@ export const sprints = [
     tag: tags[5],
     moduleState: progressStateList[0],
     type: 'active',
-    guid: Mock.mock('@guid')
+    id: Mock.mock('@guid')
   },
   {
     title: '#文章 | 节流和防抖',
@@ -126,7 +142,7 @@ export const sprints = [
     tag: tags[5],
     moduleState: progressStateList[0],
     type: 'active',
-    guid: Mock.mock('@guid')
+    id: Mock.mock('@guid')
   },
   {
     title: '#随记 | 购买腾讯云服务器并搭建完成',
@@ -139,7 +155,7 @@ export const sprints = [
     tag: tags[5],
     moduleState: progressStateList[2],
     type: 'active',
-    guid: Mock.mock('@guid')
+    id: Mock.mock('@guid')
   },
   {
     title: '#随记 | 购买.com域名并进行备案',
@@ -152,7 +168,7 @@ export const sprints = [
     tag: tags[5],
     moduleState: progressStateList[2],
     type: 'active',
-    guid: Mock.mock('@guid')
+    id: Mock.mock('@guid')
   },
   {
     title: '#文章 | HTTP状态码',
@@ -165,7 +181,7 @@ export const sprints = [
     tag: tags[5],
     moduleState: progressStateList[0],
     type: 'active',
-    guid: Mock.mock('@guid')
+    id: Mock.mock('@guid')
   },
   {
     title: '#文章 | popoer.js源码分析',
@@ -178,7 +194,7 @@ export const sprints = [
     tag: tags[5],
     moduleState: progressStateList[0],
     type: 'active',
-    guid: Mock.mock('@guid')
+    id: Mock.mock('@guid')
   },
   {
     title: '#code | 构建新项目',
@@ -191,7 +207,7 @@ export const sprints = [
     tag: tags[5],
     moduleState: progressStateList[0],
     type: 'active',
-    guid: Mock.mock('@guid')
+    id: Mock.mock('@guid')
   },
   {
     title: 'GIT FLS如何管理二进制大文件',
@@ -204,7 +220,7 @@ export const sprints = [
     tag: tags[6],
     moduleState: null,
     type: 'backlog',
-    guid: Mock.mock('@guid')
+    id: Mock.mock('@guid')
   },
   {
     title: '根据国内外养殖业的行情设计一套在线查询网站',
@@ -217,7 +233,7 @@ export const sprints = [
     tag: tags[6],
     moduleState: null,
     type: 'backlog',
-    guid: Mock.mock('@guid')
+    id: Mock.mock('@guid')
   },
   {
     title: '准备素描工具和bilibili选取学习教程',
@@ -230,7 +246,7 @@ export const sprints = [
     tag: tags[6],
     moduleState: null,
     type: 'backlog',
-    guid: Mock.mock('@guid')
+    id: Mock.mock('@guid')
   },
   {
     title: '新建项目animals | 搜集各类有趣生物信息',
@@ -243,7 +259,7 @@ export const sprints = [
     tag: tags[6],
     moduleState: progressStateList[0],
     type: 'active',
-    guid: Mock.mock('@guid')
+    id: Mock.mock('@guid')
   },
   {
     title: '选购100本学习书籍， 存入管理器项目中',
@@ -256,7 +272,7 @@ export const sprints = [
     tag: tags[6],
     moduleState: null,
     type: 'backlog',
-    guid: Mock.mock('@guid')
+    id: Mock.mock('@guid')
   },
   {
     title: '新建项目 | 搜集心理学、哲学',
@@ -269,7 +285,7 @@ export const sprints = [
     tag: tags[6],
     moduleState: progressStateList[0],
     type: 'active',
-    guid: Mock.mock('@guid')
+    id: Mock.mock('@guid')
   },
   {
     title: '新建项目 | 收集世界范围有趣新闻娱乐',
@@ -282,7 +298,7 @@ export const sprints = [
     tag: tags[6],
     moduleState: progressStateList[0],
     type: 'active',
-    guid: Mock.mock('@guid')
+    id: Mock.mock('@guid')
   },
   {
     title: '#开源项目 | npm | 编写一个npm包并发布',
@@ -295,7 +311,7 @@ export const sprints = [
     tag: tags[6],
     moduleState: null,
     type: 'backlog',
-    guid: Mock.mock('@guid')
+    id: Mock.mock('@guid')
   },
   {
     title: '#大块文章 | #JS 类型转换和如何防错',
@@ -308,7 +324,7 @@ export const sprints = [
     tag: tags[6],
     moduleState: progressStateList[0],
     type: 'active',
-    guid: Mock.mock('@guid')
+    id: Mock.mock('@guid')
   },
   {
     title: '#大块文章 | #CSS 电池充电',
@@ -321,7 +337,7 @@ export const sprints = [
     tag: tags[6],
     moduleState: null,
     type: 'backlog',
-    guid: Mock.mock('@guid')
+    id: Mock.mock('@guid')
   },
   {
     title: '#大块文章 | #Nodejs 爬虫实现和防爬',
@@ -334,7 +350,7 @@ export const sprints = [
     tag: tags[6],
     moduleState: progressStateList[1],
     type: 'active',
-    guid: Mock.mock('@guid')
+    id: Mock.mock('@guid')
   },
   {
     title: '#大块文章 | #Git git基本操作和常用插件及其配置',
@@ -347,7 +363,7 @@ export const sprints = [
     tag: tags[6],
     moduleState: progressStateList[1],
     type: 'active',
-    guid: Mock.mock('@guid')
+    id: Mock.mock('@guid')
   },
   {
     title: '#大块文章 | #babel babel编译class的过程和技巧展示',
@@ -360,7 +376,7 @@ export const sprints = [
     tag: tags[6],
     moduleState: null,
     type: 'backlog',
-    guid: Mock.mock('@guid')
+    id: Mock.mock('@guid')
   },
   {
     title: '#日常学习 | 写作 | JS异步操作 | 发展历程、区别以及优缺点',
@@ -373,7 +389,7 @@ export const sprints = [
     tag: tags[6],
     moduleState: progressStateList[1],
     type: 'active',
-    guid: Mock.mock('@guid')
+    id: Mock.mock('@guid')
   },
   {
     title: '#日常学习 | 写作 | CSS常用函数',
@@ -386,7 +402,7 @@ export const sprints = [
     tag: tags[6],
     moduleState: null,
     type: 'backlog',
-    guid: Mock.mock('@guid')
+    id: Mock.mock('@guid')
   },
   {
     title: '#日常学习 | 写作 | JS内存泄露',
@@ -399,7 +415,7 @@ export const sprints = [
     tag: tags[6],
     moduleState: null,
     type: 'backlog',
-    guid: Mock.mock('@guid')
+    id: Mock.mock('@guid')
   },
   {
     title: '#鬼怪项目 | 初始一项鬼怪项目(收集世界范围内的鬼怪)',
@@ -412,7 +428,7 @@ export const sprints = [
     tag: tags[2],
     moduleState: null,
     type: 'backlog',
-    guid: Mock.mock('@guid')
+    id: Mock.mock('@guid')
   },
   {
     title: '#清理记录 | 注销常用网站App内的隐私敏感信息, 删除无用App',
@@ -425,7 +441,7 @@ export const sprints = [
     tag: tags[6],
     moduleState: null,
     type: 'backlog',
-    guid: Mock.mock('@guid')
+    id: Mock.mock('@guid')
   },
   {
     title: '#写作 | 设计2020年下半年度的计划书',
@@ -438,7 +454,7 @@ export const sprints = [
     tag: tags[6],
     moduleState: null,
     type: 'backlog',
-    guid: Mock.mock('@guid')
+    id: Mock.mock('@guid')
   },
   {
     title: '#写作 | 撰写一篇文章恐怖小说',
@@ -451,7 +467,7 @@ export const sprints = [
     tag: tags[6],
     moduleState: null,
     type: 'backlog',
-    guid: Mock.mock('@guid')
+    id: Mock.mock('@guid')
   },
   {
     title: '#设计 | 设计未来十年内的工作时间线',
@@ -464,7 +480,7 @@ export const sprints = [
     tag: tags[6],
     moduleState: null,
     type: 'backlog',
-    guid: Mock.mock('@guid')
+    id: Mock.mock('@guid')
   },
   {
     title: '#工作 | 发布一个todo项目关联的UI组件库todo-components',
@@ -477,7 +493,7 @@ export const sprints = [
     tag: tags[6],
     moduleState: null,
     type: 'backlog',
-    guid: Mock.mock('@guid')
+    id: Mock.mock('@guid')
   },
   {
     title: '#新建项目 | 开始制作小游戏',
@@ -490,7 +506,7 @@ export const sprints = [
     tag: tags[6],
     moduleState: null,
     type: 'backlog',
-    guid: Mock.mock('@guid')
+    id: Mock.mock('@guid')
   },
   {
     title: '#写作 | 坚持日记',
@@ -503,6 +519,6 @@ export const sprints = [
     tag: tags[6],
     moduleState: null,
     type: 'backlog',
-    guid: Mock.mock('@guid')
+    id: Mock.mock('@guid')
   }
 ]

@@ -16,12 +16,12 @@
                        @end="endDraggable"
                        @add="addDraggable">
         <transition-group>
-          <li v-for="(issue, i) of draggbleList"
-              :key="issue.guid"
-              :data-key="issue.guid"
+          <li v-for="issue of draggbleList"
+              :key="issue.id"
+              :data-key="issue.id"
               class="item sprint-list"
               @contextmenu.prevent="contextmenuFn"
-              @click="handleDraggleList(issue, i)">
+              @click="handleDraggleList(issue)">
             <span :class="[issue.issueType, 'type']">
               <i :class="[filterTypeIcon(issue.issueType), 'iconfont']"
                  :style="{color: filterTypeColor(issue.issueType)}"></i>
@@ -55,7 +55,7 @@
 </template>
 <script>
 import draggable from 'vuedraggable'
-import { issusTypeArr, levelArr } from './storyConstant'
+import { issusTypeArr, levelList } from './storyConstant'
 import sprintHeaderBox from './sprintHeaderBox.vue'
 import { mapState } from 'vuex'
 import { sprintAxios } from '@/axios'
@@ -67,9 +67,7 @@ export default {
   },
   data() {
     return {
-      visibleeditoSprintTitle: false,
-      visibleContextMenu: false, // 右键点击框
-      levelArr,
+      levelList,
       issusTypeArr,
       draggbleList: [],
       selectKey: '',
@@ -95,10 +93,6 @@ export default {
     modulesList: {
       type: Array,
       default: () => ([])
-    },
-    highlightSelectedList: {
-      type: Function,
-      default: () => { }
     }
   },
   computed: mapState({
@@ -115,15 +109,15 @@ export default {
     }
   }),
   watch: {
-    issueList: 'initData',
-    dropObj: {
-      handler(v) {
-        if (v && this.oldIndex >= 0) {
-          this.handleUpdateSprintModuleState(v)
-        }
-      },
-      immediate: true
-    }
+    issueList: "initData",
+    // dropObj: {
+    //   handler(v) {
+    //     if (v && this.oldIndex >= 0) {
+    //       this.handleUpdateSprintModuleState(v)
+    //     }
+    //   },
+    //   immediate: true
+    // }
   },
   filters: {
     filterprogressState(v) {
@@ -131,7 +125,7 @@ export default {
     }
   },
   created() {
-    this.initData(this.issueList)
+    this.initData()
   },
   methods: {
     // action & 拖动到右侧
@@ -143,7 +137,7 @@ export default {
         if (this.group === 'activeSprint') {
           if (dropObj.link === 'close') {
             if (moduleState.link === 'finish') {
-              this.closeActiveSprintIssue(this.draggbleList[this.oldIndex].guid)
+              this.closeActiveSprintIssue(this.draggbleList[this.oldIndex].id)
             } else {
               this.$notify.info({
                 title: '提示',
@@ -154,9 +148,9 @@ export default {
           } else {
             this.updateSptintmoduleState({
               type: dropObj.type,
-              link: dropObj.guid,
+              link: dropObj.id,
               name: dropObj.name,
-              issueLink: this.draggbleList[this.oldIndex].guid
+              issueLink: this.draggbleList[this.oldIndex].id
             }, 'progressState', dropObj.link)
           }
         } else if (this.$store.state.story.sprintType === 'backlog') {
@@ -171,9 +165,9 @@ export default {
       } else if (dropObj.type === 'module') {
         this.updateSptintmoduleState({
           type: dropObj.type,
-          link: dropObj.guid,
+          link: dropObj.id,
           name: dropObj.name,
-          issueLink: this.draggbleList[this.oldIndex].guid
+          issueLink: this.draggbleList[this.oldIndex].id
         }, 'module')
       }
     },
@@ -181,14 +175,14 @@ export default {
     updateSptintmoduleState(params, type, value) {
       sprintAxios.updateSptintmoduleState(params).then(data => {
         if (data.hasUpdateSptintmoduleState) {
-          let item = this.draggbleList.find(v => v.guid === params.issueLink)
+          let item = this.draggbleList.find(v => v.id === params.issueLink)
 
           if (item) {
             if (type === 'progressState') {
-              this.$set(item, 'moduleState', { link: value, name: params.name, guid: params.link })
+              this.$set(item, 'moduleState', { link: value, name: params.name, id: params.link })
             }
             if (type === 'module') {
-              this.$set(item, 'tag', { name: params.name, guid: params.link })
+              this.$set(item, 'tag', { name: params.name, id: params.link })
             }
           }
         }
@@ -199,7 +193,7 @@ export default {
       let that = this
       sprintAxios.closeActiveSprintIssue({ link }).then(data => {
         if (data.hasCloseActiveSprintIssue) {
-          let index = that.draggbleList.findIndex(v => v.guid === link)
+          let index = that.draggbleList.findIndex(v => v.id === link)
 
           that.draggbleList.splice(index, 1)
           that.$notify.success({
@@ -222,14 +216,12 @@ export default {
         {
           label: "编辑",
           icon: "el-icon-edit",
-          disabled: false,
-          onClick: () => this.editSprint()
+          disabled: false
         },
         {
           label: "拖动到执行列表",
           icon: "el-icon-finished",
-          disabled: false,
-          onClick: () => this.editSprint()
+          disabled: false
         },
         {
           label: "执行状态",
@@ -248,7 +240,6 @@ export default {
         items = items.filter((v, i) => i !== 1)
       }
 
-      this.highlightSelectedList(this.selectKey)
       this.$contextmenu({
         customClass: 'contextmenuContainer',
         items,
@@ -257,21 +248,19 @@ export default {
         minWidth: 120
       })
     },
-    editSprint() {
-      this.visibleeditoSprintTitle = !this.visibleeditoSprintTitle
-    },
-    initData(issueList) {
+    initData() {
       this.contextMenuTargets = []
-      this.draggbleList = JSON.parse(JSON.stringify(issueList))
+      console.log(this.issueList)
+      this.draggbleList = JSON.parse(JSON.stringify(this.issueList))
       this.draggbleList.forEach(p => {
-        this.contextMenuTargets.push(document.querySelector([`.item[data-key='${p.guid}']`]))
+        this.contextMenuTargets.push(document.querySelector([`.item[data-key='${p.id}']`]))
       })
     },
     handleClickimplement(obj) {
       this.draggbleList.forEach((item, index) => {
-        if (item.guid === this.selectKey) {
+        if (item.id === this.selectKey) {
           this.oldIndex = index
-          this.$emit('handleDetail', item, false)
+          this.$store.dispatch('sprint/selectActiveIssue', item)
           this.handleUpdateSprintModuleState(obj)
         }
       })
@@ -286,8 +275,8 @@ export default {
         })
       }
     },
-    handleDraggleList(v, i) {
-      this.$emit('handleDetail', v)
+    handleDraggleList(item) {
+      this.$store.dispatch('sprint/selectActiveIssue', item)
     },
     startDraggable(evt) {
       this.oldIndex = evt.oldIndex
@@ -302,7 +291,7 @@ export default {
     stylelevelClass(v) {
       let result
 
-      this.levelArr.forEach(item => {
+      this.levelList.forEach(item => {
         item.options.forEach(p => {
           if (p.label === v) {
             result = p.icon

@@ -1,14 +1,13 @@
 <template>
-  <div id="moduleStory">
-    <div class="story-backlog">
-      <div v-show="visibleNavigation"
-           class="sidebar-left">
-        <uxo-storyStatusNavigation @dropDownStatus="dropDownStatus"></uxo-storyStatusNavigation>
-      </div>
-      <div :class="[activeLightLink ? 'scroll-style-theme1' : 'scroll-style-none', 'sprint-list-box']">
-        <div class="backlog">
+  <div class="sprint-container">
+    <div class="sprint-flex-container">
+      <v-sidebar-sprint-box v-show="visibleSideBarLeft"
+                            class="sidebar-left"
+                            @dropDownStatus="dropDownStatus"></v-sidebar-sprint-box>
+      <div class="sprint-list-box scroll-style-none">
+        <div class="backlog-box">
           <div class="backlog-title">
-            <div>
+            <div class="left-flex">
               <span :class="[visibleSprint ? 'visibleSprint': '', 'header-expander']"
                     size="mini"
                     @click="visibleSprint = !visibleSprint">
@@ -23,110 +22,93 @@
                 </svg>
               </span>
               <span class="title">工作区</span>
-              <span class="issus-count">{{activeSprint.issueList.length}} 问题</span>
+              <span class="issus-count">{{ activeSprintList.length }} 问题</span>
             </div>
           </div>
-          <uxo-draggleList v-show="visibleSprint"
-                           :issueList="activeSprint.issueList"
+          <v-drag-list-box v-show="visibleSprint"
+                           :issueList="activeSprintList"
                            :dropObj="dropObj"
-                           group="activeSprint"
+                           group="activeSprintListDraggableGroup"
                            sprintType="active"
-                           @endDraggable="endDraggable"
-                           @handleDetail="handleDetail"></uxo-draggleList>
+                           @endDraggable="endDraggable"></v-drag-list-box>
         </div>
         <div class="space-between"></div>
-        <div class="backlog">
+        <div class="backlog-box">
           <div class="backlog-title">
-            <div>
+            <div class="left-flex">
               <span class="title">缓存区</span>
-              <span class="issus-count">{{backlogSprint.length}} 问题</span>
+              <span class="issus-count">{{ backlogSprint.length }} 问题</span>
             </div>
           </div>
-          <uxo-draggleList :dropObj="dropObj"
+          <v-drag-list-box :dropObj="dropObj"
                            :issueList="backlogSprint"
-                           :group="{ name: 'activeSprint', pull: true, put: true }"
+                           :group="{ name: 'activeSprintListDraggableGroup', pull: true, put: true }"
                            handle=".handle"
                            sprintType="backlog"
-                           @endDraggable="endDraggable"
-                           @handleDetail="handleDetail"></uxo-draggleList>
+                           @endDraggable="endDraggable"></v-drag-list-box>
         </div>
       </div>
-      <!-- <uxo-sprintDetail :sprintLink="activeLightLink"
-                        class="detail-container"
-                        @closeDetail="closeDetail"></uxo-sprintDetail> -->
+      <v-issue-detail-box v-show="visibleSidebarRightDetail"
+                          :sprintLink="activeIssue"
+                          class="detail-container"></v-issue-detail-box>
     </div>
     <div class="newIssue-btn"
          size="medium"
          @click="dialogTableVisible = true"><i class="el-icon-plus"></i></div>
-    <uxo-dialogNewIssus :dialogTableVisible="dialogTableVisible"
-                        @handleClose="handleClose"></uxo-dialogNewIssus>
+    <v-add-issue-dialog-box :dialogTableVisible="dialogTableVisible"
+                            @handleClose="handleClose"></v-add-issue-dialog-box>
   </div>
 </template>
 <script>
-import draggleList from './component/storyList'
-import storyStatusNavigation from './component/storyStatusNavigation'
+import dragListBox from './component/dragListBox'
+import sidebarSprintBox from './component/sidebarSprintBox.vue'
 import sprintDetail from './component/storyDetail'
 import dialogNewIssus from './component/dialogNewIssus'
 import { mapState } from 'vuex'
-import { sprintAxios } from '@/axios'
+import { sprintAxios } from '@/axios/index.js'
 
 export default {
   data() {
     return {
-      visibleSprint: true,
-      dialogTableVisible: false,
-      activeSprintListLoading: false,
-      sprintData: [],
-      selecType: null,
-      backlogSprint: [],
-      activeSprint: {
-        issueList: []
-      },
-      visibleNavigation: true, // 是否显示左侧状态栏
-      backlogLoading: false,
-      sprintLoading: false,
-      activeCollapse: 0,
-      activeLightLink: '', // 当前高亮选中link
-      affairVal: '',
-      sprintLen: 20,
-      detailLen: 0,
-      sprintType: '', // 保存是active拖动还是backlog拖动
+      visibleSprint: true, // 是否显示工作区issue-list
+      dialogTableVisible: false, // 是否显示新增issue弹框
+      backlogSprintListLoading: false, // backlog数据loading
+      activeSprintListLoading: false, // 工作区数据loading
       dropObj: null // sprint列表拖动到左侧导航栏时的数据
     }
   },
-  provide() {
-    return {
-      highlightSelectedList: this.highlightSelectedList
-    }
-  },
   components: {
-    'uxo-storyStatusNavigation': storyStatusNavigation,
-    'uxo-draggleList': draggleList,
-    'uxo-sprintDetail': sprintDetail,
-    'uxo-dialogNewIssus': dialogNewIssus
+    'v-sidebar-sprint-box': sidebarSprintBox,
+    'v-drag-list-box': dragListBox,
+    'v-issue-detail-box': sprintDetail,
+    'v-add-issue-dialog-box': dialogNewIssus
   },
-  created() {
+  mounted() {
     this.getbacklogList()
-    this.getsprintList();
+    this.getsprintList()
   },
   computed: mapState({
+    backlogSprint: state => state.sprint.backlogSprint,
+    activeSprintList: state => state.sprint.activeSprintList,
+    visibleSidebarRightDetail: state => state.sprint.visibleSidebarRightDetail,
+    activeIssue: state => state.sprint.activeIssue,
+    visibleSideBarLeft: state => state.sprint.visibleSideBarLeft,
     hasDraggle: state => state.story.hasDraggle
   }),
   methods: {
+    // 左侧导航开启关闭
+    handleClickvisibleNavigation() {
+      this.$store.commit('sprint/SET_VISIBLESIDEBARLEFT', !this.visibleSideBarLeft)
+    },
     dropDownStatus(obj) {
-      this.dropObj = obj;
+      this.dropObj = obj
     },
     handleClose() {
-      this.dialogTableVisible = false;
+      this.dialogTableVisible = false
     },
     // 请求数据
     endDraggable(obj) {
-      this.highlightSelectedList(this.activeLightLink);
-      if (this.dropObj) {
-        setTimeout(() => {
-          this.dropObj = null;
-        }, 4000);
-      }
+
     },
     dragleave(obj) {
       this.$set(obj, 'dropStatus', false)
@@ -135,240 +117,125 @@ export default {
       e.preventDefault()
       this.$set(obj, 'dropStatus', true)
     },
-    closeDetail() {
-      this.activeLightLink = null;
-      this.highlightSelectedList()
-      this.renderlayout()
-    },
-    handleDetail(v, hasRenderLayout = true) {
-      this.activeLightLink = v.guid;
+    // 获取工作区列表数据
+    async getsprintList() {
+      this.activeSprintListLoading = true
 
-      if (hasRenderLayout) {
-        this.renderlayout()
-      }
+      sprintAxios.activeSprintList({ type: 'sprint' }).then(obj => {
+        this.$store.commit('sprint/ACTIVE_SPRINT_LIST', obj.issueList)
 
-      this.highlightSelectedList(this.activeLightLink)
-    },
-    // css - 排版 - 左侧导航关闭
-    handleClickvisibleNavigation() {
-      this.visibleNavigation = !this.visibleNavigation;
-      this.renderlayout();
-    },
-    renderlayout() {
-      if (this.visibleNavigation) {
-        this.sprintLen = this.activeLightLink ? 15 : 20;
-        this.detailLen = 20 - this.sprintLen;
-      } else {
-        this.sprintLen = this.activeLightLink ? 18 : 24;
-        this.detailLen = 24 - this.sprintLen;
-      }
-
-      // document.getElementById('backlogDetailWrapper').style.width = this.sprintLen / 24 * 100 + '%'
-      // document.getElementById('sprintDetailWrapper').style.width = Math.floor(this.detailLen / 24 * 100) + '%'
-    },
-    // css & 拖动列表高亮
-    highlightSelectedList(key) {
-      let dom = document.querySelector(`.item[data-key="${key}"]`);
-      let allDraggableList = document.querySelectorAll(`.item[data-key]`);
-
-      allDraggableList.forEach(el => {
-        el.classList.remove('light')
-      })
-
-      if (key && dom) {
-        dom.classList.add('light')
-        this.activeLightLink = key
-      }
-    },
-    getsprintList() {
-      this.activeSprintListLoading = true;
-      sprintAxios.activeSprintList({ type: 'sprint' }).then(activeSprint => {
-        this.activeSprintListLoading = false;
-        this.activeSprint = activeSprint;
+        this.$nextTick(() => {
+          this.activeSprintListLoading = false
+        })
       })
     },
-    getbacklogList() {
-      this.backlogLoading = true
-      sprintAxios.backlogSprintList({ type: 'backlog' }).then(backlogSprint => {
-        this.backlogLoading = false
-        this.backlogSprint = backlogSprint.issueList
+    // 获取缓存区列表数据
+    async getbacklogList() {
+      this.backlogSprintListLoading = true
+
+      sprintAxios.backlogSprintList({ type: 'backlog' }).then(obj => {
+        this.$store.commit('sprint/BACKLOG_SPRINT_LIST', obj.issueList)
+
+        this.$nextTick(() => {
+          this.backlogSprintListLoading = false
+        })
       })
     }
   }
 }
 </script>
-<style lang="scss">
-$color-highColor: #172b4d;
-$bg-big: #f4f5f7;
-
-#moduleStory {
-  width: 100%;
-  height: 100%;
-  .newIssue-btn {
+<style lang="scss" scoped>
+.sprint-container {
+  .sprint-flex-container {
     position: fixed;
-    bottom: 30px;
-    right: 30px;
-    width: 50px;
-    height: 50px;
-    cursor: pointer;
-    border: 1px solid #205081;
-    background: #205081;
-    border-radius: 50%;
-    color: #fff;
-    font-size: 20px;
-    text-align: center;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    &:hover {
-      color: rgb(255, 171, 0);
-      font-size: 22px;
-    }
-  }
-  .triggernavgation {
-    float: right;
-    color: #172b4d;
-    font-size: 14px;
-    font-weight: 600;
-    background: #ebeef5;
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    z-index: 100;
-  }
-  .story-backlog {
-    position: fixed;
-    left: 0;
+    top: 40px;
     right: 0;
     bottom: 0px;
-    top: 40px;
+    left: 0;
     display: flex;
     box-sizing: border-box;
     .sidebar-left {
-      height: 100%;
       width: 200px;
+      height: 100%;
     }
     .sprint-list-box {
-      height: 100%;
-      overflow-y: scroll;
-      box-sizing: border-box;
       flex: 1;
+      overflow-y: scroll;
       .space-between {
         height: 120px;
         margin: 10px 0;
+        font-size: 14px;
         line-height: 100px;
         text-align: center;
-        font-size: 14px;
         background: #f4f5f7;
       }
-      .backlog {
+      .backlog-box {
         &:last-child {
           margin-bottom: 0;
         }
         .backlog-title {
-          height: 45px;
-          font-size: 14px;
-          padding: 0 10px;
           position: sticky;
           top: 0;
           z-index: 19;
-          background: #f4f5f7;
           display: flex;
-          justify-content: space-between;
           align-items: center;
-          .header-expander {
-            padding: 2px 3px;
-            cursor: pointer;
-            position: relative;
-            display: inline-block;
-            background-color: #f4f5f7;
-            color: #fff;
-            margin-right: 3px;
-            transform: rotate(-90deg);
-            &.visibleSprint {
-              transform: rotate(0);
+          justify-content: space-between;
+          height: 45px;
+          padding: 0 10px;
+          font-size: 14px;
+          background: #f4f5f7;
+          user-select: none;
+          .left-flex {
+            .header-expander {
+              position: relative;
+              display: inline-block;
+              margin-right: 3px;
+              padding: 2px 3px;
+              color: #fff;
+              background-color: #f4f5f7;
+              transform: rotate(-90deg);
+              cursor: pointer;
+              &.visibleSprint {
+                transform: rotate(0);
+              }
             }
-          }
-          .title {
-            font-weight: 600;
-            font-size: 14px;
-            color: #172b4d;
-            padding: 0 10px 0 0;
-            max-width: 40px;
-          }
-          .item-meta {
-            width: 60px;
-          }
-          .issus-count {
-            font-size: 14px;
-            font-weight: 600;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-          }
-          .date {
-            font-size: 14px;
-          }
-          .status {
-            color: #fff;
-            padding: 1px 2px;
-            font-size: 12px;
-            border-radius: 4px;
-            box-sizing: border-box;
-            height: 20px;
-            text-align: left;
-            font-weight: 600;
-            background-color: #00875a;
-            border-color: #00875a;
-            &.doing {
-              background-color: #00875a;
-              border-color: #00875a;
+            .title {
+              max-width: 40px;
+              padding: 0 10px 0 0;
+              color: #172b4d;
+              font-weight: 600;
+              font-size: 14px;
             }
-            &.count {
-              background-color: #e6a23c;
-              border-color: #e6a23c;
-              line-height: 14px;
-              height: 14px;
-              font-size: 12px;
-              padding: 0 7px;
-              margin-left: 10px;
-              border-radius: 3px;
-            }
-          }
-          .backlog-select {
-            width: 100px;
-            float: right;
-            padding: 0;
-            font-weight: 600;
-            font-size: 14px;
-            color: #409eff !important;
-            background: transparent;
-            .el-input__inner {
-              color: #409eff !important;
-              background: #ecf5ff;
-              border-color: #b3d8ff;
-              outline: none;
+            .issus-count {
+              overflow: hidden;
+              font-weight: 600;
+              font-size: 14px;
+              white-space: nowrap;
+              text-overflow: ellipsis;
             }
           }
         }
       }
-      .sprint {
-        margin-bottom: 30px;
-        background: #f4f5f7;
-        padding: 10px;
-        box-sizing: border-box;
-        .sprintlist {
-          position: sticky;
-          top: 0;
-          z-index: 20;
-        }
-        .sprint-ul {
-          box-sizing: border-box;
-          .count {
-            float: right;
-          }
-        }
-      }
+    }
+  }
+  .newIssue-btn {
+    position: fixed;
+    right: 30px;
+    bottom: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    height: 50px;
+    color: #fff;
+    font-size: 20px;
+    text-align: center;
+    background: #205081;
+    border: 1px solid #205081;
+    border-radius: 50%;
+    &:hover {
+      color: rgb(255, 171, 0);
+      font-size: 22px;
     }
   }
 }
