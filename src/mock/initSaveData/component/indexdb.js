@@ -17,10 +17,10 @@ const moduleSprintStore = localforage.createInstance({
   storeName: 'modules'
 })
 
-const issueTypeStore = localforage.createInstance({
-  name: 'todo',
-  storeName: 'issue-type'
-})
+// const issueTypeStore = localforage.createInstance({
+//   name: 'todo',
+//   storeName: 'issue-type'
+// })
 
 const progressStateStore = localforage.createInstance({
   name: 'todo',

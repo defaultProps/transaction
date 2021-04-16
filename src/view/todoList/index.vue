@@ -28,7 +28,7 @@
           <v-drag-list-box v-show="visibleSprint"
                            :issueList="activeSprintList"
                            :dropObj="dropObj"
-                           group="activeSprintListDraggableGroup"
+                           groupName="activeSprintListDraggableGroup"
                            sprintType="active"
                            @endDraggable="endDraggable"></v-drag-list-box>
         </div>
@@ -40,16 +40,15 @@
               <span class="issus-count">{{ backlogSprint.length }} 问题</span>
             </div>
           </div>
-          <v-drag-list-box :dropObj="dropObj"
+          <v-drag-list-box :dropbj="dropObj"
                            :issueList="backlogSprint"
-                           :group="{ name: 'activeSprintListDraggableGroup', pull: true, put: true }"
+                           :groupName="{ name: 'activeSprintListDraggableGroup', pull: true, put: true }"
                            handle=".handle"
                            sprintType="backlog"
                            @endDraggable="endDraggable"></v-drag-list-box>
         </div>
       </div>
       <v-issue-detail-box v-show="visibleSidebarRightDetail"
-                          :sprintLink="activeIssue"
                           class="detail-container"></v-issue-detail-box>
     </div>
     <div class="newIssue-btn"

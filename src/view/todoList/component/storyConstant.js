@@ -74,6 +74,7 @@ export let levelList = [
     ]
   }
 ]
+
 export let issusTypeArr = [
   {
     icon: 'icon-shujuzhongjian',

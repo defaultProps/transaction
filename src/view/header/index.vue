@@ -14,6 +14,7 @@
              class="el-menu-demo"
              mode="horizontal"
              router
+             menu-trigger="click"
              background-color="#205081"
              text-color="#fff"
              active-text-color="#ffab00">
@@ -107,6 +108,7 @@ export default {
       ]
     }
   },
+  // sprintAxios.sprintIssueDetail
   methods: {
     handleClose(done) { done() }
   }
@@ -132,6 +134,7 @@ html {
   box-sizing: border-box;
   justify-content: flex-start;
   align-items: center;
+  overflow: hidden;
   .header-logo {
     display: flex;
     position: relative;

@@ -1,17 +1,16 @@
 <template>
-  <div id="sprint-detail">
-    <div v-loading="loading"
-         class="scroll-style-none sprint-detail__container">
-      <div class="header">
-        <el-button size="mini"
-                   type="text"
-                   @click="handleClickCloseDetailModule()">
-          <i class="iconfont icon-chenghao"></i>
-        </el-button>
-      </div>
-      <uxo-edit :content="sprintIssue.title"
-                :guid="sprintIssue.id"
-                class="title"></uxo-edit>
+  <div class="issue-detail-container">
+    <div v-if="activeIssue"
+         class="scroll-style-none issue-detail-box">
+      <el-button size="mini"
+                 type="text"
+                 class="close-btn"
+                 icon="iconfont icon-chenghao"
+                 @click="handleClickCloseDetailModule()">
+      </el-button>
+      <v-edit-module-box :content="activeIssue.title"
+                         :id="activeIssue.id"
+                         class="title"></v-edit-module-box>
       <div class="form-item item-top">
         <div class="form-label">
           紧急度
@@ -20,7 +19,7 @@
             <i class="el-icon-info"></i>
           </el-tooltip>
         </div>
-        <el-select v-model="sprintIssue.urgencyLevel"
+        <el-select v-model="activeIssue.urgencyLevel"
                    placeholder="请选择"
                    size="mini"
                    class="select-level">
@@ -39,11 +38,11 @@
       </div>
       <div class="form-item">
         <div class="form-label">创建时间</div>
-        <div class="form-value">{{sprintIssue.createTime}}</div>
+        <div class="form-value">{{activeIssue.createTime}}</div>
       </div>
       <div class="form-item">
         <div class="form-label">最近更新</div>
-        <div class="form-value">{{sprintIssue.updateTime}}</div>
+        <div class="form-value">{{activeIssue.updateTime}}</div>
       </div>
       <div class="form-item desc">
         <div class="form-label">
@@ -53,10 +52,10 @@
             <i class="el-icon-info"></i>
           </el-tooltip>
         </div>
-        <uxo-edit :content="sprintIssue.issueDesc"
-                  :uid="sprintIssue.id"
-                  class="form-value"
-                  textType="textarea"></uxo-edit>
+        <v-edit-module-box :content="activeIssue.issueDesc"
+                           :uid="activeIssue.id"
+                           class="form-value"
+                           textType="textarea"></v-edit-module-box>
       </div>
       <div class="form-item remark">
         <div class="form-label">
@@ -66,10 +65,10 @@
             <i class="el-icon-info"></i>
           </el-tooltip>
         </div>
-        <uxo-edit :content="sprintIssue.issueRemark"
-                  :uid="sprintIssue.id"
-                  textType="textarea"
-                  class="form-value"></uxo-edit>
+        <v-edit-module-box :content="activeIssue.issueRemark"
+                           :uid="activeIssue.id"
+                           textType="textarea"
+                           class="form-value"></v-edit-module-box>
       </div>
       <div class="form-item remark">
         <div class="form-label">
@@ -86,66 +85,36 @@
 </template>
 <script>
 import { levelList, pointsArr } from './storyConstant.js'
-import { sprintAxios } from '@/axios'
+import { mapState } from 'vuex'
+import editModuleBox from '@/components/editModuleBox'
 
 export default {
+  components: {
+    'v-edit-module-box': editModuleBox
+  },
   data() {
     return {
       levelList,
       pointsArr,
-      loading: true,
-      hasDraggle: false, // 用户是否拖动过
-      sprintIssue: {
-        name: '',
-        link: '',
-        type: '',
-        level: '',
-        title: '',
-        fixed: '',
-        progressState: '',
-        tag: { name: '', link: '' },
-        points: ''
-      }
+      hasDraggle: false // 用户是否拖动过
     }
   },
-  watch: {
-    sprintLink: function (v) {
-      if (v) {
-        this.getsprintIssueDetail(v)
-      }
-    }
-  },
-  props: {
-    sprintLink: {
-      type: String,
-      default: ''
-    }
-  },
-  created() {
-    this.getsprintIssueDetail(this.sprintLink)
-  },
+  computed: mapState({
+    activeIssue: state => state.sprint.activeIssue
+  }),
   mounted() {
-    this.addDraggleEvent();
+    this.addDraggleEvent()
   },
   methods: {
-    getsprintIssueDetail(sprintLink) {
-      this.loading = true;
-      sprintAxios.sprintIssueDetail({ link: sprintLink }).then(obj => {
-        this.loading = false;
-        if (obj.issueDetail) {
-          this.sprintIssue = obj.issueDetail
-        }
-      })
-    },
     addDraggleEvent() {
-      let backlogDetailWrapper = document.getElementById('backlogDetailWrapper');
-      let sprintDetailWrapper = document.getElementById('sprintDetailWrapper');
-      let dragglePoint = document.getElementById('dragglePoint');
-      let that = this;
+      let backlogDetailWrapper = document.getElementById('backlogDetailWrapper')
+      let sprintDetailWrapper = document.getElementById('sprintDetailWrapper')
+      let dragglePoint = document.getElementById('dragglePoint')
+      let that = this
 
       document.onmouseup = function (evt) {
-        document.onmousemove = null;
-        document.onmouseup = null;
+        document.onmousemove = null
+        document.onmouseup = null
       }
 
       if (!dragglePoint || !backlogDetailWrapper || !sprintDetailWrapper) {
@@ -153,16 +122,16 @@ export default {
       }
 
       dragglePoint.onmousedown = function (el) {
-        let currentPointClientX = el.clientX;
-        let windowWidth = window.innerWidth;
-        let backlogDetailWidth = backlogDetailWrapper.offsetWidth;
-        let sprintDetailWidth = sprintDetailWrapper.offsetWidth;
+        let currentPointClientX = el.clientX
+        let windowWidth = window.innerWidth
+        let backlogDetailWidth = backlogDetailWrapper.offsetWidth
+        let sprintDetailWidth = sprintDetailWrapper.offsetWidth
 
         document.onmousemove = function mouseMove(e) {
           that.$store.commit('hasDraggle', true)
-          el.target.setCapture && el.target.setCapture();
+          el.target.setCapture && el.target.setCapture()
 
-          let dvalue = e.clientX - currentPointClientX;
+          let dvalue = e.clientX - currentPointClientX
           let backlogPercent = ((backlogDetailWidth + dvalue) / windowWidth * 100)
           let sprintDetailPercent = ((sprintDetailWidth - dvalue) / windowWidth * 100)
 
@@ -173,10 +142,10 @@ export default {
         }
 
         document.onmouseup = function () {
-          document.onmousemove = null;
+          document.onmousemove = null
           // 释放线程的指定窗口里设置鼠标捕获
-          dragglePoint.releaseCapture && dragglePoint.releaseCapture();
-          window.releaseEvents && window.releaseEvents(Event.MOUSEMOVE | Event.MOUSEUP);
+          dragglePoint.releaseCapture && dragglePoint.releaseCapture()
+          window.releaseEvents && window.releaseEvents(Event.MOUSEMOVE | Event.MOUSEUP)
         }
       }
     },
@@ -190,42 +159,38 @@ export default {
 <style lang="scss">
 .el-select-dropdown__item {
   display: flex;
-  justify-content: space-between;
   align-content: center;
+  justify-content: space-between;
   .label-info {
-    font-size: 12px;
     float: right;
     color: #8492a6;
+    font-size: 12px;
   }
 }
-#sprint-detail {
-  user-select: none;
-  font-size: 14px;
-  color: #172b4d;
-  padding: 0 5px 0 15px;
-  box-sizing: border-box;
+.issue-detail-container {
   position: relative;
+  width: 300px;
   height: 100%;
-  width: 100%;
-  height: 100%;
-  width: 400px;
-  .sprint-detail__container {
+  padding-left: 20px;
+  color: #172b4d;
+  font-size: 14px;
+  user-select: none;
+  .issue-detail-box {
     height: 100%;
     overflow-y: scroll;
   }
   #dragglePoint {
     position: absolute;
-    box-sizing: border-box;
-    line-height: 40px;
     top: 50%;
-    left: 0;
     bottom: 0;
+    left: 0;
     width: 10px;
     height: 40px;
-    cursor: move;
+    line-height: 40px;
     background: rgba(0, 0, 0, 0.1);
     border-top-right-radius: 4px;
     border-bottom-right-radius: 4px;
+    cursor: move;
     i {
       position: relative;
       left: -3px;
@@ -234,36 +199,28 @@ export default {
   .loadingdetail {
     color: #000;
   }
-  .header {
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    padding: 10px 10px 0;
-    .link {
-      .tag {
-        text-indent: 4px;
-      }
-    }
-    .btn-del {
-      border: none;
-    }
+  .close-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
   }
   .title {
     margin: 3px 0;
   }
   .form-item {
     display: flex;
-    justify-content: flex-start;
     align-items: center;
+    justify-content: flex-start;
+
     min-height: 35px;
     &.item-top {
       margin-top: 15px;
     }
     &.desc,
     &.remark {
-      margin: 10px 0;
       display: block;
       .form-label {
+        margin: 10px 0;
         margin-bottom: 10px;
       }
     }

@@ -12,7 +12,6 @@ import router from './router'
 import Mock from '@/mock/index'
 import axios from '@/axios/index.js'
 import '@/style/reset.css'
-import edit from '@/components/common/edit'
 import common from '@/libs'
 import store from '@/store/index'
 
@@ -26,7 +25,6 @@ Vue.prototype.$common = common
 
 window.localforage = localforage
 
-Vue.component('uxo-edit', edit)
 Vue.use(ElementUI)
 Vue.use(Contextmenu)
 
