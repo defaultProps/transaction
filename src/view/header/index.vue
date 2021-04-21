@@ -47,12 +47,16 @@
     <div class="nav-right">
       <el-input v-model="inputVal"
                 size="mini"
-                class="input"
+                class="input-search"
                 prefix-icon="el-icon-search"></el-input>
       <el-button title="配置域"
                  size="mini"
                  icon="el-icon-lock"
+                 class="config-btn"
                  @click="visibleDrawer = true">配置域</el-button>
+      <el-avatar :src="userAvatar"
+                 shape="square"
+                 size="small"></el-avatar>
       <el-drawer :visible.sync="visibleDrawer"
                  title="配置域"
                  size="50%"
@@ -100,6 +104,7 @@ export default {
       activeIndex: 'story',
       inputVal: '',
       activeTab: 'first',
+      userAvatar: 'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png',
       typesettingList: [
         { title: '标准排版', img: '' },
         { title: '嵌套排版', img: '' },
@@ -125,67 +130,67 @@ html {
 </style>
 <style lang="scss" scoped>
 #header {
-  height: 40px;
-  background: #205081;
+  $width: 5 + random(15) + px;
   z-index: 100;
-  color: #fff;
   display: flex;
-  padding: 0 10px 0 0;
-  box-sizing: border-box;
-  justify-content: flex-start;
   align-items: center;
+  justify-content: flex-start;
+  box-sizing: border-box;
+  height: 40px;
+  padding: 0 10px 0 0;
   overflow: hidden;
+  color: #fff;
+  background: #205081;
   .header-logo {
-    display: flex;
     position: relative;
-    justify-content: flex-start;
+    display: flex;
     align-items: center;
+    justify-content: flex-start;
+
     height: 100%;
     padding: 0 5px;
     overflow: hidden;
-    filter: contrast(15) hue-rotate(0);
-    animation: hueRotate 10s infinite linear;
     filter: contrast(15) hue-rotate(360deg);
+    animation: hueRotate 10s infinite linear;
     .title {
-      font-size: 12px;
-      user-select: none;
-      font-style: italic;
       color: #fff;
+      font-size: 12px;
+      font-style: italic;
+      user-select: none;
     }
     .logo {
       width: 20px;
       height: 20px;
       margin-right: 10px;
-      background-size: cover;
       background-repeat: no-repeat;
+      background-size: cover;
     }
     .bubbles {
       position: absolute;
       bottom: -5px;
+      left: 60px;
       width: 80px;
       height: 5px;
-      left: 60px;
-      user-select: none;
-      transform: translate(-50%, 0);
       background-color: #fff;
-      filter: blur(5px);
+      transform: translate(-50%, 0);
       cursor: none;
+      filter: blur(5px);
+      user-select: none;
       li {
         position: absolute;
-        user-select: none;
-        border-radius: 50%;
-        background: #fff;
         top: 15px;
+        background: #fff;
+        border-radius: 50%;
         cursor: none;
+        user-select: none;
       }
       @for $i from 0 through 25 {
         li:nth-child(#{$i}) {
-          $width: 5 + random(15) + px;
-          left: 15 + random(50) + px;
           top: 15px;
-          transform: translate(-50%, -50%);
+          left: 15 + random(50) + px;
           width: $width;
           height: $width;
+          transform: translate(-50%, -50%);
           animation: moveToTop
             #{random(6) +
             3}s
@@ -205,15 +210,15 @@ html {
         opacity: 1;
       }
       100% {
-        opacity: 0.1;
         transform: translate(-50%, -180px);
+        opacity: 0.1;
       }
     }
   }
   ul {
     display: flex;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
     .list {
       padding: 0 10px;
       user-select: none;
@@ -223,22 +228,29 @@ html {
     position: absolute;
     right: 10px;
     display: flex;
-    justify-content: flex-end;
     align-items: center;
+    justify-content: flex-end;
+    .config-btn {
+      padding: 6px 10px;
+      background: #161e2361;
+    }
+    .input-search {
+      width: 200px;
+    }
     .avatar {
       width: 40px;
       height: 30px;
+      background-image: url("https://dss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=1061311188,2230294750&fm=26&gp=0.jpg");
       background-size: cover;
       border-radius: 4px;
-      background-image: url("https://dss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=1061311188,2230294750&fm=26&gp=0.jpg");
     }
     button {
       margin: 0 10px;
-      background: transparent;
       color: #fff;
-      border: none;
       font-weight: 400;
       font-size: 14px;
+      background: transparent;
+      border: none;
     }
     .typesetting-box {
       width: 100%;
@@ -253,29 +265,25 @@ html {
       .tyesetting {
         display: flex;
         flex-direction: column;
-        width: 100%;
-        color: #333;
-        height: 100%;
         align-items: center;
         justify-content: center;
-        display: inline-block;
+        width: 100%;
+        height: 100%;
+        color: #333;
         .image {
           width: 450px;
           height: 220px;
-          cursor: pointer;
           margin: 10px auto;
           border: 1px solid #999;
           border-radius: 3px;
+          cursor: pointer;
         }
         .title {
+          margin-top: 10px;
           font-size: 14px;
           text-align: center;
-          margin-top: 10px;
         }
       }
-    }
-    .input {
-      width: 145px;
     }
     .user-meta {
       width: 400px;

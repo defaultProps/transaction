@@ -1,22 +1,15 @@
 <template>
-  <div id="uxo-edit"
-       @click="hc_edit">
-    <div v-if="editMode"
-         class="edit-mode">
-      <el-form @submit.native="handleClickSubmit()">
-        <el-input v-show="textType === 'text'"
-                  ref="inputNode"
-                  v-model="value"
-                  :rows="10"
-                  class="input"
-                  @blur="blur"></el-input>
-        <div v-show="textType === 'textarea'">
-          <!-- <vue-tinymce v-model="value"
-                       :setup="setup"
-                       :setting="setting"
-                       @blur="blur" /> -->
-        </div>
-      </el-form>
+  <div id="wang-editor-box"
+       @click="handleClickEditorRow">
+    <template v-if="editMode">
+      <el-input v-show="textType === 'text'"
+                ref="inputNodeRef"
+                v-model="inputTextValue"
+                :rows="10"
+                class="input-node"
+                @blur="blurInputText"></el-input>
+      <div v-show="textType === 'textarea'"
+           id="text-area-editor-box"></div>
       <div class="save-options">
         <el-button :class="[loading ? 'saved' : '']"
                    size="mini"
@@ -28,11 +21,10 @@
                    icon="el-icon-close"
                    @click.prevent.stop="handleClickCencel()"></el-button>
       </div>
-    </div>
+    </template>
     <div v-else
          class="info">
-      <!-- <span class="content"
-            v-html="content"></span> -->
+      {{ content }}
       <span class="edit-wrap">
         <i class="icon-writefill iconfont"></i>
       </span>
@@ -40,43 +32,52 @@
   </div>
 </template>
 <script>
+import Wangeditor from "wangeditor"
+
 export default {
   data() {
     return {
+      editorWangEditor: null,
       editMode: false,
-      value: '',
+      inputTextValue: '',
       loading: false,
       cencelBtnCick: false,
-      descContentHTML: "",
-      setting: {
-        menubar: false,
-        toolbar: "undo redo | fullscreen | alignleft aligncenter alignright alignjustify | link unlink | numlist bullist | image media | bold italic underline strikethrough | indent outdent | superscript subscript | removeformat |",
-        toolbar_drawer: "sliding",
-        quickbars_selection_toolbar: "removeformat | bold italic underline strikethrough | fontsizeselect forecolor backcolor",
-        plugins: "link image media table lists fullscreen quickbars",
-        language: 'zh_CN',
-        height: 450
-      }
+      descContentHTML: ""
     }
   },
   watch: {
-    'editMode'(newVal) {
-      if (newVal && this.textType === 'text') {
-        this.$nextTick(() => {
-          this.$refs.inputNode.focus()
-          this.$refs.inputNode.select()
-        })
+    'editMode'(val) {
+      if (val) {
+        if (this.textType === 'text') {
+          this.$nextTick(() => {
+            this.$refs.inputNodeRef.focus()
+            this.$refs.inputNodeRef.select()
+          })
+        }
+        if (this.textType === 'textarea' && this.editorWangEditor) {
+          this.$nextTick(() => {
+            // this.editorWangEditor.config.height = 100
+            this.editorWangEditor.create()
+            console.log(this.content)
+            this.editorWangEditor.txt.html(this.content)
+          })
+        }
       }
     },
     'uid'() {
-      this.editMode = false;
+      this.editMode = false
     },
     'content'(v) {
-      this.value = v;
+      this.inputTextValue = v
     }
   },
   created() {
-    this.value = this.content
+    this.inputTextValue = this.content
+  },
+  mounted() {
+    this.editorWangEditor = new Wangeditor('#text-area-editor-box')
+
+    this.editorWangEditor.config.menus = ['bold', 'head', 'link', 'italic', 'underline']
   },
   props: {
     uid: [String],
@@ -103,61 +104,68 @@ export default {
     editorChange(v) {
 
     },
-    blur() {
+    blurInputText() {
       setTimeout(async () => {
         if (this.cencelBtnCick) {
           return
         }
 
-        this.loading = true;
+        this.loading = true
         await this.cb()
         setTimeout(() => {
-          this.loading = false;
-          this.editMode = false;
-        }, 300);
+          this.loading = false
+          this.editMode = false
+        }, 300)
       }, 100)
     },
     async handleClickSubmit() {
-      this.cencelBtnCick = false;
-      this.loading = true;
+      this.cencelBtnCick = false
+      this.loading = true
       await this.cb()
       setTimeout(() => {
-        this.loading = false;
-        this.editMode = false;
-      }, 300);
+        this.loading = false
+        this.editMode = false
+      }, 300)
     },
-    hc_edit() {
-      this.editMode = true;
+    // 点击 - 默认开启编辑模式
+    handleClickEditorRow() {
+      this.editMode = true
     },
     handleClickCencel() {
-      this.cencelBtnCick = true;
-      this.editMode = false;
+      this.cencelBtnCick = true
+      this.editMode = false
     }
   }
 }
 </script>
 <style lang="scss" scoped>
-#uxo-edit {
+#wang-editor-box {
   position: relative;
   align-items: top;
   box-sizing: border-box;
   padding: 0;
   border: 1px solid transparent;
-  border-bottom-left-radius: 4px;
   border-top-left-radius: 4px;
+  border-bottom-left-radius: 4px;
+  #text-area-editor-box {
+    width: 100%;
+    min-height: 100px;
+    border: 1px solid #c0c4cc;
+    border-radius: 3px;
+  }
   .info {
     display: flex;
-    justify-content: space-between;
     align-items: top;
+    justify-content: space-between;
     border: 1px solid transparent;
     &:hover {
+      overflow: hidden;
       background: transparent;
       border: 1px solid rgba(0, 0, 0, 0.2);
       border-radius: 3px;
-      overflow: hidden;
       .edit-wrap {
-        visibility: visible;
         color: #3f4441;
+        visibility: visible;
       }
     }
     .content {
@@ -175,7 +183,7 @@ export default {
       visibility: hidden;
     }
   }
-  .input {
+  .input-node {
     padding: 0 0 0 1px;
     .el-input__inner {
       padding: 0 0 0 3px;

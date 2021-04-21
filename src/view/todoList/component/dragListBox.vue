@@ -357,7 +357,7 @@ export default {
     align-items: center;
     box-sizing: border-box;
     height: 32px;
-    margin: 3px 0;
+    margin: 1px 0;
     padding: 0 6px 0 4px;
     overflow: hidden;
     font-size: 14px;
