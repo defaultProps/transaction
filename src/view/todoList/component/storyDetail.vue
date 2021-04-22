@@ -171,7 +171,7 @@ export default {
   position: relative;
   width: 300px;
   height: 100%;
-  padding-left: 20px;
+  padding: 0 3px 0 10px;
   color: #172b4d;
   font-size: 14px;
   user-select: none;
