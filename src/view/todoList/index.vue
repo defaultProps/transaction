@@ -38,6 +38,13 @@
               <span class="title">缓存区</span>
               <span class="issus-count">{{ backlogSprint.length }} 问题</span>
             </div>
+            <div class="right-flex">
+              <el-button type="primary"
+                         class="add-issue"
+                         icon="el-icon-plus"
+                         size="mini"
+                         @click="dialogTableVisible = true">新增</el-button>
+            </div>
           </div>
           <v-drag-list-box :dropbj="dropObj"
                            :issueList="backlogSprint"
@@ -50,9 +57,6 @@
       <v-issue-detail-box v-show="visibleSidebarRightDetail"
                           class="detail-container"></v-issue-detail-box>
     </div>
-    <div class="newIssue-btn"
-         size="medium"
-         @click="dialogTableVisible = true"><i class="el-icon-plus"></i></div>
     <v-add-issue-dialog-box :dialogTableVisible="dialogTableVisible"
                             @handleClose="handleClose"></v-add-issue-dialog-box>
   </div>
@@ -204,28 +208,16 @@ export default {
               text-overflow: ellipsis;
             }
           }
+          .right-flex {
+            .add-issue {
+              padding: 8px 12px;
+              color: #ffffff;
+              font-size: 14px;
+              border-radius: 4px;
+            }
+          }
         }
       }
-    }
-  }
-  .newIssue-btn {
-    position: fixed;
-    right: 30px;
-    bottom: 30px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 50px;
-    height: 50px;
-    color: #fff;
-    font-size: 20px;
-    text-align: center;
-    background: #205081;
-    border: 1px solid #205081;
-    border-radius: 50%;
-    &:hover {
-      color: rgb(255, 171, 0);
-      font-size: 22px;
     }
   }
 }

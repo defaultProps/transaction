@@ -29,7 +29,7 @@
                    icon="el-icon-close"
                    @click.prevent.stop="handleClickCencel()"></el-button>
       </div>
-    </div>
+</template>
     <div v-else
          class="text-mode-box">
       <div v-if="content"
@@ -40,23 +40,17 @@
   </div>
 </template>
 <script>
+import Wangeditor from "wangeditor"
+
 export default {
   data () {
     return {
+      editorWangEditor: null,
       editMode: false,
-      value: '',
+      inputTextValue: '',
       loading: false,
       cencelBtnCick: false,
-      descContentHTML: "",
-      setting: {
-        menubar: false,
-        toolbar: "undo redo | fullscreen | alignleft aligncenter alignright alignjustify | link unlink | numlist bullist | image media | bold italic underline strikethrough | indent outdent | superscript subscript | removeformat |",
-        toolbar_drawer: "sliding",
-        quickbars_selection_toolbar: "removeformat | bold italic underline strikethrough | fontsizeselect forecolor backcolor",
-        plugins: "link image media table lists fullscreen quickbars",
-        language: 'zh_CN',
-        height: 450
-      }
+      descContentHTML: ""
     }
   },
   watch: {
@@ -109,12 +103,12 @@ export default {
           return
         }
 
-        this.loading = true;
+        this.loading = true
         await this.cb()
         setTimeout(() => {
-          this.loading = false;
-          this.editMode = false;
-        }, 300);
+          this.loading = false
+          this.editMode = false
+        }, 300)
       }, 100)
     },
     async handleClickSubmit () {
@@ -122,9 +116,9 @@ export default {
       this.loading = true;
       await this.cb()
       setTimeout(() => {
-        this.loading = false;
-        this.editMode = false;
-      }, 300);
+        this.loading = false
+        this.editMode = false
+      }, 300)
     },
     hc_edit () {
       this.editMode = true;
@@ -143,12 +137,12 @@ export default {
   box-sizing: border-box;
   padding: 0;
   border: 1px solid transparent;
-  border-bottom-left-radius: 4px;
   border-top-left-radius: 4px;
   .text-mode-box {
     padding: 0 2px;
     border: 1px solid transparent;
     &:hover {
+      overflow: hidden;
       background: transparent;
       border: 1px solid rgba(0, 0, 0, 0.2);
       border-radius: 3px;
@@ -165,7 +159,7 @@ export default {
       color: #606266;
     }
   }
-  .input {
+  .input-node {
     padding: 0 0 0 1px;
     .el-input__inner {
       padding: 0 0 0 3px;
