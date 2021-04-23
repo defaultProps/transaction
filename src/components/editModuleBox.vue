@@ -1,5 +1,5 @@
 <template>
-  <div id="uxo-edit"
+  <div class="edit-mode-container"
        @click="hc_edit">
     <div v-if="editMode"
          class="edit-mode">
@@ -9,6 +9,7 @@
                   v-model="value"
                   :rows="10"
                   class="input"
+                  size="mini"
                   @blur="blur"></el-input>
         <div v-show="textType === 'textarea'">
           <!-- <vue-tinymce v-model="value"
@@ -30,18 +31,17 @@
       </div>
     </div>
     <div v-else
-         class="info">
-      <!-- <span class="content"
-            v-html="content"></span> -->
-      <span class="edit-wrap">
-        <i class="icon-writefill iconfont"></i>
-      </span>
+         class="text-mode-box">
+      <div v-if="content"
+           class="content">{{ content }}</div>
+      <div v-else
+           class="empty-text">暂无数据</div>
     </div>
   </div>
 </template>
 <script>
 export default {
-  data() {
+  data () {
     return {
       editMode: false,
       value: '',
@@ -60,7 +60,7 @@ export default {
     }
   },
   watch: {
-    'editMode'(newVal) {
+    'editMode' (newVal) {
       if (newVal && this.textType === 'text') {
         this.$nextTick(() => {
           this.$refs.inputNode.focus()
@@ -68,14 +68,14 @@ export default {
         })
       }
     },
-    'uid'() {
+    'uid' () {
       this.editMode = false;
     },
-    'content'(v) {
+    'content' (v) {
       this.value = v;
     }
   },
-  created() {
+  created () {
     this.value = this.content
   },
   props: {
@@ -97,13 +97,13 @@ export default {
     }
   },
   methods: {
-    setup(editor) {
+    setup (editor) {
 
     },
-    editorChange(v) {
+    editorChange (v) {
 
     },
-    blur() {
+    blur () {
       setTimeout(async () => {
         if (this.cencelBtnCick) {
           return
@@ -117,7 +117,7 @@ export default {
         }, 300);
       }, 100)
     },
-    async handleClickSubmit() {
+    async handleClickSubmit () {
       this.cencelBtnCick = false;
       this.loading = true;
       await this.cb()
@@ -126,10 +126,10 @@ export default {
         this.editMode = false;
       }, 300);
     },
-    hc_edit() {
+    hc_edit () {
       this.editMode = true;
     },
-    handleClickCencel() {
+    handleClickCencel () {
       this.cencelBtnCick = true;
       this.editMode = false;
     }
@@ -137,7 +137,7 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-#uxo-edit {
+.edit-mode-container {
   position: relative;
   align-items: top;
   box-sizing: border-box;
@@ -145,34 +145,24 @@ export default {
   border: 1px solid transparent;
   border-bottom-left-radius: 4px;
   border-top-left-radius: 4px;
-  .info {
-    display: flex;
-    justify-content: space-between;
-    align-items: top;
+  .text-mode-box {
+    padding: 0 2px;
     border: 1px solid transparent;
     &:hover {
       background: transparent;
       border: 1px solid rgba(0, 0, 0, 0.2);
       border-radius: 3px;
       overflow: hidden;
-      .edit-wrap {
-        visibility: visible;
-        color: #3f4441;
-      }
+      cursor: pointer;
     }
     .content {
       padding: 2px 0 2px 2px;
     }
-    .edit-wrap {
-      background: rgba(0, 0, 0, 0.2);
-      color: rgba(0, 0, 0, 1);
-      display: inline-block;
-      width: 35px;
+    .empty-text {
+      height: 100px;
+      line-height: 100px;
       text-align: center;
-      padding: 2px 0;
-      cursor: pointer;
-      box-sizing: border-box;
-      visibility: hidden;
+      color: #606266;
     }
   }
   .input {

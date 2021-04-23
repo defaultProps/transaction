@@ -37,15 +37,15 @@ export default {
     }
   },
   actions: {
-    selectActiveIssue({ commit }, obj) {
-      let allDraggableList = document.querySelectorAll(`.item[data-key]`) || []
+    selectActiveIssue ({ commit }, obj) {
+      let allDraggableList = document.querySelectorAll(`.drag-item[data-key]`) || []
 
       allDraggableList.forEach(el => {
         el.classList.remove('light')
       })
 
       if (obj) {
-        let dom = document.querySelector(`.item[data-key="${obj.id}"]`)
+        let dom = document.querySelector(`.drag-item[data-key="${obj.id}"]`)
 
         if (dom) {
           dom.classList.add('light')

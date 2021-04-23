@@ -32,7 +32,6 @@
                            sprintType="active"
                            @endDraggable="endDraggable"></v-drag-list-box>
         </div>
-        <div class="space-between"></div>
         <div class="backlog-box">
           <div class="backlog-title">
             <div class="left-flex">
@@ -67,7 +66,7 @@ import { mapState } from 'vuex'
 import { sprintAxios } from '@/axios/index.js'
 
 export default {
-  data() {
+  data () {
     return {
       visibleSprint: true, // 是否显示工作区issue-list
       dialogTableVisible: false, // 是否显示新增issue弹框
@@ -82,7 +81,7 @@ export default {
     'v-issue-detail-box': sprintDetail,
     'v-add-issue-dialog-box': dialogNewIssus
   },
-  mounted() {
+  mounted () {
     this.getbacklogList()
     this.getsprintList()
   },
@@ -96,28 +95,28 @@ export default {
   }),
   methods: {
     // 左侧导航开启关闭
-    handleClickvisibleNavigation() {
+    handleClickvisibleNavigation () {
       this.$store.commit('sprint/SET_VISIBLESIDEBARLEFT', !this.visibleSideBarLeft)
     },
-    dropDownStatus(obj) {
+    dropDownStatus (obj) {
       this.dropObj = obj
     },
-    handleClose() {
+    handleClose () {
       this.dialogTableVisible = false
     },
     // 请求数据
-    endDraggable(obj) {
+    endDraggable (obj) {
 
     },
-    dragleave(obj) {
+    dragleave (obj) {
       this.$set(obj, 'dropStatus', false)
     },
-    dragover(e, obj) {
+    dragover (e, obj) {
       e.preventDefault()
       this.$set(obj, 'dropStatus', true)
     },
     // 获取工作区列表数据
-    async getsprintList() {
+    async getsprintList () {
       this.activeSprintListLoading = true
 
       sprintAxios.activeSprintList({ type: 'sprint' }).then(obj => {
@@ -129,7 +128,7 @@ export default {
       })
     },
     // 获取缓存区列表数据
-    async getbacklogList() {
+    async getbacklogList () {
       this.backlogSprintListLoading = true
 
       sprintAxios.backlogSprintList({ type: 'backlog' }).then(obj => {
@@ -160,14 +159,6 @@ export default {
     .sprint-list-box {
       flex: 1;
       overflow-y: scroll;
-      .space-between {
-        height: 120px;
-        margin: 10px 0;
-        font-size: 14px;
-        line-height: 100px;
-        text-align: center;
-        background: #f4f5f7;
-      }
       .backlog-box {
         &:last-child {
           margin-bottom: 0;

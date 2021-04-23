@@ -61,7 +61,7 @@ export default {
     'v-draggable-box': draggable,
     'v-sprint-header-box': sprintHeaderBox
   },
-  data() {
+  data () {
     return {
       levelList,
       issusTypeArr,
@@ -94,7 +94,7 @@ export default {
     moduleList: state => state.story.moduleList,
     progressStateList: state => state.story.progressStateList,
 
-    dragOptions() {
+    dragOptions () {
       return {
         animation: 200,
         group: "description",
@@ -115,17 +115,17 @@ export default {
     // }
   },
   filters: {
-    filterprogressState(v) {
+    filterprogressState (v) {
       return new Map([['doing', '处理中'], ['not-start', '未开始'], ['finish', '已完成']]).get(v)
     }
   },
   methods: {
-    initDragListData() {
+    initDragListData () {
       this.contextMenuTargets = []
       this.draggbleList = JSON.parse(JSON.stringify(this.issueList))
     },
     // action & 拖动到右侧
-    handleUpdateSprintModuleState(dropObj) {
+    handleUpdateSprintModuleState (dropObj) {
       // 判断是否是执行状态
       let moduleState = this.draggbleList[this.oldIndex].moduleState
 
@@ -168,7 +168,7 @@ export default {
       }
     },
     // 设置执行状态和模块类型
-    updateSptintmoduleState(params, type, value) {
+    updateSptintmoduleState (params, type, value) {
       sprintAxios.updateSptintmoduleState(params).then(data => {
         if (data.hasUpdateSptintmoduleState) {
           let item = this.draggbleList.find(v => v.id === params.issueLink)
@@ -185,7 +185,7 @@ export default {
       })
     },
     // 关闭
-    closeActiveSprintIssue(link) {
+    closeActiveSprintIssue (link) {
       let that = this
       sprintAxios.closeActiveSprintIssue({ link }).then(data => {
         if (data.hasCloseActiveSprintIssue) {
@@ -202,7 +202,7 @@ export default {
       })
     },
     // 右键绑定回调
-    handleContextmenuFn(selectIssue, event) {
+    handleContextmenuFn (selectIssue, event) {
       this.$store.dispatch('sprint/selectActiveIssue', selectIssue)
 
       let contextmenuItem = []
@@ -262,7 +262,7 @@ export default {
 
       return false
     },
-    handleClickimplement(obj) {
+    handleClickimplement (obj) {
       this.draggbleList.forEach((item, index) => {
         if (item.id === this.selectKey) {
           this.oldIndex = index
@@ -271,7 +271,7 @@ export default {
         }
       })
     },
-    sortable(type = 'executiveMode') {
+    sortable (type = 'executiveMode') {
       if (type === 'executiveMode') {
         this.draggbleList.sort((pre, next) => {
           let preIndex = ['not-start', 'doing', 'finish'].indexOf(pre.moduleState.link)
@@ -281,37 +281,37 @@ export default {
         })
       }
     },
-    handleDraggleList(item) {
+    handleDraggleList (item) {
       this.$store.dispatch('sprint/selectActiveIssue', item)
     },
-    startDraggable(evt) {
+    startDraggable (evt) {
       this.oldIndex = evt.oldIndex
       this.$store.commit('sprintType', this.sprintType)
     },
-    endDraggable(v) {
+    endDraggable (v) {
       this.$emit('endDraggable', v)
     },
-    addDraggable(v) {
+    addDraggable (v) {
 
     },
-    stylelevelClass(v) {
+    stylelevelClass (v) {
       let result
 
       this.levelList.forEach(item => {
         item.options.forEach(p => {
-          if (p.label === v) {
+          if (+p.label === +v) {
             result = p.icon
           }
         })
       })
       return `${result} iconfont`
     },
-    filterTypeIcon(v = 'work') {
+    filterTypeIcon (v = 'work') {
       let p = this.issusTypeArr.find(p => p.value === v)
 
       return p ? p.icon : 'icon-shujuzhongjian'
     },
-    filterTypeColor(v) {
+    filterTypeColor (v) {
       let p = this.issusTypeArr.find(p => p.value === v)
 
       return p ? p.color : 'rgb(0, 101, 255)'
@@ -357,7 +357,7 @@ export default {
     align-items: center;
     box-sizing: border-box;
     height: 32px;
-    margin: 3px 0;
+    margin: 1px 0;
     padding: 0 6px 0 4px;
     overflow: hidden;
     font-size: 14px;
@@ -391,7 +391,7 @@ export default {
       width: 3px;
       height: 100%;
       text-indent: -9999em;
-      background-color: #205081;
+      background-color: #0006;
       border-top-left-radius: 3px;
       border-bottom-left-radius: 3px;
       content: "";
