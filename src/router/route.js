@@ -16,10 +16,6 @@ let routes = [
     redirect: "/login"
   },
   {
-    path: "/uxo",
-    redirect: '/todoList'
-  },
-  {
     path: "/todoList",
     component: todoList,
     meta: {
@@ -91,6 +87,6 @@ let routes = [
       showheaderBar: true
     }
   }
-];
+]
 
-export default routes;
+export default routes

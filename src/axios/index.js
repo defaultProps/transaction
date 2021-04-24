@@ -1,4 +1,4 @@
-import Axios from '@/service/http.js'
+import Axios from './http.js'
 
 let protocol = document.location.protocol === 'https:' ? 'https://' : 'http://'
 

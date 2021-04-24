@@ -29,7 +29,7 @@
                    icon="el-icon-close"
                    @click.prevent.stop="handleClickCencel()"></el-button>
       </div>
-</template>
+    </div>
     <div v-else
          class="text-mode-box">
       <div v-if="content"
@@ -40,12 +40,12 @@
   </div>
 </template>
 <script>
-import Wangeditor from "wangeditor"
+// import Wangeditor from "wangeditor"
 
 export default {
-  data () {
+  data() {
     return {
-      editorWangEditor: null,
+      editorWangEditorDom: null,
       editMode: false,
       inputTextValue: '',
       loading: false,
@@ -54,7 +54,7 @@ export default {
     }
   },
   watch: {
-    'editMode' (newVal) {
+    'editMode'(newVal) {
       if (newVal && this.textType === 'text') {
         this.$nextTick(() => {
           this.$refs.inputNode.focus()
@@ -62,14 +62,14 @@ export default {
         })
       }
     },
-    'uid' () {
+    'uid'() {
       this.editMode = false;
     },
-    'content' (v) {
+    'content'(v) {
       this.value = v;
     }
   },
-  created () {
+  created() {
     this.value = this.content
   },
   props: {
@@ -91,13 +91,13 @@ export default {
     }
   },
   methods: {
-    setup (editor) {
+    setup(editor) {
 
     },
-    editorChange (v) {
+    editorChange(v) {
 
     },
-    blur () {
+    blur() {
       setTimeout(async () => {
         if (this.cencelBtnCick) {
           return
@@ -111,7 +111,7 @@ export default {
         }, 300)
       }, 100)
     },
-    async handleClickSubmit () {
+    async handleClickSubmit() {
       this.cencelBtnCick = false;
       this.loading = true;
       await this.cb()
@@ -120,10 +120,10 @@ export default {
         this.editMode = false
       }, 300)
     },
-    hc_edit () {
+    hc_edit() {
       this.editMode = true;
     },
-    handleClickCencel () {
+    handleClickCencel() {
       this.cencelBtnCick = true;
       this.editMode = false;
     }

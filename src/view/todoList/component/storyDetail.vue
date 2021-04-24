@@ -95,7 +95,7 @@ export default {
   components: {
     'v-edit-module-box': editModuleBox
   },
-  data () {
+  data() {
     return {
       levelList,
       pointsArr,
@@ -103,10 +103,23 @@ export default {
     }
   },
   computed: mapState({
-    activeIssue: state => state.sprint.activeIssue
+    activeIssue: state => state.sprint.activeIssue,
+    visibleSidebarRightDetail: state => state.sprint.visibleSidebarRightDetail
   }),
+  watch: {
+    visibleSidebarRightDetail: {
+      handler(val) {
+        if (val) {
+          this.$nextTick(() => {
+            this.addDraggleEvent()
+          })
+        }
+      },
+      immediate: true
+    }
+  },
   filters: {
-    filterTime (val) {
+    filterTime(val) {
       let date = new Date(val)
       let year = date.getFullYear()
       let month = date.getMonth() < 9 ? `0${date.getMonth()}` : date.getMonth()
@@ -118,42 +131,34 @@ export default {
       return `${year}/${month}/${day} ${hour}:${minute}:${seconds}`
     }
   },
-  mounted () {
-    this.addDraggleEvent()
-  },
   methods: {
-    addDraggleEvent () {
-      let backlogDetailWrapper = document.getElementById('backlogDetailWrapper')
-      let sprintDetailWrapper = document.getElementById('sprintDetailWrapper')
+    addDraggleEvent() {
+      let sprintDetailDom = document.getElementById('detailContainerBox')
       let dragglePoint = document.getElementById('dragglePoint')
       let that = this
 
+      // 鼠标松开后清除绑定事件
       document.onmouseup = function (evt) {
         document.onmousemove = null
         document.onmouseup = null
       }
 
-      if (!dragglePoint || !backlogDetailWrapper || !sprintDetailWrapper) {
+      if (!dragglePoint || !sprintDetailDom) {
         return
       }
 
       dragglePoint.onmousedown = function (el) {
         let currentPointClientX = el.clientX
-        let windowWidth = window.innerWidth
-        let backlogDetailWidth = backlogDetailWrapper.offsetWidth
-        let sprintDetailWidth = sprintDetailWrapper.offsetWidth
+        let sprintDetailWidth = sprintDetailDom.offsetWidth
 
-        document.onmousemove = function mouseMove (e) {
+        document.onmousemove = function mouseMove(e) {
           that.$store.commit('hasDraggle', true)
           el.target.setCapture && el.target.setCapture()
 
           let dvalue = e.clientX - currentPointClientX
-          let backlogPercent = ((backlogDetailWidth + dvalue) / windowWidth * 100)
-          let sprintDetailPercent = ((sprintDetailWidth - dvalue) / windowWidth * 100)
 
-          if (backlogPercent > 46 && sprintDetailPercent > 22) {
-            backlogDetailWrapper.style.width = backlogPercent + '%'
-            sprintDetailWrapper.style.width = sprintDetailPercent + '%'
+          if (sprintDetailWidth - dvalue >= 280 && sprintDetailWidth - dvalue <= 600) {
+            sprintDetailDom.style.width = (sprintDetailWidth - dvalue) + 'px'
           }
         }
 
@@ -165,7 +170,7 @@ export default {
         }
       }
     },
-    handleClickCloseDetailModule () {
+    handleClickCloseDetailModule() {
       this.$store.commit('hasDraggle', false)
       this.$store.dispatch('sprint/selectActiveIssue', null)
     }
