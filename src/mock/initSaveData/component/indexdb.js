@@ -42,7 +42,6 @@ const mapAxiosFieldToFunc = new Map([
   ['getdashboardList', getdashboardList]
 ])
 
-
 function updateIssueSort(issueList) {
   let promise = issue => new Promise(async resolve => {
     await sprints.getItem(issue.id).then(async item => {

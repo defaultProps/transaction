@@ -1,6 +1,6 @@
 <template>
   <div id="login-container"
-       :style="{'background-image': `url('${this.switchImgList[this.activeNum]}')`}">
+       :style="{'background-image': `url('${switchImgList[activeNum]}')`}">
     <div class="header-box">
       <div class="left-panel">
         <router-link to="/product"
@@ -86,7 +86,7 @@
           </el-form>
         </div>
         <div :class="[isFirstLogin ? '' : (showRegisterAnimtion ? 'hidden-login_animation' : 'show-register_animation')]"
-             :style="{'background-image': `url('${this.switchImgList[this.activeNum]}')`}"
+             :style="{'background-image': `url('${switchImgList[activeNum]}')`}"
              class="register-transprent">
           <el-button type="primary"
                      class="switch-btn"
@@ -116,12 +116,9 @@
  *        and it's funny so much that borrowed css(background-attachment: fixed) special attributes for configuration rendering.
  */
 import coreAxios from '@/axios'
-
-const switchImgList = [
-  '../../../static/image/login-bg3.jpg',
-  '../../../static/image/login-bg5.jfif',
-  '../../../static/image/login-bg.jpg'
-]
+import bg1 from '@/assets/login-bg3.jpg'
+import bg2 from '@/assets/login-bg4.jpg'
+import bg3 from '@/assets/login-bg.jpg'
 
 export default {
   data() {
@@ -140,7 +137,7 @@ export default {
       },
       remberCounter: true, // 是否记住账号
       activeNum: 0, // 当前背景图片页数
-      switchImgList // 背景图片列表
+      switchImgList: [bg1, bg2, bg3] // 背景图片列表
     }
   },
   methods: {

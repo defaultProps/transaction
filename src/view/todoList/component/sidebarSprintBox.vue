@@ -77,7 +77,7 @@
         </ul>
         <div v-if="!thridPartyLinks"
              class="empty-box">
-          <img src="../../../../static/image/noInfo.png"
+          <img src="@/assets/noInfo.png"
                alt="暂无数据"
                class="noinfo">
           暂无数据

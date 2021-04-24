@@ -2,7 +2,7 @@
   <div class="todo-list-container">
     <v-sprint-header-box v-show="draggbleList.length && sprintType =='active'"
                          class="issue-header"
-                         @sortable="sortable"></v-sprint-header-box>
+                         @sortable="sortableCallback"></v-sprint-header-box>
     <v-draggable-box v-model="draggbleList"
                      v-bind="dragOptions"
                      :group="groupName"
@@ -44,7 +44,7 @@
     </v-draggable-box>
     <div v-if="draggbleList.length === 0"
          class="no-draggleList">
-      <img src="../../../../static/image/noInfo.png"
+      <img src="@/assets/noInfo.png"
            alt="暂无数据"
            class="noinfo">
       <div class="no-info">暂无事务</div>
@@ -140,14 +140,12 @@ export default {
           })
         }
 
-        if (this.sprintType === 'backlog') {
-          if (this.draggbleList.length === this.issueList.length) {
+        // if (this.sprintType === 'backlog') {
+        //   if (this.draggbleList.length === this.issueList.length) {
 
-          }
-        }
+        //   }
+        // }
       }
-
-
     },
     initDragListData() {
       this.contextMenuTargets = []
@@ -292,7 +290,7 @@ export default {
       //   }
       // })
     },
-    sortable(type = 'executiveMode') {
+    sortableCallback(type) {
       if (type === 'executiveMode') {
         this.draggbleList.sort((pre, next) => {
           let preIndex = ['not-start', 'doing', 'finish'].indexOf(pre.moduleState.link)
@@ -372,8 +370,8 @@ export default {
       width: 60px;
     }
     .no-info {
-      font-size: 12px;
       color: #999;
+      font-size: 12px;
       text-align: center;
       user-select: none;
     }

@@ -133,8 +133,8 @@ export default {
     margin-left: 0;
   }
   .link {
-    max-width: 100px;
     min-width: 70px;
+    max-width: 100px;
   }
   .title {
     flex: 1;
@@ -149,19 +149,19 @@ export default {
   .work,
   .life {
     display: flex;
-    justify-content: flex-start;
     align-items: center;
+    justify-content: flex-start;
   }
   .currentIcon {
     flex: 1;
     text-align: left;
   }
   .btn {
-    padding: 3px;
-    height: 20px;
     float: right;
-    font-size: 14px;
+    height: 20px;
     margin: 5px;
+    padding: 3px;
+    font-size: 14px;
   }
 }
 </style>
