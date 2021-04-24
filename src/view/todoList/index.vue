@@ -37,8 +37,7 @@
                            :issueList="activeSprintList"
                            :dropObj="dropObj"
                            groupName="activeSprintListDraggableGroup"
-                           sprintType="active"
-                           @endDraggable="endDraggable"></v-drag-list-box>
+                           sprintType="active"></v-drag-list-box>
         </div>
         <div class="backlog-box">
           <div class="backlog-title">
@@ -51,8 +50,7 @@
                            :issueList="backlogSprint"
                            :groupName="{ name: 'activeSprintListDraggableGroup', pull: true, put: true }"
                            handle=".handle"
-                           sprintType="backlog"
-                           @endDraggable="endDraggable"></v-drag-list-box>
+                           sprintType="backlog"></v-drag-list-box>
         </div>
       </div>
       <v-issue-detail-box v-show="visibleSidebarRightDetail"
@@ -68,15 +66,12 @@ import sidebarSprintBox from './component/sidebarSprintBox.vue'
 import sprintDetail from './component/storyDetail'
 import dialogNewIssus from './component/dialogNewIssus'
 import { mapState } from 'vuex'
-import { sprintAxios } from '@/axios/index.js'
 
 export default {
   data() {
     return {
       visibleSprint: true, // 是否显示工作区issue-list
       dialogTableVisible: false, // 是否显示新增issue弹框
-      backlogSprintListLoading: false, // backlog数据loading
-      activeSprintListLoading: false, // 工作区数据loading
       dropObj: null // sprint列表拖动到左侧导航栏时的数据
     }
   },
@@ -87,8 +82,7 @@ export default {
     'v-add-issue-dialog-box': dialogNewIssus
   },
   mounted() {
-    this.getbacklogList()
-    this.getsprintList()
+    this.$store.dispatch('sprint/getAllSprintList')
   },
   computed: mapState({
     backlogSprint: state => state.sprint.backlogSprint,
@@ -109,40 +103,12 @@ export default {
     handleClose() {
       this.dialogTableVisible = false
     },
-    // 请求数据
-    endDraggable(obj) {
-
-    },
     dragleave(obj) {
       this.$set(obj, 'dropStatus', false)
     },
     dragover(e, obj) {
       e.preventDefault()
       this.$set(obj, 'dropStatus', true)
-    },
-    // 获取工作区列表数据
-    async getsprintList() {
-      this.activeSprintListLoading = true
-
-      sprintAxios.activeSprintList({ type: 'sprint' }).then(obj => {
-        this.$store.commit('sprint/ACTIVE_SPRINT_LIST', obj.issueList)
-
-        this.$nextTick(() => {
-          this.activeSprintListLoading = false
-        })
-      })
-    },
-    // 获取缓存区列表数据
-    async getbacklogList() {
-      this.backlogSprintListLoading = true
-
-      sprintAxios.backlogSprintList({ type: 'backlog' }).then(obj => {
-        this.$store.commit('sprint/BACKLOG_SPRINT_LIST', obj.issueList)
-
-        this.$nextTick(() => {
-          this.backlogSprintListLoading = false
-        })
-      })
     }
   }
 }

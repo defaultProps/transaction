@@ -1,10 +1,10 @@
 import todoList from '@/view/todoList/index.vue'
-import login from '@/view/login/'
-import manage from '@/view/manage/'
-import dashboard from '@/view/dashboard/'
-import initStore from '@/view/initStore/'
-import feature from '@/view/feature/'
-import product from '@/view/product/'
+import login from '@/view/login/index.vue'
+import manage from '@/view/manage/index.vue'
+import dashboard from '@/view/dashboard/index.vue'
+import initStore from '@/view/initStore/index.vue'
+import feature from '@/view/feature/index.vue'
+import product from '@/view/product/index.vue'
 
 /**
  * @meta: auth: 用户级别 0无需登录，1普通用户，2管理员， showheaderBar 是否显示左侧顶部栏

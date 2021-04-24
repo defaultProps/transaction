@@ -6,17 +6,15 @@
                :before-close="handleClose"
                :show-close="false"
                :append-to-body="true"
-               size="mini"
                top="40px"
                custom-class="dialogNewIssus"
-               width="50%">
+               width="800px">
       <h3 class="newissue-title">问题详情</h3>
       <el-form ref="form"
                :model="issueForm"
                :rules="rules"
                label-width="80px"
-               class="form"
-               size="small">
+               class="form">
         <el-form-item label="问题类型"
                       class="form-item">
           <el-tooltip content="工作不全是生活，生活也不全是工作。"
@@ -34,7 +32,7 @@
               <i :class="[v.icon]"
                  :style="{'color': v.color}"
                  class="iconfont"></i>
-              {{v.label}}
+              {{ v.label }}
             </el-option>
           </el-select>
           <div class="icon-prex">
@@ -89,14 +87,14 @@
                     placeholder="此Issue的详细描述"></el-input>
         </el-form-item>
       </el-form>
-      <span slot="footer"
-            class="dialog-footer">
+      <div slot="footer"
+           class="dialog-footer">
         <el-button size="small"
                    @click="handleClose()">取 消</el-button>
         <el-button type="primary"
                    size="small"
                    @click="dialogVisible = false">确 定</el-button>
-      </span>
+      </div>
     </el-dialog>
   </div>
 </template>
@@ -166,11 +164,14 @@ export default {
   .el-dialog__body {
     padding: 0;
   }
+  .el-dialog__footer {
+    padding: 10px;
+  }
   .newissue-title {
-    font-size: 16px;
-    font-weight: 600;
-    padding: 10px 10px;
     margin: 0;
+    padding: 10px 10px;
+    font-weight: 600;
+    font-size: 16px;
     border-bottom: 1px solid #e3e4e5;
   }
   .form {

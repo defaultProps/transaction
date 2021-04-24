@@ -15,6 +15,8 @@ export default {
     Mock.mock(protocol + 'sprints/getModuleList', 'post', req => api.sprints.getModuleList(JSON.parse(req.body)))
     Mock.mock(protocol + 'sprints/getProgressStateList', 'post', req => api.sprints.getProgressStateList(JSON.parse(req.body)))
     Mock.mock(protocol + 'sprints/updateSptintmoduleState', 'post', req => api.sprints.updateSptintmoduleState(JSON.parse(req.body)))
+    Mock.mock(protocol + 'sprints/updateIssueSort', 'post', req => api.sprints.updateIssueSort(JSON.parse(req.body)))
+    Mock.mock(protocol + 'sprints/updateIssueData', 'post', req => api.sprints.updateIssueData(JSON.parse(req.body)))
     Mock.mock(protocol + 'sprints/sprintIssueDetail', 'post', req => api.sprints.sprintIssueDetail(JSON.parse(req.body)))
     Mock.mock(protocol + 'sprints/thridPartyLinks', 'post', req => api.sprints.thridPartyLinks(JSON.parse(req.body)))
     Mock.mock(protocol + 'sprints/initLocalForageStore', 'post', req => api.sprints.initLocalForageStore(JSON.parse(req.body)))

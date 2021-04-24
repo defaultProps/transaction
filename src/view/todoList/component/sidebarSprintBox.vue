@@ -15,10 +15,10 @@
             class="scroll-style-none">
           <li v-for="list of progressStateList"
               :key="list.id"
-              :class="[list.dropStatus ? 'dropStatus': '', list.link]"
-              @dragleave="dragleave(list)"
-              @dragover.prevent="dragover($event, list)"
-              @drop="drop(list)">
+              :class="[list.dropping ? 'dropping': '', list.link]"
+              @dragleave="handleDragleave(list)"
+              @dragover.prevent="handleDragover(list)"
+              @drop="handleDrop(list)">
             <span :class="[list.link]">{{ list.name }}</span>
           </li>
         </ul>
@@ -42,10 +42,10 @@
             class="scroll-style-none module-ul">
           <li v-for="list of moduleList"
               :key="list.id"
-              :class="{'dropStatus': list.dropStatus}"
-              @dragleave="dragleave(list)"
-              @dragover.prevent="dragover($event, list)"
-              @drop="drop(list)">
+              :class="{'dropping': list.dropping}"
+              @dragleave="handleDragleave(list)"
+              @dragover.prevent="handleDragover(list)"
+              @drop="handleDrop(list)">
             <span>{{ list.name }}</span>
           </li>
         </ul>
@@ -75,23 +75,33 @@
             {{ p.name }}
           </li>
         </ul>
+        <div v-if="!thridPartyLinks"
+             class="empty-box">
+          <img src="../../../../static/image/noInfo.png"
+               alt="暂无数据"
+               class="noinfo">
+          暂无数据
+        </div>
       </div>
     </div>
-    <uxo-dialogNavigationModule :visibleDialogModule="visibleDialogModule"
-                                @closeVisibleDialogModule="closeVisibleDialogModule"></uxo-dialogNavigationModule>
+    <v-dialog-navigation-module-box :visibleDialogModule="visibleDialogModule"
+                                    @closeVisibleDialogModule="closeVisibleDialogModule"></v-dialog-navigation-module-box>
   </div>
 </template>
 <script>
 import dialogNavigationModule from './dialogNavigationModule'
 import { sprintAxios } from '@/axios'
+import { mapState } from 'vuex'
 
 export default {
+  components: {
+    'v-dialog-navigation-module-box': dialogNavigationModule
+  },
   data() {
     return {
       thridPartyLinks: [],
       moduleList: [],
       progressStateList: [],
-      loadingNav: false,
 
       visibleProgressState: true,
       visibleModule: true,
@@ -99,10 +109,11 @@ export default {
       visibleDialogModule: false // 模块类型 - 编辑弹框
     }
   },
-  components: {
-    'uxo-dialogNavigationModule': dialogNavigationModule
-  },
-  created() {
+
+  computed: mapState({
+    draggableObj: state => state.sprint.draggableObj
+  }),
+  mounted() {
     this.getThridPartyLinks()
     this.getModuleList()
     this.getProgressStateList()
@@ -112,7 +123,7 @@ export default {
     getProgressStateList() {
       sprintAxios.getProgressStateList().then(obj => {
         let sortVal = ['not-start', 'doing', 'finish', 'close']
-        let progressStateList = obj.progressStateList.map(v => ({ ...v, dropStatus: false, type: 'progressState' })) || []
+        let progressStateList = obj.progressStateList.map(v => ({ ...v, dropping: false, type: 'progressState' })) || []
 
         progressStateList.sort((a, b) => sortVal.indexOf(a.link) - sortVal.indexOf(b.link))
 
@@ -123,7 +134,7 @@ export default {
     },
     getModuleList() {
       sprintAxios.getModuleList().then(obj => {
-        this.moduleList = obj.moduleList.map(v => ({ ...v, dropStatus: false, type: 'module' })) || []
+        this.moduleList = obj.moduleList.map(v => ({ ...v, dropping: false, type: 'module' })) || []
         this.$store.commit('moduleList', this.moduleList)
         this.visibleModule = true
       })
@@ -141,24 +152,38 @@ export default {
       window.open(link)
     },
     getThridPartyLinks() {
-      this.loadingNav = true
-
       sprintAxios.thridPartyLinks().then(obj => {
         this.thridPartyLinks = obj.links
-        this.loadingNav = false
       })
     },
-    dragleave(obj) {
-      this.$set(obj, 'dropStatus', false)
+    handleDragleave(obj) {
+      this.$set(obj, 'dropping', false)
     },
-    dragover(e, obj) {
-      if (!obj.dropStatus) {
-        this.$set(obj, 'dropStatus', true)
+    handleDragover(obj) {
+      if (!obj.dropping) {
+        this.$set(obj, 'dropping', true)
       }
     },
-    drop(obj) {
-      this.$set(obj, 'dropStatus', false)
-      this.$emit('dropDownStatus', obj)
+    handleDrop(obj) {
+      this.$set(obj, 'dropping', false)
+      let params = null
+
+      if (obj.type === 'progressState') {
+        params = Object.assign({}, this.draggableObj, { moduleState: obj })
+
+        if (this.draggableObj.type === 'backlog') {
+          this.$message('缓存列表配置执行状态无效')
+          return
+        }
+      }
+
+      if (obj.type === 'module') {
+        params = Object.assign({}, this.draggableObj, { tag: obj })
+      }
+
+      sprintAxios.updateIssueData(params).then(() => {
+        this.$store.dispatch('sprint/updateIssueLocal', params)
+      })
     }
   }
 }
@@ -169,31 +194,29 @@ export default {
   overflow-y: scroll;
   border-right: 1px solid #0006;
   .nav-main {
+    position: relative;
     display: flex;
     flex-direction: column;
-    background: #fff;
+    box-sizing: border-box;
     height: 100%;
     text-align: left;
-    box-sizing: border-box;
-    position: relative;
+    background: #fff;
     .module {
       .module-title {
-        height: 34px;
-        box-sizing: border-box;
-        display: flex;
         position: sticky;
         top: 0px;
         z-index: 200;
-        justify-content: space-between;
+        display: flex;
         align-items: center;
+        justify-content: space-between;
         box-sizing: border-box;
+        height: 34px;
         padding: 3px 7px 3px 10px;
-        background: #409eff;
-        font-weight: 600;
         color: #fff;
-        user-select: none;
-        background: #3282b8;
+        font-weight: 600;
         font-size: 14px;
+        background: #3282b8;
+        user-select: none;
         .module-edit {
           padding: 3px 4px;
           color: #3282b8;
@@ -204,46 +227,45 @@ export default {
           li {
             user-select: none;
             &::before {
-              content: "";
               background: #0006;
+              content: "";
             }
           }
         }
         li {
-          background: #fff;
-          user-select: none;
-          height: 35px;
-          line-height: 35px;
-          border-bottom: 1px solid #f0f0f0;
-          font-size: 14px;
-          user-select: none;
-          box-sizing: border-box;
-          align-items: center;
-          text-indent: 10px;
           position: relative;
-          white-space: nowrap;
+          box-sizing: border-box;
+          height: 35px;
           overflow: hidden;
+          font-size: 14px;
+          line-height: 35px;
+          white-space: nowrap;
+          text-indent: 10px;
           text-overflow: ellipsis;
           word-break: break-all;
+          background: #fff;
+          border-bottom: 1px solid #f0f0f0;
           cursor: default;
-          &.dropStatus {
-            background: #ebeef5;
+          user-select: none;
+          &.dropping {
             color: #3282b8;
+            background: #ebeef5;
+
             &::before {
               background: #3282b8;
             }
           }
           &::before {
-            content: "";
             position: absolute;
+            top: 0;
             right: 0;
+            width: 3px;
             height: 100%;
             text-indent: -9999em;
-            top: 0;
-            width: 3px;
             background: #0006;
             border-top-left-radius: 5px;
             border-bottom-left-radius: 5px;
+            content: "";
           }
           &.not-start {
             &::before {
@@ -271,26 +293,25 @@ export default {
         ul {
           overflow-y: scroll;
           li {
-            font-size: 14px;
-            cursor: pointer;
             position: relative;
             margin: 2px 0;
+            font-size: 14px;
+            cursor: pointer;
             &::after {
-              content: "";
-              width: 100%;
-              height: 2px;
               position: absolute;
               bottom: 0;
               left: 0;
-              background: #0065ff; /*当前标签继承的文字颜色，这里让伪元素的背景色与父元素的文字颜色相同*/
-              transition: all 0.35s;
-              transform-origin: left;
+              width: 100%;
+              height: 2px;
+              background: #0065ff;
               transform: scale(0);
+              transform-origin: left;
+              transition: all 0.35s;
+              content: "";
             }
             &:hover {
-              background: #f6f6f6;
-              // text-decoration: underline;
               color: #0065ff;
+              background: #f6f6f6;
               &::after {
                 transform: scale(1);
               }
@@ -301,6 +322,19 @@ export default {
             }
           }
         }
+      }
+    }
+    .empty {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 200px;
+      overflow: hidden;
+      color: #999;
+      font-size: 12px;
+      img {
+        height: 47px;
       }
     }
   }

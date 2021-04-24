@@ -29,6 +29,12 @@ export const sprintAxios = {
   // issue设置模块类型、执行状态（除了close）
   updateSptintmoduleState: data => Axios({ method: 'post', url: protocol + 'sprints/updateSptintmoduleState', data }),
 
+  // 排序
+  updateIssueSort: data => Axios({ method: 'post', url: protocol + 'sprints/updateIssueSort', data }),
+
+  // 修改issue数据
+  updateIssueData: data => Axios({ method: 'post', url: protocol + 'sprints/updateIssueData', data }),
+
   // 获取模块类型列表
   getModuleList: data => Axios({ method: 'post', url: protocol + 'sprints/getModuleList', data }),
 

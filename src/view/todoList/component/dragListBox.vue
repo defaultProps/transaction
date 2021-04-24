@@ -10,15 +10,15 @@
                      tag="ul"
                      draggable=".drag-item"
                      ghost-class="ghost"
+                     @change="changeDraggableItem"
                      @start="startDraggable"
-                     @end="endDraggable"
                      @add="addDraggable">
       <li v-for="issue of draggbleList"
           :key="issue.id"
           :data-key="issue.id"
           class="drag-item sprint-list"
           @contextmenu.prevent="handleContextmenuFn(issue, $event)"
-          @click="handleDraggleList(issue)">
+          @click="handleClickIssue(issue)">
         <span :class="[issue.issueType, 'type']">
           <i :class="[filterTypeIcon(issue.issueType), 'iconfont']"
              :style="{color: filterTypeColor(issue.issueType)}"></i>
@@ -36,7 +36,7 @@
                    class="modules-type">
           {{ issue.tag.name }}
         </el-button>
-        <el-button v-if="issue.moduleState"
+        <el-button v-if="issue.type ==='active'"
                    :class="[issue.moduleState.link, 'info-status']"
                    type="text"
                    size="medium">{{ issue.moduleState.name }}</el-button>
@@ -95,7 +95,6 @@ export default {
   computed: mapState({
     moduleList: state => state.story.moduleList,
     progressStateList: state => state.story.progressStateList,
-
     dragOptions() {
       return {
         animation: 200,
@@ -107,14 +106,6 @@ export default {
   }),
   watch: {
     issueList: "initDragListData"
-    // dropObj: {
-    //   handler(v) {
-    //     if (v && this.oldIndex >= 0) {
-    //       this.handleUpdateSprintModuleState(v)
-    //     }
-    //   },
-    //   immediate: true
-    // }
   },
   filters: {
     filterprogressState(v) {
@@ -122,6 +113,42 @@ export default {
     }
   },
   methods: {
+    // 排序改变
+    changeDraggableItem(obj) {
+      if (obj.moved) {
+        if (this.sprintType === 'active') {
+          // 确保与add-draggable冲突
+          const { oldIndex, newIndex } = obj.moved
+
+          let params = [
+            {
+              id: this.draggbleList[newIndex].id,
+              title: this.draggbleList[newIndex].title,
+              position: newIndex
+            },
+            {
+              id: this.draggbleList[oldIndex].id,
+              title: this.draggbleList[newIndex].title,
+              position: oldIndex
+            }
+          ]
+
+          sprintAxios.updateIssueSort(params).then(hasSort => {
+            console.log(hasSort)
+          }).catch(err => {
+            console.log(err)
+          })
+        }
+
+        if (this.sprintType === 'backlog') {
+          if (this.draggbleList.length === this.issueList.length) {
+
+          }
+        }
+      }
+
+
+    },
     initDragListData() {
       this.contextMenuTargets = []
       this.draggbleList = JSON.parse(JSON.stringify(this.issueList))
@@ -207,51 +234,41 @@ export default {
     handleContextmenuFn(selectIssue, event) {
       this.$store.dispatch('sprint/selectActiveIssue', selectIssue)
 
+      let editContextMenuItem = {
+        label: "编辑",
+        icon: "el-icon-edit",
+        disabled: false
+      }
+
+      let executionStatusContextItem = {
+        label: "执行状态",
+        icon: "el-icon-edit",
+        children: this.progressStateList.map(item => ({ label: item.name, value: item.link, onClick: () => this.handleClickimplement(item, selectIssue) }))
+      }
+
+      let moduleStatusContextMenuItem = {
+        label: "模型状态",
+        icon: "el-icon-edit",
+        children: this.moduleList.map(item => ({ label: item.name, value: item.link, onClick: () => this.handleClickimplement(item, selectIssue) }))
+      }
+
+      let moveExecutionStatusContextItem = {
+        label: "拖动到执行列表",
+        icon: "el-icon-finished",
+        onClick: () => this.moveExecutionList(selectIssue)
+      }
+
+      let deleteIssueContextItem = {
+        label: "移除",
+        icon: "el-icon-delete"
+      }
+
       let contextmenuItem = []
 
       if (selectIssue.type === 'active') {
-        contextmenuItem = [
-          {
-            label: "编辑",
-            icon: "el-icon-edit",
-            disabled: false
-          },
-          {
-            label: "执行状态",
-            disabled: false,
-            children: this.progressStateList.map(item => ({ label: item.name, value: item.link, onClick: () => this.handleClickimplement(item) }))
-          },
-          {
-            label: "模型状态",
-            disabled: false,
-            customClass: 'contextmenu-subMenu',
-            children: this.moduleList.map(item => ({ label: item.name, value: item.link, onClick: () => this.handleClickimplement(item) }))
-          }
-        ]
+        contextmenuItem = [editContextMenuItem, executionStatusContextItem, moduleStatusContextMenuItem, deleteIssueContextItem]
       } else {
-        contextmenuItem = [
-          {
-            label: "编辑",
-            icon: "el-icon-edit",
-            disabled: false
-          },
-          {
-            label: "拖动到执行列表",
-            icon: "el-icon-finished",
-            disabled: false
-          },
-          {
-            label: "执行状态",
-            disabled: false,
-            children: this.progressStateList.map(item => ({ label: item.name, value: item.link, onClick: () => this.handleClickimplement(item) }))
-          },
-          {
-            label: "模型状态",
-            disabled: false,
-            customClass: 'contextmenu-subMenu',
-            children: this.moduleList.map(item => ({ label: item.name, value: item.link, onClick: () => this.handleClickimplement(item) }))
-          }
-        ]
+        contextmenuItem = [editContextMenuItem, executionStatusContextItem, moduleStatusContextMenuItem, moveExecutionStatusContextItem, deleteIssueContextItem]
       }
 
       this.$contextmenu({
@@ -264,14 +281,16 @@ export default {
 
       return false
     },
+    // 拖动到执行列表
+    moveExecutionList(issue) { },
     handleClickimplement(obj) {
-      this.draggbleList.forEach((item, index) => {
-        if (item.id === this.selectKey) {
-          this.oldIndex = index
-          this.$store.dispatch('sprint/selectActiveIssue', item)
-          this.handleUpdateSprintModuleState(obj)
-        }
-      })
+      // this.draggbleList.forEach((item, index) => {
+      //   if (item.id === this.selectKey) {
+      //     this.oldIndex = index
+      //     this.$store.dispatch('sprint/selectActiveIssue', item)
+      //     this.handleUpdateSprintModuleState(obj)
+      //   }
+      // })
     },
     sortable(type = 'executiveMode') {
       if (type === 'executiveMode') {
@@ -283,18 +302,23 @@ export default {
         })
       }
     },
-    handleDraggleList(item) {
+    handleClickIssue(item) {
       this.$store.dispatch('sprint/selectActiveIssue', item)
     },
-    startDraggable(evt) {
-      this.oldIndex = evt.oldIndex
-      this.$store.commit('sprintType', this.sprintType)
+    startDraggable(event) {
+      this.$store.commit('sprint/DRAGGABLEOBJ', this.draggbleList[event.oldIndex])
     },
-    endDraggable(v) {
-      this.$emit('endDraggable', v)
-    },
-    addDraggable(v) {
+    addDraggable(event) {
+      let addIssueObj = this.draggbleList[event.newIndex]
+      let params = Object.assign(addIssueObj, { type: addIssueObj.type === 'backlog' ? 'active' : 'backlog', moduleState: this.progressStateList[0] })
 
+      sprintAxios.updateIssueData(params).then(hasAddIssue => {
+        if (hasAddIssue) {
+          this.$store.dispatch('sprint/getAllSprintList')
+        }
+      }).catch((err) => {
+        console.log(err)
+      })
     },
     stylelevelClass(v) {
       let result

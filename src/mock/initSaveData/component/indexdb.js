@@ -3,9 +3,9 @@ import localforage from 'localforage';
 import { initLocalForageStore } from './indexdb/index'
 
 // 设置响应时间， 与实操更加接近
-Mock.setup({
-  timeout: '300-1500'
-})
+// Mock.setup({
+//   timeout: '10-20'
+// })
 
 const sprints = localforage.createInstance({
   name: 'todo',
@@ -22,11 +22,6 @@ const linkStore = localforage.createInstance({
   storeName: 'links'
 })
 
-// const issueTypeStore = localforage.createInstance({
-//   name: 'todo',
-//   storeName: 'issue-type'
-// })
-
 const progressStateStore = localforage.createInstance({
   name: 'todo',
   storeName: 'progressState'
@@ -39,11 +34,49 @@ const mapAxiosFieldToFunc = new Map([
   ['backlogSprintList', getbacklogSprintList],
   ['closeActiveSprintIssue', closeActiveSprintIssue],
   ['updateSptintmoduleState', updateSptintmoduleState],
+  ['updateIssueSort', updateIssueSort],
+  ['updateIssueData', updateIssueData],
   ['getModuleList', getModuleList],
   ['getProgressStateList', getProgressStateList],
   ['initLocalForageStore', initLocalForageStore],
   ['getdashboardList', getdashboardList]
 ])
+
+
+function updateIssueSort(issueList) {
+  let promise = issue => new Promise(async resolve => {
+    await sprints.getItem(issue.id).then(async item => {
+      if (item) {
+        await sprints.setItem(issue.id, Object.assign({}, item, { position: issue.position }))
+        resolve()
+      }
+    })
+  })
+
+  return Promise.all(issueList.map(item => promise(item))).then(() => {
+    return {
+      data: {
+        success: true
+      },
+      status: 200
+    }
+  })
+}
+
+function updateIssueData(updatedIssue) {
+  return new Promise(async resolve => {
+    await sprints.getItem(updatedIssue.id).then(async issue => {
+      if (issue) {
+        await sprints.setItem(updatedIssue.id, updatedIssue)
+
+        resolve({
+          status: 200,
+          data: true
+        })
+      }
+    })
+  })
+}
 
 function getdashboardList(params) {
   return {

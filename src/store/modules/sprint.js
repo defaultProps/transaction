@@ -1,3 +1,5 @@
+import { sprintAxios } from '@/axios'
+
 export default {
   namespaced: true,
   state: {
@@ -5,7 +7,9 @@ export default {
     backlogSprint: [], // backlog数据列表
     activeSprintList: [], // 工作区数据列表
     visibleSideBarLeft: true, // 显示左侧列表
-    visibleSidebarRightDetail: false // 显示右侧issue详情
+    visibleSidebarRightDetail: false, // 显示右侧issue详情
+
+    draggableObj: null // 正在拖拽的issue
   },
   mutations: {
     BACKLOG_SPRINT_LIST: (state, val) => {
@@ -26,18 +30,39 @@ export default {
     hasDraggle: (state, data) => {
       state.hasDraggle = data
     },
-    sprintType: (state, data) => {
-      state.sprintType = data
-    },
     progressStateList: (state, data) => {
       state.progressStateList = data
     },
     moduleList: (state, data) => {
       state.moduleList = data
+    },
+    DRAGGABLEOBJ: (state, val) => {
+      state.draggableObj = val
     }
   },
   actions: {
-    selectActiveIssue ({ commit }, obj) {
+    // 获取所有sprintList
+    getAllSprintList({ commit }) {
+      sprintAxios.backlogSprintList({ type: 'backlog' }).then(obj => {
+        obj.issueList.sort((prev, next) => prev.position - next.position)
+        commit('BACKLOG_SPRINT_LIST', obj.issueList)
+      })
+      sprintAxios.activeSprintList({ type: 'sprint' }).then(obj => {
+        obj.issueList.sort((prev, next) => prev.position - next.position)
+        commit('ACTIVE_SPRINT_LIST', obj.issueList)
+      })
+    },
+    // 更新本地issue数据，减少一次请求列表
+    updateIssueLocal({ commit, state }, issue) {
+      let targetSprintList = issue.type === 'active' ? state.activeSprintList : state.backlogSprint
+      let newSprintList = targetSprintList.map(item => item.id === issue.id ? issue : item)
+
+      commit(
+        issue.type === 'active' ? 'ACTIVE_SPRINT_LIST' : 'BACKLOG_SPRINT_LIST',
+        newSprintList
+      )
+    },
+    selectActiveIssue({ commit }, obj) {
       let allDraggableList = document.querySelectorAll(`.drag-item[data-key]`) || []
 
       allDraggableList.forEach(el => {
