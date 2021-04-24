@@ -1,5 +1,4 @@
 import todoList from '@/view/todoList/index.vue'
-import thus from '@/view/thus/'
 import login from '@/view/login/'
 import manage from '@/view/manage/'
 import dashboard from '@/view/dashboard/'
@@ -65,15 +64,6 @@ let routes = [
     component: feature,
     meta: {
       title: '功能列表',
-      auth: 0,
-      showheaderBar: true
-    }
-  },
-  {
-    path: "/thus",
-    component: thus,
-    meta: {
-      title: "兴趣使然的模块",
       auth: 0,
       showheaderBar: true
     }

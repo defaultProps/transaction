@@ -3,8 +3,7 @@
     <v-sprint-header-box v-show="draggbleList.length && sprintType =='active'"
                          class="issue-header"
                          @sortable="sortable"></v-sprint-header-box>
-    <v-draggable-box v-show="draggbleList.length"
-                     v-model="draggbleList"
+    <v-draggable-box v-model="draggbleList"
                      v-bind="dragOptions"
                      :group="groupName"
                      class="backlog-list"
@@ -45,6 +44,9 @@
     </v-draggable-box>
     <div v-if="draggbleList.length === 0"
          class="no-draggleList">
+      <img src="../../../../static/image/noInfo.png"
+           alt="暂无数据"
+           class="noinfo">
       <div class="no-info">暂无事务</div>
     </div>
   </div>
@@ -337,10 +339,17 @@ export default {
     top: 0;
     right: 0;
     left: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     height: 100px;
+    img {
+      width: 60px;
+    }
     .no-info {
-      height: 100%;
-      line-height: 100px;
+      font-size: 12px;
+      color: #999;
       text-align: center;
       user-select: none;
     }
@@ -407,14 +416,14 @@ export default {
     .modules-type {
       padding: 3px 5px;
       color: #fff;
-      font-size: 14px;
+      font-size: 13px;
       background: rgba(0, 0, 0, 0.4);
       border-radius: 4px;
     }
     .info-status {
       padding: 3px 5px;
       color: #ffffff;
-      font-size: 14px;
+      font-size: 13px;
       border-radius: 4px;
       &.not-start {
         background-color: #00875a;

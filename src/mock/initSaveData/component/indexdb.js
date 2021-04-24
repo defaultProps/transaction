@@ -17,6 +17,11 @@ const moduleSprintStore = localforage.createInstance({
   storeName: 'modules'
 })
 
+const linkStore = localforage.createInstance({
+  name: 'todo',
+  storeName: 'links'
+})
+
 // const issueTypeStore = localforage.createInstance({
 //   name: 'todo',
 //   storeName: 'issue-type'
@@ -30,6 +35,7 @@ const progressStateStore = localforage.createInstance({
 const mapAxiosFieldToFunc = new Map([
   ['activeSprintList', getactiveSprintList],
   ['sprintIssueDetail', getsprintIssueDetail],
+  ['thridPartyLinks', getthridPartyLinks],
   ['backlogSprintList', getbacklogSprintList],
   ['closeActiveSprintIssue', closeActiveSprintIssue],
   ['updateSptintmoduleState', updateSptintmoduleState],
@@ -155,6 +161,30 @@ function closeActiveSprintIssue(params) {
           hasCloseActiveSprintIssue: 'success'
         }
       })
+    })
+  })
+}
+
+function getthridPartyLinks() {
+  return new Promise(async resolve => {
+    let links = [];
+    let keys = [];
+
+    await linkStore.keys().then(key => {
+      keys = key;
+    })
+
+    for (let i = 0; i < keys.length; i++) {
+      await linkStore.getItem(keys[i]).then(value => {
+        links.push(value)
+      })
+    }
+
+    resolve({
+      status: 200,
+      data: {
+        links
+      }
     })
   })
 }

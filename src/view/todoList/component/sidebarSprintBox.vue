@@ -67,7 +67,7 @@
         </div>
         <ul v-show="visiblenavgation"
             class="scroll-style-none">
-          <li v-for="p of thusList"
+          <li v-for="p of thridPartyLinks"
               :key="p.name"
               :title="p.name"
               @click="handlelinkClick(p.link)">
@@ -83,12 +83,12 @@
 </template>
 <script>
 import dialogNavigationModule from './dialogNavigationModule'
-import { sprintAxios, thusAxios } from '@/axios'
+import { sprintAxios } from '@/axios'
 
 export default {
   data() {
     return {
-      thusList: [],
+      thridPartyLinks: [],
       moduleList: [],
       progressStateList: [],
       loadingNav: false,
@@ -103,9 +103,9 @@ export default {
     'uxo-dialogNavigationModule': dialogNavigationModule
   },
   created() {
-    this.getThusList()
-    this.getModuleList();
-    this.getProgressStateList();
+    this.getThridPartyLinks()
+    this.getModuleList()
+    this.getProgressStateList()
   },
   methods: {
     // 获取执行状态列表
@@ -116,23 +116,23 @@ export default {
 
         progressStateList.sort((a, b) => sortVal.indexOf(a.link) - sortVal.indexOf(b.link))
 
-        this.progressStateList = progressStateList;
-        this.$store.commit('progressStateList', progressStateList);
-        this.visibleProgressState = true;
+        this.progressStateList = progressStateList
+        this.$store.commit('progressStateList', progressStateList)
+        this.visibleProgressState = true
       })
     },
     getModuleList() {
       sprintAxios.getModuleList().then(obj => {
         this.moduleList = obj.moduleList.map(v => ({ ...v, dropStatus: false, type: 'module' })) || []
-        this.$store.commit('moduleList', this.moduleList);
-        this.visibleModule = true;
+        this.$store.commit('moduleList', this.moduleList)
+        this.visibleModule = true
       })
     },
     closeVisibleDialogModule() {
-      this.visibleDialogModule = false;
+      this.visibleDialogModule = false
     },
     handleClickModuleDialog() {
-      this.visibleDialogModule = true;
+      this.visibleDialogModule = true
     },
     handleClickNavgationDialog() {
 
@@ -140,13 +140,12 @@ export default {
     handlelinkClick(link) {
       window.open(link)
     },
-    getThusList() {
-      this.loadingNav = true;
-      thusAxios.getthusList().then(v => {
-        setTimeout(() => {
-          this.thusList = v
-          this.loadingNav = false;
-        }, 600);
+    getThridPartyLinks() {
+      this.loadingNav = true
+
+      sprintAxios.thridPartyLinks().then(obj => {
+        this.thridPartyLinks = obj.links
+        this.loadingNav = false
       })
     },
     dragleave(obj) {

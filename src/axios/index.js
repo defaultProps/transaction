@@ -11,10 +11,16 @@ export const dashboardAxios = {
 }
 
 export const sprintAxios = {
+  // 获取附加链接
+  thridPartyLinks: data => Axios({ method: 'post', url: protocol + 'sprints/thridPartyLinks', data }),
+
+  // 获取sprint详情
   sprintIssueDetail: data => Axios({ method: 'post', url: protocol + 'sprints/sprintIssueDetail', data }),
 
+  // 获取缓存中sprint
   backlogSprintList: data => Axios({ method: 'post', url: protocol + 'sprints/backlogSprintList', data }),
 
+  // 获取工作台列表
   activeSprintList: data => Axios({ method: 'post', url: protocol + 'sprints/activeSprintList', data }),
 
   // activeSprint执行状态设置为close
@@ -33,12 +39,7 @@ export const sprintAxios = {
   initLocalForageStore: data => Axios({ method: 'post', url: protocol + 'sprints/initLocalForageStore', data })
 }
 
-export const thusAxios = {
-  getthusList: params => Axios({ method: 'post', url: protocol + 'thus/list', data: params })
-}
-
 export default {
   dashboardAxios,
-  sprintAxios,
-  thusAxios
+  sprintAxios
 }

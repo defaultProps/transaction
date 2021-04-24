@@ -126,9 +126,8 @@ export default {
       let day = date.getDay() < 9 ? `0${date.getDay()}` : date.getDay()
       let hour = date.getHours() < 10 ? `0${date.getHours()}` : date.getHours()
       let minute = date.getMinutes() < 10 ? `0${date.getMinutes()}` : date.getMinutes()
-      let seconds = date.getSeconds() < 10 ? `0${date.getSeconds()}` : date.getSeconds()
 
-      return `${year}/${month}/${day} ${hour}:${minute}:${seconds}`
+      return `${year}-${month}-${day} ${hour}:${minute}`
     }
   },
   methods: {
