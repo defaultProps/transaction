@@ -165,8 +165,9 @@ export default {
       }
     },
     handleDrop(obj) {
+      let params = {}
+
       this.$set(obj, 'dropping', false)
-      let params = null
 
       if (obj.type === 'progressState') {
         params = Object.assign({}, this.draggableObj, { moduleState: obj })
@@ -176,6 +177,8 @@ export default {
           return
         }
       }
+
+      console.log(this.draggableObj)
 
       if (obj.type === 'module') {
         params = Object.assign({}, this.draggableObj, { tag: obj })

@@ -112,15 +112,14 @@ export default {
       }
     }
     .avatar-circle {
-      border: 1px solid #fff;
       display: inline-block;
-      border-radius: 8px;
       width: 100px;
-      background-image: url("https://dss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=1061311188,2230294750&fm=26&gp=0.jpg");
       height: 70px;
+      background-image: url("https://dss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=1061311188,2230294750&fm=26&gp=0.jpg");
+      border: 1px solid #fff;
+      border-radius: 8px;
       cursor: pointer;
       user-select: none;
-      background: #e3e4e5;
     }
   }
   .uxo-radio {

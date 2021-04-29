@@ -186,8 +186,8 @@ export default {
       }
       .icon-prex {
         position: absolute;
-        left: 25px;
         top: 0;
+        left: 25px;
       }
     }
   }

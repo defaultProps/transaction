@@ -11,12 +11,12 @@ export default {
     thridPartyLinks: params => controller[env]('thridPartyLinks', params),
     sprintIssueDetail: params => controller[env]('sprintIssueDetail', params),
     activeSprintList: params => controller[env]('activeSprintList', params),
-    closeActiveSprintIssue: params => controller[env]('closeActiveSprintIssue', params),
     getModuleList: params => controller[env]('getModuleList', params),
     getProgressStateList: params => controller[env]('getProgressStateList', params),
     updateSptintmoduleState: params => controller[env]('updateSptintmoduleState', params),
     updateIssueSort: params => controller[env]('updateIssueSort', params),
     updateIssueData: params => controller[env]('updateIssueData', params),
+    removeIssue: params => controller[env]('removeIssue', params),
     backlogSprintList: params => controller[env]('backlogSprintList', params),
     initLocalForageStore: params => controller[env]('initLocalForageStore', params)
   }

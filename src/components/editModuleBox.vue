@@ -146,7 +146,6 @@ export default {
       background: transparent;
       border: 1px solid rgba(0, 0, 0, 0.2);
       border-radius: 3px;
-      overflow: hidden;
       cursor: pointer;
     }
     .content {
@@ -154,21 +153,21 @@ export default {
     }
     .empty-text {
       height: 100px;
+      color: #606266;
       line-height: 100px;
       text-align: center;
-      color: #606266;
     }
   }
   .input-node {
     padding: 0 0 0 1px;
     .el-input__inner {
-      padding: 0 0 0 3px;
-      border: 0;
       height: 25px;
-      line-height: 25px;
+      padding: 0 0 0 3px;
       color: #172b4d;
       font-size: 14px;
+      line-height: 25px;
       background: transparent;
+      border: 0;
       border: 1px solid rgba(0, 0, 0, 0.2);
       border-radius: 3px;
       border-bottom-right-radius: 0;
@@ -181,27 +180,27 @@ export default {
     }
   }
   .save-options {
-    font-size: 14px;
     position: absolute;
     right: 0px;
     bottom: -25px;
-    border: 1px solid rgba(0, 0, 0, 0.2);
-    border-top: 0;
-    height: 25px;
-    width: 50px;
-    background: transparent;
     display: flex;
     align-items: center;
     justify-content: space-around;
+    width: 50px;
+    height: 25px;
+    font-size: 14px;
+    background: transparent;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-top: 0;
     button {
-      padding: 3px;
       margin: 0;
+      padding: 3px;
       font-size: 13px;
       background: rgba(0, 0, 0, 0.2);
     }
     .saved {
-      background: #e6a23c;
       color: #fff;
+      background: #e6a23c;
     }
   }
 }

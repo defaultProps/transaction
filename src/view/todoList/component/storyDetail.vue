@@ -191,15 +191,15 @@ export default {
   position: relative;
   width: 300px;
   height: 100%;
-  border-left: 1px solid rgba(16, 22, 26, 0.3);
   color: #172b4d;
   font-size: 14px;
+  border-left: 1px solid rgba(16, 22, 26, 0.3);
   user-select: none;
   .header-box {
     height: 30px;
+    overflow: hidden;
     line-height: 30px;
     background-color: #f4f5f7;
-    overflow: hidden;
     .close-btn {
       float: right;
       margin-right: 10px;

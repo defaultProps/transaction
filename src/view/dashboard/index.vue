@@ -110,28 +110,28 @@ export default {
 </style>
 <style lang="scss" scoped>
 #dashboard {
+  box-sizing: border-box;
   min-width: 1200px;
   margin: 10px auto;
-  overflow: scroll;
   padding: 10px 30px;
-  box-sizing: border-box;
+  overflow: scroll;
   .container-dashboard {
     display: grid;
-    grid-template-columns: repeat(auto-fill, 1200px);
-    grid-template-rows: repeat(4, 250px);
     grid-row-gap: 20px;
     grid-column-gap: 20px;
+    grid-template-rows: repeat(4, 250px);
+    grid-template-columns: repeat(auto-fill, 1200px);
     justify-content: center;
   }
   .uxo-grid {
     display: inline-block;
-    background: #f4f5f7;
     box-sizing: border-box;
+    background: #f4f5f7;
     border-radius: 3px;
     .highCharts {
+      box-sizing: border-box;
       width: calc(100% - 350px);
       height: 100%;
-      box-sizing: border-box;
     }
   }
 }
@@ -139,8 +139,8 @@ export default {
   position: absolute;
   right: 10px;
   bottom: 10px;
-  padding: 10px;
   display: flex;
+  padding: 10px;
   a {
     margin: 0 10px;
     color: #333333;

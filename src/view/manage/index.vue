@@ -53,9 +53,9 @@ export default {
     width: 1200px;
     margin: 0 auto;
     h2 {
-      text-indent: 10px;
-      padding-bottom: 10px;
       margin-top: 0;
+      padding-bottom: 10px;
+      text-indent: 10px;
       border-bottom: 1px solid #e1e4e8;
     }
   }

@@ -62,6 +62,28 @@ export default {
         newSprintList
       )
     },
+    removeIssueItem({ commit, state }, issue) {
+      let targetSprintList = JSON.parse(JSON.stringify(issue.type === 'active' ? state.activeSprintList : state.backlogSprint))
+      let index = targetSprintList.findIndex(item => item.id === issue.id)
+
+      if (index >= 0) {
+        targetSprintList.splice(index, 1)
+
+        commit(
+          issue.type === 'active' ? 'ACTIVE_SPRINT_LIST' : 'BACKLOG_SPRINT_LIST',
+          targetSprintList
+        )
+      }
+    },
+    // 更新编辑后的issue数据
+    updateIssueData({ commit, state }, obj) {
+      let issueList = obj.type === 'active' ? state.activeSprintList : state.backlogSprint
+      commit(
+        obj.type === 'active' ? 'ACTIVE_SPRINT_LIST' : 'BACKLOG_SPRINT_LIST',
+        issueList.map(item => item.id === obj.id ? obj : item)
+      )
+      commit('SET_ACTICEISSUE', obj)
+    },
     selectActiveIssue({ commit }, obj) {
       let allDraggableList = document.querySelectorAll(`.drag-item[data-key]`) || []
 

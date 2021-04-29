@@ -23,9 +23,6 @@ export const sprintAxios = {
   // 获取工作台列表
   activeSprintList: data => Axios({ method: 'post', url: protocol + 'sprints/activeSprintList', data }),
 
-  // activeSprint执行状态设置为close
-  closeActiveSprintIssue: data => Axios({ method: 'post', url: protocol + 'sprints/closeActiveSprintIssue', data }),
-
   // issue设置模块类型、执行状态（除了close）
   updateSptintmoduleState: data => Axios({ method: 'post', url: protocol + 'sprints/updateSptintmoduleState', data }),
 
@@ -34,6 +31,9 @@ export const sprintAxios = {
 
   // 修改issue数据
   updateIssueData: data => Axios({ method: 'post', url: protocol + 'sprints/updateIssueData', data }),
+
+  // 移除issue
+  removeIssue: data => Axios({ method: 'post', url: protocol + 'sprints/removeIssue', data }),
 
   // 获取模块类型列表
   getModuleList: data => Axios({ method: 'post', url: protocol + 'sprints/getModuleList', data }),

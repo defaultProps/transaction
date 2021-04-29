@@ -1,4 +1,3 @@
-/*! normalize.css v3.0.3 | MIT License | github.com/necolas/normalize.css */
 * {
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
@@ -36,22 +35,22 @@ b, strong {
 dfn {
   font-style: italic
 }
-h1 {
+h1 { margin: .67em 0;
   font-size: 2em;
-  margin: .67em 0
+  
 }
 mark {
+  color: #000;
   background: #ff0;
-  color: #000
 }
 small {
   font-size: 80%
 }
 sub, sup {
+  position: relative;
   font-size: 75%;
   line-height: 0;
-  position: relative;
-  vertical-align: baseline
+  vertical-align: baseline;
 }
 sup {
   top: -.5em
@@ -77,13 +76,14 @@ p {
   padding: 0
 }
 code, kbd, pre, samp {
-  font-family: monospace, monospace;
   font-size: 1em;
+  font-family: monospace, monospace;
 }
 button, input, optgroup, select, textarea {
+  margin: 0;
   color: inherit;
   font: inherit;
-  margin: 0
+  
 }
 button {
   overflow: visible;
@@ -93,15 +93,15 @@ button, select {
   text-transform: none
 }
 button, html input[type=button], input[type=reset], input[type=submit] {
+  cursor: pointer;
   -webkit-appearance: button;
-  cursor: pointer
 }
 button[disabled], html input[disabled] {
   cursor: default
 }
 button::-moz-focus-inner, input::-moz-focus-inner {
+  padding: 0;
   border: 0;
-  padding: 0
 }
 input {
   line-height: normal;
@@ -115,40 +115,40 @@ input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer
   height: auto
 }
 input[type=search] {
+  box-sizing: content-box;
   -webkit-appearance: textfield;
-  box-sizing: content-box
 }
 input[type=search]::-webkit-search-cancel-button, input[type=search]::-webkit-search-decoration {
   -webkit-appearance: none
 }
 :-moz-placeholder {
   color: #aeaeae !important;
-  opacity: 1;
   font-weight: 300 !important;
+  opacity: 1;
 }
 ::-moz-placeholder {
   color: #aeaeae;
-  opacity: 1;
   font-weight: 300 !important;
+  opacity: 1;
 }
 input:-ms-input-placeholder {
   color: #aeaeae;
-  opacity: 1;
   font-weight: 300 !important;
+  opacity: 1;
 }
 input::-webkit-input-placeholder {
   color: #aeaeae;
-  opacity: 1;
   font-weight: 300 !important;
+  opacity: 1;
 }
 fieldset {
-  border: 1px solid silver;
   margin: 0 2px;
-  padding: .35em .625em .75em
+  padding: .35em .625em .75em;
+  border: 1px solid silver;
 }
 legend {
+  padding: 0;
   border: 0;
-  padding: 0
 }
 textarea {
   overflow: auto
@@ -176,13 +176,13 @@ ul, ol, li {
 }
 a {
   color: #666;
-  background-color: transparent;
   text-decoration: none;
+  background-color: transparent;
   outline: 0;
 }
 a:active, a:hover {
-  outline: 0;
   text-decoration: none;
+  outline: 0;
 }
 input[type=search]::-ms-clear {
   display: none;
@@ -215,14 +215,14 @@ input[type=search]::-ms-clear {
   height: 3px;
 }
 .scroll-style-theme1::-webkit-scrollbar-thumb {
-    border-radius: 10px;
-    box-shadow: inset 0 0 5px rgba(0,0,0,0.8);
-    background: #f4f5f7;
+  background: #f4f5f7;
+  border-radius: 10px;
+  box-shadow: inset 0 0 5px rgba(0,0,0,0.8);
 }
 .scroll-style-theme1::-webkit-scrollbar-track {
-  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.1);
-  border-radius: 10px;
   background: #ededed;
+  border-radius: 10px;
+  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.1);
 }
 
 .scroll-style-none::-webkit-scrollbar {
@@ -244,4 +244,15 @@ a:hover {
 }
 a.done {
   text-decoration: line-through;
+}
+
+/* 重置element提示信息弹框*/
+.transaction-message-box-customClass {
+  border: none;
+}
+.transaction-message-box-customClass .el-message-box__header {
+  background-color: #205081;
+}
+.transaction-message-box-customClass .el-message-box__header .el-message-box__title {
+  color: #fff;
 }

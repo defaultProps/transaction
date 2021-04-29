@@ -32,15 +32,30 @@ const mapAxiosFieldToFunc = new Map([
   ['sprintIssueDetail', getsprintIssueDetail],
   ['thridPartyLinks', getthridPartyLinks],
   ['backlogSprintList', getbacklogSprintList],
-  ['closeActiveSprintIssue', closeActiveSprintIssue],
   ['updateSptintmoduleState', updateSptintmoduleState],
   ['updateIssueSort', updateIssueSort],
   ['updateIssueData', updateIssueData],
+  ['removeIssue', removeIssue],
   ['getModuleList', getModuleList],
   ['getProgressStateList', getProgressStateList],
   ['initLocalForageStore', initLocalForageStore],
   ['getdashboardList', getdashboardList]
 ])
+
+function removeIssue(issueId) {
+  return new Promise(async resolve => {
+    await sprints.getItem(issueId).then(async issue => {
+      if (issue) {
+        await sprints.setItem(issueId, Object.assign({}, issue, { isDelete: true }))
+
+        resolve({
+          status: 200,
+          data: true
+        })
+      }
+    })
+  })
+}
 
 function updateIssueSort(issueList) {
   let promise = issue => new Promise(async resolve => {
@@ -178,25 +193,6 @@ function updateSptintmoduleState(params) {
   }
 }
 
-function closeActiveSprintIssue(params) {
-  return new Promise(async resolve => {
-    await sprints.getItem(params.link).then(async issue => {
-      let item = issue.find(v => !!v);
-
-      if (item) {
-        item.moduleState = { link: 'close', name: '关闭' }
-        await sprints.setItem(params.link, item);
-      }
-      resolve({
-        status: 200,
-        data: {
-          hasCloseActiveSprintIssue: 'success'
-        }
-      })
-    })
-  })
-}
-
 function getthridPartyLinks() {
   return new Promise(async resolve => {
     let links = [];
@@ -245,9 +241,9 @@ function getactiveSprintList(params) {
     })
 
     for (let i = 0; i < keys.length; i++) {
-      await sprints.getItem(keys[i]).then(value => {
-        if (value.type === 'active' && value.moduleState && value.moduleState.link !== 'close') {
-          issueList.push(value)
+      await sprints.getItem(keys[i]).then(issue => {
+        if (issue.type === 'active' && issue.moduleState.link !== 'close' && !issue.isDelete) {
+          issueList.push(issue)
         }
       })
     }
@@ -274,9 +270,9 @@ function getbacklogSprintList(params) {
       keys = key;
     })
     for (let i = 0; i < keys.length; i++) {
-      await sprints.getItem(keys[i]).then(value => {
-        if (value.type === 'backlog') {
-          issueList.push(value)
+      await sprints.getItem(keys[i]).then(issue => {
+        if (issue.type === 'backlog' && issue.moduleState.link !== 'close' && !issue.isDelete) {
+          issueList.push(issue)
         }
       })
     }

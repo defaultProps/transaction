@@ -139,60 +139,11 @@ export default {
             console.log(err)
           })
         }
-
-        // if (this.sprintType === 'backlog') {
-        //   if (this.draggbleList.length === this.issueList.length) {
-
-        //   }
-        // }
       }
     },
     initDragListData() {
       this.contextMenuTargets = []
       this.draggbleList = JSON.parse(JSON.stringify(this.issueList))
-    },
-    // action & 拖动到右侧
-    handleUpdateSprintModuleState(dropObj) {
-      // 判断是否是执行状态
-      let moduleState = this.draggbleList[this.oldIndex].moduleState
-
-      if (dropObj.type === 'progressState') {
-        if (this.groupName === 'activeSprint') {
-          if (dropObj.link === 'close') {
-            if (moduleState.link === 'finish') {
-              this.closeActiveSprintIssue(this.draggbleList[this.oldIndex].id)
-            } else {
-              this.$notify.info({
-                title: '提示',
-                showClose: false,
-                message: '未完成的Issue不能拖动到关闭'
-              })
-            }
-          } else {
-            this.updateSptintmoduleState({
-              type: dropObj.type,
-              link: dropObj.id,
-              name: dropObj.name,
-              issueLink: this.draggbleList[this.oldIndex].id
-            }, 'progressState', dropObj.link)
-          }
-        } else if (this.$store.state.story.sprintType === 'backlog') {
-          this.$notify.warning({
-            title: '提示',
-            message: 'Backlog中Issue不能设置执行状态',
-            size: 'mini',
-            showClose: false
-          })
-          return false
-        }
-      } else if (dropObj.type === 'module') {
-        this.updateSptintmoduleState({
-          type: dropObj.type,
-          link: dropObj.id,
-          name: dropObj.name,
-          issueLink: this.draggbleList[this.oldIndex].id
-        }, 'module')
-      }
     },
     // 设置执行状态和模块类型
     updateSptintmoduleState(params, type, value) {
@@ -211,23 +162,6 @@ export default {
         }
       })
     },
-    // 关闭
-    closeActiveSprintIssue(link) {
-      let that = this
-      sprintAxios.closeActiveSprintIssue({ link }).then(data => {
-        if (data.hasCloseActiveSprintIssue) {
-          let index = that.draggbleList.findIndex(v => v.id === link)
-
-          that.draggbleList.splice(index, 1)
-          that.$notify.success({
-            title: '提示',
-            message: '已存入<a href="/closeStoryIssue">仓库</a>',
-            dangerouslyUseHTMLString: true,
-            showClose: false
-          })
-        }
-      })
-    },
     // 右键绑定回调
     handleContextmenuFn(selectIssue, event) {
       this.$store.dispatch('sprint/selectActiveIssue', selectIssue)
@@ -241,13 +175,21 @@ export default {
       let executionStatusContextItem = {
         label: "执行状态",
         icon: "el-icon-edit",
-        children: this.progressStateList.map(item => ({ label: item.name, value: item.link, onClick: () => this.handleClickimplement(item, selectIssue) }))
+        children: this.progressStateList.map(item => ({
+          label: item.name,
+          value: item.link,
+          onClick: () => this.handleClickimplement(item, selectIssue)
+        }))
       }
 
       let moduleStatusContextMenuItem = {
         label: "模型状态",
         icon: "el-icon-edit",
-        children: this.moduleList.map(item => ({ label: item.name, value: item.link, onClick: () => this.handleClickimplement(item, selectIssue) }))
+        children: this.moduleList.map(item => ({
+          label: item.name,
+          value: item.link,
+          onClick: () => this.handleClickimplement(item, selectIssue)
+        }))
       }
 
       let moveExecutionStatusContextItem = {
@@ -258,7 +200,8 @@ export default {
 
       let deleteIssueContextItem = {
         label: "移除",
-        icon: "el-icon-delete"
+        icon: "el-icon-delete",
+        onClick: () => this.removeIssueContextMenuItem(selectIssue)
       }
 
       let contextmenuItem = []
@@ -266,29 +209,77 @@ export default {
       if (selectIssue.type === 'active') {
         contextmenuItem = [editContextMenuItem, executionStatusContextItem, moduleStatusContextMenuItem, deleteIssueContextItem]
       } else {
-        contextmenuItem = [editContextMenuItem, executionStatusContextItem, moduleStatusContextMenuItem, moveExecutionStatusContextItem, deleteIssueContextItem]
+        contextmenuItem = [editContextMenuItem, moduleStatusContextMenuItem, moveExecutionStatusContextItem, deleteIssueContextItem]
       }
 
       this.$contextmenu({
-        customClass: 'contextmenu-issue-box',
         items: contextmenuItem,
-        event,
         zIndex: 100,
-        minWidth: 120
+        event
       })
 
       return false
     },
+    // 移除issue
+    removeIssueContextMenuItem(issue) {
+      sprintAxios.removeIssue(issue.id).then(hasSuccess => {
+        if (hasSuccess) {
+          this.$store.dispatch('sprint/removeIssueItem', issue)
+        }
+      }).catch(err => {
+        console.log(err)
+      })
+    },
     // 拖动到执行列表
     moveExecutionList(issue) { },
-    handleClickimplement(obj) {
-      // this.draggbleList.forEach((item, index) => {
-      //   if (item.id === this.selectKey) {
-      //     this.oldIndex = index
-      //     this.$store.dispatch('sprint/selectActiveIssue', item)
-      //     this.handleUpdateSprintModuleState(obj)
-      //   }
-      // })
+    handleClickimplement(obj, selectIssue) {
+      if (obj.link === 'close') {
+        if (selectIssue.type === 'backlog') {
+          this.$message.error('缓存区条例不允许关闭，只能删除')
+          return
+        }
+
+        if (selectIssue.type === 'active' && selectIssue.moduleState.link !== 'finish') {
+          this.$confirm('工作区条例还未完成，是否继续关闭?', '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning',
+            customClass: 'transaction-message-box-customClass',
+            showClose: false
+          }).then(() => {
+            this.updateIssueDataAxios(obj, selectIssue)
+          }).catch(() => {
+            // no throw Error()
+          })
+        } else {
+          this.updateIssueDataAxios(obj, selectIssue)
+        }
+      } else {
+        this.updateIssueDataAxios(obj, selectIssue)
+      }
+    },
+    updateIssueDataAxios(obj, selectIssue) {
+      let params = {}
+
+      if (obj.type === 'progressState') {
+        const { id, link, name } = obj
+        params = Object.assign({}, selectIssue, { moduleState: { id, link, name } })
+      } else if (obj.type === 'module') {
+        const { color, id, icon, name } = obj
+        params = Object.assign({}, selectIssue, { tag: { color, id, icon, name } })
+      }
+
+      sprintAxios.updateIssueData(params).then(hasUpdateData => {
+        if (hasUpdateData) {
+          this.$store.dispatch('sprint/updateIssueData', params)
+          // 关闭操作新增删除本地数据
+          if (obj.link === 'close') {
+            this.$store.dispatch('sprint/removeIssueItem', selectIssue)
+          }
+        }
+      }).catch((err) => {
+        console.log(err)
+      })
     },
     sortableCallback(type) {
       if (type === 'executiveMode') {
