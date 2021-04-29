@@ -109,10 +109,10 @@ export default {
       visibleDialogModule: false // 模块类型 - 编辑弹框
     }
   },
-
   computed: mapState({
     draggableObj: state => state.sprint.draggableObj
   }),
+  inject: ['handleClickimplement'],
   mounted() {
     this.getThridPartyLinks()
     this.getModuleList()
@@ -165,28 +165,8 @@ export default {
       }
     },
     handleDrop(obj) {
-      let params = {}
-
       this.$set(obj, 'dropping', false)
-
-      if (obj.type === 'progressState') {
-        params = Object.assign({}, this.draggableObj, { moduleState: obj })
-
-        if (this.draggableObj.type === 'backlog') {
-          this.$message('缓存列表配置执行状态无效')
-          return
-        }
-      }
-
-      console.log(this.draggableObj)
-
-      if (obj.type === 'module') {
-        params = Object.assign({}, this.draggableObj, { tag: obj })
-      }
-
-      sprintAxios.updateIssueData(params).then(() => {
-        this.$store.dispatch('sprint/updateIssueLocal', params)
-      })
+      this.handleClickimplement(obj, this.draggableObj)
     }
   }
 }
@@ -207,7 +187,7 @@ export default {
     .module {
       .module-title {
         position: sticky;
-        top: 0px;
+        top: -1px;
         z-index: 200;
         display: flex;
         align-items: center;

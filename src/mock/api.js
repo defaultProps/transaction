@@ -8,6 +8,7 @@ export default {
     getdashboardList: params => controller[env]('getdashboardList', params)
   },
   sprints: {
+    getIssueTypeList: params => controller[env]('getIssueTypeList', params),
     thridPartyLinks: params => controller[env]('thridPartyLinks', params),
     sprintIssueDetail: params => controller[env]('sprintIssueDetail', params),
     activeSprintList: params => controller[env]('activeSprintList', params),

@@ -2,7 +2,7 @@
   <div class="issue-detail-container">
     <div v-if="activeIssue"
          class="scroll-style-none issue-detail-box">
-      <div class="header-box">
+      <div class="header-detail-box">
         <el-button size="mini"
                    type="text"
                    class="close-btn"
@@ -195,7 +195,7 @@ export default {
   font-size: 14px;
   border-left: 1px solid rgba(16, 22, 26, 0.3);
   user-select: none;
-  .header-box {
+  .header-detail-box {
     height: 30px;
     overflow: hidden;
     line-height: 30px;

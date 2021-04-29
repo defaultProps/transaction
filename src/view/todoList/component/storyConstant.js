@@ -21,9 +21,47 @@ export let modulesList = [
   { name: '其他', link: 'other', color: '#598ed4', icon: '' }
 ]
 
+export const LEVEL_LIST = [
+  {
+    value: 'ignore',
+    label: '1',
+    color: '#67C23A',
+    icon: 'icon-1_square'
+  },
+  {
+    value: 'delay',
+    label: '2',
+    color: '#67C23A',
+    icon: 'icon-2_square'
+  },
+  {
+    value: 'glance',
+    label: '3',
+    color: '#E6A23C',
+    icon: 'icon-3_square'
+  },
+  {
+    value: 'lookup',
+    label: '4',
+    color: '#E6A23C',
+    icon: 'icon-4_square'
+  },
+  {
+    value: 'gaze',
+    color: '#F56C6C',
+    label: '5',
+    icon: 'icon-5_square'
+  },
+  {
+    value: 'urgent',
+    label: '6',
+    color: '#F56C6C',
+    icon: 'icon-6_square'
+  }
+]
 export let levelList = [
   {
-    label: '不紧急',
+    label: '紧急程度：低',
     options: [
       {
         value: 'ignore',

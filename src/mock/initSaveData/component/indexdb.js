@@ -27,6 +27,11 @@ const progressStateStore = localforage.createInstance({
   storeName: 'progressState'
 })
 
+const issueTypeStore = localforage.createInstance({
+  name: 'todo',
+  storeName: 'issue-type'
+})
+
 const mapAxiosFieldToFunc = new Map([
   ['activeSprintList', getactiveSprintList],
   ['sprintIssueDetail', getsprintIssueDetail],
@@ -39,9 +44,31 @@ const mapAxiosFieldToFunc = new Map([
   ['getModuleList', getModuleList],
   ['getProgressStateList', getProgressStateList],
   ['initLocalForageStore', initLocalForageStore],
-  ['getdashboardList', getdashboardList]
+  ['getdashboardList', getdashboardList],
+  ['getIssueTypeList', getIssueTypeList]
 ])
 
+function getIssueTypeList() {
+  return new Promise(async resolve => {
+    let result = []
+    let keys = []
+
+    await issueTypeStore.keys().then(async keyList => {
+      keys = keyList
+    })
+
+    for (let i = 0; i < keys.length; i++) {
+      await issueTypeStore.getItem(keys[i]).then(obj => {
+        result.push(obj)
+      })
+    }
+
+    resolve({
+      status: 200,
+      data: result
+    })
+  })
+}
 function removeIssue(issueId) {
   return new Promise(async resolve => {
     await sprints.getItem(issueId).then(async issue => {

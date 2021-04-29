@@ -11,6 +11,8 @@ export const dashboardAxios = {
 }
 
 export const sprintAxios = {
+  // 获取issue类型（工作和生活）
+  getIssueTypeList: data => Axios({ method: 'post', url: protocol + 'sprints/getIssueTypeList', data }),
   // 获取附加链接
   thridPartyLinks: data => Axios({ method: 'post', url: protocol + 'sprints/thridPartyLinks', data }),
 

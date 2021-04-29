@@ -86,12 +86,6 @@ export default {
     loading: [Boolean],
     groupName: [String, Object]
   },
-  inject: {
-    modulesList: {
-      type: Array,
-      default: () => ([])
-    }
-  },
   computed: mapState({
     moduleList: state => state.story.moduleList,
     progressStateList: state => state.story.progressStateList,
@@ -112,6 +106,7 @@ export default {
       return new Map([['doing', '处理中'], ['not-start', '未开始'], ['finish', '已完成']]).get(v)
     }
   },
+  inject: ['handleClickimplement'],
   methods: {
     // 排序改变
     changeDraggableItem(obj) {
@@ -133,9 +128,7 @@ export default {
             }
           ]
 
-          sprintAxios.updateIssueSort(params).then(hasSort => {
-            console.log(hasSort)
-          }).catch(err => {
+          sprintAxios.updateIssueSort(params).catch(err => {
             console.log(err)
           })
         }
@@ -232,55 +225,6 @@ export default {
     },
     // 拖动到执行列表
     moveExecutionList(issue) { },
-    handleClickimplement(obj, selectIssue) {
-      if (obj.link === 'close') {
-        if (selectIssue.type === 'backlog') {
-          this.$message.error('缓存区条例不允许关闭，只能删除')
-          return
-        }
-
-        if (selectIssue.type === 'active' && selectIssue.moduleState.link !== 'finish') {
-          this.$confirm('工作区条例还未完成，是否继续关闭?', '提示', {
-            confirmButtonText: '确定',
-            cancelButtonText: '取消',
-            type: 'warning',
-            customClass: 'transaction-message-box-customClass',
-            showClose: false
-          }).then(() => {
-            this.updateIssueDataAxios(obj, selectIssue)
-          }).catch(() => {
-            // no throw Error()
-          })
-        } else {
-          this.updateIssueDataAxios(obj, selectIssue)
-        }
-      } else {
-        this.updateIssueDataAxios(obj, selectIssue)
-      }
-    },
-    updateIssueDataAxios(obj, selectIssue) {
-      let params = {}
-
-      if (obj.type === 'progressState') {
-        const { id, link, name } = obj
-        params = Object.assign({}, selectIssue, { moduleState: { id, link, name } })
-      } else if (obj.type === 'module') {
-        const { color, id, icon, name } = obj
-        params = Object.assign({}, selectIssue, { tag: { color, id, icon, name } })
-      }
-
-      sprintAxios.updateIssueData(params).then(hasUpdateData => {
-        if (hasUpdateData) {
-          this.$store.dispatch('sprint/updateIssueData', params)
-          // 关闭操作新增删除本地数据
-          if (obj.link === 'close') {
-            this.$store.dispatch('sprint/removeIssueItem', selectIssue)
-          }
-        }
-      }).catch((err) => {
-        console.log(err)
-      })
-    },
     sortableCallback(type) {
       if (type === 'executiveMode') {
         this.draggbleList.sort((pre, next) => {

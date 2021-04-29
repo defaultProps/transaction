@@ -8,10 +8,18 @@ export default {
     activeSprintList: [], // 工作区数据列表
     visibleSideBarLeft: true, // 显示左侧列表
     visibleSidebarRightDetail: false, // 显示右侧issue详情
+    visibleNewIssueDialog: false, // 新增弹框显示
+    issueTypeList: [], // issue类型
 
     draggableObj: null // 正在拖拽的issue
   },
   mutations: {
+    VISIBLE_NEWISSUE_DIALOG: (state, val) => {
+      state.visibleNewIssueDialog = val
+    },
+    ISSUETYPELIST: (state, val) => {
+      state.issueTypeList = val
+    },
     BACKLOG_SPRINT_LIST: (state, val) => {
       state.backlogSprint = val
     },

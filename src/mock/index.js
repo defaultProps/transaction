@@ -7,6 +7,7 @@ protocol += process.env.NODE_ENV === 'development' ? 'dev.uxo.com.cn/' : 'uxo.co
 
 export default {
   mockData() {
+    Mock.mock(protocol + 'sprints/getIssueTypeList', 'post', req => api.sprints.getIssueTypeList(JSON.parse(req.body)))
     Mock.mock(protocol + 'sprints/thridPartyLinks', 'post', req => api.sprints.thridPartyLinks(JSON.parse(req.body)))
     Mock.mock(protocol + 'dashboard/getdashboardList', 'post', req => api.dashboard.getdashboardList(JSON.parse(req.body)))
     Mock.mock(protocol + 'sprints/backlogSprintList', 'post', req => api.sprints.backlogSprintList(JSON.parse(req.body)))
