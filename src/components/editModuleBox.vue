@@ -33,6 +33,9 @@
       </div>
       <div v-else
            class="empty-text">
+        <img src="@/assets/noInfo.png"
+             alt="暂无数据"
+             class="noinfo">
         暂无数据
       </div>
     </div>
@@ -165,10 +168,16 @@ export default {
       padding: 2px 0 2px 2px;
     }
     .empty-text {
-      height: 100px;
-      color: #606266;
-      line-height: 100px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: #999;
+      font-size: 12px;
       text-align: center;
+      img {
+        width: 50px;
+      }
     }
   }
   .input-node {

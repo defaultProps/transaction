@@ -289,7 +289,7 @@ export default {
   border-radius: 4px;
   .issue-header {
     height: 30px;
-    background-color: #ebeef5;
+    background-color: #e4e7ed;
   }
   .no-draggleList {
     position: absolute;
@@ -345,10 +345,10 @@ export default {
       }
     }
     &:hover {
-      background: #deebff;
+      background: #e4e7ed;
     }
     &.light {
-      background: #deebff;
+      background: #e4e7ed;
     }
     &::before {
       position: absolute;
