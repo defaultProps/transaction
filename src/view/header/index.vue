@@ -91,7 +91,7 @@
   </div>
 </template>
 <script>
-import { menuList } from '@/libs/constant/header.js'
+import { menuList } from '@/libs/constant.js'
 import imageGlobal from '@/images'
 
 export default {

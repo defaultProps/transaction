@@ -25,6 +25,13 @@
               <span class="title">工作区</span>
               <span class="issus-count">{{ activeSprintList.length }} 问题</span>
             </div>
+            <div class="right-flex">
+              <el-button type="primary"
+                         class="add-issue"
+                         icon="el-icon-plus"
+                         size="mini"
+                         @click="handleClickShowNewIssueDialog()">新增</el-button>
+            </div>
           </div>
           <v-drag-list-box v-show="visibleSprint"
                            :issueList="activeSprintList"
@@ -40,13 +47,6 @@
             <div class="left-flex">
               <span class="title">缓存区</span>
               <span class="issus-count">{{ backlogSprint.length }} 问题</span>
-            </div>
-            <div class="right-flex">
-              <el-button type="primary"
-                         class="add-issue"
-                         icon="el-icon-plus"
-                         size="mini"
-                         @click="handleClickShowNewIssueDialog()">新增</el-button>
             </div>
           </div>
           <v-drag-list-box :dropbj="dropObj"

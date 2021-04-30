@@ -1,5 +1,5 @@
 import Mock from 'mockjs-async'
-import api from './api'
+import api from './api.js'
 
 let protocol = document.location.protocol === 'https:' ? 'https://' : 'http://'
 

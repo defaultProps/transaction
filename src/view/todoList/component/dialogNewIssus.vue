@@ -4,18 +4,22 @@
              :before-close="handleClose"
              :show-close="false"
              :append-to-body="true"
-             top="50px"
+             :destroy-on-close="true"
+             top="40px"
              custom-class="dialogNewIssus"
-             width="800px">
+             width="900px"
+             lock-scroll
+             @opened="openedDialog">
     <h3 class="newissue-title">问题详情</h3>
-    <el-form :model="newIssue"
+    <el-form ref="newIssueRef"
+             :model="newIssue"
              :rules="rules"
              label-width="70px"
              class="form">
       <el-form-item label="概要"
-                    prop="name">
-        <el-input v-model="newIssue.name"
-                  placeholder="请输入条例概要，比如：#锻炼 | "
+                    prop="title">
+        <el-input v-model="newIssue.title"
+                  placeholder="请输入条例概要"
                   size="small"
                   maxlength="50"
                   show-word-limit></el-input>
@@ -36,10 +40,10 @@
                    placeholder="请选择"
                    size="small"
                    class="select-item">
-          <el-option v-for="v in moduleList"
-                     :key="v.link"
-                     :label="v.name"
-                     :value="v.name"></el-option>
+          <el-option v-for="item in moduleList"
+                     :key="item.link"
+                     :label="item.name"
+                     :value="item.name"></el-option>
         </el-select>
       </el-form-item>
       <el-form-item label="紧急度"
@@ -60,9 +64,8 @@
       </el-form-item>
       <el-form-item label="描述"
                     prop="desc">
-        <el-input v-model="newIssue.desc"
-                  type="textarea"
-                  placeholder="此Issue的详细描述"></el-input>
+        <div id="newIssueDialogDescDom"
+             class="scroll-theme-1"></div>
       </el-form-item>
     </el-form>
     <div slot="footer"
@@ -78,6 +81,8 @@
 <script>
 import { LEVEL_LIST, pointsArr } from './storyConstant.js'
 import { mapState } from 'vuex'
+import Quill from 'quill'
+import { QUILL_TOOLBAROPTIONS } from '@/libs/constant.js'
 
 export default {
   data() {
@@ -94,17 +99,8 @@ export default {
         ]
       },
       newIssue: {
-        moduleType: '',
-        name: '',
-        link: '',
         type: 'life',
-        typeIcon: '',
-        typeColor: '',
-        level: '3',
-        title: '',
-        fixed: '',
-        progressState: '',
-        tag: { name: '', link: '' }
+        level: '3'
       }
     }
   },
@@ -113,9 +109,18 @@ export default {
     moduleList: state => state.story.moduleList,
     issueTypeList: state => state.sprint.issueTypeList
   }),
+  mounted() {
+
+  },
   methods: {
     handleClose() {
+      this.$refs.newIssueRef.resetFields()
       this.$store.commit('sprint/VISIBLE_NEWISSUE_DIALOG', false)
+    },
+    openedDialog() {
+      this.$nextTick(() => {
+        new Quill('#newIssueDialogDescDom', QUILL_TOOLBAROPTIONS)
+      })
     }
   }
 }
@@ -138,6 +143,12 @@ export default {
         width: 38px;
         height: 2px;
       }
+    }
+    #newIssueDialogDescDom {
+      height: 100px;
+      overflow-y: scroll;
+      border: 1px solid #dcdfe6;
+      border-radius: 4px;
     }
   }
   .el-dialog__footer {

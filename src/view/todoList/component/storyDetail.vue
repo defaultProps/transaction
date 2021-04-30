@@ -11,8 +11,8 @@
       </div>
       <div class="content-box">
         <v-edit-module-box :content="activeIssue.title"
-                           :id="activeIssue.id"
-                           class="title"></v-edit-module-box>
+                           class="title"
+                           typeDomId="title"></v-edit-module-box>
         <div class="form-item item-top">
           <div class="form-label">
             紧急度
@@ -55,9 +55,9 @@
             </el-tooltip>
           </div>
           <v-edit-module-box :content="activeIssue.issueDesc"
-                             :uid="activeIssue.id"
                              class="form-value"
-                             textType="textarea"></v-edit-module-box>
+                             textType="textarea"
+                             typeDomId="issueDesc"></v-edit-module-box>
         </div>
         <div class="form-item remark">
           <div class="form-label">
@@ -68,9 +68,9 @@
             </el-tooltip>
           </div>
           <v-edit-module-box :content="activeIssue.issueRemark"
-                             :uid="activeIssue.id"
                              textType="textarea"
-                             class="form-value"></v-edit-module-box>
+                             class="form-value"
+                             typeDomId="issueRemark"></v-edit-module-box>
         </div>
         <div class="form-item remark">
           <div class="form-label">

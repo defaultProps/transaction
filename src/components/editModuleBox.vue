@@ -1,28 +1,23 @@
 <template>
   <div class="edit-mode-container"
-       @click="hc_edit">
-    <div v-if="editMode"
+       @click="handleClickEditModel">
+    <div v-show="isEditMode"
          class="edit-mode">
-      <el-form @submit.native="handleClickSubmit()">
-        <el-input v-show="textType === 'text'"
-                  ref="inputNode"
-                  v-model="value"
-                  :rows="10"
-                  class="input"
-                  size="mini"
-                  @blur="blur"></el-input>
-        <div v-show="textType === 'textarea'">
-          <!-- <vue-tinymce v-model="value"
-                       :setup="setup"
-                       :setting="setting"
-                       @blur="blur" /> -->
-        </div>
-      </el-form>
+      <el-input v-show="textType === 'text'"
+                ref="inputLineNodeRef"
+                v-model="value"
+                :rows="10"
+                class="input"
+                size="mini"
+                @blur="handleClickSubmit"></el-input>
+      <div v-show="textType === 'textarea'"
+           :id="`${typeDomId}-editModeRef`"
+           class="textareaDetail"></div>
       <div class="save-options">
-        <el-button :class="[loading ? 'saved' : '']"
+        <el-button :class="[saveIssueLoading ? 'saved' : '']"
                    size="mini"
                    @click.prevent.stop="handleClickSubmit()">
-          <i :class="[loading ? 'el-icon-loading' : 'el-icon-check']"
+          <i :class="[saveIssueLoading ? 'el-icon-loading' : 'el-icon-check']"
              class="icon"></i>
         </el-button>
         <el-button size="mini"
@@ -30,50 +25,64 @@
                    @click.prevent.stop="handleClickCencel()"></el-button>
       </div>
     </div>
-    <div v-else
+    <div v-show="!isEditMode"
          class="text-mode-box">
       <div v-if="content"
-           class="content">{{ content }}</div>
+           :class="[textType, 'content']">
+        {{ content }}
+      </div>
       <div v-else
-           class="empty-text">暂无数据</div>
+           class="empty-text">
+        暂无数据
+      </div>
     </div>
   </div>
 </template>
 <script>
-// import Wangeditor from "wangeditor"
+import Quill from 'quill'
+import { QUILL_DETAIL_TOOLBAROPTIONS } from '@/libs/constant.js'
+import { mapState } from 'vuex'
+import { sprintAxios } from '@/axios'
 
 export default {
   data() {
     return {
-      editorWangEditorDom: null,
-      editMode: false,
+      isEditMode: false,
       inputTextValue: '',
-      loading: false,
-      cencelBtnCick: false,
-      descContentHTML: ""
+      saveIssueLoading: false,
+      quillObj: null
     }
   },
   watch: {
-    'editMode'(newVal) {
-      if (newVal && this.textType === 'text') {
+    'isEditMode'(newVal) {
+      if (newVal) {
         this.$nextTick(() => {
-          this.$refs.inputNode.focus()
-          this.$refs.inputNode.select()
+          if (this.textType === 'text' && this.$refs['inputLineNodeRef']) {
+            this.$refs.inputLineNodeRef.focus()
+            this.$refs.inputLineNodeRef.select()
+          }
+
+          if (this.textType === 'textarea' && document.getElementById(`${this.typeDomId}-editModeRef`) && !this.quillObj) {
+            this.quillObj = new Quill(`#${this.typeDomId}-editModeRef`, QUILL_DETAIL_TOOLBAROPTIONS)
+            this.quillObj.setText(this.activeIssue[this.typeDomId])
+            this.$nextTick(() => {
+              this.quillObj.focus()
+            })
+
+            let texearea = document.querySelector(`#${this.typeDomId}-editModeRef .ql-editor`)
+
+            if (texearea) {
+              texearea.addEventListener('blur', this.handleClickSubmit)
+            }
+          }
         })
       }
-    },
-    'uid'() {
-      this.editMode = false;
-    },
-    'content'(v) {
-      this.value = v;
     }
   },
   created() {
     this.value = this.content
   },
   props: {
-    uid: [String],
     textType: {
       type: String,
       default: 'text',
@@ -84,48 +93,45 @@ export default {
       default: '',
       required: false
     },
-    cb: {
+    typeDomId: {
+      type: String,
+      default: '',
+      required: true
+    },
+    doneCallback: {
       type: Function,
       default: function () { },
       required: false
     }
   },
+  computed: mapState({
+    activeIssue: state => state.sprint.activeIssue
+  }),
   methods: {
-    setup(editor) {
-
-    },
-    editorChange(v) {
-
-    },
-    blur() {
-      setTimeout(async () => {
-        if (this.cencelBtnCick) {
-          return
-        }
-
-        this.loading = true
-        await this.cb()
-        setTimeout(() => {
-          this.loading = false
-          this.editMode = false
-        }, 300)
-      }, 100)
-    },
     async handleClickSubmit() {
-      this.cencelBtnCick = false;
-      this.loading = true;
-      await this.cb()
-      setTimeout(() => {
-        this.loading = false
-        this.editMode = false
-      }, 300)
+      this.saveIssueLoading = true
+
+      let formmatValue = this.quillObj.getText().replace(/[\r\n]/g, "").replace(/\s+/g, "")
+      let params = Object.assign({}, this.activeIssue, { [this.typeDomId]: formmatValue })
+
+      sprintAxios.updateIssueData(params).then(hasUpdateData => {
+        if (hasUpdateData) {
+          this.$store.dispatch('sprint/updateIssueData', params)
+          this.saveIssueLoading = false
+          this.isEditMode = false
+        }
+      }).catch((err) => {
+        console.log(err)
+      })
     },
-    hc_edit() {
-      this.editMode = true;
+    handleClickEditModel() {
+      this.isEditMode = true
     },
     handleClickCencel() {
-      this.cencelBtnCick = true;
-      this.editMode = false;
+      this.isEditMode = false
+      this.saveIssueLoading = false
+      this.inputTextValue = ''
+      this.quillObj.setContents('')
     }
   }
 }
@@ -138,9 +144,16 @@ export default {
   padding: 0;
   border: 1px solid transparent;
   border-top-left-radius: 4px;
+  .textareaDetail {
+    height: 100px;
+    overflow-y: scroll;
+  }
   .text-mode-box {
     padding: 0 2px;
     border: 1px solid transparent;
+    .textarea {
+      min-height: 50px;
+    }
     &:hover {
       overflow: hidden;
       background: transparent;
@@ -200,7 +213,7 @@ export default {
     }
     .saved {
       color: #fff;
-      background: #e6a23c;
+      background: #00875a;
     }
   }
 }

@@ -3,9 +3,9 @@ import localforage from 'localforage';
 import { initLocalForageStore } from './indexdb/index'
 
 // 设置响应时间， 与实操更加接近
-// Mock.setup({
-//   timeout: '10-20'
-// })
+Mock.setup({
+  timeout: '50-400'
+})
 
 const sprints = localforage.createInstance({
   name: 'todo',

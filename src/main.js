@@ -3,6 +3,8 @@ import COOKIES from 'js-cookie'
 import Contextmenu from "vue-contextmenujs"
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
+import 'quill/dist/quill.snow.css'
+import 'quill/dist/quill.bubble.css'
 
 import home from '@/view/home/index'
 import router from './router'

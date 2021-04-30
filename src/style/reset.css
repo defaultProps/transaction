@@ -256,3 +256,42 @@ a.done {
 .transaction-message-box-customClass .el-message-box__header .el-message-box__title {
   color: #fff;
 }
+
+/* 滚动条样式 */
+.scroll-style-theme2::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+/* 滚动条的滑块 */
+.scroll-style-theme2::-webkit-scrollbar-thumb {
+  background-color: transparent;
+}
+
+/* 滚动条样式 */
+.scroll-style-theme1::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+/* 滚动条的滑块 */
+.scroll-style-theme1::-webkit-scrollbar-thumb {
+  background-color: transparent;
+}
+/* 滚动条的宽度 */
+::-webkit-scrollbar {
+  position: relative;
+  width: 8px;
+  height: 8px;
+  background-color: #e8e8ea;
+  
+}
+/* 滚动条的滑块 */
+::-webkit-scrollbar-thumb {
+  width: 8px;
+  height: 8px;
+  background-color: #c0c4cc;
+}
+
+/* 富文本编辑器样式重置 */
+.ql-toolbar.ql-snow .ql-formats {
+  margin-right: 3px !important;
+}
