@@ -23,7 +23,7 @@
                 </svg>
               </span>
               <span class="title">工作区</span>
-              <span class="issus-count">{{ activeSprintList.length }} 问题</span>
+              <span class="issus-count">{{ activeSprintList.length }} 条例</span>
             </div>
           </div>
           <v-drag-list-box v-show="visibleSprint"
@@ -39,7 +39,7 @@
           <div class="backlog-title">
             <div class="left-flex">
               <span class="title">缓存区</span>
-              <span class="issus-count">{{ backlogSprint.length }} 问题</span>
+              <span class="issus-count">{{ backlogSprint.length }} 条例</span>
             </div>
             <div class="right-flex">
               <el-button type="primary"
@@ -221,7 +221,6 @@ export default {
           padding: 0 10px;
           font-size: 14px;
           background: #f4f5f7;
-          user-select: none;
           .left-flex {
             .header-expander {
               position: relative;

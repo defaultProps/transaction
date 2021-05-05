@@ -87,6 +87,7 @@ export default {
     groupName: [String, Object]
   },
   computed: mapState({
+    draggableObj: state => state.story.draggableObj,
     moduleList: state => state.story.moduleList,
     progressStateList: state => state.story.progressStateList,
     dragOptions() {
@@ -111,7 +112,7 @@ export default {
     // 排序改变
     changeDraggableItem(obj) {
       if (obj.moved) {
-        if (this.sprintType === 'active') {
+        if (this.sprintType === 'active' || this.sprintType === 'backlog') {
           // 确保与add-draggable冲突
           const { oldIndex, newIndex } = obj.moved
 

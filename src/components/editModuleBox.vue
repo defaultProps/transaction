@@ -172,6 +172,7 @@ export default {
       flex-direction: column;
       align-items: center;
       justify-content: center;
+      height: 150px;
       color: #999;
       font-size: 12px;
       text-align: center;
