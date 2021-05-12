@@ -102,11 +102,6 @@ export default {
   watch: {
     issueList: "initDragListData"
   },
-  filters: {
-    filterprogressState(v) {
-      return new Map([['doing', '处理中'], ['not-start', '未开始'], ['finish', '已完成']]).get(v)
-    }
-  },
   inject: ['handleClickimplement'],
   methods: {
     // 排序改变
@@ -130,7 +125,7 @@ export default {
           ]
 
           sprintAxios.updateIssueSort(params).catch(err => {
-            console.log(err)
+            this.$store.commit('metaView/PUSH_AXIOS_ERRORLIST', err)
           })
         }
       }
@@ -221,7 +216,7 @@ export default {
           this.$store.dispatch('sprint/removeIssueItem', issue)
         }
       }).catch(err => {
-        console.log(err)
+        this.$store.commit('metaView/PUSH_AXIOS_ERRORLIST', err)
       })
     },
     // 拖动到执行列表
@@ -250,29 +245,29 @@ export default {
         if (hasAddIssue) {
           this.$store.dispatch('sprint/getAllSprintList')
         }
-      }).catch((err) => {
-        console.log(err)
+      }).catch(err => {
+        this.$store.commit('metaView/PUSH_AXIOS_ERRORLIST', err)
       })
     },
-    stylelevelClass(v) {
+    stylelevelClass(urgencyLevelStr) {
       let result
 
       this.levelList.forEach(item => {
         item.options.forEach(p => {
-          if (+p.label === +v) {
+          if (+p.label === +urgencyLevelStr) {
             result = p.icon
           }
         })
       })
       return `${result} iconfont`
     },
-    filterTypeIcon(v = 'work') {
-      let p = this.issusTypeArr.find(p => p.value === v)
+    filterTypeIcon(issueTypeStr = 'work') {
+      let p = this.issusTypeArr.find(p => p.value === issueTypeStr)
 
       return p ? p.icon : 'icon-shujuzhongjian'
     },
-    filterTypeColor(v) {
-      let p = this.issusTypeArr.find(p => p.value === v)
+    filterTypeColor(issueTypeStr) {
+      let p = this.issusTypeArr.find(p => p.value === issueTypeStr)
 
       return p ? p.color : 'rgb(0, 101, 255)'
     }
@@ -290,7 +285,7 @@ export default {
   border-radius: 4px;
   .issue-header {
     height: 30px;
-    background-color: #e4e7ed;
+    background-color: #f5f7fa;
   }
   .no-draggleList {
     position: absolute;

@@ -19,10 +19,9 @@ export default {
       dashboard: []
     }
   },
-  created() {
-    this.getdashboardList()
-  },
   mounted() {
+    this.getdashboardList()
+
     var options = {
       chart: {
         gridLineWidth: 0,

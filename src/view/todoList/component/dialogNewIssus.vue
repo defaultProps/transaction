@@ -5,24 +5,26 @@
              :show-close="false"
              :append-to-body="true"
              :destroy-on-close="true"
-             top="0px"
+             top="40px"
              custom-class="dialogNewIssus"
-             width="66%"
+             width="800px"
              lock-scroll
              @opened="openedDialog">
-    <h3 class="newissue-title">条例详情</h3>
+    <h3 class="newissue-title">新增条例</h3>
     <el-form ref="newIssueRef"
              :model="newIssue"
              :rules="rules"
              label-width="70px"
-             class="form-box">
+             class="form-box"
+             size="mini">
       <el-form-item label="概要"
                     prop="title">
         <el-input v-model="newIssue.title"
                   placeholder="请输入条例概要"
                   size="small"
                   maxlength="50"
-                  show-word-limit></el-input>
+                  show-word-limit
+                  class="input-title"></el-input>
       </el-form-item>
       <el-form-item label="条例类型"
                     class="form-item">
@@ -65,7 +67,6 @@
             <i class="el-icon-info info-icon"></i>
           </el-tooltip>
         </div>
-
       </el-form-item>
       <el-form-item label="描述"
                     prop="desc">
@@ -188,6 +189,9 @@ export default {
   }
   .form-box {
     padding: 15px 20px;
+    .input-title {
+      width: 300px;
+    }
     .form-item {
       .select-item {
         width: 100px;

@@ -82,7 +82,7 @@ export default {
       }
     }
   },
-  created() {
+  mounted() {
     this.value = this.content
   },
   props: {
@@ -124,7 +124,7 @@ export default {
           this.isEditMode = false
         }
       }).catch((err) => {
-        console.log(err)
+        this.$store.commit('metaView/PUSH_AXIOS_ERRORLIST', err)
       })
     },
     handleClickEditModel() {
