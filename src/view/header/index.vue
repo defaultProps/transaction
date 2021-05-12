@@ -82,7 +82,7 @@ export default {
 
       function _getMenuLink(list = []) {
         list.forEach(item => {
-          if (that.$route.path === `/${item.link}`) {
+          if (that.$route.path === item.link) {
             that.activeIndex = item.link
             return
           }

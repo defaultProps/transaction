@@ -10,7 +10,7 @@ let router = new Router({
   routes,
   base: BASE_ROUTER_FRONTEND,
   linkActiveClass: "active",
-  mode: 'history'
+  mode: 'hash'
 })
 
 router.beforeEach((to, from, next) => {

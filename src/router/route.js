@@ -6,6 +6,7 @@ import initStore from '@/view/initStore/index.vue'
 import feature from '@/view/feature/index.vue'
 import product from '@/view/product/index.vue'
 import designDocs from '@/view/designDocs/index.vue'
+import functionList from '@/view/designDocs/component/functionList.vue'
 
 /**
  * @meta: {
@@ -66,6 +67,17 @@ let routes = [
   {
     path: '/design-docs',
     component: designDocs,
+    children: [
+      {
+        path: 'function-list',
+        component: functionList,
+        meta: {
+          title: '设计文档',
+          authority: 0,
+          showheaderBar: true
+        }
+      }
+    ],
     meta: {
       title: '设计文档',
       authority: 0,
