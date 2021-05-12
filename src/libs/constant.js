@@ -40,5 +40,27 @@ export const HEADER_MENU_BAR_LIST = [
 export const BASE_ROUTER_FRONTEND = '/uxo2'
 
 export const TODO_LIST_FUNCTION_DOCS = [
-  { label: '功能列表', value: 'function-list' }
+  { label: '功能列表', value: 'functionList' }
 ]
+
+export const DESIGN_DOCS = () => {
+  const result = []
+  const componentDocFiles = [
+    {
+      path: '@/markdownDocs',
+      fileNames: require.context('@/markdownDocs', true, /.md$/).keys().map(v => v.replace('./', '').replace('.md', ''))
+    }
+  ]
+
+  componentDocFiles.forEach(docs => {
+    docs.fileNames.forEach(fileName => {
+      result.push({
+        fileName,
+        path: `${fileName}`,
+        assetsPath: `${docs.path}/${fileName}.md`
+      })
+    })
+  })
+
+  return result
+}

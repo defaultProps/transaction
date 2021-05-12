@@ -6,7 +6,7 @@ import initStore from '@/view/initStore/index.vue'
 import feature from '@/view/feature/index.vue'
 import product from '@/view/product/index.vue'
 import designDocs from '@/view/designDocs/index.vue'
-import functionList from '@/view/designDocs/component/functionList.vue'
+import { DESIGN_DOCS } from '@/libs/constant.js'
 
 /**
  * @meta: {
@@ -67,17 +67,18 @@ let routes = [
   {
     path: '/design-docs',
     component: designDocs,
-    children: [
-      {
-        path: 'function-list',
-        component: functionList,
+    children: DESIGN_DOCS().map(cr => {
+      console.log(cr.path)
+      return {
+        path: `${cr.path}`,
+        component: require(`@/markdownDocs/${cr.fileName}.md`).default,
         meta: {
           title: '设计文档',
           authority: 0,
           showheaderBar: true
         }
       }
-    ],
+    }),
     meta: {
       title: '设计文档',
       authority: 0,
