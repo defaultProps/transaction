@@ -35,7 +35,7 @@ module.exports = {
     // allow async-await
     "generator-star-spacing": 0,
     // allow debugger during development
-    "no-console": process.env.NODE_ENV === "production" ? 2 : 0,
+    "no-console": 2,
     // 禁止函数括号之前校验空格
     "space-before-function-paren": 0,
     // 禁止块之前校验空格

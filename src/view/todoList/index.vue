@@ -23,14 +23,7 @@
                 </svg>
               </span>
               <span class="title">工作区</span>
-              <span class="issus-count">{{ activeSprintList.length }} 问题</span>
-            </div>
-            <div class="right-flex">
-              <el-button type="primary"
-                         class="add-issue"
-                         icon="el-icon-plus"
-                         size="mini"
-                         @click="handleClickShowNewIssueDialog()">新增</el-button>
+              <span class="issus-count">{{ activeSprintList.length }} 条例</span>
             </div>
           </div>
           <v-drag-list-box v-show="visibleSprint"
@@ -46,7 +39,7 @@
           <div class="backlog-title">
             <div class="left-flex">
               <span class="title">缓存区</span>
-              <span class="issus-count">{{ backlogSprint.length }} 问题</span>
+              <span class="issus-count">{{ backlogSprint.length }} 条例</span>
             </div>
           </div>
           <v-drag-list-box :dropbj="dropObj"
@@ -59,14 +52,12 @@
       <v-issue-detail-box v-show="visibleSidebarRightDetail"
                           id="detailContainerBox"></v-issue-detail-box>
     </div>
-    <v-add-issue-dialog-box></v-add-issue-dialog-box>
   </div>
 </template>
 <script>
 import dragListBox from './component/dragListBox'
 import sidebarSprintBox from './component/sidebarSprintBox.vue'
 import sprintDetail from './component/storyDetail'
-import dialogNewIssus from './component/dialogNewIssus'
 import { mapState } from 'vuex'
 import { sprintAxios } from '@/axios'
 
@@ -80,8 +71,7 @@ export default {
   components: {
     'v-sidebar-sprint-box': sidebarSprintBox,
     'v-drag-list-box': dragListBox,
-    'v-issue-detail-box': sprintDetail,
-    'v-add-issue-dialog-box': dialogNewIssus
+    'v-issue-detail-box': sprintDetail
   },
   provide() {
     return {
@@ -101,9 +91,6 @@ export default {
     hasDraggle: state => state.story.hasDraggle
   }),
   methods: {
-    handleClickShowNewIssueDialog() {
-      this.$store.commit('sprint/VISIBLE_NEWISSUE_DIALOG', true)
-    },
     // 获取issue类型（work and life）
     getIssueTypeList() {
       sprintAxios.getIssueTypeList().then(list => {
@@ -160,7 +147,7 @@ export default {
           }
         }
       }).catch((err) => {
-        console.log(err)
+        this.$store.commit('metaView/PUSH_AXIOS_ERRORLIST', err)
       })
     },
     dropDownStatus(obj) {
@@ -221,7 +208,6 @@ export default {
           padding: 0 10px;
           font-size: 14px;
           background: #f4f5f7;
-          user-select: none;
           .left-flex {
             .header-expander {
               position: relative;
@@ -252,7 +238,7 @@ export default {
             }
           }
           .right-flex {
-            .add-issue {
+            .add-issue-btn {
               padding: 8px 12px;
               color: #ffffff;
               font-size: 14px;

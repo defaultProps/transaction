@@ -1,7 +1,7 @@
 <template>
-  <div id="header">
+  <div class="header-container">
     <div class="header-logo">
-      <img :src="imageGlobal.logo"
+      <img src="../../../static/image/logo.png"
            class="logo">
       <span class="title">TRANSACTION</span>
       <ul class="bubbles">
@@ -14,11 +14,10 @@
              class="el-menu-demo"
              mode="horizontal"
              router
-             menu-trigger="click"
              background-color="#205081"
              text-color="#fff"
              active-text-color="#ffab00">
-      <template v-for="menu in menuList">
+      <template v-for="menu in HEADER_MENU_BAR_LIST">
         <el-submenu v-if="menu.children"
                     :key="menu.link"
                     :index="menu.link">
@@ -49,73 +48,57 @@
                 size="mini"
                 class="input-search"
                 prefix-icon="el-icon-search"></el-input>
-      <el-button title="配置域"
+      <el-button type="primary"
+                 class="add-issue-btn"
+                 icon="el-icon-plus"
                  size="mini"
-                 icon="el-icon-lock"
-                 class="config-btn"
-                 @click="visibleDrawer = true">配置域</el-button>
+                 @click="handleClickShowNewIssueDialog()">新增</el-button>
       <el-avatar :src="userAvatar"
                  shape="square"
                  size="small"></el-avatar>
-      <el-drawer :visible.sync="visibleDrawer"
-                 title="配置域"
-                 size="50%"
-                 direction="ltr">
-        <div class="typesetting-box">
-          <el-tabs v-model="activeTab"
-                   tab-position="top">
-            <el-tab-pane label="页面排版"
-                         name="first">
-              <el-carousel :autoplay="false"
-                           type="card"
-                           trigger="click">
-                <el-carousel-item v-for="item in typesettingList"
-                                  :key="item.title">
-                  <div class="tyesetting">
-                    <div class="image"></div>
-                    <div class="title">{{item.title}}</div>
-                  </div>
-                </el-carousel-item>
-              </el-carousel>
-            </el-tab-pane>
-            <el-tab-pane label="配置管理"
-                         name="second">配置管理</el-tab-pane>
-            <el-tab-pane label="角色管理"
-                         name="third">角色管理</el-tab-pane>
-            <el-tab-pane label="定时任务补偿"
-                         name="fourth">定时任务补偿</el-tab-pane>
-          </el-tabs>
-        </div>
-      </el-drawer>
     </div>
   </div>
 </template>
 <script>
-import { menuList } from '@/libs/constant.js'
-import imageGlobal from '@/images'
+import { HEADER_MENU_BAR_LIST } from '@/libs/constant.js'
 
 export default {
   data() {
     return {
-      imageGlobal,
-      visibleDrawer: false,
-      menuList,
+      HEADER_MENU_BAR_LIST,
       dialogVisible: false,
-      activeIndex: 'story',
+      activeIndex: 'todoList',
       inputVal: '',
       activeTab: 'first',
-      userAvatar: 'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png',
-      typesettingList: [
-        { title: '标准排版', img: '' },
-        { title: '嵌套排版', img: '' },
-        { title: '横向排版', img: '' },
-        { title: '纵向排版', img: '' }
-      ]
+      userAvatar: 'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png'
     }
   },
-  // sprintAxios.sprintIssueDetail
+  mounted() {
+    this.highLightMenuList()
+  },
   methods: {
-    handleClose(done) { done() }
+    highLightMenuList() {
+      let that = this
+
+      function _getMenuLink(list = []) {
+        list.forEach(item => {
+          if (that.$route.path === item.link) {
+            that.activeIndex = item.link
+            return
+          }
+
+          if (item.children) {
+            _getMenuLink(item.children)
+          }
+        })
+      }
+
+      _getMenuLink(HEADER_MENU_BAR_LIST)
+    },
+    handleClose(done) { done() },
+    handleClickShowNewIssueDialog() {
+      this.$store.commit('sprint/VISIBLE_NEWISSUE_DIALOG', true)
+    }
   }
 }
 </script>
@@ -129,7 +112,7 @@ html {
 }
 </style>
 <style lang="scss" scoped>
-#header {
+.header-container {
   $width: 5 + random(15) + px;
   z-index: 100;
   display: flex;
@@ -230,9 +213,12 @@ html {
     display: flex;
     align-items: center;
     justify-content: flex-end;
-    .config-btn {
-      padding: 6px 10px;
+    .add-issue-btn {
+      padding: 8px 12px;
+      color: #ffffff;
+      font-size: 14px;
       background: #161e2361;
+      border-radius: 4px;
     }
     .input-search {
       width: 200px;
@@ -251,39 +237,6 @@ html {
       font-size: 14px;
       background: transparent;
       border: none;
-    }
-    .typesetting-box {
-      width: 100%;
-      padding: 0 10px;
-      .el-carousel__item:nth-child(2n) {
-        background-color: #d3dce6;
-      }
-      .el-carousel__item:nth-child(2n + 1) {
-        background-color: #d3dce6;
-      }
-      color: #999;
-      .tyesetting {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        width: 100%;
-        height: 100%;
-        color: #333;
-        .image {
-          width: 450px;
-          height: 220px;
-          margin: 10px auto;
-          border: 1px solid #999;
-          border-radius: 3px;
-          cursor: pointer;
-        }
-        .title {
-          margin-top: 10px;
-          font-size: 14px;
-          text-align: center;
-        }
-      }
     }
     .user-meta {
       width: 400px;

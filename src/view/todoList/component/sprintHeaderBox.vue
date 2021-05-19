@@ -95,7 +95,7 @@ export default {
       flaglifeIconIndex: 0
     }
   },
-  created() {
+  mounted() {
     this.currentworkIcon = issusTypeArr[0].icon;
     this.currentLifeIcon = issusTypeArr[1].icon;
   },

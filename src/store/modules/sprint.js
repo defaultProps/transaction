@@ -10,7 +10,6 @@ export default {
     visibleSidebarRightDetail: false, // 显示右侧issue详情
     visibleNewIssueDialog: false, // 新增弹框显示
     issueTypeList: [], // issue类型
-
     draggableObj: null // 正在拖拽的issue
   },
   mutations: {

@@ -31,7 +31,7 @@ export const LEVEL_LIST = [
   {
     value: 'delay',
     label: '2',
-    color: '#67C23A',
+    color: '#c7e233',
     icon: 'icon-2_square'
   },
   {
@@ -43,7 +43,7 @@ export const LEVEL_LIST = [
   {
     value: 'lookup',
     label: '4',
-    color: '#E6A23C',
+    color: '#cc8721',
     icon: 'icon-4_square'
   },
   {
@@ -55,7 +55,7 @@ export const LEVEL_LIST = [
   {
     value: 'urgent',
     label: '6',
-    color: '#F56C6C',
+    color: '#f91717',
     icon: 'icon-6_square'
   }
 ]

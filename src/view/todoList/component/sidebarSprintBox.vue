@@ -312,7 +312,7 @@ export default {
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      height: 200px;
+      height: 180px;
       overflow: hidden;
       color: #999;
       font-size: 12px;
