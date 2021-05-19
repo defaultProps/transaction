@@ -91,7 +91,7 @@ import Quill from 'quill'
 import { QUILL_TOOLBAROPTIONS } from '@/libs/constant.js'
 
 export default {
-  data() {
+  data () {
     return {
       LEVEL_LIST,
       pointsArr,
@@ -115,15 +115,15 @@ export default {
     moduleList: state => state.story.moduleList,
     issueTypeList: state => state.sprint.issueTypeList
   }),
-  mounted() {
+  mounted () {
 
   },
   methods: {
-    handleClose() {
+    handleClose () {
       this.$refs.newIssueRef.resetFields()
       this.$store.commit('sprint/VISIBLE_NEWISSUE_DIALOG', false)
     },
-    openedDialog() {
+    openedDialog () {
       this.$nextTick(() => {
         new Quill('#newIssueDialogDescDom', QUILL_TOOLBAROPTIONS)
       })

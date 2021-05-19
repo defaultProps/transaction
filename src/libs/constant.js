@@ -26,6 +26,7 @@ export const QUILL_DETAIL_TOOLBAROPTIONS = {
 // header-bar
 export const HEADER_MENU_BAR_LIST = [
   { name: '事务面板', link: '/todoList', color: '#5243aa', icon: '' },
+  { name: 'markdown IDE', link: 'markdown-ide', color: '#5243aa', icon: '' },
   {
     name: '设计概览', link: 'design', color: '#598ed4', icon: '',
     children: [

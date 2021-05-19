@@ -2,188 +2,282 @@
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
 }
+
 html {
   -ms-text-size-adjust: 100%;
   -webkit-text-size-adjust: 100%
 }
-html, body {
+
+html,
+body {
   margin: 0;
   padding: 0;
   overflow-y: hidden;
   color: #172b4d;
 }
-article, aside, details, figcaption, figure, footer, header, hgroup, main, menu, nav, section, summary {
+
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+main,
+menu,
+nav,
+section,
+summary {
   display: block
 }
-audio, canvas, progress, video {
+
+audio,
+canvas,
+progress,
+video {
   display: inline-block;
   vertical-align: baseline
 }
+
 audio:not([controls]) {
   display: none;
   height: 0
 }
-[hidden], template {
+
+[hidden],
+template {
   display: none
 }
+
 abbr[title] {
   border-bottom: 1px dotted
 }
-b, strong {
+
+b,
+strong {
   font-weight: 700
 }
+
 dfn {
   font-style: italic
 }
-h1 { margin: .67em 0;
+
+h1 {
+  margin: .67em 0;
   font-size: 2em;
-  
+
 }
+
 mark {
   color: #000;
   background: #ff0;
 }
+
 small {
   font-size: 80%
 }
-sub, sup {
+
+sub,
+sup {
   position: relative;
   font-size: 75%;
   line-height: 0;
   vertical-align: baseline;
 }
+
 sup {
   top: -.5em
 }
+
 sub {
   bottom: -.25em
 }
+
 img {
   border: 0
 }
+
 svg:not(:root) {
   overflow: hidden
 }
+
 figure {
   margin: 1em 40px
 }
+
 hr {
   box-sizing: content-box;
   height: 0
 }
+
 p {
   margin: 0;
   padding: 0
 }
-code, kbd, pre, samp {
+
+code,
+kbd,
+pre,
+samp {
   font-size: 1em;
   font-family: monospace, monospace;
 }
-button, input, optgroup, select, textarea {
+
+button,
+input,
+optgroup,
+select,
+textarea {
   margin: 0;
   color: inherit;
   font: inherit;
-  
+
 }
+
 button {
   overflow: visible;
   outline: transparent;
 }
-button, select {
+
+button,
+select {
   text-transform: none
 }
-button, html input[type=button], input[type=reset], input[type=submit] {
+
+button,
+html input[type=button],
+input[type=reset],
+input[type=submit] {
   cursor: pointer;
   -webkit-appearance: button;
 }
-button[disabled], html input[disabled] {
+
+button[disabled],
+html input[disabled] {
   cursor: default
 }
-button::-moz-focus-inner, input::-moz-focus-inner {
+
+button::-moz-focus-inner,
+input::-moz-focus-inner {
   padding: 0;
   border: 0;
 }
+
 input {
   line-height: normal;
   outline: none
 }
-input[type=checkbox], input[type=radio] {
+
+input[type=checkbox],
+input[type=radio] {
   box-sizing: border-box;
   padding: 0
 }
-input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer-spin-button {
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
   height: auto
 }
+
 input[type=search] {
   box-sizing: content-box;
   -webkit-appearance: textfield;
 }
-input[type=search]::-webkit-search-cancel-button, input[type=search]::-webkit-search-decoration {
+
+input[type=search]::-webkit-search-cancel-button,
+input[type=search]::-webkit-search-decoration {
   -webkit-appearance: none
 }
+
 :-moz-placeholder {
   color: #aeaeae !important;
   font-weight: 300 !important;
   opacity: 1;
 }
+
 ::-moz-placeholder {
   color: #aeaeae;
   font-weight: 300 !important;
   opacity: 1;
 }
+
 input:-ms-input-placeholder {
   color: #aeaeae;
   font-weight: 300 !important;
   opacity: 1;
 }
+
 input::-webkit-input-placeholder {
   color: #aeaeae;
   font-weight: 300 !important;
   opacity: 1;
 }
+
 fieldset {
   margin: 0 2px;
   padding: .35em .625em .75em;
   border: 1px solid silver;
 }
+
 legend {
   padding: 0;
   border: 0;
 }
+
 textarea {
   overflow: auto
 }
+
 optgroup {
   font-weight: 700
 }
+
 table {
   border-collapse: collapse;
   border-spacing: 0
 }
-td, th {
+
+td,
+th {
   padding: 0
 }
-h1, h2, h3, h4, h5, h6, em, i {
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+em,
+i {
   font-weight: 400;
   font-style: normal;
 }
-ul, ol, li {
+
+ul,
+ol,
+li {
   margin: 0;
   padding: 0;
   list-style-type: none;
   cursor: pointer;
   user-select: none;
 }
+
 a {
   color: #666;
   text-decoration: none;
   background-color: transparent;
   outline: 0;
 }
-a:active, a:hover {
+
+a:active,
+a:hover {
   text-decoration: none;
   outline: 0;
 }
+
 input[type=search]::-ms-clear {
   display: none;
 }
@@ -198,27 +292,32 @@ input[type=search]::-ms-clear {
   background: #205081;
   border: none;
 }
+
 .el-button--primary:hover {
   background: #173F67
 }
+
 .el-button--primary:focus {
   background: #173F67
 }
+
 /*el-drawer**/
 
 #el-drawer__title {
-	display: none !important;
+  display: none !important;
 }
 
 .scroll-style-theme1::-webkit-scrollbar {
   width: 4px;
   height: 3px;
 }
+
 .scroll-style-theme1::-webkit-scrollbar-thumb {
   background: #f4f5f7;
   border-radius: 10px;
-  box-shadow: inset 0 0 5px rgba(0,0,0,0.8);
+  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.8);
 }
+
 .scroll-style-theme1::-webkit-scrollbar-track {
   background: #ededed;
   border-radius: 10px;
@@ -239,9 +338,11 @@ a {
   color: #0052cc;
   cursor: pointer;
 }
+
 a:hover {
   text-decoration: underline;
 }
+
 a.done {
   text-decoration: line-through;
 }
@@ -250,9 +351,11 @@ a.done {
 .transaction-message-box-customClass {
   border: none;
 }
+
 .transaction-message-box-customClass .el-message-box__header {
   background-color: #205081;
 }
+
 .transaction-message-box-customClass .el-message-box__header .el-message-box__title {
   color: #fff;
 }
@@ -262,6 +365,7 @@ a.done {
   width: 8px;
   height: 8px;
 }
+
 /* 滚动条的滑块 */
 .scroll-style-theme2::-webkit-scrollbar-thumb {
   background-color: transparent;
@@ -272,18 +376,21 @@ a.done {
   width: 8px;
   height: 8px;
 }
+
 /* 滚动条的滑块 */
 .scroll-style-theme1::-webkit-scrollbar-thumb {
   background-color: transparent;
 }
+
 /* 滚动条的宽度 */
 ::-webkit-scrollbar {
   position: relative;
   width: 8px;
   height: 8px;
   background-color: #e8e8ea;
-  
+
 }
+
 /* 滚动条的滑块 */
 ::-webkit-scrollbar-thumb {
   width: 8px;
@@ -292,9 +399,16 @@ a.done {
 }
 
 /* 富文本编辑器样式重置 */
+.ql-toolbar.ql-snow {
+  height: 35px;
+  line-height: 35px;
+  padding: 0;
+}
+
 .ql-toolbar.ql-snow .ql-formats {
   margin-right: 3px !important;
 }
+
 .ql-toolbar.ql-snow {
   padding: 0;
 }
