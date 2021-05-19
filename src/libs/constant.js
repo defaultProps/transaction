@@ -25,6 +25,7 @@ export const QUILL_DETAIL_TOOLBAROPTIONS = {
 
 export const menuList = [
   { name: '事务面板', link: 'story', color: '#5243aa', icon: '' },
+  { name: 'markdown IDE', link: 'markdown-ide', color: '#5243aa', icon: '' },
   {
     name: '设计概览', link: 'design', color: '#598ed4', icon: '',
     children: [

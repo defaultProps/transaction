@@ -63,7 +63,7 @@ export default {
     'v-draggable-box': draggable,
     'v-sprint-header-box': sprintHeaderBox
   },
-  data() {
+  data () {
     return {
       levelList,
       issusTypeArr,
@@ -89,7 +89,7 @@ export default {
   computed: mapState({
     moduleList: state => state.story.moduleList,
     progressStateList: state => state.story.progressStateList,
-    dragOptions() {
+    dragOptions () {
       return {
         animation: 200,
         group: "description",
@@ -102,14 +102,14 @@ export default {
     issueList: "initDragListData"
   },
   filters: {
-    filterprogressState(v) {
+    filterprogressState (v) {
       return new Map([['doing', '处理中'], ['not-start', '未开始'], ['finish', '已完成']]).get(v)
     }
   },
   inject: ['handleClickimplement'],
   methods: {
     // 排序改变
-    changeDraggableItem(obj) {
+    changeDraggableItem (obj) {
       if (obj.moved) {
         if (this.sprintType === 'active') {
           // 确保与add-draggable冲突
@@ -134,12 +134,12 @@ export default {
         }
       }
     },
-    initDragListData() {
+    initDragListData () {
       this.contextMenuTargets = []
       this.draggbleList = JSON.parse(JSON.stringify(this.issueList))
     },
     // 设置执行状态和模块类型
-    updateSptintmoduleState(params, type, value) {
+    updateSptintmoduleState (params, type, value) {
       sprintAxios.updateSptintmoduleState(params).then(data => {
         if (data.hasUpdateSptintmoduleState) {
           let item = this.draggbleList.find(v => v.id === params.issueLink)
@@ -156,7 +156,7 @@ export default {
       })
     },
     // 右键绑定回调
-    handleContextmenuFn(selectIssue, event) {
+    handleContextmenuFn (selectIssue, event) {
       this.$store.dispatch('sprint/selectActiveIssue', selectIssue)
 
       let editContextMenuItem = {
@@ -214,7 +214,7 @@ export default {
       return false
     },
     // 移除issue
-    removeIssueContextMenuItem(issue) {
+    removeIssueContextMenuItem (issue) {
       sprintAxios.removeIssue(issue.id).then(hasSuccess => {
         if (hasSuccess) {
           this.$store.dispatch('sprint/removeIssueItem', issue)
@@ -224,8 +224,8 @@ export default {
       })
     },
     // 拖动到执行列表
-    moveExecutionList(issue) { },
-    sortableCallback(type) {
+    moveExecutionList (issue) { },
+    sortableCallback (type) {
       if (type === 'executiveMode') {
         this.draggbleList.sort((pre, next) => {
           let preIndex = ['not-start', 'doing', 'finish'].indexOf(pre.moduleState.link)
@@ -235,13 +235,13 @@ export default {
         })
       }
     },
-    handleClickIssue(item) {
+    handleClickIssue (item) {
       this.$store.dispatch('sprint/selectActiveIssue', item)
     },
-    startDraggable(event) {
+    startDraggable (event) {
       this.$store.commit('sprint/DRAGGABLEOBJ', this.draggbleList[event.oldIndex])
     },
-    addDraggable(event) {
+    addDraggable (event) {
       let addIssueObj = this.draggbleList[event.newIndex]
       let params = Object.assign(addIssueObj, { type: addIssueObj.type === 'backlog' ? 'active' : 'backlog', moduleState: this.progressStateList[0] })
 
@@ -253,7 +253,7 @@ export default {
         console.log(err)
       })
     },
-    stylelevelClass(v) {
+    stylelevelClass (v) {
       let result
 
       this.levelList.forEach(item => {
@@ -265,12 +265,12 @@ export default {
       })
       return `${result} iconfont`
     },
-    filterTypeIcon(v = 'work') {
+    filterTypeIcon (v = 'work') {
       let p = this.issusTypeArr.find(p => p.value === v)
 
       return p ? p.icon : 'icon-shujuzhongjian'
     },
-    filterTypeColor(v) {
+    filterTypeColor (v) {
       let p = this.issusTypeArr.find(p => p.value === v)
 
       return p ? p.color : 'rgb(0, 101, 255)'
@@ -323,7 +323,7 @@ export default {
     align-items: center;
     box-sizing: border-box;
     height: 32px;
-    margin: 1px 0;
+    margin: 5px 0;
     padding: 0 6px 0 4px;
     overflow: hidden;
     font-size: 14px;
@@ -334,7 +334,7 @@ export default {
     border-left: 0;
     border-top-left-radius: 4px;
     border-bottom-left-radius: 4px;
-    box-shadow: 0 0 1px 0 rgba(9, 30, 66, 0.31),
+    box-shadow: 1px 1px 4px 0 rgba(9, 30, 66, 0.31),
       0 2px 4px -1px rgba(9, 30, 66, 0.25);
     cursor: move;
     user-select: none;
