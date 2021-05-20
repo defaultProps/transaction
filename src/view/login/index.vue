@@ -121,7 +121,7 @@ import bg2 from '@/assets/login-bg4.jpg'
 import bg3 from '@/assets/login-bg.jpg'
 
 export default {
-  data() {
+  data () {
     return {
       loadingLogin: false, // 登录按钮提交点击loading
       showRegisterAnimtion: false, // 是否切换到注册页面动画
@@ -142,7 +142,7 @@ export default {
   },
   methods: {
     // 登录页面动画切换classname
-    animationFormLoginClass() {
+    animationFormLoginClass () {
       let classname = 'login-form '
 
       if (this.isFirstLogin) {
@@ -152,7 +152,7 @@ export default {
       return classname
     },
     // 注册页面动画切换classname
-    animationFormRegisterClass() {
+    animationFormRegisterClass () {
       let classname = 'register-form '
 
       if (this.isFirstLogin) {
@@ -162,18 +162,18 @@ export default {
       return classname
     },
     // 切换表单
-    handleChangeView(val) {
+    handleChangeView (val) {
       this.isFirstLogin = false
       this.showRegisterAnimtion = val
     },
     // axios 登录提交表单
-    handleClickLoginSubmit() {
+    handleClickLoginSubmit () {
       this.loadingLogin = true
 
       coreAxios.sprintAxios.initLocalForageStore().then(() => {
         this.$nextTick(() => {
           this.loadingLogin = false
-          this.$router.push('/todoList')
+          this.$router.push('/story')
         })
       })
     }

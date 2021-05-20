@@ -1,4 +1,4 @@
-import todoList from '@/view/todoList/index.vue'
+import story from '@/view/todoList/index.vue'
 import login from '@/view/login/index.vue'
 import manage from '@/view/manage/index.vue'
 import dashboard from '@/view/dashboard/index.vue'
@@ -7,7 +7,7 @@ import feature from '@/view/feature/index.vue'
 import product from '@/view/product/index.vue'
 import designDocs from '@/view/designDocs/index.vue'
 import { DESIGN_DOCS } from '@/libs/constant.js'
-
+import markdownide from '@/view/markdownide'
 /**
  * @meta: {
  *  authority: user level 'tourist'（游客）无需登录，'ordinary' 普通用户，'admin' 管理员
@@ -20,12 +20,21 @@ let routes = [
     redirect: "/login"
   },
   {
-    path: "/todoList",
-    component: todoList,
+    path: "/story",
+    component: story,
     meta: {
       title: "事务面板",
       authority: 1,
       showheaderBar: true
+    }
+  },
+  {
+    path: "/markdown-ide",
+    component: markdownide,
+    meta: {
+      title: "markdown IDE",
+      auth: 1,
+      showheaderBar: false
     }
   },
   {
