@@ -301,12 +301,6 @@ input[type=search]::-ms-clear {
   background: #173F67
 }
 
-/*el-drawer**/
-
-#el-drawer__title {
-  display: none !important;
-}
-
 .scroll-style-theme1::-webkit-scrollbar {
   width: 4px;
   height: 3px;

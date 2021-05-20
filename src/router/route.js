@@ -80,7 +80,7 @@ let routes = [
       console.log(cr.path)
       return {
         path: `${cr.path}`,
-        component: require(`@/markdownDocs/${cr.fileName}.md`).default,
+        component: require(`@/docs/markdownDocs/${cr.fileName}.md`).default,
         meta: {
           title: '设计文档',
           authority: 0,

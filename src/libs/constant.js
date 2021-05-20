@@ -48,8 +48,8 @@ export const DESIGN_DOCS = () => {
   const result = []
   const componentDocFiles = [
     {
-      path: '@/markdownDocs',
-      fileNames: require.context('@/markdownDocs', true, /.md$/).keys().map(v => v.replace('./', '').replace('.md', ''))
+      path: '@/docs/markdownDocs',
+      fileNames: require.context('@/docs/markdownDocs', true, /.md$/).keys().map(v => v.replace('./', '').replace('.md', ''))
     }
   ]
 

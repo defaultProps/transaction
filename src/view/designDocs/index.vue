@@ -11,7 +11,7 @@
           <ul v-for="item in TODO_LIST_FUNCTION_DOCS"
               :key="item.title"
               class="scroll-style-none">
-            <li @click="handleClickLocation(item.value)"> {{ item.label }}</li>
+            <li @click="$router.push('/design-docs/'+ name)"> {{ item.label }}</li>
           </ul>
         </template>
       </div>
@@ -39,7 +39,10 @@ export default {
   }
 }
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
+@import url("../../docs/assets/md.scss");
+@import url("../../docs/assets/code.css");
+
 .design-docs-container {
   .el-collapse-item__header {
     height: 34px;
