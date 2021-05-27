@@ -1,4 +1,4 @@
-import story from '@/view/todoList/index.vue'
+import todoList from '@/view/todoList/index.vue'
 import login from '@/view/login/index.vue'
 import manage from '@/view/manage/index.vue'
 import dashboard from '@/view/dashboard/index.vue'
@@ -20,8 +20,8 @@ let routes = [
     redirect: "/login"
   },
   {
-    path: "/story",
-    component: story,
+    path: "/todoList",
+    component: todoList,
     meta: {
       title: "事务面板",
       authority: 1,
