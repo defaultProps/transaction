@@ -5,8 +5,9 @@
   "author": "uxo2",
   "private": true,
   "keywords": [
-    "初级",
-    "前端"
+    "front-end",
+    "vue",
+    "element-ui"
   ],
   "scripts": {
     "start": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",

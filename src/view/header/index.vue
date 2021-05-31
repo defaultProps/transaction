@@ -63,7 +63,7 @@
 import { HEADER_MENU_BAR_LIST } from '@/libs/constant.js'
 
 export default {
-  data() {
+  data () {
     return {
       HEADER_MENU_BAR_LIST,
       dialogVisible: false,
@@ -73,14 +73,14 @@ export default {
       userAvatar: 'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png'
     }
   },
-  mounted() {
+  mounted () {
     this.highLightMenuList()
   },
   methods: {
-    highLightMenuList() {
+    highLightMenuList () {
       let that = this
 
-      function _getMenuLink(list = []) {
+      function _getMenuLink (list = []) {
         list.forEach(item => {
           if (that.$route.path === item.link) {
             that.activeIndex = item.link
@@ -95,18 +95,18 @@ export default {
 
       _getMenuLink(HEADER_MENU_BAR_LIST)
     },
-    handleClose(done) { done() },
-    handleClickShowNewIssueDialog() {
+    handleClose (done) { done() },
+    handleClickShowNewIssueDialog () {
       this.$store.commit('sprint/VISIBLE_NEWISSUE_DIALOG', true)
     }
   }
 }
 </script>
 <style>
-body,
+/* body,
 html {
   font-family: HanziPen SC, 翩翩體-簡 粗體, HanziPen SC Bold, 翩翩体-简 粗体;
-}
+} */
 .el-menu--horizontal[x-placement] {
   top: 36px !important;
 }

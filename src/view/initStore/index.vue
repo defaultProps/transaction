@@ -54,7 +54,7 @@ export default {
   methods: {
     async submitStore () {
       this.dialogVisible = false;
-      this.$router.push('/story')
+      this.$router.push('/todoList')
     },
     renderEchartsLine () {
       let echartDom = document.getElementById('configLine');
@@ -154,7 +154,7 @@ export default {
     handleClose (done) {
       this.$confirm('确认关闭？').then(_ => {
         done();
-        this.$router.push('/story')
+        this.$router.push('/todoList')
       }).catch(_ => {
 
       })

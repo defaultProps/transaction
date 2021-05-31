@@ -5,7 +5,7 @@ const {
 } = require('./util');
 const md = require('./config');
 
-module.exports = function(source) {
+module.exports = function (source) {
   const content = md.render(source);
 
   const startTag = '<!--element-demo:';
@@ -58,7 +58,7 @@ module.exports = function(source) {
   output.push(content.slice(start));
   return `
     <template>
-      <section class="content element-doc">
+      <section class="uxo-docs-box">
         ${output.join('')}
       </section>
     </template>

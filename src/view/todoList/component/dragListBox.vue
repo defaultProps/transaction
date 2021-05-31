@@ -254,7 +254,7 @@ export default {
         this.$store.commit('metaView/PUSH_AXIOS_ERRORLIST', err)
       })
     },
-    stylelevelClass(urgencyLevelStr) {
+    stylelevelClass (urgencyLevelStr) {
       let result
 
       this.levelList.forEach(item => {
@@ -266,18 +266,19 @@ export default {
       })
       return `${result} iconfont`
     },
-    filterTypeIcon(issueTypeStr = 'work') {
+    filterTypeIcon (issueTypeStr = 'work') {
       let p = this.issusTypeArr.find(p => p.value === issueTypeStr)
 
       return p ? p.icon : 'icon-shujuzhongjian'
     },
-    filterTypeColor(issueTypeStr) {
+    filterTypeColor (issueTypeStr) {
       let p = this.issusTypeArr.find(p => p.value === issueTypeStr)
+      return p ? p.color : 'rgb(0, 101, 255)'
     },
-    filterTypeIcon (v = 'work') {
-      let p = this.issusTypeArr.find(p => p.value === v)
+    ilterTypeColor (issueTypeStr) {
+      let p = this.issusTypeArr.find(p => p.value === issueTypeStr)
 
-      return p ? p.icon : 'icon-shujuzhongjian'
+      return p ? p.color : 'rgb(0, 101, 255)'
     }
   }
 }
@@ -327,7 +328,7 @@ export default {
     align-items: center;
     box-sizing: border-box;
     height: 32px;
-    margin: 5px 0;
+    margin: 1px 0;
     padding: 0 6px 0 4px;
     overflow: hidden;
     font-size: 14px;

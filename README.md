@@ -8,3 +8,7 @@
 ## 备注
 
 本项目借鉴`jira`的设计风格和对自身的习惯改编而来，不具备商用价值，谢谢。
+
+## 功能展示
+
+![todoList](./static/images/../image/todoList.png)

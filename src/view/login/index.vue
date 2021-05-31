@@ -173,7 +173,7 @@ export default {
       coreAxios.sprintAxios.initLocalForageStore().then(() => {
         this.$nextTick(() => {
           this.loadingLogin = false
-          this.$router.push('/story')
+          this.$router.push('/todoList')
         })
       })
     }

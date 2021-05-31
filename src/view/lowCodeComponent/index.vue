@@ -1,6 +1,6 @@
 <template>
-  <div class="markdown-ide">
-    <el-sidebar></el-sidebar>
+  <div class="uxo-low-code-container">
+
   </div>
 </template>
 
@@ -11,7 +11,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.markdown-ide {
+.uxo-low-code-container {
   overflow: hidden;
 }
 </style>

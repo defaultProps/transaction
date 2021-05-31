@@ -4,14 +4,6 @@
 	transition: .2s
 }
 
-/*
-
-Colorbrewer theme
-Original: https://github.com/mbostock/colorbrewer-theme (c) Mike Bostock <mike@ocks.org>
-Ported by FabrÃ­cio Tavares de Oliveira
-
-*/
-
 .hljs {
   display: block;
   overflow-x: auto;
