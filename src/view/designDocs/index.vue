@@ -11,12 +11,12 @@
           <ul v-for="item in TODO_LIST_FUNCTION_DOCS"
               :key="item.title"
               class="scroll-style-none">
-            <li @click="handleClickLocation(item.value)"> {{ item.label }}</li>
+            <li @click="$router.push('/design-docs/'+ item.value)"> {{ item.label }}</li>
           </ul>
         </template>
       </div>
     </div>
-    <div class="main-box">
+    <div class="main-docs-box">
       <router-view></router-view>
     </div>
   </div>
@@ -26,20 +26,23 @@
 import { TODO_LIST_FUNCTION_DOCS } from '@/libs/constant.js'
 
 export default {
-  data() {
+  data () {
     return {
       TODO_LIST_FUNCTION_DOCS,
       visibleComponentDesignDocs: true // 是否显示事务面板文档
     }
   },
   methods: {
-    handleClickLocation(name) {
+    handleClickLocation (name) {
       this.$router.push(`/design-docs/${name}`)
     }
   }
 }
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
+@import url("../../docs/assets/md.scss");
+@import url("../../docs/assets/code.css");
+
 .design-docs-container {
   .el-collapse-item__header {
     height: 34px;
@@ -65,7 +68,7 @@ export default {
   bottom: 0;
   left: 0;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: flex-start;
   overflow: hidden;
   background: #f5f5f5;
@@ -122,10 +125,12 @@ export default {
       }
     }
   }
-  .main-box {
+  .main-docs-box {
     flex: 1;
     width: 100%;
     height: 100%;
+    padding: 0 10px;
+    box-sizing: border-box;
   }
 }
 </style>

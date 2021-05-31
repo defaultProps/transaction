@@ -19,11 +19,11 @@ import Quill from 'quill'
 import { QUILL_TOOLBAROPTIONS } from '@/libs/constant.js'
 
 export default {
-  mounted() {
+  mounted () {
     this.initIDE()
   },
   methods: {
-    initIDE() {
+    initIDE () {
       this.$nextTick(() => {
         new Quill('#IDERef', QUILL_TOOLBAROPTIONS)
       })

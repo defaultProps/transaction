@@ -8,6 +8,7 @@ import product from '@/view/product/index.vue'
 import designDocs from '@/view/designDocs/index.vue'
 import { DESIGN_DOCS } from '@/libs/constant.js'
 import markdownide from '@/view/markdownide'
+import lowCodeComponent from '@/view/lowCodeComponent/index.vue'
 /**
  * @meta: {
  *  authority: user level 'tourist'（游客）无需登录，'ordinary' 普通用户，'admin' 管理员
@@ -29,12 +30,21 @@ let routes = [
     }
   },
   {
+    path: '/uxo-low-code',
+    component: lowCodeComponent,
+    meta: {
+      title: 'uxo low code',
+      auth: 1,
+      showheaderBar: false
+    }
+  },
+  {
     path: "/markdown-ide",
     component: markdownide,
     meta: {
-      title: "markdown IDE",
+      title: "IDE",
       auth: 1,
-      showheaderBar: false
+      showheaderBar: true
     }
   },
   {
@@ -80,7 +90,7 @@ let routes = [
       console.log(cr.path)
       return {
         path: `${cr.path}`,
-        component: require(`@/markdownDocs/${cr.fileName}.md`).default,
+        component: require(`@/docs/markdownDocs/${cr.fileName}.md`).default,
         meta: {
           title: '设计文档',
           authority: 0,
