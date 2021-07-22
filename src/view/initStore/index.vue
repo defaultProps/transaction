@@ -39,24 +39,24 @@ import { sprintAxios } from '@/axios'
 import echarts from 'echarts'
 
 export default {
-  data () {
+  data() {
     return {
       dialogVisible: true,
       disabled: true
     }
   },
-  mounted () {
+  mounted() {
     this.$nextTick(() => {
       this.renderEchartsLine()
       this.getbacklogList()
     })
   },
   methods: {
-    async submitStore () {
+    async submitStore() {
       this.dialogVisible = false;
       this.$router.push('/todoList')
     },
-    renderEchartsLine () {
+    renderEchartsLine() {
       let echartDom = document.getElementById('configLine');
 
       if (!echartDom) {
@@ -151,7 +151,7 @@ export default {
       }
       myChart.setOption(option, true);
     },
-    handleClose (done) {
+    handleClose(done) {
       this.$confirm('确认关闭？').then(_ => {
         done();
         this.$router.push('/todoList')
@@ -159,7 +159,7 @@ export default {
 
       })
     },
-    getbacklogList () {
+    getbacklogList() {
       sprintAxios.initLocalForageStore().then(() => {
         setTimeout(() => {
           this.disabled = false;

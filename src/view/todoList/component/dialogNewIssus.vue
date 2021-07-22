@@ -7,7 +7,7 @@
              :destroy-on-close="true"
              top="40px"
              custom-class="dialogNewIssus"
-             width="800px"
+             width="60%"
              lock-scroll
              @opened="openedDialog">
     <h3 class="newissue-title">新增条例</h3>
@@ -164,7 +164,7 @@ export default {
       }
     }
     #newIssueDialogDescDom {
-      height: 100px;
+      height: 200px;
       overflow-y: scroll;
       border: 1px solid #dcdfe6;
       border-top: 0;

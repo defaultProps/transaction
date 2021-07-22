@@ -52,6 +52,8 @@
       <v-issue-detail-box v-show="visibleSidebarRightDetail"
                           id="detailContainerBox"></v-issue-detail-box>
     </div>
+    <div class="add-issue-btn"
+         @click="handleClickShowNewIssueDialog()">新增</div>
   </div>
 </template>
 <script>
@@ -62,10 +64,10 @@ import { mapState } from 'vuex'
 import { sprintAxios } from '@/axios'
 
 export default {
-  data() {
+  data () {
     return {
-      visibleSprint: true, // 是否显示工作区issue-list
-      dropObj: null // sprint列表拖动到左侧导航栏时的数据
+      visibleSprint: true,
+      dropObj: null
     }
   },
   components: {
@@ -73,12 +75,12 @@ export default {
     'v-drag-list-box': dragListBox,
     'v-issue-detail-box': sprintDetail
   },
-  provide() {
+  provide () {
     return {
       handleClickimplement: this.handleClickimplement
     }
   },
-  mounted() {
+  mounted () {
     this.$store.dispatch('sprint/getAllSprintList')
     this.getIssueTypeList()
   },
@@ -91,17 +93,18 @@ export default {
     hasDraggle: state => state.story.hasDraggle
   }),
   methods: {
-    // 获取issue类型（work and life）
-    getIssueTypeList() {
+    handleClickShowNewIssueDialog () {
+      this.$store.commit('sprint/VISIBLE_NEWISSUE_DIALOG', true)
+    },
+    getIssueTypeList () {
       sprintAxios.getIssueTypeList().then(list => {
         this.$store.commit('sprint/ISSUETYPELIST', list)
       })
     },
-    // 左侧导航开启关闭
-    handleClickvisibleNavigation() {
+    handleClickvisibleNavigation () {
       this.$store.commit('sprint/SET_VISIBLESIDEBARLEFT', !this.visibleSideBarLeft)
     },
-    handleClickimplement(obj, selectIssue) {
+    handleClickimplement (obj, selectIssue) {
       if (obj.link === 'close') {
         if (selectIssue.type === 'backlog') {
           this.$message.error('缓存区条例不允许关闭，只能删除')
@@ -127,7 +130,7 @@ export default {
         this.updateIssueDataAxios(obj, selectIssue)
       }
     },
-    updateIssueDataAxios(obj, selectIssue) {
+    updateIssueDataAxios (obj, selectIssue) {
       let params = {}
 
       if (obj.type === 'progressState') {
@@ -141,7 +144,6 @@ export default {
       sprintAxios.updateIssueData(params).then(hasUpdateData => {
         if (hasUpdateData) {
           this.$store.dispatch('sprint/updateIssueData', params)
-          // 关闭操作新增删除本地数据
           if (obj.link === 'close') {
             this.$store.dispatch('sprint/removeIssueItem', selectIssue)
           }
@@ -150,13 +152,13 @@ export default {
         this.$store.commit('metaView/PUSH_AXIOS_ERRORLIST', err)
       })
     },
-    dropDownStatus(obj) {
+    dropDownStatus (obj) {
       this.dropObj = obj
     },
-    dragleave(obj) {
+    dragleave (obj) {
       this.$set(obj, 'dropStatus', false)
     },
-    dragover(e, obj) {
+    dragover (e, obj) {
       e.preventDefault()
       this.$set(obj, 'dropStatus', true)
     }
@@ -248,6 +250,21 @@ export default {
         }
       }
     }
+  }
+  .add-issue-btn {
+    position: fixed;
+    bottom: 50px;
+    right: 50px;
+    width: 60px;
+    height: 60px;
+    text-align: center;
+    vertical-align: middle;
+    line-height: 60px;
+    color: #ffffff;
+    font-size: 16px;
+    border-radius: 50%;
+    box-sizing: border-box;
+    background: #205081;
   }
 }
 </style>
