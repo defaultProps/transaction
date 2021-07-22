@@ -9,6 +9,7 @@ import designDocs from '@/view/designDocs/index.vue'
 import { DESIGN_DOCS } from '@/libs/constant.js'
 import markdownide from '@/view/markdownide'
 import lowCodeComponent from '@/view/lowCodeComponent/index.vue'
+import page404 from '@/view/404/index.vue'
 /**
  * @meta: {
  *  authority: user level 'tourist'（游客）无需登录，'ordinary' 普通用户，'admin' 管理员
@@ -25,7 +26,7 @@ let routes = [
     component: todoList,
     meta: {
       title: "事务面板",
-      authority: 1,
+      authority: 'ordinary',
       showheaderBar: true
     }
   },
@@ -34,8 +35,8 @@ let routes = [
     component: lowCodeComponent,
     meta: {
       title: 'uxo low code',
-      auth: 1,
-      showheaderBar: false
+      auth: 'ordinary',
+      showheaderBar: true
     }
   },
   {
@@ -43,7 +44,7 @@ let routes = [
     component: markdownide,
     meta: {
       title: "IDE",
-      auth: 1,
+      auth: 'ordinary',
       showheaderBar: true
     }
   },
@@ -52,7 +53,7 @@ let routes = [
     component: login,
     meta: {
       title: "事务管理 - 登录",
-      authority: 0,
+      authority: 'tourist',
       showheaderBar: false
     }
   },
@@ -61,7 +62,7 @@ let routes = [
     component: initStore,
     meta: {
       title: "初始配置",
-      authority: 0,
+      authority: 'tourist',
       showheaderBar: false
     }
   },
@@ -70,7 +71,7 @@ let routes = [
     component: product,
     meta: {
       title: "产品",
-      authority: 0,
+      authority: 'tourist',
       showheaderBar: false
     }
   },
@@ -79,7 +80,7 @@ let routes = [
     component: dashboard,
     meta: {
       title: "仪表盘",
-      authority: 0,
+      authority: 'tourist',
       showheaderBar: true
     }
   },
@@ -93,14 +94,14 @@ let routes = [
         component: require(`@/docs/markdownDocs/${cr.fileName}.md`).default,
         meta: {
           title: '设计文档',
-          authority: 0,
+          authority: 'tourist',
           showheaderBar: true
         }
       }
     }),
     meta: {
       title: '设计文档',
-      authority: 0,
+      authority: 'tourist',
       showheaderBar: true
     }
   },
@@ -109,7 +110,7 @@ let routes = [
     component: feature,
     meta: {
       title: '功能列表',
-      authority: 0,
+      authority: 'tourist',
       showheaderBar: true
     }
   },
@@ -118,9 +119,22 @@ let routes = [
     component: manage,
     meta: {
       title: "用户管理",
-      authority: 0,
+      authority: 'tourist',
       showheaderBar: true
     }
+  },
+  {
+    path: '/404',
+    component: page404,
+    meta: {
+      title: "404",
+      authority: 'tourist',
+      showheaderBar: true
+    }
+  },
+  {
+    path: "*",
+    redirect: '/404'
   }
 ]
 
